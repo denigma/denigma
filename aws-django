@@ -1,0 +1,337 @@
+#!/usr/bin/env bash
+
+SCRIPT_NAME=$0
+CANONICAL_URL="http://dl.dropbox.com/u/53973/install_django.sh"
+
+usage() {
+    cat <<EOF
+Usage: $SCRIPT_NAME OPTIONS
+
+Application:
+ -n NAME                 set the NAME of the application - letters, numbers and underscore
+ -d DISTRIBUTION         the URL to the tgz distribution of the application
+
+Database:
+ -H DATABASE_HOST        the database host
+ -D DATABASE_NAME        the database name to use. Defaults to \${NAME}
+ -U DATABASE_USER        the database user to use. Default to \${NAME}
+ -P DATABASE_PASSWORD    the database password
+
+Web:
+ -w WEBSERVER            which webserver to use. apache only at the moment
+ -u SITE_NAME            the SiteName to use in Apache. Defaults to \${NAME}.com
+ -s STATIC_URL           the url for static assets. Defaults to /static/
+
+Email:
+ -a AWS_ACCESS_KEY       aws access key to be used for SES
+ -k AWS_SECRET_KEY       aws secret key to be used for SES
+
+Local:
+ -u LOCAL_USER           name of the unix user to create. Defaults to \${NAME}
+ -p PROJECT_ROOT         name of the project root. Defaults to /home/\${LOCAL_USER}/\${NAME}
+EOF
+}
+
+die() {
+    message=$1
+    error_code=$2
+
+    echo "$SCRIPT_NAME: $message" 1>&2
+    usage
+    exit $error_code
+}
+
+get_options() {
+    while getopts "hn:d:H:D:U:P:w:u:s:a:k:u:p:" opt; do
+        case "$opt" in
+            h)
+                usage
+                exit 0
+                ;;
+            n)
+                export NAME="$OPTARG"
+                ;;
+            d)
+                export DISTRIBUTION="$OPTARG"
+                ;;
+            H)
+                export DATABASE_HOST="$OPTARG"
+                ;;
+            D)
+                export DATABASE_NAME="$OPTARG"
+                ;;
+            U)
+                export DATABASE_USER="$OPTARG"
+                ;;
+            P)
+                export DATABASE_PASSWORD="$OPTARG"
+                ;;
+            w)
+                export WEBSERVER="$OPTARG"
+                ;;
+            u)
+                export SITE_NAME="$OPTARG"
+                ;;
+            s)
+                export STATIC_URL="$OPTARG"
+                ;;
+            a)
+                export AWS_ACCESS_KEY="$OPTARG"
+                ;;
+            k)
+                export AWS_SECRET_KEY="$OPTARG"
+                ;;
+            u)
+                export LOCAL_USER="$OPTARG"="$OPTARG"
+                ;;
+            p)
+                export PROJECT_ROOT="$OPTARG"
+                ;;
+            [?])
+                die "unknown option $opt" 10
+                ;;
+        esac
+    done
+}
+
+
+handle_defaults() {
+    if [ -z "$NAME" ]; then
+        die "NAME is required" 1
+    fi
+
+    if [ -z "$DISTRIBUTION" ]; then
+        die "DISTRIBUTION is required" 2
+    fi
+
+    if [ -n "$AWS_ACCESS_KEY" ]; then
+        if [ -z "$AWS_SECRET_KEY" ]; then
+            die "AWS_ACCESS_KEY and AWS_SECRET_KEY are optional, but if you are going to provide one you must provide the other" 3
+        fi
+    fi
+    if [ -n "$AWS_SECRET_KEY" ]; then
+        if [ -z "$AWS_ACCESS_KEY" ]; then
+            die "AWS_ACCESS_KEY and AWS_SECRET_KEY are optional, but if you are going to provide one you must provide the other" 3
+        fi
+    fi
+
+    if [ -z "$DATABASE_NAME" ]; then
+        export DATABASE_NAME="$NAME"
+    fi
+
+    if [ -z "$DATABASE_HOST" ]; then
+        export DATABASE_HOST="localhost"
+    fi
+
+    if [ -z "$DATABASE_USER" ]; then
+        export DATABASE_USER="$NAME"
+    fi
+
+    if [ -z "$DATABASE_PASSWORD" ]; then
+        export DATABASE_PASSWORD=`head -c 100 /dev/urandom | md5sum | awk '{print $1}'`
+    fi
+
+    if [ -z "$WEBSERVER" ]; then
+        export WEBSERVER="apache"
+    fi
+
+    if [ -z "$SITE_NAME" ]; then
+        export SITE_NAME="${NAME}.com"
+    fi
+
+    if [ -z "$STATIC_URL" ]; then
+        export STATIC_URL="/static/"
+    fi
+
+    if [ -z "$ADMIN_EMAIL" ]; then
+        export ADMIN_EMAIL="alerts@${SITE_NAME}"
+    fi
+
+    if [ -z "$LOCAL_USER" ]; then
+        export LOCAL_USER="$NAME"
+    fi
+
+    if [ -z "$PROJECT_ROOT" ]; then
+        export PROJECT_ROOT="/home/$LOCAL_USER/$NAME"
+    fi
+}
+
+export DEBIAN_FRONTEND=noninteractive
+
+update_system() {
+    aptitude update
+    aptitude -y safe-upgrade
+}
+
+install_baseline() {
+    apt-get install -y build-essential git emacs23-nox curl
+}
+
+install_python() {
+    apt-get install -y python python-dev python-pip python-setuptools python-mysqldb
+}
+
+install_nginx() {
+    apt-get install -y nginx
+    apt-get install -y python-flup
+}
+
+install_apache() {
+    apt-get install -y apache2 libapache2-mod-wsgi
+    pip install virtualenv
+}
+
+
+configure_apache() {
+    cat <<EOF | sudo tee /etc/apache2/sites-available/$NAME
+<VirtualHost *:80>
+    ServerName $SITE_NAME
+    ServerAdmin $ADMIN_EMAIL
+    LogLevel warn
+    ErrorLog \${APACHE_LOG_DIR}/${SITE_NAME}_error.log
+    CustomLog \${APACHE_LOG_DIR}/${SITE_NAME}_access.log combined
+
+    WSGIDaemonProcess $NAME user=www-data group=www-data maximum-requests=10000 python-path=/home/$LOCAL_USER/env/lib/python2.6/site-packages
+    WSGIProcessGroup $NAME
+
+    WSGIScriptAlias / $PROJECT_ROOT/deploy/pinax.wsgi
+
+    <Directory $PROJECT_ROOT/deploy>
+        Order deny,allow
+        Allow from all
+    </Directory>
+
+    Alias $STATIC_URL $PROJECT_ROOT/media/
+    <Directory $PROJECT_ROOT/media>
+        Order deny,allow
+        Allow from all
+    </Directory>
+</VirtualHost>
+
+EOF
+}
+
+activate_apache() {
+    sudo a2dissite default
+    sudo a2ensite $NAME
+    sudo /etc/init.d/apache2 reload
+}
+
+install_webserver() {
+    if [[ $WEBSERVER == "nginx" ]]; then
+        install_nginx
+        die "cannot yet configure nginx"
+    else
+        if [[ $WEBSERVER == "apache" ]]; then
+            install_apache
+            configure_apache
+        else
+            die "unknown webserver $WEBSERVER"
+        fi
+    fi
+}
+
+activate_webserver() {
+    if [[ $WEBSERVER == "nginx" ]]; then
+        die "cannot yet activate nginx"
+    else
+        if [[ $WEBSERVER == "apache" ]]; then
+            activate_apache
+        else
+            die "unknown webserver $WEBSERVER"
+        fi
+    fi
+}
+
+bootstrap_project() {
+    adduser --system --disabled-password --disabled-login $LOCAL_USER
+    sudo -u $LOCAL_USER virtualenv /home/$LOCAL_USER/env
+    sudo -u $LOCAL_USER mkdir $PROJECT_ROOT
+}
+
+install_project() {
+    if [ -f $DISTRIBUTION ]; then
+        LOCAL_DISTRIBUTION_PATH=$DISTRIBUTION
+    else
+        sudo -u $LOCAL_USER wget $DISTRIBUTION -O /home/$LOCAL_USER/app.tgz
+        LOCAL_DISTRIBUTION_PATH=/home/$LOCAL_USER/app.tgz
+    fi
+
+    sudo -u $LOCAL_USER tar xvf $LOCAL_DISTRIBUTION_PATH -C $PROJECT_ROOT
+    sudo -u $LOCAL_USER pip -E /home/$LOCAL_USER/env install -r $PROJECT_ROOT/requirements/project.txt
+}
+
+configure_local_settings() {
+    cat <<EOF | sudo -u $LOCAL_USER tee $PROJECT_ROOT/local_settings.py
+BASE_URL="http://$SITE_NAME"
+DEBUG = False
+TEMPLATE_DEBUG = False
+SERVE_MEDIA = False
+
+DATABASES = {
+    "default": {
+       "ENGINE": "mysql",
+       "NAME": "$DATABASE_NAME",
+       "USER": "$DATABASE_USER",
+       "PASSWORD": "$DATABASE_PASSWORD",
+       "HOST": "$DATABASE_HOST",
+    }
+}
+
+STATIC_URL = "$STATIC_URL"
+STATIC_ROOT = "$PROJECT_ROOT/media"
+TEMPLATE_DIRS = ["$PROJECT_ROOT/templates"]
+EOF
+
+    if [ -n "$AWS_ACCESS_KEY" ]; then
+        cat <<EOF | sudo -u $LOCAL_USER tee -a $PROJECT_ROOT/local_settings.py
+
+EMAIL_BACKEND = 'django_ses.SESBackend'
+
+AWS_ACCESS_KEY_ID = '$AWS_ACCESS_KEY'
+AWS_SECRET_ACCESS_KEY = '$AWS_SECRET_KEY'
+
+EOF
+    fi
+}
+
+
+django_syncdb() {
+    sudo -u $LOCAL_USER /home/$LOCAL_USER/env/bin/python $PROJECT_ROOT/manage.py syncdb --noinput
+}
+
+print_launch_conf() {
+    cat<<EOF
+
+** To automate launching an instance like this one, put the following in your userdata script **
+
+wget $CANONICAL_URL
+sudo bash $SCRIPT_NAME -n $NAME -d $DISTRIBUTION -H $DATABASE_HOST -D $DATABASE_NAME -U $DATABASE_USER -P $DATABASE_PASSWORD -w $WEBSERVER -u $SITE_NAME -s $STATIC_URL -u $LOCAL_USER -p $PROJECT_ROOT"
+
+EOF
+}
+
+print_django_info() {
+    PUBLIC_DNS=`curl http://169.254.169.254/latest/meta-data/public-hostname 2>/dev/null`
+    cat <<EOF
+** To view the app you just installed, point your browser to **
+
+http://${PUBLIC_DNS}/
+
+EOF
+}
+
+get_options $*
+handle_defaults
+
+update_system
+install_baseline
+install_python
+install_webserver
+
+bootstrap_project
+install_project
+configure_local_settings
+activate_webserver
+
+print_django_info
