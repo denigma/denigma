@@ -83,7 +83,7 @@ EOF
 
 load_sql() {
     if [ -n "$URL" ]; then
-        wget $URL -O dump.sql.tgz && tar zxvf dump.sql.tgz && mysql --user=$DATABASE_USER --password=$DATABASE_PASSWORD $DATABASE_NAME < dump.sql
+        wget $URL -O dump.sql && mysql --user=$DATABASE_USER --password=$DATABASE_PASSWORD $DATABASE_NAME < dump.sql
     else
         echo "No url specified. Creating an empty database, up to you to create the schema."
     fi
