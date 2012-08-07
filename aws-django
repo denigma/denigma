@@ -136,7 +136,7 @@ handle_defaults() {
     fi
 
     if [ -z "$SITE_NAME" ]; then
-        export SITE_NAME="${NAME}.de"
+        export SITE_NAME="${NAME}.com"
     fi
 
     if [ -z "$STATIC_URL" ]; then
