@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Manage" %}{% endblock %}
+
+{% block page_title %}{% trans "Edit notification settings" %}{% endblock %}
+
+{% block content %}
+
+<div class="manageForm">
+  <div class="url">
+    <label>{% trans "Original URL" %}</label>
+    <span class="url"><a href="{{ source.url }}">{{ source.url }}</a></span>
+  </div>
+  <div class="email">
+    <label>{% trans "Notification Email" %}</label>
+    <span>{{ source.email }}</span>
+  </div>
+
+  <div class="shortened">
+    <table>
+      <thead>
+        <th class="label">{% trans "Label" %}</th>
+        <th>{% trans "Link" %}</th>
+        <th class="notification">{% trans "Notify" %}</th>
+      </thead>
+      {% for shorty in source.shorty_urls.all %}
+      <tr>
+        <td class="label">{{ shorty.label }}</td>
+        <td><a href="{{ shorty.url }}">{{ shorty.url }}</a></td>
+        <td class="notification">
+
+          <form method="post" action="">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ shorty.id }}" />
+            <input type="submit" value="{{ shorty.notify|yesno:'ON,OFF' }}"/>
+            </form>
+
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+
+{% endblock %}

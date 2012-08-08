@@ -1,0 +1,52 @@
+{% load i18n %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" xml:lang="{{ LANGUAGE_CODE }}" lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} : {% endif %}{% block head_title %}{% endblock %}{% endblock %}</title>
+
+    {% comment %}
+    IE hasLayout => http://www.satzansatz.de/cssd/onhavinglayout.html
+    {% endcomment %}
+    <!--[if IE]>
+      <style>
+        div {
+          zoom: 1; /* trigger hasLayout */
+        }
+      </style>
+    <![endif]-->
+
+    <link href="{{ STATIC_URL }}css/common.css" rel="stylesheet" type="text/css" media="all" />
+
+    <!--[if lt IE 9]>
+      <script src="{{ STATIC_URL }}js/html5.js"></script>
+    <![endif]-->
+    {% block extra_head_base %}
+    {% block extra_head %}{% endblock %}
+    {% endblock %}
+  </head>
+
+  <body class="{% block body_class %}body{% endblock %}">
+    <div class="header">
+      <div class="page-title">
+        <h2>{% block page_title %} {% endblock %}</h2>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="content">
+          {% block content %}
+          {% endblock %}
+      </div>
+    </div>
+    
+
+    <div class="footer">
+      &copy; 2011 <a href="http://offbytwo.com">Cosmin Stejerean</a>
+    </div>
+    
+    {% block bottom_javascripts %}
+    {% endblock %}
+    
+  </body>
+</html>

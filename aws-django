@@ -252,12 +252,9 @@ bootstrap_project() {
 install_project() {
     if [ -f $DISTRIBUTION ]; then
         LOCAL_DISTRIBUTION_PATH=$DISTRIBUTION
-    else
-        sudo -u $LOCAL_USER wget $DISTRIBUTION -O /home/$LOCAL_USER/app.tgz
-        LOCAL_DISTRIBUTION_PATH=/home/$LOCAL_USER/app.tgz
     fi
 
-    sudo -u $LOCAL_USER tar xvf $LOCAL_DISTRIBUTION_PATH -C $PROJECT_ROOT
+    sudo -u $LOCAL_USER cp /home/ubuntu/$NAME/$NAME/ $PROJECT_ROOT
     sudo -u $LOCAL_USER pip -E /home/$LOCAL_USER/env install -r $PROJECT_ROOT/requirements/project.txt
 }
 

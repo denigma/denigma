@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Welcome" %}{% endblock %}
+
+
+{% block page_title %}
+<h1>{% trans "Shorten a URL and get email alerts" %}</h1>
+{% endblock %}
+
+
+{% block content %}
+<div class="shortenerForm">
+  <form method="post" action="">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="url">
+      <label>{% trans "URL" %}</label>
+      {{ form.url.errors }}
+      <div class="input-box">
+        {{ form.url }}
+      </div>
+    </div>
+    <div class="email">
+      <label>{% trans "E-mail Address" %}</label>
+      {{ form.email.errors }}
+      <div class="input-box">
+        {{ form.email }}
+      </div>
+    </div>
+    <div class="labels">
+      <label>{% trans "Comma Separated Labels" %}</label>
+      {{ form.labels.errors }}
+      <div class="input-box">
+        {{ form.labels }}
+      </div>
+    </div>
+    <div class="submit">
+      <span><input type="submit" value="{% trans 'Shorten' %}"/></span>
+    </div>
+  </form>
+</div>
+{% endblock %}
