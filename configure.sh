@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Configuring AMI: "
 
-sudo aptitude  update; sudo -y safe-upgrade
+sudo aptitude update; sudo aptitude -y safe-upgrade
 
 git clone https://github.com/hevok/denigma.git
 
