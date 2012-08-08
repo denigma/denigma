@@ -145,6 +145,7 @@ INSTALLED_APPS = [
     
     # project
     "shorty",
+    "polls",
 ]
 
 FIXTURE_DIRS = [
