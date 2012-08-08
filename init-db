@@ -103,6 +103,7 @@ Add the following to your install_django.sh invocation to use this database:
 -H $PUBLIC_DNS -D $DATABASE_NAME -U $DATABASE_USER -P $DATABASE_PASSWORD
 
 EOF
+echo -H $PUBLIC_DNS -D $DATABASE_NAME -U $DATABASE_USER -P $DATABASE_PASSWORD
 }
 
 create_mysql_database && load_sql && open_external_port && print_mysql_config
