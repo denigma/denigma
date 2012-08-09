@@ -1,0 +1,2 @@
+git clone http://github.com/hevok/denigma.git
+sudo bash denigma/configure.sh
