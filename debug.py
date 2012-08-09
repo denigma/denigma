@@ -1,28 +1,32 @@
-#! /usr/bin/env python
+#! /user/bin/env python
+"""Toggles debug modus on server."""
 
-debug_mode = """
-BASE_URL="http://clktc.de"
-DEBUG = True
-TEMPLATE_DEBUG = True
-SERVE_MEDIA = True
+local_settings = "/home/clktc/clktc/local_settings.py"
 
-DATABASES = {
-    "default": {
-       "ENGINE": "mysql",
-       "NAME": "clktc",
-       "USER": "clktc",
-       "PASSWORD": "48cebe53677c5b3",
-       "HOST": "ec2-54-247-32-121.eu-west-1.compute.amazonaws.com",
-    }
-}
+# Recieve settings and change debug values:
+input = open(local_settings, 'r').read()
+data = []
 
-STATIC_URL = "/s"
-STATIC_ROOT = "/home/clktc/clktc/media"
-TEMPLATE_DIRS = ["/home/clktc/clktc/templates"]
-"""
+for line in input.split('\n'):
 
-settings = open("/home/clktc/clktc/local_settings.py", 'w')
-settings.write(debug_mode)
-settings.close()
+    if line.startswith("DEBUG"):
+        value = not eval(line.split('DEBUG = ')[1])
+        data.append('DEBUG = %s' % value)
+
+    elif line.startswith("TEMPLATE_DEBUG"):
+        value = not eval(line.split('TEMPLATE_DEBUG = ')[1])
+        data.append('TEMPLATE_DEBUG = %s' % value) 
+                    
+    elif line.startswith("SERVE_MEDIA"):
+        value = not eval(line.split('SERVE_MEDIA = ')[1])
+        data.append("SERVE_MEDIA = %s" % value)
+
+    else:
+        data.append(line)
+
+# Sets settings:
+print '\n'.join(data)
+output = open(local_settings, 'w').writelines('\n'.join(data))
+#234567891123456789212345678931234567894123456789512345678961234567897123456789
 
 
