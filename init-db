@@ -111,7 +111,7 @@ echo -H $PUBLIC_DNS -D $DATABASE_NAME -U $DATABASE_USER -P $DATABASE_PASSWORD
 
 call_aws_django() {
     echo "Calling aws-django bash with correct flag parameters"
-    sudo bash /home/ubuntu/denigma/aws-django -n clktc -d -H $PUBLIC_DNS -D $DATABASE_NAME -U $DATABASE_USER -P $DATABASE_PASSWORD
+    sudo bash /home/ubuntu/denigma/aws-django -n clktc -d https://github.com/hevok/denigma/raw/master/clktc.tgz -s "/s" -H $PUBLIC_DNS -D $DATABASE_NAME -U $DATABASE_USER -P $DATABASE_PASSWORD
 }
 
 create_mysql_database && load_sql && open_external_port && print_mysql_config
