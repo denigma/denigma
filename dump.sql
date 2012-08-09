@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.24, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.1.49, for debian-linux-gnu (i686)
 --
 -- Host: localhost    Database: clktc
 -- ------------------------------------------------------
--- Server version	5.5.24-0ubuntu0.12.04.1
+-- Server version	5.1.49-1ubuntu8.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,7 +27,7 @@ CREATE TABLE `auth_group` (
   `name` varchar(80) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -52,11 +52,9 @@ CREATE TABLE `auth_group_permissions` (
   `permission_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `group_id` (`group_id`,`permission_id`),
-  KEY `auth_group_permissions_bda51c3c` (`group_id`),
-  KEY `auth_group_permissions_1e014c8f` (`permission_id`),
-  CONSTRAINT `group_id_refs_id_3cea63fe` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
-  CONSTRAINT `permission_id_refs_id_a7792de1` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `auth_group_permissions_425ae3c4` (`group_id`),
+  KEY `auth_group_permissions_1e014c8f` (`permission_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -80,9 +78,8 @@ CREATE TABLE `auth_message` (
   `user_id` int(11) NOT NULL,
   `message` longtext NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `auth_message_fbfc09f1` (`user_id`),
-  CONSTRAINT `user_id_refs_id_9af0b65a` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `auth_message_403f60f` (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,9 +105,8 @@ CREATE TABLE `auth_permission` (
   `codename` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
-  KEY `auth_permission_e4470c6e` (`content_type_id`),
-  CONSTRAINT `content_type_id_refs_id_728de91f` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
+  KEY `auth_permission_1bb8f392` (`content_type_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,7 +115,7 @@ CREATE TABLE `auth_permission` (
 
 LOCK TABLES `auth_permission` WRITE;
 /*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
-INSERT INTO `auth_permission` VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add message',5,'add_message'),(14,'Can change message',5,'change_message'),(15,'Can delete message',5,'delete_message'),(16,'Can add content type',6,'add_contenttype'),(17,'Can change content type',6,'change_contenttype'),(18,'Can delete content type',6,'delete_contenttype'),(19,'Can add session',7,'add_session'),(20,'Can change session',7,'change_session'),(21,'Can delete session',7,'delete_session'),(22,'Can add site',8,'add_site'),(23,'Can change site',8,'change_site'),(24,'Can delete site',8,'delete_site'),(25,'Can add source url',9,'add_sourceurl'),(26,'Can change source url',9,'change_sourceurl'),(27,'Can delete source url',9,'delete_sourceurl'),(28,'Can add shorty url',10,'add_shortyurl'),(29,'Can change shorty url',10,'change_shortyurl'),(30,'Can delete shorty url',10,'delete_shortyurl'),(31,'Can add visit',11,'add_visit'),(32,'Can change visit',11,'change_visit'),(33,'Can delete visit',11,'delete_visit'),(34,'Can add poll',12,'add_poll'),(35,'Can change poll',12,'change_poll'),(36,'Can delete poll',12,'delete_poll'),(37,'Can add choice',13,'add_choice'),(38,'Can change choice',13,'change_choice'),(39,'Can delete choice',13,'delete_choice');
+INSERT INTO `auth_permission` VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can add permission',2,'add_permission'),(5,'Can change permission',2,'change_permission'),(6,'Can delete permission',2,'delete_permission'),(7,'Can add group',3,'add_group'),(8,'Can change group',3,'change_group'),(9,'Can delete group',3,'delete_group'),(10,'Can add user',4,'add_user'),(11,'Can change user',4,'change_user'),(12,'Can delete user',4,'delete_user'),(13,'Can add message',5,'add_message'),(14,'Can change message',5,'change_message'),(15,'Can delete message',5,'delete_message'),(16,'Can add content type',6,'add_contenttype'),(17,'Can change content type',6,'change_contenttype'),(18,'Can delete content type',6,'delete_contenttype'),(19,'Can add session',7,'add_session'),(20,'Can change session',7,'change_session'),(21,'Can delete session',7,'delete_session'),(22,'Can add site',8,'add_site'),(23,'Can change site',8,'change_site'),(24,'Can delete site',8,'delete_site'),(25,'Can add source url',9,'add_sourceurl'),(26,'Can change source url',9,'change_sourceurl'),(27,'Can delete source url',9,'delete_sourceurl'),(28,'Can add shorty url',10,'add_shortyurl'),(29,'Can change shorty url',10,'change_shortyurl'),(30,'Can delete shorty url',10,'delete_shortyurl'),(31,'Can add visit',11,'add_visit'),(32,'Can change visit',11,'change_visit'),(33,'Can delete visit',11,'delete_visit');
 /*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,7 +140,7 @@ CREATE TABLE `auth_user` (
   `date_joined` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,7 +149,6 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (1,'test','','','test@testing.com','sha1$1d2c1$15a634c7e50493cd0c62aa54124997a69db06eda',1,1,1,'2012-08-09 03:47:47','2012-08-09 03:47:04');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,11 +165,9 @@ CREATE TABLE `auth_user_groups` (
   `group_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`,`group_id`),
-  KEY `auth_user_groups_fbfc09f1` (`user_id`),
-  KEY `auth_user_groups_bda51c3c` (`group_id`),
-  CONSTRAINT `user_id_refs_id_831107f1` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `group_id_refs_id_f0ee9890` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `auth_user_groups_403f60f` (`user_id`),
+  KEY `auth_user_groups_425ae3c4` (`group_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -199,11 +192,9 @@ CREATE TABLE `auth_user_user_permissions` (
   `permission_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`,`permission_id`),
-  KEY `auth_user_user_permissions_fbfc09f1` (`user_id`),
-  KEY `auth_user_user_permissions_1e014c8f` (`permission_id`),
-  CONSTRAINT `user_id_refs_id_f2045483` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`),
-  CONSTRAINT `permission_id_refs_id_67e79cb` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `auth_user_user_permissions_403f60f` (`user_id`),
+  KEY `auth_user_user_permissions_1e014c8f` (`permission_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -232,11 +223,9 @@ CREATE TABLE `django_admin_log` (
   `action_flag` smallint(5) unsigned NOT NULL,
   `change_message` longtext NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `django_admin_log_fbfc09f1` (`user_id`),
-  KEY `django_admin_log_e4470c6e` (`content_type_id`),
-  CONSTRAINT `content_type_id_refs_id_288599e6` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
-  CONSTRAINT `user_id_refs_id_c8665aa` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `django_admin_log_403f60f` (`user_id`),
+  KEY `django_admin_log_1bb8f392` (`content_type_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,7 +251,7 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `app_label` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -271,7 +260,7 @@ CREATE TABLE `django_content_type` (
 
 LOCK TABLES `django_content_type` WRITE;
 /*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
-INSERT INTO `django_content_type` VALUES (1,'log entry','admin','logentry'),(2,'permission','auth','permission'),(3,'group','auth','group'),(4,'user','auth','user'),(5,'message','auth','message'),(6,'content type','contenttypes','contenttype'),(7,'session','sessions','session'),(8,'site','sites','site'),(9,'source url','shorty','sourceurl'),(10,'shorty url','shorty','shortyurl'),(11,'visit','shorty','visit'),(12,'poll','polls','poll'),(13,'choice','polls','choice');
+INSERT INTO `django_content_type` VALUES (1,'log entry','admin','logentry'),(2,'permission','auth','permission'),(3,'group','auth','group'),(4,'user','auth','user'),(5,'message','auth','message'),(6,'content type','contenttypes','contenttype'),(7,'session','sessions','session'),(8,'site','sites','site'),(9,'source url','shorty','sourceurl'),(10,'shorty url','shorty','shortyurl'),(11,'visit','shorty','visit');
 /*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,9 +275,8 @@ CREATE TABLE `django_session` (
   `session_key` varchar(40) NOT NULL,
   `session_data` longtext NOT NULL,
   `expire_date` datetime NOT NULL,
-  PRIMARY KEY (`session_key`),
-  KEY `django_session_c25c2c28` (`expire_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`session_key`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -297,7 +285,6 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('70477f486b72ad0d6fd2122254b7d2ff','NmI4YWQ2MjYyNjQwOTljMmFhZDkyNzM5NmE4MDBlZDgzYzkwYzdmZjqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQSKAQF1Lg==\n','2012-08-23 03:47:47');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -313,7 +300,7 @@ CREATE TABLE `django_site` (
   `domain` varchar(100) NOT NULL,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -324,57 +311,6 @@ LOCK TABLES `django_site` WRITE;
 /*!40000 ALTER TABLE `django_site` DISABLE KEYS */;
 INSERT INTO `django_site` VALUES (1,'example.com','Example Site');
 /*!40000 ALTER TABLE `django_site` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `polls_choice`
---
-
-DROP TABLE IF EXISTS `polls_choice`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `polls_choice` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `poll_id` int(11) NOT NULL,
-  `choice` varchar(200) NOT NULL,
-  `votes` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `polls_choice_763e883` (`poll_id`),
-  CONSTRAINT `poll_id_refs_id_a27693dd` FOREIGN KEY (`poll_id`) REFERENCES `polls_poll` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `polls_choice`
---
-
-LOCK TABLES `polls_choice` WRITE;
-/*!40000 ALTER TABLE `polls_choice` DISABLE KEYS */;
-/*!40000 ALTER TABLE `polls_choice` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `polls_poll`
---
-
-DROP TABLE IF EXISTS `polls_poll`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `polls_poll` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question` varchar(200) NOT NULL,
-  `pub_date` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `polls_poll`
---
-
-LOCK TABLES `polls_poll` WRITE;
-/*!40000 ALTER TABLE `polls_poll` DISABLE KEYS */;
-/*!40000 ALTER TABLE `polls_poll` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -390,9 +326,8 @@ CREATE TABLE `shorty_shortyurl` (
   `label` varchar(50) NOT NULL,
   `notify` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `shorty_shortyurl_89f89e85` (`source_id`),
-  CONSTRAINT `source_id_refs_id_c0ddbff5` FOREIGN KEY (`source_id`) REFERENCES `shorty_sourceurl` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `shorty_shortyurl_7607617b` (`source_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -418,7 +353,7 @@ CREATE TABLE `shorty_sourceurl` (
   `admin_key` varchar(40) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `admin_key` (`admin_key`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -443,9 +378,8 @@ CREATE TABLE `shorty_visit` (
   `shorty_id` int(11) NOT NULL,
   `user_agent_string` longtext NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `shorty_visit_c7ca4541` (`shorty_id`),
-  CONSTRAINT `shorty_id_refs_id_b7fd2c` FOREIGN KEY (`shorty_id`) REFERENCES `shorty_shortyurl` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `shorty_visit_3835babf` (`shorty_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -466,4 +400,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-08-09  9:49:55
+-- Dump completed on 2011-03-09 16:13:44
