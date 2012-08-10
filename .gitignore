@@ -1,10 +1,16 @@
+# Temporary Files:
 *.pyc
 *~
 *.save*
 *.db
 
+# Access Keys:
 ami.sh
 dkey.pem
 
+# Virtual Environments:
 env
 envs
+
+# Machine-Specific Settings:
+local_settings.py
