@@ -1,9 +1,11 @@
 *.pyc
 *~
-*.save
+*.save*
 
 ami.sh
 dkey.pem
 
 env
 envs
+
+dev.db
