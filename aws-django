@@ -245,8 +245,8 @@ activate_webserver() {
 
 bootstrap_project() {
     adduser --system --disabled-password --disabled-login $LOCAL_USER
-    sudo -u $LOCAL_USER virtualenv /home/$LOCAL_USER/env
-    sudo -u $LOCAL_USER mkdir $PROJECT_ROOT
+    sudo virtualenv /home/$LOCAL_USER/env
+    sudo mkdir $PROJECT_ROOT
 }
 
 install_project() {
@@ -254,12 +254,12 @@ install_project() {
         LOCAL_DISTRIBUTION_PATH=$DISTRIBUTION
     fi
 
-    sudo -u $LOCAL_USER cp -r ./denigma/$NAME/* $PROJECT_ROOT
-    sudo -u $LOCAL_USER pip -E /home/$LOCAL_USER/env install -r $PROJECT_ROOT/requirements/project.txt
+    sudo cp -r ./denigma/$NAME/* $PROJECT_ROOT
+    sudo pip -E /home/$LOCAL_USER/env install -r $PROJECT_ROOT/requirements/project.txt
 }
 
 configure_local_settings() {
-    cat <<EOF | sudo -u $LOCAL_USER tee $PROJECT_ROOT/local_settings.py
+    sudo cat <<EOF | sudo -u tee $PROJECT_ROOT/local_settings.py
 BASE_URL="http://$SITE_NAME"
 DEBUG = False
 TEMPLATE_DEBUG = False
@@ -281,7 +281,7 @@ TEMPLATE_DIRS = ["$PROJECT_ROOT/templates"]
 EOF
 
     if [ -n "$AWS_ACCESS_KEY" ]; then
-        cat <<EOF | sudo -u $LOCAL_USER tee -a $PROJECT_ROOT/local_settings.py
+        sudo cat <<EOF | sudo tee -a $PROJECT_ROOT/local_settings.py
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
 
@@ -294,7 +294,7 @@ EOF
 
 
 django_syncdb() {
-    sudo -u $LOCAL_USER /home/$LOCAL_USER/env/bin/python $PROJECT_ROOT/manage.py syncdb --noinput
+    sudo /home/$LOCAL_USER/env/bin/python $PROJECT_ROOT/manage.py syncdb --noinput
 }
 
 print_launch_conf() {
