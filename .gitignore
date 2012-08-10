@@ -1,3 +1,6 @@
 *.pyc
 *~
 *.save
+
+ami.sh
+dkey.pem
