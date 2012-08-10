@@ -1,4 +1,4 @@
-# pinax.wsgi is configured to live in projects/clktc/deploy.
+# pinax.fcgi is configured to live in projects/denigma/deploy.
 
 import os
 import sys
@@ -9,9 +9,9 @@ from site import addsitedir
 sys.path.insert(0, abspath(join(dirname(__file__), "../../")))
 
 from django.conf import settings
-os.environ["DJANGO_SETTINGS_MODULE"] = "clktc.settings"
+os.environ["DJANGO_SETTINGS_MODULE"] = "denigma.settings"
 
 sys.path.insert(0, join(settings.PROJECT_ROOT, "apps"))
 
-from django.core.handlers.wsgi import WSGIHandler
-application = WSGIHandler()
+from django.core.servers.fastcgi import runfastcgi
+runfastcgi(method="threaded", daemonize="false")

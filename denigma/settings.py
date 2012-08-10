@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Django settings for clktc project.
+# Django settings for denigma project.
 
 import os.path
 import posixpath
@@ -30,7 +30,7 @@ ADMINS = [
 
 MANAGERS = ADMINS
 
-BACKEND = 'sqlite3'
+BACKEND = 'mysql'
 
 if BACKEND == 'sqlite3':
     DATABASES = {
@@ -47,7 +47,7 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "mysql",
-            "NAME": 'clktc',
+            "NAME": 'denigma',
             "USER": "root",
             "PASWORD": "",
             "HOST": "",
@@ -122,7 +122,7 @@ MIDDLEWARE_CLASSES = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-ROOT_URLCONF = "clktc.urls"
+ROOT_URLCONF = "denigma.urls"
 
 TEMPLATE_DIRS = [
     os.path.join(PROJECT_ROOT, "templates"),
