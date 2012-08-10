@@ -1,7 +1,7 @@
 #! /user/bin/env python
 """Toggles debug modus on server."""
 
-local_settings = "/home/clktc/clktc/local_settings.py"
+local_settings = "/home/denigma/denigma/local_settings.py"
 
 # Recieve settings and change debug values:
 input = open(local_settings, 'r').read()
