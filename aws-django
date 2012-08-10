@@ -254,7 +254,7 @@ install_project() {
         LOCAL_DISTRIBUTION_PATH=$DISTRIBUTION
     fi
 
-    sudo -u $LOCAL_USER cp -r /home/ubuntu/denigma/$NAME/* $PROJECT_ROOT
+    sudo -u $LOCAL_USER cp -r ./denigma/$NAME/* $PROJECT_ROOT
     sudo -u $LOCAL_USER pip -E /home/$LOCAL_USER/env install -r $PROJECT_ROOT/requirements/project.txt
 }
 
