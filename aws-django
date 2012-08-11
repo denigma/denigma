@@ -196,7 +196,7 @@ configure_apache() {
 
     WSGIScriptAlias / /home/$PROJECT_ROOT/deploy/pinax.wsgi
 
-    <Directory /home/$PRJECT_ROOT/deploy>
+    <Directory /home/$PROJECT_ROOT/deploy>
         Order deny,allow
         Allow from all
     </Directory>
