@@ -206,6 +206,15 @@ configure_apache() {
         Order deny,allow
         Allow from all
     </Directory>
+
+    Alias /media/ "/home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media"
+    <Directory "/home/denigma/env/lib/python2.6/site-packages/django/contrub/admin/media">
+        Order allow,deny
+        Options Indexes
+        Allow from all
+        IndexOptions FancyIndexing
+     </Directory>
+
 </VirtualHost>
 
 EOF
