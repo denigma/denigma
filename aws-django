@@ -185,30 +185,36 @@ install_apache() {
 configure_apache() {
     cat <<EOF | sudo tee /etc/apache2/sites-available/$NAME
 <VirtualHost *:80>
-    ServerName $SITE_NAME
-    ServerAdmin $ADMIN_EMAIL
+    ServerName denigma.de
+    ServerAdmin alerts@denigma.de
     LogLevel warn
-    ErrorLog \${APACHE_LOG_DIR}/${SITE_NAME}_error.log
-    CustomLog \${APACHE_LOG_DIR}/${SITE_NAME}_access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/denigma.de_error.log
+    CustomLog ${APACHE_LOG_DIR}/denigma.de_access.log combined
 
-    WSGIDaemonProcess $NAME user=www-data group=www-data maximum-requests=10000 python-path=/home/$LOCAL_USER/env/lib/python2.6/site-packages
-    WSGIProcessGroup $NAME
+    WSGIDaemonProcess denigma user=www-data group=www-data maximum-requests=10000 python-path=/home/denigma/env/lib/python2.6/site-packages
+    WSGIProcessGroup denigma
 
-    WSGIScriptAlias / $PROJECT_ROOT/deploy/pinax.wsgi
+    WSGIScriptAlias / /home/denigma/denigma/deploy/pinax.wsgi
 
-    <Directory $PROJECT_ROOT/deploy>
+    <Directory /home/denigma/denigma/deploy>
         Order deny,allow
         Allow from all
     </Directory>
 
-    Alias $STATIC_URL $PROJECT_ROOT/media/
-    <Directory $PROJECT_ROOT/media>
+    Alias /s /home/denigma/denigma/media/
+    <Directory "/home/denigma/denigma/media">
         Order deny,allow
         Allow from all
     </Directory>
 
-    Alias /admin/media/ "/home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media/"
-    <Directory "/home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media/">
+    Alias /media/ /home/denigma/denigma/media/
+    <Directory "/home/denigma/denigma/media">
+       Order deny,allow
+       Allow from all
+    </Directory>
+
+    Alias /admin/media /home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media/
+    <Directory "/home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media">
         Order allow,deny
         Options Indexes
         Allow from all
@@ -216,7 +222,6 @@ configure_apache() {
     </Directory>
 
 </VirtualHost>
-
 EOF
 
     sudo echo "Alias /django/contrib/admin/media/ /home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media/" >> /etc/apache2/httpd.conf
@@ -289,7 +294,7 @@ DATABASES = {
 STATIC_URL = "$STATIC_URL"
 STATIC_ROOT = "$PROJECT_ROOT/media"
 TEMPLATE_DIRS = ["$PROJECT_ROOT/templates"]
-ADMIN_MEDIA_PREFIX = 'django/contrib/admin/media/'
+ADMIN_MEDIA_PREFIX = '/django/contrib/admin/media/'
 EOF
 
     if [ -n "$AWS_ACCESS_KEY" ]; then
