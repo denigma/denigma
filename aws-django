@@ -185,36 +185,36 @@ install_apache() {
 configure_apache() {
     cat <<EOF | sudo tee /etc/apache2/sites-available/$NAME
 <VirtualHost *:80>
-    ServerName denigma.de
-    ServerAdmin alerts@denigma.de
+    ServerName $SITE_NAME
+    ServerAdmin $ADMIN_EMAIL
     LogLevel warn
-    ErrorLog ${APACHE_LOG_DIR}/denigma.de_error.log
-    CustomLog ${APACHE_LOG_DIR}/denigma.de_access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/${SITE_NAME}_error.log
+    CustomLog ${APACHE_LOG_DIR}/&{SITE_NAME}_access.log combined
 
-    WSGIDaemonProcess denigma user=www-data group=www-data maximum-requests=10000 python-path=/home/denigma/env/lib/python2.6/site-packages
-    WSGIProcessGroup denigma
+    WSGIDaemonProcess $NAME user=www-data group=www-data maximum-requests=10000 python-path=/home/$LOCAL_USER/env/lib/python2.6/site-packages
+    WSGIProcessGroup $NAME
 
-    WSGIScriptAlias / /home/denigma/denigma/deploy/pinax.wsgi
+    WSGIScriptAlias / /home/$PROJECT_ROOT/deploy/pinax.wsgi
 
-    <Directory /home/denigma/denigma/deploy>
+    <Directory /home/$PRJECT_ROOT/deploy>
         Order deny,allow
         Allow from all
     </Directory>
 
-    Alias /s /home/denigma/denigma/media/
-    <Directory "/home/denigma/denigma/media">
+    Alias /s /home/$PROJECT_ROOT/media/
+    <Directory "/home/$PROJECT_ROOT/media">
         Order deny,allow
         Allow from all
     </Directory>
 
-    Alias /media/ /home/denigma/denigma/media/
-    <Directory "/home/denigma/denigma/media">
+    Alias /media/ /home/$PROJECT_ROOT/media/
+    <Directory "/home/$PROJECT_ROOT/media">
        Order deny,allow
        Allow from all
     </Directory>
 
-    Alias /admin/media /home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media/
-    <Directory "/home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media">
+    Alias /admin/media /home/$LOCAL_USER/env/lib/python2.6/site-packages/django/contrib/admin/media/
+    <Directory "/home/$LOCAL_USER/env/lib/python2.6/site-packages/django/contrib/admin/media">
         Order allow,deny
         Options Indexes
         Allow from all
@@ -224,7 +224,7 @@ configure_apache() {
 </VirtualHost>
 EOF
 
-    sudo echo "Alias /django/contrib/admin/media/ /home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media/" >> /etc/apache2/httpd.conf
+    sudo echo "Alias /django/contrib/admin/media/ /home/$LOCAL_USER/env/lib/python2.6/site-packages/django/contrib/admin/media/" >> /etc/apache2/httpd.conf
 }
 
 activate_apache() {
@@ -270,7 +270,7 @@ install_project() {
         LOCAL_DISTRIBUTION_PATH=$DISTRIBUTION
     fi
 
-    sudo cp -r ./denigma/$NAME/* $PROJECT_ROOT
+    sudo cp -r ./$LOCAL_USER/$NAME/* $PROJECT_ROOT
     sudo pip -E /home/$LOCAL_USER/env install -r $PROJECT_ROOT/requirements/project.txt
 }
 
@@ -291,7 +291,7 @@ DATABASES = {
     }
 }
 
-STATIC_URL = "$STATIC_URL"
+#STATIC_URL = "$STATIC_URL"
 STATIC_ROOT = "$PROJECT_ROOT/media"
 TEMPLATE_DIRS = ["$PROJECT_ROOT/templates"]
 ADMIN_MEDIA_PREFIX = '/django/contrib/admin/media/'
