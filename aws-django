@@ -189,26 +189,26 @@ configure_apache() {
     ServerAdmin $ADMIN_EMAIL
     LogLevel warn
     ErrorLog ${APACHE_LOG_DIR}/${SITE_NAME}_error.log
-    CustomLog ${APACHE_LOG_DIR}/&{SITE_NAME}_access.log combined
+    CustomLog ${APACHE_LOG_DIR}/${SITE_NAME}_access.log combined
 
     WSGIDaemonProcess $NAME user=www-data group=www-data maximum-requests=10000 python-path=/home/$LOCAL_USER/env/lib/python2.6/site-packages
     WSGIProcessGroup $NAME
 
-    WSGIScriptAlias / /home/$PROJECT_ROOT/deploy/pinax.wsgi
+    WSGIScriptAlias / $PROJECT_ROOT/deploy/pinax.wsgi
 
-    <Directory /home/$PROJECT_ROOT/deploy>
+    <Directory $PROJECT_ROOT/deploy>
         Order deny,allow
         Allow from all
     </Directory>
 
-    Alias /s /home/$PROJECT_ROOT/media/
+    Alias /s $PROJECT_ROOT/media/
     <Directory "/home/$PROJECT_ROOT/media">
         Order deny,allow
         Allow from all
     </Directory>
 
-    Alias /media/ /home/$PROJECT_ROOT/media/
-    <Directory "/home/$PROJECT_ROOT/media">
+    Alias /media/ $PROJECT_ROOT/media/
+    <Directory "$PROJECT_ROOT/media">
        Order deny,allow
        Allow from all
     </Directory>
