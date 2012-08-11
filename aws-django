@@ -207,8 +207,8 @@ configure_apache() {
         Allow from all
     </Directory>
 
-    Alias /media/ "/home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media/"
-    <Directory "/home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media">
+    Alias /admin/media/ "/home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media/"
+    <Directory "/home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media/">
         Order allow,deny
         Options Indexes
         Allow from all
@@ -218,6 +218,8 @@ configure_apache() {
 </VirtualHost>
 
 EOF
+
+    sudo echo "Alias /django/contrib/admin/media/ /home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media/" >> /etc/apache2/httpd.conf
 }
 
 activate_apache() {
@@ -287,6 +289,7 @@ DATABASES = {
 STATIC_URL = "$STATIC_URL"
 STATIC_ROOT = "$PROJECT_ROOT/media"
 TEMPLATE_DIRS = ["$PROJECT_ROOT/templates"]
+ADMIN_MEDIA_PREFIX = 'django/contrib/admin/media/'
 EOF
 
     if [ -n "$AWS_ACCESS_KEY" ]; then
