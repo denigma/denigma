@@ -268,7 +268,7 @@ install_project() {
 }
 
 configure_local_settings() {
-    cat <<EOF | sudo -u tee $PROJECT_ROOT/local_settings.py
+    cat <<EOF | sudo tee $PROJECT_ROOT/local_settings.py
 BASE_URL="http://$SITE_NAME"
 DEBUG = False
 TEMPLATE_DEBUG = False
