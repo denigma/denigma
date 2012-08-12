@@ -8,16 +8,18 @@ admin.autodiscover()
 
 handler500 = "pinax.views.server_error"
 
-urlpatterns = patterns("")
+urlpatterns = patterns("denigma.views",
+    url(r"^$", 'root'),
+)
 
 if settings.SERVE_MEDIA:
     urlpatterns += patterns("",
         url(r"", include("staticfiles.urls")),
-    )
+)
 
 urlpatterns += patterns("",
-    url(r'^polls/', include('polls.urls')),
-    url(r"^$", 'shorty.views.home', name='home'),
+    url(r"^polls/", include('polls.urls')),
+    url(r"^shorty/$", 'shorty.views.home', name='home'),
     url(r"^e/([^/]+)/", 'shorty.views.manage', name='source'),
     url(r"^a/", include(admin.site.urls)),
     url(r"^(\w+)/", 'shorty.views.visit', name='visit'),

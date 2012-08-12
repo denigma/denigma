@@ -30,7 +30,7 @@ ADMINS = [
 
 MANAGERS = ADMINS
 
-BACKEND = 'mysql'
+BACKEND = 'sqlite3'
 
 if BACKEND == 'sqlite3':
     DATABASES = {

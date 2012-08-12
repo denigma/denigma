@@ -5,6 +5,7 @@ from django.template import RequestContext
 from shorty.models import *
 from shorty.forms import *
 
+
 def visit(request, key):
     key = ShortyURL.id_for_key(key)
     shorty = get_object_or_404(ShortyURL, pk=key)
@@ -23,7 +24,7 @@ def home(request):
     else:
         form = SourceForm()
 
-    return render_to_response('home.html', RequestContext(request, {'form' : form}))
+    return render_to_response('shorty/home.html', RequestContext(request, {'form' : form}))
 
 def manage(request, admin_key):
     source = get_object_or_404(SourceURL, admin_key=admin_key)
@@ -32,4 +33,4 @@ def manage(request, admin_key):
         shorty = source.shorty_urls.get(pk=pk)
         shorty.notify = not shorty.notify
         shorty.save()
-    return render_to_response("manage_source.html", RequestContext(request, {'source' : source}))
+    return render_to_response("shorty/manage_source.html", RequestContext(request, {'source' : source}))
