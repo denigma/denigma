@@ -32,7 +32,7 @@ Set up of Giter takes approximately 7 minutes and the Daily takes 3 minutes due 
 sudo su
 cd ..
 aptitude install git # Only on Daily, not necessary on Giter. 
-git clone http://github.com/hevok/denigma
+git clone https://github.com/hevok/denigma
 bash denigma/configure.sh
 
 
