@@ -1,0 +1,31 @@
+{% extends "wiki/base.html" %}
+
+{% block title %}Search page{% endblock %}
+
+{% block content %}
+<h1>Search Page</h1>
+
+<form method="post" action="">
+    {{form}}
+    <input type="submit" value-"Search"/>
+</form>
+
+{% if pages %}
+<h2>Search result for page name</h2>
+<u1>
+{% for page in pages %}
+    <li><a href="/wiki/page/{{page.name}}/">{{page.name}}</a></li>
+{% endfor %}
+</u1>
+{% endif %}
+
+{% if contents %}
+<h2>Search result for content</h2>
+<u1>
+{% for page in contents %}
+    <li><a href="/wiki/{{page.name}}/">{{page.name}}</a></li>
+{% endfor %}
+</u1>
+{% endif %}
+
+{% endblock %}

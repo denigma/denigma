@@ -1,0 +1,13 @@
+{% extends "wiki/base.html" %}
+{% load wikilink %}
+
+{% block title %}{{page_name}}{% endblock %}
+
+{% block content %}
+    {% load markup %}
+    <h1>{{page_name}}</h1>
+    {{content|wikify|markdown}}
+    <hr/>
+    <p>Tags: {% for tag in tags %}<a href="/wiki/tag/{{tag.name}}/">{{tag.name}}</a> {% endfor %}</p>
+    <a href="/wiki/page/{{page_name}}/edit/">Edit this page?</a>
+{% endblock %}

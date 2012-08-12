@@ -19,11 +19,11 @@ if settings.SERVE_MEDIA:
 
 urlpatterns += patterns("",
     url(r"^polls/", include('polls.urls')),
+    url(r'^wiki/', include('wiki.urls')),
     url(r"^shorty/$", 'shorty.views.home', name='home'),
     url(r"^e/([^/]+)/", 'shorty.views.manage', name='source'),
     url(r"^a/", include(admin.site.urls)),
-    url(r"^(\w+)/", 'shorty.views.visit', name='visit'),
-
+    url(r"^url/(\w+)/", 'shorty.views.visit', name='visit'),
 )
 
 

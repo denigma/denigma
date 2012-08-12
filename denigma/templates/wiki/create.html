@@ -1,0 +1,7 @@
+{% extends "wiki/base.html" %}
+
+{%block title %}{{page_name}} - Create{%endblock%}
+{%block content%}
+    <h1>{{page_name}}</h1>
+    This page does not exist. <a href="/wiki/page/{{page_name}}/edit/">Create?</a>
+{%endblock%}
