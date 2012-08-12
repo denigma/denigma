@@ -47,3 +47,23 @@ Alias /django/contrib/admin/media/ /home/denigma/env/lib/python2.6/site-packages
 
 2. Set in the settings.py:
 ADMIN_MEDIA_PREFIX = '/django/contrib/admin/media/'
+
+
+'bool' object has no attribute 'status code'
+--------------------------------------------
+
+It appears that the pinax.middleware.security.HideSensitiveFieldsMiddleware in the MIDDLEWARE_CLASSES of the settings.py is causing an error which propagates and makes debuging nearly impossible [http://comments.gmane.org/gmane.comp.python.django.pinax.devel/104].
+
+Deactivating it by commenting out abrogates this problem. Consider to inlcude it with an if statement only in debuging mode.
+
+
+Missing Markup
+--------------
+
+In the wiki view.html the load markup tag raised an error. Including the "django.conrib.markup" in the settings.py fixed it [http://stackoverflow.com/questions/6399649/django-markup-templatetags-error].
+
+
+CSRF Problem
+------------
+Submit forms such as those in the Wiki edit and search need to be tagged with a {% csrf_token %}.
+This worked fine for the edit form [http://jordanmessina.com/2010/05/24/django-1-2-csrf-verification-failed/]. However it failed on the search form. Deactivating by commenting out the django.middleware.csrf.CsrfViewMiddleware in the MIDDLEWARE_CLASSES resolved this problem, but is only a suboptimal solution. Adding a RequestContext handler to the render_to_response in the search view which was already present in the edit view resolved this issue [http://stackoverflow.com/questions/3197321/csrf-error-in-django].

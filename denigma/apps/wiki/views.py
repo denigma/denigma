@@ -1,30 +1,30 @@
-# Create your views here.
-from models import Page, Tag
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
-from django.template import RequestContext #Edited it later on
+from django.template import RequestContext
 from django import forms
+from models import Page, Tag
+
 import markdown
 
 
 class SearchForm(forms.Form):
     text = forms.CharField(label="Enter search term")
     search_content = forms.BooleanField(label="Search content", required=False)
-    
-    
+
+
 def search_page(request):
     if request.method == "POST":
         f = SearchForm(request.POST)
         if not f.is_valid():
-            return render_to_response("wiki/search.html", {"form":f}) # blank is invlaid raise error
+            return render_to_response("/.wiki/search.html", {"form":f}) # Blank is invalid raise error.
         else:
             pages = Page.objects.filter(name__contains = f.cleaned_data["text"]) # Normalized: i.e. gets converted to python construct.
             contents = []
             if f.cleaned_data["search_content"]:
                 contents = Page.objects.filter(content__contains = f.cleaned_data["text"])
-            return render_to_response("wiki/search.html", {"form":f, "pages":pages, "contents":contents})
+            return render_to_response("./wiki/search.html", {"form":f, "pages":pages, "contents":contents}, context_instance=RequestContext(request))
     f = SearchForm()
-    return render_to_response("wiki/search.html", {"form":f})
+    return render_to_response("./wiki/search.html", {"form":f}, context_instance=RequestContext(request))
 
 specialPages = {"SearchPage": search_page}
 
@@ -35,7 +35,7 @@ def view_page(request, page_name):
         page = Page.objects.get(pk=page_name)
         tags = page.tags.all()
     except Page.DoesNotExist:
-        return render_to_response("wiki/create.html", {"page_name":page_name})
+        return render_to_response("./wiki/create.html", {"page_name":page_name})
     content = page.content
     return render_to_response("./wiki/view.html", {"page_name":page_name, "content":markdown.markdown(content), "tags":tags})#
 
@@ -47,7 +47,7 @@ def edit_page(request, page_name):
     except Page.DoesNotExist:
         content  = ""
         tags = ''
-    return render_to_response("wiki/edit.html", {"page_name":page_name, "content":content, "tags":tags}, context_instance=RequestContext(request, {}))  #Edited it later on
+    return render_to_response("./wiki/edit.html", {"page_name":page_name, "content":content, "tags":tags}, context_instance=RequestContext(request, {}))  # Edited it later on.
     
 def save_page(request, page_name):
     content = request.POST["content"]
@@ -63,10 +63,10 @@ def save_page(request, page_name):
     except Page.DoesNotExist:
         page = Page(name=page_name, content=content)
     page.save()
-    return HttpResponseRedirect("wiki/page/" + page_name + "/")
+    return HttpResponseRedirect("/wiki/page/" + page_name + "/")
 
 def view_tag(request, tag_name):
     """Views all the pages that are tagged with a specific tag."""
     tag = Tag.objects.get(pk=tag_name)
     pages = tag.page_set.all()
-    return render_to_response("wiki/tags.html", {"tag_name":tag_name, "pages":pages})
+    return render_to_response("./wiki/tags.html", {"tag_name":tag_name, "pages":pages})

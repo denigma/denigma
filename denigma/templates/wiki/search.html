@@ -5,7 +5,7 @@
 {% block content %}
 <h1>Search Page</h1>
 
-<form method="post" action="">
+<form method="post" action="">{% csrf_token %}
     {{form}}
     <input type="submit" value-"Search"/>
 </form>
@@ -23,7 +23,7 @@
 <h2>Search result for content</h2>
 <u1>
 {% for page in contents %}
-    <li><a href="/wiki/{{page.name}}/">{{page.name}}</a></li>
+    <li><a href="/wiki/tag/{{page.name}}/">{{page.name}}</a></li>
 {% endfor %}
 </u1>
 {% endif %}
