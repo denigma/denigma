@@ -21,14 +21,20 @@ git push origin master
 
 Deploying Denigma
 =================
-
+#234567891123456789212345678931234567894123456789512345678961234567897123456789
 To deploy Denigma in the Clouds the Amazone Web Service (AWS) is used.
 
 1. Launch an Ubuntu AMI:
-Preferable a maverick build such as the ami-975a6de3 (called Giter; which ships a GIT repository) or the ami-fd7b4089 (called Daily which is up-to-date and does not require updating/upgrading).
-Set up of Giter takes approximately 7 minutes and the Daily takes 3 minutes due to the already installed updates.
+Preferable a maverick build such as the ami-975a6de3 (called Giter; which ships
+ a GIT repository) or the ami-fd7b4089 (called Daily which is up-to-date and 
+does not require updating/upgrading).
+Set up of Giter takes approximately 7 minutes and the Daily takes 3 minutes 
+due to the already installed updates.
 
-2. ssh into the machine with the DNS and keypairs aquired from the Amazone Control Center (use bash ami.sh). On the machine:
+2. Create and mount an seperate EBS Volume to it.
+
+3. ssh into the machine with the DNS and keypairs aquired from the Amazone 
+Control Center (use bash ami.sh). On the machine:
 sudo su
 cd ..
 aptitude install git # Only on Daily, not necessary on Giter. 

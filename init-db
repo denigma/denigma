@@ -106,9 +106,6 @@ EOF
 echo -H $PUBLIC_DNS -D $DATABASE_NAME -U $DATABASE_USER -P $DATABASE_PASSWORD
 }
 
-
-  	110 	
-
 call_aws_django() {
     echo "Calling aws-django bash with correct flag parameters"
     sudo bash ./denigma/aws-django -n denigma -d https://github.com/hevok/denigma/raw/master/denigma.tgz -s "/s" -H $PUBLIC_DNS -D $DATABASE_NAME -U $DATABASE_USER -P $DATABASE_PASSWORD
