@@ -1,5 +1,5 @@
 from django.db import models
-import sha
+import hashlib
 
 
 class Knight(models.Model):
@@ -22,4 +22,4 @@ class User(models.Model):
     name = models.TextField()
     
     def check_password(self, password):
-        return sha.sha(self.password_salt + password).hexdigest() == self.password_hash
+        return haslib.sha(self.password_salt + password).hexdigest() == self.password_hash
