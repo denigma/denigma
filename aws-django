@@ -164,7 +164,7 @@ update_system() {
 }
 
 install_baseline() {
-    apt-get install -y build-essential git emacs23-nox curl
+    apt-get install -y build-essential git emacs23-nox curl libmysqlclient16-dev
 }
 
 install_python() {
