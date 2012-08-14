@@ -158,13 +158,16 @@ INSTALLED_APPS = [
     # external
     "staticfiles",
     "debug_toolbar",
+    "south",
     
     # Pinax
     
     # project
     "shorty",
     "polls",
-    'wiki',
+    "wiki",
+    "southtut",
+    
 ]
 
 FIXTURE_DIRS = [
