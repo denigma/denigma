@@ -246,17 +246,17 @@ class Blog(models.Model):
     entry = models.ManyToManyField(Entry)
     title = models.CharField(max_length=10)
     
-class EnsemblHomolog(models.Model):
-    ensembl_gene_id_a = models.CharField(max_length=18, db_index=True)
-    ensembl_gene_id_b = models.CharField(max_length=18, db_index=True)
-    homology_type = models.CharField(max_length=25, db_index=True)
-    ds = models.FloatField(blank=True)
-    dn = models.FloatField(blank=True)
-    percentage_identity_a = models.IntegerField()
-    percentage_identity_b = models.IntegerField()
-    taxid_a = models.IntegerField()
-    taxid_b = models.IntegerField()
-    potential_homolog = models.BooleanField()
+##class EnsemblHomolog(models.Model):
+##    ensembl_gene_id_a = models.CharField(max_length=18, db_index=True)
+##    ensembl_gene_id_b = models.CharField(max_length=18, db_index=True)
+##    homology_type = models.CharField(max_length=25, db_index=True)
+##    ds = models.FloatField(blank=True)
+##    dn = models.FloatField(blank=True)
+##    percentage_identity_a = models.IntegerField()
+##    percentage_identity_b = models.IntegerField()
+##    taxid_a = models.IntegerField()
+##    taxid_b = models.IntegerField()
+##    potential_homolog = models.BooleanField()
 
 class InParanoid(models.Model):
     group_number = models.IntegerField()

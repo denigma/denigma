@@ -141,11 +141,11 @@ class HomoloGeneAdmin(admin.ModelAdmin):
     list_filter = ['taxid']
 admin.site.register(HomoloGene, HomoloGeneAdmin)
 
-class EnsemblHomologAdmin(admin.ModelAdmin):
-    list_display = ('ensembl_gene_id_a', 'ensembl_gene_id_b', 'homology_type', 'ds', 'dn', 'percentage_identity_a', 'percentage_identity_b', 'taxid_a', 'taxid_b', 'potential_homolog')
-    search_fields = ['ensembl_gene_id_a', 'ensembl_gene_id_b']
-    list_filter = ['taxid_a', 'taxid_a',  'homology_type']
-admin.site.register(EnsemblHomolog, EnsemblHomologAdmin)
+##class EnsemblHomologAdmin(admin.ModelAdmin):
+##    list_display = ('ensembl_gene_id_a', 'ensembl_gene_id_b', 'homology_type', 'ds', 'dn', 'percentage_identity_a', 'percentage_identity_b', 'taxid_a', 'taxid_b', 'potential_homolog')
+##    search_fields = ['ensembl_gene_id_a', 'ensembl_gene_id_b']
+##    list_filter = ['taxid_a', 'taxid_a',  'homology_type']
+##admin.site.register(EnsemblHomolog, EnsemblHomologAdmin)
 
 class BlogAdmin(admin.ModelAdmin):
     list_display = ('title',)
