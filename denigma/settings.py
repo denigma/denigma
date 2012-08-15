@@ -35,12 +35,12 @@ BACKEND = 'mysql' # Either sqlite3 or mysql as well as later on also postgres.
 if BACKEND == 'sqlite3':
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.sqlite3", # Add "postgresql_psycopg2", "postgresql", "mysql", "sqlite3" or "oracle".
-            "NAME": "dev.db",                       # Or path to database file if using sqlite3.
-            "USER": "",                             # Not used with sqlite3.
-            "PASSWORD": "",                         # Not used with sqlite3.
-            "HOST": "",                             # Set to empty string for localhost. Not used with sqlite3.
-            "PORT": "",                             # Set to empty string for default. Not used with sqlite3.
+            "ENGINE": "django.db.backends.sqlite3", 	 # Add "postgresql_psycopg2", "postgresql", "mysql", "sqlite3" or "oracle".
+            "NAME": os.path.join(PROJECT_ROOT, "dev.db"),# Or path to database file if using sqlite3.
+            "USER": "",                            	 # Not used with sqlite3.
+            "PASSWORD": "",                         	 # Not used with sqlite3.
+            "HOST": "",                             	 # Set to empty string for localhost. Not used with sqlite3.
+            "PORT": "",                             	 # Set to empty string for default. Not used with sqlite3.
         }
     }
 else:
@@ -120,7 +120,10 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.messages.middleware.MessageMiddleware",
 #    "pinax.middleware.security.HideSensistiveFieldsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
-]
+
+#    #CMS:
+#    "cms.middleware.multilingual.MultilingualURLMiddleware",
+]    
 
 ROOT_URLCONF = "denigma.urls"
 
@@ -128,6 +131,15 @@ TEMPLATE_DIRS = [
     os.path.join(PROJECT_ROOT, "templates"),
     os.path.join(PINAX_ROOT, "templates", PINAX_THEME),
 ]
+
+##CMS:
+#CMS_TEMPLATES = (
+#    ('template_1.html', 'Template One'),
+#    ('template_2.html', 'Template Two'),
+#)
+#LANGUAGES = [
+# ('en', 'English'),
+#]
 
 TEMPLATE_CONTEXT_PROCESSORS = [
     "django.core.context_processors.auth",
@@ -140,6 +152,11 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "staticfiles.context_processors.static_url",
     
     "pinax.core.context_processors.pinax_settings",
+
+#    #CMS:
+#    "django.contrib.auth.context_processors.auth",
+#    "cms.context_processors.media",
+#    "sekizai.context_processors.sekizai",
 ]
 
 INSTALLED_APPS = [
@@ -158,8 +175,13 @@ INSTALLED_APPS = [
     # external
     "staticfiles",
     "debug_toolbar",
-    "south",
-    
+    "south", # Intelligent schema and data migrations.
+    "tagging",
+
+#    "cms", # Content Management System.
+#    "mptt", # Utilties for implementing a modified pre-order traversal tree.
+#    "sekizai", # For javascipt and css management.
+ 
     # Pinax
     
     # project
@@ -169,6 +191,7 @@ INSTALLED_APPS = [
     "southtut",
     "gallery",    
     "blogs",
+    "links",
 ]
 
 FIXTURE_DIRS = [

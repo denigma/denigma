@@ -12,6 +12,7 @@ urlpatterns = patterns("denigma.views",
     url(r"^$", 'root'),
     url(r'^meta/$', 'meta'),
     url(r'^display_meta/', 'display_meta'),
+#    url(r'^', include('cms.urls')),
 )
 
 if settings.SERVE_MEDIA:
@@ -28,6 +29,7 @@ urlpatterns += patterns("",
     url(r"^url/(\w+)/", 'shorty.views.visit', name='visit'),
     url(r'^gallery/', include('gallery.urls')),
     url(r'^blogs/', include('blogs.urls')),
+#    url(r'^links/', include('links.urls')),
 )
 
 
