@@ -158,9 +158,14 @@ Convert key
 
 
 Customizing Django Admin
------------------------
+------------------------
 Creating a admin folder in project template directory and modifying the original admin templates in this folder allows to do basic customization of the admin interface.
 In this way for instance the title can be changed [http://overtag.dk/wordpress/2010/04/changing-the-django-admin-site-title/].
+
+
+Database Renaming
+-----------------
+There are several ways on how to rename a database. The simplist appears to use a strict which renames all tables in conjuction with another database table [http://stackoverflow.com/questions/67093/how-do-i-quickly-rename-a-mysql-database-change-schema-name].
 
 
 Usage Considerations
