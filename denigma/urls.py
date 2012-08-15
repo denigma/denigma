@@ -13,6 +13,8 @@ urlpatterns = patterns("denigma.views",
     url(r'^meta/$', 'meta'),
     url(r'^display_meta/', 'display_meta'),
 #    url(r'^', include('cms.urls')),
+    url('^time/$', 'current_datetime'),
+    url(r'^time/plus/(\d+)/$', 'hours_ahead'),  # d+ = wildcard
 )
 
 if settings.SERVE_MEDIA:
@@ -34,4 +36,5 @@ urlpatterns += patterns("",
     url(r'^contact/$', 'contact.views.contact'),
     url(r'^todos/', include('todos.urls')),
     url(r'^users/', include('users.urls')),
+
 )

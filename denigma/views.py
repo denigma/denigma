@@ -2,6 +2,7 @@
 A view is just a Python function that takes an HttpRequest as its parameter
 and returns an instance of HttpResponse.
 """
+import datetime
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 
@@ -20,4 +21,26 @@ def display_meta(request):
 
 def meta(request):
     return render_to_response('meta.html', {'values':sorted(request.META.items())})
+
+def current_datetime(request):
+##    now = datetime.datetime.now()
+    #html = "<html><body>It is now %s.</body></html>" % now
+##    t = get_template('current_datetime.html')#"<html><body>It is now {{ current_date }}.</body></html>"
+##    html = t.render(Context({'current_date':now}))
+##    return HttpResponse(html)
+##    return render_to_response('current_datetime.html', {'current_date':now} )
+    current_date = datetime.datetime.now()
+    return render_to_response('dateapp/current_datetime.html', locals())
+
+def hours_ahead(request, offset):
+    try:
+        offset = int(offset)
+    except ValueError:
+        raise Http404()
+    dt = datetime.datetime.now() + datetime.timedelta(hours=offset)
+    print dt
+    #assert False
+##    html = "<html><body>In %s hour(s), it will be %s.</body></html>" % (offset, dt)
+##    return HttpResponse(html)
+    return render_to_response('dateapp/hours_ahead.html', locals())
 
