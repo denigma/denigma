@@ -167,8 +167,8 @@ INSTALLED_APPS = [
     "polls",
     "wiki",
     "southtut",
-    "gallery",
-    
+    "gallery",    
+    "blogs",
 ]
 
 FIXTURE_DIRS = [
