@@ -6,5 +6,6 @@
 # Put project-specific requirements here.
 # See http://pip-installer.org/requirement-format.html for more information.
 
-markdown
-south
+markdown	# Markup for Wiki.
+south 		# Necessary for database evolution.
+MySQL-python 	# Required for interfacing with db via manage.py on server.
