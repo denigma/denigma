@@ -6,7 +6,7 @@
 
 # Access Keys:
 ami.sh
-dkey*
+*key.*
 
 # Virtual Environments:
 env
