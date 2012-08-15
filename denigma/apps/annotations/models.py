@@ -352,25 +352,25 @@ class Entrez_Gene(models.Model):
     imgt_gene_db = models.CharField(max_length=16, blank=True)
     taxid = models.IntegerField()
 
-class member(models.Model):
-    member_id = models.IntegerField() #Too long, should be integer
-    stable_id = models.CharField(max_length=19) #Should be varchar(40)
-    version = models.IntegerField()
-    source_name = models.CharField(max_length=17) #Should be varchar(40)
-    taxon_id = models.IntegerField()
-    genome_db_id = models.IntegerField(blank=True) #Should be integer
-    sequence_id = models.IntegerField(blank=True)
-    gene_member_id = models.IntegerField()
-    description = models.TextField(blank=True)
-    chr_name = models.CharField(max_length=27)  #Should be varchar(40)
-    chr_start = models.IntegerField()
-    chr_end = models.IntegerField()
-    chr_strand = models.IntegerField()
-    display_label = models.CharField(max_length=12)
-    entrez_gene_id = models.IntegerField(null=True, blank=True)
-    mapping = models.IntegerField(blank=True, null=True)
-    def __unicode__(self):
-        return self.stable_id
+##class member(models.Model):
+##    member_id = models.IntegerField() #Too long, should be integer
+##    stable_id = models.CharField(max_length=19) #Should be varchar(40)
+##    version = models.IntegerField()
+##    source_name = models.CharField(max_length=17) #Should be varchar(40)
+##    taxon_id = models.IntegerField()
+##    genome_db_id = models.IntegerField(blank=True) #Should be integer
+##    sequence_id = models.IntegerField(blank=True)
+##    gene_member_id = models.IntegerField()
+##    description = models.TextField(blank=True)
+##    chr_name = models.CharField(max_length=27)  #Should be varchar(40)
+##    chr_start = models.IntegerField()
+##    chr_end = models.IntegerField()
+##    chr_strand = models.IntegerField()
+##    display_label = models.CharField(max_length=12)
+##    entrez_gene_id = models.IntegerField(null=True, blank=True)
+##    mapping = models.IntegerField(blank=True, null=True)
+##    def __unicode__(self):
+##        return self.stable_id
 
 ##class homology(models.Model):
 ##    homology_id = models.IntegerField(primary_key=True)

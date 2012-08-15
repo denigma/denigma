@@ -250,10 +250,10 @@ class Entrez_GeneAdmin(admin.ModelAdmin):
     list_display = ('entrez_gene_id', 'gene_symbol', 'gene_name', 'locus_tag', 'symbol_from_nomenclature_authority', 'full_name_from_nomenclature_autority', 'ensembl_gene_id', 'mirbase', 'mgi', 'hgnc', 'mim', 'hprd', 'rgd', 'ratmap', 'wormbase_id', 'imgt_gene_db', 'taxid')
 admin.site.register(Entrez_Gene, Entrez_GeneAdmin)
 
-class memberAdmin(admin.ModelAdmin):
-    list_display = ('entrez_gene_id', 'mapping', 'member_id', 'stable_id', 'version', 'source_name', 'taxon_id', 'genome_db_id', 'sequence_id', 'gene_member_id', 'description', 'chr_name', 'chr_start', 'chr_end', 'chr_strand', 'display_label')
-    search_fields = ['stable_id']
-admin.site.register(member, memberAdmin)
+##class memberAdmin(admin.ModelAdmin):
+##    list_display = ('entrez_gene_id', 'mapping', 'member_id', 'stable_id', 'version', 'source_name', 'taxon_id', 'genome_db_id', 'sequence_id', 'gene_member_id', 'description', 'chr_name', 'chr_start', 'chr_end', 'chr_strand', 'display_label')
+##    search_fields = ['stable_id']
+##admin.site.register(member, memberAdmin)
 
 ##class homologyAdmin(admin.ModelAdmin):
 ##    list_display = ('homology_id', 'stable_id', 'method_link_species_set_id', 'description', 'dn', 'ds', 'n', 's', 'lnl', 'threshold_on_ds', 'ancestor_node_id', 'tree_node_id')
