@@ -167,6 +167,7 @@ INSTALLED_APPS = [
     "polls",
     "wiki",
     "southtut",
+    "gallery",
     
 ]
 
@@ -184,5 +185,13 @@ DEBUG_TOOLBAR_CONFIG = {
 # like database and email that differ between development and production.
 try:
     from local_settings import *
+except ImportError:
+    pass
+
+# key.py can be used to introduce access and screte keys such as used for S3.
+try:
+    from key import *
+    print ACCESS_KEY
+    print PASS_KEY
 except ImportError:
     pass

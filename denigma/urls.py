@@ -10,8 +10,9 @@ handler500 = "pinax.views.server_error"
 
 urlpatterns = patterns("denigma.views",
     url(r"^$", 'root'),
-    url(r'^display_meta/', 'display_meta'),
     url(r'^meta/$', 'meta'),
+    url(r'^display_meta/', 'display_meta'),
+
 )
 
 if settings.SERVE_MEDIA:
@@ -26,6 +27,7 @@ urlpatterns += patterns("",
     url(r"^e/([^/]+)/", 'shorty.views.manage', name='source'),
     url(r"^a/", include(admin.site.urls)),
     url(r"^url/(\w+)/", 'shorty.views.visit', name='visit'),
+    url(r'^gallery/', include('gallery.urls')),
 )
 
 

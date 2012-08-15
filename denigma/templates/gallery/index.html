@@ -1,0 +1,67 @@
+<html>
+<head>
+    <title>Web Album using Django and AWS</title>
+    <style>
+
+* {
+    font-family: georgia;
+    font-size: 12px;
+}
+
+
+
+.sidebar {
+    float:left;
+    width:250px;
+    height:1000px;
+    margin-right:2em;
+    padding:1em;
+    background:white;
+}
+
+.container { background: #1a1a1a;}
+
+.form {
+    background: #cccccc;
+    padding: 0.5em;
+}
+
+
+
+.photo {
+    padding: 0.5em;
+    background: white;
+}
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="form">
+            <strong>{{form.file.label}}</strong>
+            <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+                {{form.file}}<br/>
+                <input type="submit" value="Upload Photo"/>
+            </form>
+        </div>
+        <p><strong>About the demo</strong></p>
+        <p>
+        This is a demo of using Amazon's Simple Storage Service (S3) with the Django
+        web Framework. This demo shows a common usage of S3; to store and server
+        a large quantity of media files.
+        </p>
+        <p>
+        Photos that are uploaded using the form above are not stored on the local
+        server, but are remoterly transferred to storage sapce on S3. Once stored,
+        the files can be served directly from S3, saving storage and bandwith
+        expenses for the site.
+        </p>
+    </div>
+    <div> class="container">
+        <div style="padding:1em;">
+{% for photo in photos %}
+    <img class="photo" src="{{photo.url}}" />
+{% endfor %}
+        </div>
+    </div>
+</body>
+</html>
