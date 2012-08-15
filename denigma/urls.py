@@ -30,6 +30,7 @@ urlpatterns += patterns("",
     url(r'^gallery/', include('gallery.urls')),
     url(r'^blogs/', include('blogs.urls')),
 #    url(r'^links/', include('links.urls')),
+#    url(r'^books/', inlcude('books.urls')),
 )
 
 
