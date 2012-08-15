@@ -191,7 +191,5 @@ except ImportError:
 # key.py can be used to introduce access and screte keys such as used for S3.
 try:
     from key import *
-    print ACCESS_KEY
-    print PASS_KEY
 except ImportError:
     pass
