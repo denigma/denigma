@@ -62,32 +62,32 @@ admin.site.register(Modelling, ModellingAdmin)
 class miRecordAdmin(admin.ModelAdmin):
     list_display = ('pubmed_id', 'target_gene_species_scientific', 'target_gene_species_common', 'target_gene_name', 'target_gene_refseq_acc', 'target_site_number', 'mirna_species', 'mirna_mature_id', 'mirna_regulation', 'reporter_target_gene_region', 'reporter_link_element1', 'test_method_inter', 'target_gene_mrna_level', 'original_description', 'mutation_target_region', 'post_mutation_method', 'original_description_mutation_region', 'target_site_position', 'mirna_regulation_site', 'reporter_target_site', 'reporter_link_element2', 'test_method_inter_site', 'original_description_inter_site', 'mutation_target_site', 'post_mutation_method_site', 'original_description_mutation_site', 'additional_note')
 admin.site.register(miRecord, miRecordAdmin)
-
-class Interactome10090Admin(admin.ModelAdmin):
-    list_display = ('interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score')
-    search_fields = ['interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score']
-admin.site.register(Interactome10090, Interactome10090Admin)
-class Interactome4932Admin(admin.ModelAdmin):
-    list_display = ('interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score')
-    search_fields = ['interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score']
-admin.site.register(Interactome4932, Interactome4932Admin)
-class Interactome6239Admin(admin.ModelAdmin):
-    list_display = ('interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score')
-    search_fields = ['interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score']
-admin.site.register(Interactome6239, Interactome6239Admin)
-class Interactome7227Admin(admin.ModelAdmin):
-    list_display = ('interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score')
-    search_fields = ['interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score']
-admin.site.register(Interactome7227, Interactome7227Admin)
-class Interactome9606Admin(admin.ModelAdmin):
-    list_display = ('interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score')
-    search_fields = ['interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score']
-admin.site.register(Interactome9606, Interactome9606Admin)
-
-class Fly_TF_geneAdmin(admin.ModelAdmin):
-    list_display = ('source', 'target', 'source_mapping', 'target_mapping', 'fly_tf_gene', 'fly_target_gene', 'pubmedid', 'pmid_url', 'url_factor', 'pmid_method', 'interaction_detect_methods', 'interaction_source', 'date_last_updated', 'interaction_type', 'gene_symbol', 'tf_symbol', 'data_source_url', 'data_version')
-    search_fields = ['fly_tf_gene', 'fly_target_gene', 'interaction_type', 'gene_symbol', 'tf_symbol']
-admin.site.register(Fly_TF_gene, Fly_TF_geneAdmin)
+##
+##class Interactome10090Admin(admin.ModelAdmin):
+##    list_display = ('interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score')
+##    search_fields = ['interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score']
+##admin.site.register(Interactome10090, Interactome10090Admin)
+##class Interactome4932Admin(admin.ModelAdmin):
+##    list_display = ('interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score')
+##    search_fields = ['interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score']
+##admin.site.register(Interactome4932, Interactome4932Admin)
+##class Interactome6239Admin(admin.ModelAdmin):
+##    list_display = ('interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score')
+##    search_fields = ['interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score']
+##admin.site.register(Interactome6239, Interactome6239Admin)
+##class Interactome7227Admin(admin.ModelAdmin):
+##    list_display = ('interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score')
+##    search_fields = ['interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score']
+##admin.site.register(Interactome7227, Interactome7227Admin)
+##class Interactome9606Admin(admin.ModelAdmin):
+##    list_display = ('interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score')
+##    search_fields = ['interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score']
+##admin.site.register(Interactome9606, Interactome9606Admin)
+##
+##class Fly_TF_geneAdmin(admin.ModelAdmin):
+##    list_display = ('source', 'target', 'source_mapping', 'target_mapping', 'fly_tf_gene', 'fly_target_gene', 'pubmedid', 'pmid_url', 'url_factor', 'pmid_method', 'interaction_detect_methods', 'interaction_source', 'date_last_updated', 'interaction_type', 'gene_symbol', 'tf_symbol', 'data_source_url', 'data_version')
+##    search_fields = ['fly_tf_gene', 'fly_target_gene', 'interaction_type', 'gene_symbol', 'tf_symbol']
+##admin.site.register(Fly_TF_gene, Fly_TF_geneAdmin)
 
 class tnetAdmin(admin.ModelAdmin):
     list_display = ('tf', 'tg')

@@ -366,60 +366,60 @@ class Yeast_TF_ChIP_chip(models.Model):
     def __unicode__(self):
         return self.orf
 
-class Interactome10090(models.Model):
-    interactor_a = models.IntegerField()
-    interactor_b = models.IntegerField()
-    experimental_system_type = models.CharField(max_length=38, blank=True)
-    interaction_type = models.CharField(max_length=159, blank=True)
-    interaction_detection_method = models.CharField(max_length=240, blank=True)
-    modification = models.CharField(max_length=50, blank=True)
-    pmid = models.CharField(max_length=115, blank=True)
-    source_database = models.CharField(max_length=73)
-    score = models.IntegerField()
-
-class Interactome4932(models.Model):
-    interactor_a = models.IntegerField()
-    interactor_b = models.IntegerField()
-    experimental_system_type = models.CharField(max_length=36, blank=True)
-    interaction_type = models.TextField(blank=True)
-    interaction_detection_method = models.TextField(blank=True)
-    modification = models.CharField(max_length=54, blank=True)
-    pmid = models.TextField(blank=True)
-    source_database = models.TextField()
-    score = models.IntegerField()
-
-class Interactome6239(models.Model):
-    interactor_a = models.IntegerField()
-    interactor_b = models.IntegerField()
-    experimental_system_type = models.CharField(max_length=36, blank=True)
-    interaction_type = models.CharField(max_length=174, blank=True)
-    interaction_detection_method = models.TextField(blank=True)
-    modification = models.CharField(max_length=32, blank=True)
-    pmid = models.CharField(max_length=94, blank=True)
-    source_database = models.CharField(max_length=104)
-    score = models.IntegerField()
-
-class Interactome7227(models.Model):
-    interactor_a = models.IntegerField()
-    interactor_b = models.IntegerField()
-    experimental_system_type = models.CharField(max_length=36, blank=True)
-    interaction_type = models.TextField(blank=True)
-    interaction_detection_method = models.TextField(blank=True)
-    modification = models.CharField(max_length=35, blank=True)
-    pmid = models.TextField(blank=True)
-    source_database = models.CharField(max_length=129)
-    score = models.IntegerField()
-
-class Interactome9606(models.Model):
-    interactor_a = models.IntegerField()
-    interactor_b = models.IntegerField()
-    experimental_system_type = models.CharField(max_length=36, blank=True)
-    interaction_type = models.TextField(blank=True)
-    interaction_detection_method = models.TextField(blank=True)
-    modification = models.CharField(max_length=88, blank=True)
-    pmid = models.TextField(blank=True)
-    source_database = models.CharField(max_length=134)
-    score = models.IntegerField()
+##class Interactome10090(models.Model):
+##    interactor_a = models.IntegerField()
+##    interactor_b = models.IntegerField()
+##    experimental_system_type = models.CharField(max_length=38, blank=True)
+##    interaction_type = models.CharField(max_length=159, blank=True)
+##    interaction_detection_method = models.CharField(max_length=240, blank=True)
+##    modification = models.CharField(max_length=50, blank=True)
+##    pmid = models.CharField(max_length=115, blank=True)
+##    source_database = models.CharField(max_length=73)
+##    score = models.IntegerField()
+##
+##class Interactome4932(models.Model):
+##    interactor_a = models.IntegerField()
+##    interactor_b = models.IntegerField()
+##    experimental_system_type = models.CharField(max_length=36, blank=True)
+##    interaction_type = models.TextField(blank=True)
+##    interaction_detection_method = models.TextField(blank=True)
+##    modification = models.CharField(max_length=54, blank=True)
+##    pmid = models.TextField(blank=True)
+##    source_database = models.TextField()
+##    score = models.IntegerField()
+##
+##class Interactome6239(models.Model):
+##    interactor_a = models.IntegerField()
+##    interactor_b = models.IntegerField()
+##    experimental_system_type = models.CharField(max_length=36, blank=True)
+##    interaction_type = models.CharField(max_length=174, blank=True)
+##    interaction_detection_method = models.TextField(blank=True)
+##    modification = models.CharField(max_length=32, blank=True)
+##    pmid = models.CharField(max_length=94, blank=True)
+##    source_database = models.CharField(max_length=104)
+##    score = models.IntegerField()
+##
+##class Interactome7227(models.Model):
+##    interactor_a = models.IntegerField()
+##    interactor_b = models.IntegerField()
+##    experimental_system_type = models.CharField(max_length=36, blank=True)
+##    interaction_type = models.TextField(blank=True)
+##    interaction_detection_method = models.TextField(blank=True)
+##    modification = models.CharField(max_length=35, blank=True)
+##    pmid = models.TextField(blank=True)
+##    source_database = models.CharField(max_length=129)
+##    score = models.IntegerField()
+##
+##class Interactome9606(models.Model):
+##    interactor_a = models.IntegerField()
+##    interactor_b = models.IntegerField()
+##    experimental_system_type = models.CharField(max_length=36, blank=True)
+##    interaction_type = models.TextField(blank=True)
+##    interaction_detection_method = models.TextField(blank=True)
+##    modification = models.CharField(max_length=88, blank=True)
+##    pmid = models.TextField(blank=True)
+##    source_database = models.CharField(max_length=134)
+##    score = models.IntegerField()
 
 class Yeastract(models.Model):
     tf = models.CharField(max_length=7)
