@@ -112,6 +112,7 @@ Alternatively to get a fresh Django database with existing South migrations sync
 ./manage.py syncdb --all
 ./manage.py migrate --fake
 
+If required south can be resetted [http://lincolnloop.com/blog/2011/jun/20/resetting-your-south-migrations/; https://groups.google.com/forum/?fromgroups#!topic/south-users/PxEskcnkibc[1-25]; https://groups.google.com/forum/#!msg/south-users/iIQT8ZWs2cI/GQ4kONoT5Q4J[1-25]]
 
 mysql-ebs
 ---------
