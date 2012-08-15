@@ -175,6 +175,11 @@ Database Renaming
 There are several ways on how to rename a database. The simplist appears to use a strict which renames all tables in conjuction with another database table [http://stackoverflow.com/questions/67093/how-do-i-quickly-rename-a-mysql-database-change-schema-name].
 
 
+Tagging
+-------
+Django tagging impairs south schema migration. It raises an NoMigration exception similiar as reported for django.contrib.auth [http://stackoverflow.com/questions/2845697/south-migration-error-nomigrations-exception-for-django-contrib-auth].
+
+
 Usage Considerations
 ====================
 
