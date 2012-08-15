@@ -8,26 +8,47 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        # Adding model 'Page'
-        db.create_table('wiki_page', (
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=20, primary_key=True)),
-            ('content', self.gf('django.db.models.fields.TextField')(blank=True)),
+        # Adding model 'Poll'
+        db.create_table('polls_poll', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('question', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('pub_date', self.gf('django.db.models.fields.DateTimeField')()),
         ))
-        db.send_create_signal('wiki', ['Page'])
+        db.send_create_signal('polls', ['Poll'])
+
+        # Adding model 'Choice'
+        db.create_table('polls_choice', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('poll', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['polls.Poll'])),
+            ('choice', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('votes', self.gf('django.db.models.fields.IntegerField')()),
+        ))
+        db.send_create_signal('polls', ['Choice'])
 
 
     def backwards(self, orm):
         
-        # Deleting model 'Page'
-        db.delete_table('wiki_page')
+        # Deleting model 'Poll'
+        db.delete_table('polls_poll')
+
+        # Deleting model 'Choice'
+        db.delete_table('polls_choice')
 
 
     models = {
-        'wiki.page': {
-            'Meta': {'object_name': 'Page'},
-            'content': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '20', 'primary_key': 'True'})
+        'polls.choice': {
+            'Meta': {'object_name': 'Choice'},
+            'choice': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'poll': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['polls.Poll']"}),
+            'votes': ('django.db.models.fields.IntegerField', [], {})
+        },
+        'polls.poll': {
+            'Meta': {'object_name': 'Poll'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'pub_date': ('django.db.models.fields.DateTimeField', [], {}),
+            'question': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         }
     }
 
-    complete_apps = ['wiki']
+    complete_apps = ['polls']
