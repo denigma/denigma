@@ -10,6 +10,8 @@ handler500 = "pinax.views.server_error"
 
 urlpatterns = patterns("denigma.views",
     url(r"^$", 'root'),
+    url(r'^display_meta/', 'display_meta'),
+    url(r'^meta/$', 'meta'),
 )
 
 if settings.SERVE_MEDIA:

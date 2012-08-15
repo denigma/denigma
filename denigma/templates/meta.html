@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Meta data{% endblock %}
+{% block content %}
+{% for k, v in values %} {{ k }} {{ v }}{{value|linebreaks}} {% endfor %}
+{% endblock %}
+
