@@ -157,6 +157,12 @@ SFTP > Add keyfile...
 Convert key
 
 
+Customizing Django Admin
+-----------------------
+Creating a admin folder in project template directory and modifying the original admin templates in this folder allows to do basic customization of the admin interface.
+In this way for instance the title can be changed [http://overtag.dk/wordpress/2010/04/changing-the-django-admin-site-title/].
+
+
 Usage Considerations
 ====================
 
