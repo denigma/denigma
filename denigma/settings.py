@@ -47,7 +47,7 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "mysql",
-            "NAME": 'denigma',
+            "NAME": 'denigma', #test',
             "USER": "root",
             "PASWORD": "",
             "HOST": "",
@@ -176,7 +176,7 @@ INSTALLED_APPS = [
     "staticfiles",
     "debug_toolbar",
     "south", # Intelligent schema and data migrations.
-    "tagging",
+     #"tagging",
 
 #    "cms", # Content Management System.
 #    "mptt", # Utilties for implementing a modified pre-order traversal tree.
@@ -195,6 +195,11 @@ INSTALLED_APPS = [
     "books",
     "todos",
     "users",
+
+    "annotations",
+    "expressions",
+    "datasets",
+    "interactions",
 ]
 
 FIXTURE_DIRS = [
