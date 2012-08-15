@@ -30,4 +30,9 @@ urlpatterns = patterns('books.views',
     (r'^authors/(?P<author_id>d+)$', 'author_detail'),
 )
 
-
+urlpatterns += patterns('books.views',                       
+    (r'latest/$', 'latest_books'),
+    (r'^search-form/$', 'search_form'),
+    (r'^search/$', 'search'),
+    (r'^author_list_plaintext/$', 'author_list_plaintext'),
+)
