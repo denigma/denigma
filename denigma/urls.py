@@ -33,4 +33,5 @@ urlpatterns += patterns("",
 #    url(r'^books/', inlcude('books.urls')),
     url(r'^contact/$', 'contact.views.contact'),
     url(r'^todos/', include('todos.urls')),
+    url(r'^users/', include('users.urls')),
 )

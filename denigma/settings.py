@@ -194,6 +194,7 @@ INSTALLED_APPS = [
     "links",
     "books",
     "todos",
+    "users",
 ]
 
 FIXTURE_DIRS = [
