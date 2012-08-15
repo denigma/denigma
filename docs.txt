@@ -181,6 +181,12 @@ Tagging
 Django tagging impairs south schema migration. It raises an NoMigration exception similiar as reported for django.contrib.auth [http://stackoverflow.com/questions/2845697/south-migration-error-nomigrations-exception-for-django-contrib-auth].
 
 
+sqlite
+------
+sqlite is a leightweight sql database variant. There are two versions of sqlite3.
+One is a python module, the other is a executable application.
+The manage.py dbshell uses the latter one and complains if it is not installed [https://groups.google.com/forum/?fromgroups#!topic/django-users/4YMFm1C14tk[1-25]].
+
 Usage Considerations
 ====================
 
