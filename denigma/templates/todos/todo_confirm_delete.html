@@ -1,0 +1,21 @@
+<html>
+<head>
+<title>Delete Todo #{{object.id}}</title>
+<style type="text/css">
+    body { font-family: Arial, Helvetica, sans-serif;
+           color: black;
+           background: #ffffff; }
+</style>
+</head>
+<body>
+
+<form action="" method="POST">
+    <p>Are you sure you want to delete
+        todo #{{object.id}}:
+        "{{object.title}}"?<br>
+    <input type="submit" value="Delete!"><br>
+    <a href="..">Back...</a>
+</form>
+
+</body>
+</html>

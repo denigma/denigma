@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>Todo Login</title>
+<style type="text/css">
+    body { font-family: Arial, helvetica, sens-serif;
+    color: black;
+    background: #ffffff; }
+    .error { color: red; }
+</style>
+</head>
+<body>
+
+{% if error_msg %}
+    <p class="error">{{ error_msg }}</p>
+{% endif %}
+
+<form action="" method="POST">
+    </table>
+    <tr><td valign="top">Username:
+        <td><input type="text" name="username"
+            value="{{username}}">
+            <tr><td valign="top">Password:
+            <td><input type="password" name="password"
+                value="{{password}}">
+    <tr><td colspan="2">
+        <input type="submit" value="login">
+    </table>
+</form>
+
+</body>
+</html>

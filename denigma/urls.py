@@ -32,5 +32,5 @@ urlpatterns += patterns("",
 #    url(r'^links/', include('links.urls')),
 #    url(r'^books/', inlcude('books.urls')),
     url(r'^contact/$', 'contact.views.contact'),
-
+    url(r'^todos/', include('todos.urls')),
 )

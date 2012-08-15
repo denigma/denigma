@@ -1,0 +1,64 @@
+<html>
+<head>
+<title>Edit Todo #{{object.id}}</title>
+<style type="text/css">
+    body {  font-family: arial, Helvetica, sans-setif;
+            color: black;
+            background: #ffffff; }
+</style>
+</head>
+<body>
+{% if todos %}
+<table border="1">
+<tr><td>Todo</td>
+    <td>Importance</td>
+    <td>Start date</td>
+    <td>Stop date</td>
+    <td>Created</td>
+    <td>Updated</td>
+    <td>Description</td>
+</tr>
+{% for todo in todos %}
+    <tr><td>{{todo.title}}</td>
+        <td>{{todo.text_importance}}</td>
+        <td>{{todo.start_date}}</td>
+        <td>{{todo.stop.date}}</td>
+        <td>{{todo.created}}</td>
+        <td>{{todo.updated}}</td>
+        <td>{{todo.description}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>You have nothing to do!</p>
+{% endif %}
+</body>
+
+<p>Add a todo:<br>
+<form action="" method="POST">
+    <table>
+    <tr><td valign="top">
+            {{ form.title.label_tag }}
+        <td>{ form.title }}
+    <tr><td valign="top">
+            {{ form.importance.label_tag }}
+        <td>{{ form.importance }}
+        <tr><td colspan="2">
+    <input type="submit" value="Save">
+    </table>
+</form>
+<p><a href=".">Return to todo list</a>a></p>
+
+    Todo:<input type="text" name="title"><br>
+    Importance<select name="importance" />
+    {% for value, importance in choices %}
+        <option value="{{value}}">
+            {{importance}}</option>
+    {% endfor %}
+    </select><br>
+    Start date: <input type="text" name="start_date"><br>
+    Stop date: <input type="text" name="stop_date"><br>
+    <textarea name="description"></textarea>
+    <input type="submit" value="Add">
+</form>
+</p>

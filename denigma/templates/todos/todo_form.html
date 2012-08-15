@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>Edit Todo #{{object.id}}</title>
+<style type="text/css">
+    body {  font-family: arial, Helvetica, sans-setif;
+            color: black;
+            background: #ffffff; }
+</style>
+</head>
+<body>
+
+<form action="" method="POST">
+    <table>
+    <tr><td valign="top">
+            {{ form.title.label_tag }}
+        <td>{{ form.title }}
+    <tr><td valign="top">
+            {{ form.importance.label_tag }}
+        <td>{{ form.importance }}
+    <tr><td valign="top">
+            {{ form.description.label_tag }}
+        <td>{{ form.description }}
+    <tr><td colspan="2">
+        <input type="submit" value="Save">
+    </table>
+</form>
+
+<p><a href=".">Return to todo list</a></p>
+
+</body>
+</html>

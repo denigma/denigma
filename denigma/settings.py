@@ -193,6 +193,7 @@ INSTALLED_APPS = [
     "blogs",
     "links",
     "books",
+    "todos",
 ]
 
 FIXTURE_DIRS = [
