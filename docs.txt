@@ -11,6 +11,9 @@ git clone https://github.com/hevok/denigma
 
 3. Start Denigma:
 cd denigma
+virtualenv env
+. env/bin/activate
+pip install -r requirements/project.txt
 denigma/manage.py syncdb
 denigma/manage.py runserver
 
@@ -21,8 +24,8 @@ git push origin master
 
 Deploying Denigma
 =================
-#234567891123456789212345678931234567894123456789512345678961234567897123456789
-To deploy Denigma in the Clouds the Amazone Web Service (AWS) is used.
+
+To deploy Denigma in the clouds the Amazone Web Service (AWS) is used.
 
 1. Launch an Ubuntu AMI:
 Preferable a maverick build such as the ami-975a6de3 (called Giter; which ships
@@ -73,3 +76,101 @@ CSRF Problem
 ------------
 Submit forms such as those in the Wiki edit and search need to be tagged with a {% csrf_token %}.
 This worked fine for the edit form [http://jordanmessina.com/2010/05/24/django-1-2-csrf-verification-failed/]. However it failed on the search form. Deactivating by commenting out the django.middleware.csrf.CsrfViewMiddleware in the MIDDLEWARE_CLASSES resolved this problem, but is only a suboptimal solution. Adding a RequestContext handler to the render_to_response in the search view which was already present in the edit view resolved this issue [http://stackoverflow.com/questions/3197321/csrf-error-in-django].
+
+
+mysql in virtual env 
+--------------------
+For interfacing with mysql of the purpose of database evolition libmysqlclient16-dev library is required [http://stackoverflow.com/questions/8868545/installing-mysql-for-python-within-virtual-environment].
+Note that the Ubuntu 12.04 repository does not contain these spcific library anymore, but rather that provides libmysqlclient-dev [http://askubuntu.com/questions/137788/problem-with-deleting-libmysqlclient16-dev-from-repository-of-12-04].
+
+aptitude install libmysqlclient16-dev
+pip install MySQL-python
+
+
+Depricated Constants
+--------------------
+
+Runnig python denigma/manage.py migrate --list just returns that ENGINE is depriciated [http://jira.osqa.net/browse/OSQA-712].
+
+
+Adding South
+------------
+In order to add South to Django project, development & production do the following [http://stackoverflow.com/questions/4035296/adding-south-to-django-project-development-production]: 
+
+./manage.py snycdb
+./manage.py convert_to_south myproject.myapp
+
+Change models
+./manage.py schemamigration pyproject.myapp --auto
+./manage.py migrate myproject.myapp
+
+
+mysql-ebs
+---------
+
+# Prepare db for snapshot:
+mysql -u root
+FLUSH TABLES WITH READ LOCK;
+SHOW MASTER STATUS;
+SYSTEM sudo xfs_freeze -f /vol
+
+# Create Snapshot
+
+# Release lock:
+SYSTEM sudo xfs_freeze -u /vol
+UNLOCK TABLES;
+EXIT
+
+# Clean up:
+sudo /etc/init.d/mysql stop
+sudo umount /etc/mysql /var/lib/mysql /var/log/mysql /vol
+
+
+Restoring a snapshotted database
+--------------------------------
+
+bash denigma/reconnect-ebs.sh
+
+bash denigma/open-port.sh
+
+sudo bash ./denigma/aws-django -n denigma -d https://github.com/hevok/denigma/raw/master/denigma.tgz -s "/s" -H <DNS> -D denigma -U denigma -P <PASSWORD>
+
+
+Transferring data onto EC2
+--------------------------
+
+It is considered to transfer the Denigma database directly onto an EC2 instance. SFTP (secruity file transfer protocol) can be used via port 22 to directly exchange data with the EC2 instance. FileZilla can be used for this purpose [http://www.turnkeylinux.org/forum/support/20100413/how-do-you-get-data-and-out-ec2].
+Add the keypair via settings [http://www.codestore.net/store.nsf/unid/BLOG-20111012-0812].
+Settings in Ubuntu are at the terminal bar [http://superuser.com/questions/159846/change-filezilla-settings-in-ubuntu-linux-so-view-edit-uses-gedit].
+Convert the keypair from .pem to .pkk [http://www.onebloke.com/2011/06/filezilla-sftp-and-amazon-ec2/].
+
+sudo aptitude install filezilla
+
+> Open the Site Manage
+Host: <DNS>
+Port: 22
+Logon Type: Norma
+User: Ubuntu 
+
+> Edit > Settings
+SFTP > Add keyfile...
+Convert key
+
+
+Usage Considerations
+====================
+
+Storage of data on an EBS snapshot is cheap [https://forums.aws.amazon.com/message.jspa?messageID=172925].
+Pricing for EBS snapshots:
+- Daily: bytes*24
+- Monthly:bytes*24*dayes of the months
+
+
+TODO
+====
+
+- Need to get GIT from Denigma server working.
+- Include south and test workflow.
+- restore.sh for restoring a snapshotted database.
+- Automate EC2 instance setup [http://www.turnkeylinux.org/blog/ec2-userdata].
+- Use Fabric for ssh control of Denigma [http://docs.fabfile.org/en/1.4.3/index.html].
