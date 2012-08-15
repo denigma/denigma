@@ -26,10 +26,10 @@ admin.site.register(Yeastract, AdminYeastract)
 #admin.site.register(Choice)
 
 
-class AdminBiogrid(admin.ModelAdmin):
-    list_display = ('biogrid_interaction_id', 'entrez_gene_interactor_a', 'entrez_gene_interactor_b', 'biogrid_id_interactor_a', 'biogrid_id_interactor_b', 'systematic_name_interactor_a', 'systematic_name_interactor_b', 'official_symbol_interactor_a', 'official_symbol_interactor_b', 'synonymns_interactor_a', 'synonyms_interactor_b', 'experimental_system', 'experimental_system_type', 'author', 'pubmed_id', 'organism_interactor_a', 'organism_interactor_b', 'throughput', 'score', 'modification', 'phenotypes', 'tags', 'source_database')#'qualifications'
-    search_fields = [ 'organism_interactor_a', 'organism_interactor_b', 'official_symbol_interactor_a', 'official_symbol_interactor_b', 'pubmed_id']
-admin.site.register(Biogrid, AdminBiogrid)
+##class AdminBiogrid(admin.ModelAdmin):
+##    list_display = ('biogrid_interaction_id', 'entrez_gene_interactor_a', 'entrez_gene_interactor_b', 'biogrid_id_interactor_a', 'biogrid_id_interactor_b', 'systematic_name_interactor_a', 'systematic_name_interactor_b', 'official_symbol_interactor_a', 'official_symbol_interactor_b', 'synonymns_interactor_a', 'synonyms_interactor_b', 'experimental_system', 'experimental_system_type', 'author', 'pubmed_id', 'organism_interactor_a', 'organism_interactor_b', 'throughput', 'score', 'modification', 'phenotypes', 'tags', 'source_database')#'qualifications'
+##    search_fields = [ 'organism_interactor_a', 'organism_interactor_b', 'official_symbol_interactor_a', 'official_symbol_interactor_b', 'pubmed_id']
+##admin.site.register(Biogrid, AdminBiogrid)
 
 class ModellingAdmin(admin.ModelAdmin):
     #list_display = ('interactor_a', 'source', 'interaction_type', 'target', 'interactor_b', 'pmid', 'taxid', 'primary', 'date')
