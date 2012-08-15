@@ -96,6 +96,7 @@ Runnig python denigma/manage.py migrate --list just returns that ENGINE is depri
 
 Adding South
 ------------
+South enables schema and data migration of a django-backend database [http://www.djangopro.com/2011/01/django-database-migration-tool-south-explained/].
 In order to add South to Django project, development & production do the following [http://stackoverflow.com/questions/4035296/adding-south-to-django-project-development-production]: 
 
 ./manage.py snycdb
