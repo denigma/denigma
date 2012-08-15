@@ -114,6 +114,6 @@ admin.site.register(Yeast_TF_ChIP_chip, Yeast_TF_ChIP_chipAdmin)
 ##    list_display = ('interactor_a', 'interactor_b', 'experimental_system_type', 'interaction_type', 'interaction_detection_method', 'modification', 'pmid', 'source_database', 'score')
 ##admin.site.register(Interactome9606, Interactome9606Admin)
 
-class IntAdmin(admin.ModelAdmin):
-    list_display = ('unique_id_a', 'unique_id_b', 'alias_a', 'alias_b', 'experimental_system_type', 'interaction_type', 'experimental_system', 'modification', 'taxid_a', 'taxid_a', 'pmid', 'source_database', 'score')
-admin.site.register(Int, IntAdmin)
+##class IntAdmin(admin.ModelAdmin):
+##    list_display = ('unique_id_a', 'unique_id_b', 'alias_a', 'alias_b', 'experimental_system_type', 'interaction_type', 'experimental_system', 'modification', 'taxid_a', 'taxid_a', 'pmid', 'source_database', 'score')
+##admin.site.register(Int, IntAdmin)

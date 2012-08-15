@@ -434,20 +434,20 @@ class Yeastract(models.Model):
     def __unicode__(self):
         return self.tf_ensembl_id
 
-class Int(models.Model):
-    unique_id_a = models.IntegerField()
-    unique_id_b = models.IntegerField()
-    alias_a = models.TextField()
-    alias_b = models.TextField()
-    experimental_system_type = models.CharField(max_length=48, blank=True)
-    interaction_type = models.TextField(blank=True)
-    experimental_system = models.TextField(blank=True)
-    modification = models.CharField(max_length=61, blank=True)
-    taxid_a = models.IntegerField()
-    taxid_a = models.IntegerField()
-    pmid = models.TextField(blank=True)
-    source_database = models.CharField(max_length=95)
-    score = models.IntegerField()
+##class Int(models.Model):
+##    unique_id_a = models.IntegerField()
+##    unique_id_b = models.IntegerField()
+##    alias_a = models.TextField()
+##    alias_b = models.TextField()
+##    experimental_system_type = models.CharField(max_length=48, blank=True)
+##    interaction_type = models.TextField(blank=True)
+##    experimental_system = models.TextField(blank=True)
+##    modification = models.CharField(max_length=61, blank=True)
+##    taxid_a = models.IntegerField()
+##    taxid_a = models.IntegerField()
+##    pmid = models.TextField(blank=True)
+##    source_database = models.CharField(max_length=95)
+##    score = models.IntegerField()
 
 #http://stackoverflow.com/questions/10143614/saving-nested-models-in-django-norel-gives-cant-encode-error
 ##from djnagotoolbox.fields import SetField, ListField, EmbeddedModelField
