@@ -1,9 +1,11 @@
 from django.contrib import admin
-from d.books.models import Publisher, Author, Book
+from books.models import Publisher, Author, Book
+
 
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'email')
     search_fields = ('first_name', 'last_name')
+
 
 class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'comment', 'url_link', 'status_link', 'publisher', 'publication_date')
@@ -23,6 +25,7 @@ class BookAdmin(admin.ModelAdmin):
     def status_link(self, obj):
         return '<a href="%s">%s</a>' % (obj.status, obj.status)
     status_link.allow_tags = True
+
 
 admin.site.register(Publisher)
 admin.site.register(Author, AuthorAdmin)
