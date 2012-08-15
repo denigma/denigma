@@ -372,22 +372,22 @@ class member(models.Model):
     def __unicode__(self):
         return self.stable_id
 
-class homology(models.Model):
-    homology_id = models.IntegerField(primary_key=True)
-    stable_id = models.CharField(max_length=40)	 	
-    method_link_species_set_id = models.IntegerField() 	
-    description = models.CharField(max_length=40) 	 	
-    subtype = models.CharField(max_length=40) 	 	 	 	 	 	
-    dn = models.FloatField()
-    ds = models.FloatField()
-    n = models.FloatField()
-    s = models.FloatField()
-    lnl = models.FloatField()
-    threshold_on_ds = models.FloatField()	 	
-    ancestor_node_id = models.IntegerField()	 	 	
-    tree_node_id = models.IntegerField()
-    def __unicode__(self):
-        return self.stable_id
+##class homology(models.Model):
+##    homology_id = models.IntegerField(primary_key=True)
+##    stable_id = models.CharField(max_length=40)	 	
+##    method_link_species_set_id = models.IntegerField() 	
+##    description = models.CharField(max_length=40) 	 	
+##    subtype = models.CharField(max_length=40) 	 	 	 	 	 	
+##    dn = models.FloatField()
+##    ds = models.FloatField()
+##    n = models.FloatField()
+##    s = models.FloatField()
+##    lnl = models.FloatField()
+##    threshold_on_ds = models.FloatField()	 	
+##    ancestor_node_id = models.IntegerField()	 	 	
+##    tree_node_id = models.IntegerField()
+##    def __unicode__(self):
+##        return self.stable_id
 
 ##class homologs(models.Model):
 ##    entrez_gene_a = models.IntegerField()

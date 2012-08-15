@@ -255,7 +255,7 @@ class memberAdmin(admin.ModelAdmin):
     search_fields = ['stable_id']
 admin.site.register(member, memberAdmin)
 
-class homologyAdmin(admin.ModelAdmin):
-    list_display = ('homology_id', 'stable_id', 'method_link_species_set_id', 'description', 'dn', 'ds', 'n', 's', 'lnl', 'threshold_on_ds', 'ancestor_node_id', 'tree_node_id')
-    search_fields = ['homology_id']
-admin.site.register(homology, homologyAdmin)    
+##class homologyAdmin(admin.ModelAdmin):
+##    list_display = ('homology_id', 'stable_id', 'method_link_species_set_id', 'description', 'dn', 'ds', 'n', 's', 'lnl', 'threshold_on_ds', 'ancestor_node_id', 'tree_node_id')
+##    search_fields = ['homology_id']
+##admin.site.register(homology, homologyAdmin)    
