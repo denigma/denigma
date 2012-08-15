@@ -14,7 +14,8 @@ cd denigma
 virtualenv env
 . env/bin/activate
 pip install -r requirements/project.txt
-denigma/manage.py syncdb
+denigma/manage.py syncdb --all
+denigma/manage.py migrate --fake
 denigma/manage.py runserver
 
 4. Change Denigma:
@@ -103,6 +104,12 @@ In order to add South to Django project, development & production do the followi
 Change models
 ./manage.py schemamigration pyproject.myapp --auto
 ./manage.py migrate myproject.myapp
+
+
+Alternatively to get a fresh Django database with existing South migrations sync all tables and perform fake migration [http://www.troeger.eu/cms/?p=317].
+
+./manage.py syncdb --all
+./manage.py migrate --fake
 
 
 mysql-ebs
