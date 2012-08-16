@@ -3,6 +3,7 @@
 *~
 *.save*
 *.db
+denigma.sql*
 
 # Access Keys:
 ami.sh
