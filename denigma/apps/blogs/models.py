@@ -12,4 +12,6 @@ class Blog(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
 
+    def __unicode__(self):
+       return self.title
 
