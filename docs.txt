@@ -197,6 +197,55 @@ One is a python module, the other is a executable application.
 The manage.py dbshell uses the latter one and complains if it is not installed [https://groups.google.com/forum/?fromgroups#!topic/django-users/4YMFm1C14tk[1-25]].
 
 
+Domain forwarding
+-----------------
+
+How to set up domain forwarding so that it
+only replaces the base address?
+
+Just to explain the problem:
+
+Let's assume you have a server address (http://myserver.com) and you have
+full root control over the server. You also have a domain (e.g. from 1&1) which
+you can set up either to http or frame forwarding (http://mydomain.org).
+
+If you do http-forwarding http://mydomain.com just redirects to the server
+address (http://myserver.com) and subfolders
+(http://myserver.com/subfolder/) are displayed correctly.
+
+So if you made a frame forwarding to http://myserver.com and it works as it
+displays http://mydomain.org in the address bar and the content of
+http://myserver.com but if you when navigate on the site tree it does not show
+any "subfolder", e.g. http://myserver.com/subfolder/. Rather than it
+just converts everything to http://mydomain.org in the address bar.
+
+So now the question is how to set it up that it displays the domain name
+and the subfolders, e.g. http://mydomain.org/subfolder/, and only
+replaces the base address of the server?
+
+A possibility would be to edit the .htaccesa file
+[http://support.lunarpages.com/knowledge_bases/article/549].
+
+The .htaccess file: [http://en.wikipedia.org/wiki/Htaccess].
+
+Using .htaccess [http://www.joeldare.com/wiki/linux:using_.htaccess_on_ubuntu].
+
+Enabling user of .htaccess [https://help.ubuntu.com/community/EnablingUseOfApacheHtaccessFiles].
+
+DNS setup: the full story: http://support.webvanta.com/support_article/615695-dns-setup-the-full-story#Makingthebasedomainnamework
+
+Same issue: http://stackoverflow.com/questions/10112953/url-subfolders-not-shown-while-using-yahoo-maked-forwarding
+
+Exactly the same problem: http://stackoverflow.com/questions/2208728/forwarding-from-domain-names-whithout-using-frames?rq=1
+
+UNIX
+----
+
+Take the opportinuty to venture in to the wonderful land of UNIX. It will make your life much, much easier. If you havve the option, install Linux beside your Windows in a dual boot setting and after that, Django and ALL Django app godness is just one command away.
+
+Most hosting environents use Linux, that's why it is better to use Linux for development too.
+
+
 Usage Considerations
 ====================
 
@@ -206,11 +255,14 @@ Pricing for EBS snapshots:
 - Monthly:bytes*24*dayes of the months
 
 
+
+
 TODO
 ====
 
 - Need to get GIT from Denigma server working.
-- Include south and test workflow.
 - restore.sh for restoring a snapshotted database.
 - Automate EC2 instance setup [http://www.turnkeylinux.org/blog/ec2-userdata].
 - Use Fabric for ssh control of Denigma [http://docs.fabfile.org/en/1.4.3/index.html].
+
+
