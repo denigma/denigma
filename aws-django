@@ -225,6 +225,7 @@ configure_apache() {
 EOF
 
     sudo echo "Alias /django/contrib/admin/media/ /home/$LOCAL_USER/env/lib/python2.6/site-packages/django/contrib/admin/media/" >> /etc/apache2/httpd.conf
+    sudo cp -rf /home/$LOCAL_USER/env/lib/python2.6/site-packages/pinax_theme_bootstrap/static/. /$PROJECT_ROOT/media 
 }
 
 activate_apache() {

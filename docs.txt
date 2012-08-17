@@ -49,8 +49,10 @@ bash denigma/configure.sh
 Developmental Notes
 ===================
 
-Serve Media for the Admin Interface
------------------------------------
+Serving Media
+-------------
+The media/static files for the Admin Interface were intially not used and there it was unstyled.
+To solve this issue:
 
 1. Add the following line to the Apache config file (/etc/apache2/http.conf):
 Alias /django/contrib/admin/media/ /home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media/
@@ -58,6 +60,12 @@ Alias /django/contrib/admin/media/ /home/denigma/env/lib/python2.6/site-packages
 2. Set in the settings.py:
 ADMIN_MEDIA_PREFIX = '/django/contrib/admin/media/'
 
+Similiar Pinax static files were also not used right after deploying.
+Copying of the static files from the pinax_theme_botstrat/static/ into project/site/media and project/site/statics solved this problem: 
+
+cp -rf /home/denigma/env/lib/python2.6/site-packages/pinax_theme_bootstrap/static/. /home/denigma/denigma/media
+
+Hower removing this files again did not abolished the styling.
 
 'bool' object has no attribute 'status code'
 --------------------------------------------
