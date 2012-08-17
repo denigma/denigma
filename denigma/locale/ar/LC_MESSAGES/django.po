@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-06 04:21-0700\n"
+"POT-Creation-Date: 2010-07-28 23:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,15 +19,15 @@ msgstr ""
 "3)))\n"
 "\n"
 
-#: templates/homepage.html:5
+#: templates/homepage.html:6
 msgid "Welcome"
 msgstr ""
 
-#: templates/homepage.html:11
+#: templates/homepage.html:12
 msgid "Welcome to Pinax"
 msgstr ""
 
-#: templates/homepage.html:14
+#: templates/homepage.html:15
 msgid ""
 "\n"
 "        <b>Pinax</b> is a <a href=\"http://djangoproject.com/\">Django</a>\n"
@@ -38,7 +38,7 @@ msgid ""
 "        "
 msgstr ""
 
-#: templates/homepage.html:24
+#: templates/homepage.html:25
 msgid ""
 "\n"
 "        For more information about Pinax, see\n"
@@ -46,25 +46,77 @@ msgid ""
 "        "
 msgstr ""
 
-#: templates/homepage.html:30
+#: templates/homepage.html:31
 msgid "About this project"
 msgstr ""
 
-#: templates/homepage.html:33
+#: templates/homepage.html:34
 msgid ""
 "\n"
-"        This project lays the foundation for all other Pinax starter "
-"projects. It\n"
-"        provides the project directory layout and some key infrastructure "
-"apps on\n"
-"        which the other starter projects are based.\n"
+"        This project comes with the bare minimum set of applications and\n"
+"        templates to get you started. It includes no extra tabs, only the\n"
+"        profile and notices tabs are included by default. From here you can\n"
+"        add any extra functionality and applications that you would like.\n"
 "        "
 msgstr ""
 
-#: templates/site_base.html:15
-msgid "Tab 1"
+#: templates/homepage.html:45
+#, python-format
+msgid "Wondering <a href=\"%(what_next_url)s\">What Next</a>?"
 msgstr ""
 
-#: templates/site_base.html:22
+#: templates/homepage.html:50
+#, python-format
+msgid ""
+"You can <a href=\"%(signup_url)s\">Sign up</a> and <a href=\"%(login_url)s"
+"\">Log in</a> to try out the site."
+msgstr ""
+
+#: templates/homepage.html:52
+#, python-format
+msgid "You can <a href=\"%(login_url)s\">Log in</a> to try out the site."
+msgstr ""
+
+#: templates/site_base.html:20
+msgid "Profile"
+msgstr ""
+
+#: templates/site_base.html:21
+msgid "Notices"
+msgstr ""
+
+#: templates/site_base.html:28
 msgid "&copy; 2010 &lt;your company here&gt;"
+msgstr ""
+
+#: templates/site_base.html:29
+msgid "About"
+msgstr ""
+
+#: templates/site_base.html:30
+msgid "Terms of Service"
+msgstr ""
+
+#: templates/site_base.html:31
+msgid "Privacy Policy"
+msgstr ""
+
+#: templates/site_base.html:32
+msgid "DMCA Notice"
+msgstr ""
+
+#: templates/about/what_next.html:6 templates/about/what_next.html.py:9
+msgid "What Next?"
+msgstr ""
+
+#: templates/about/what_next.html:35
+#, python-format
+msgid ""
+"Start by <a href=\"%(signup_url)s\">signing up</a> and <a href=\"%(login_url)"
+"s\">logging in</a>."
+msgstr ""
+
+#: templates/about/what_next.html:37
+#, python-format
+msgid "Start by <a href=\"%(login_url)s\">logging in</a>."
 msgstr ""

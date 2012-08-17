@@ -12,4 +12,5 @@ MySQL-python 	# Required for interfacing with db via manage.py on server.
 PIL		# Used by gallery.
 #tagging	# Allows the inclusion of tags to any model, is used for links.
 #-e svn+http://django-tagging.googlecode.com/svn/trunk/#egg=django-tagging
-boto            # AWS API.
+boto            # AWS API. 
+
