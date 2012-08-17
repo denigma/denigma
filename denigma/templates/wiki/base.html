@@ -1,6 +1,10 @@
+{% extends "site_base.html" %}
+
+{% block title %}Wiki{% endblock %}
+
 <html>
     <head>
-        <title>{%block title%}{%endblock%}</title>
+         <title>{%block subtitle%}{%endblock%}</title>
     </head>
     <body>
         <div>
@@ -8,7 +12,8 @@
                 <a href="/wiki/page/Start">Start</a> |
                 <a href="/wiki/page/SearchPage"> Search</a>
         </div>
-        {%block content %}
-        {%endblock%}
+        {% block content %}
+        {% endblock %}
     </body>
 </html>
+

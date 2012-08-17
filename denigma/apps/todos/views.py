@@ -50,10 +50,17 @@ def update_todo(request, todo_id):
      )
 
 def view_todo(request, todo_id):
-    pass
+    #pass
+    #todo = Todo.objects.get(pk=todo_id))
+    todo = get_object_or_404(Todo, id=todo_id)
+    return HttpResponse("%s %s" % (todo.title, todo.description))
+    #return HttpResponse(str(todo_id))
+    #edit_todo(request, todo_id)
 
 def edit_todo(request, todo_id):
-    pass
+    todo = get_object_or_404(Todo, id=todo_id)
+    #render_to_response('todos/edit.html', todo)
+    return HttpResponse("%s %s" % (todo.title, todo.description))
 
 def delete_todo(request, todo_id):
     todo = get_object_or_404(Todo, id=todo_id)

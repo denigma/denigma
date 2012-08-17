@@ -50,7 +50,7 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "mysql",
-            "NAME": 'denigma', #test',
+            "NAME": 'denigma1', #test',
             "USER": "root",
             "PASWORD": "",
             "HOST": "",
