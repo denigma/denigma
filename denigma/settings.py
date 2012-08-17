@@ -11,7 +11,7 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 BASE_URL="http://localhost:8000"
 
 # tells Pinax to use the default theme
-PINAX_THEME = "default"
+PINAX_THEME = "basic"
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
