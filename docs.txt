@@ -245,6 +245,8 @@ Take the opportinuty to venture in to the wonderful land of UNIX. It will make y
 
 Most hosting environents use Linux, that's why it is better to use Linux for development too.
 
+Linux + nginx + uwsgi = awesome
+
 
 Usage Considerations
 ====================
