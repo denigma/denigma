@@ -256,6 +256,9 @@ Most hosting environents use Linux, that's why it is better to use Linux for dev
 Linux + nginx + uwsgi = awesome
 
 
+To run the server locally on a specific port, pass the ip to the manage.py by running it:
+./manage.py runserver 0.0.0.0:8001
+
 Usage Considerations
 ====================
 
