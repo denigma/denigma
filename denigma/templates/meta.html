@@ -1,6 +1,8 @@
-{% extends "base.html" %}
-{% block title %}Meta data{% endblock %}
+{% extends "site_base.html" %}
+{% block title %}Meta Data{% endblock %}
 {% block content %}
-{% for k, v in values %} {{ k }} {{ v }}{{value|linebreaks}} {% endfor %}
+<table>
+{% for k, v in values %} <tr><td> {{ k }} </td><td> {{ v }}{{value|linebreaks}} </td></tr> {% endfor %}
+</table>
 {% endblock %}
 

@@ -1,9 +1,10 @@
-{% extends "base.html" %}
+{% extends "site_base.html" %}
 
-{% block title %}{{ poll.question }}{% endblock %}
+{% block title %}Poll{% endblock %}
+{% block subtitle %}{{ poll.question }}{% endblock %}
 
-{% block content %}
-<h2>{{ poll.question }}</h2>
+{% block content %}<div id="body"><div class="inner"><div class="container">
+
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <form action="/polls/{{ poll.id }}/vote/" method="post">{% csrf_token %}
@@ -13,5 +14,4 @@
 {% endfor %}
 <input type="submit" value="Vote" />
 </form>
-
-{% endblock %}
+</div></div></div>{% endblock %}

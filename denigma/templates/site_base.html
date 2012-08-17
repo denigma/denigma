@@ -4,13 +4,39 @@
 {% load i18n %}
 
 {% block nav %}
-    {% if user.is_authenticated %}
-        <ul class="nav">{% spaceless %}
-            <li id="tab_profile"><a href="{% url profile_detail user.username %}">{% trans "Profile" %}</a></li>
-            <li id="tab_notices"><a href="{% url notification_notices %}">{% trans "Notices" %}{% if notice_unseen_count %} ({{ notice_unseen_count }}){% endif %}</a></li>
-        {% endspaceless %}</ul>
-    {% endif %}
+	<ul class="nav">
+		<li id="tab_nav"> <a href="/polls">Poll</a> </li>
+		<li id="tab_nav"> <a href="/shorty">URL</a> </li>
+		<li id="tab_nav"> <a href="/wiki/page/Start/">Wiki</a> </li>
+		<li id="tab_nav"> <a href="/gallery/">Gallery</a> </li>
+		<li id="tab_nav"> <a href="/meta">Meta</a> </li>
+		<li id="tab_nav"> <a href="/blogs/">Blog</a> </li>
+		<li id="tab_nav"> <a href="/contact/">Contact</a> </li>
+		<li id="tab_nav"> <a href="/experts/">Experts</a> </li>
+		<li id="tab_nav"> <a href="/time/">Time</a> </li>
+ 		{% if user.is_authenticated %}{% spaceless %}
+			<li id="tab_space"> ____ </li>
+			<li id="tab_profile"><a href="{% url profile_detail user.username %}">{% trans "Profile" %}</a></li>
+			<li id="tab_notices"><a href="{% url notification_notices %}">{% trans "Notices" %}{% if notice_unseen_count %}({{ notice_unseen_count }}){% endif %}</a></li>
+			<li id="tab_todo"> <a href="/todos/">Todo</a> </li>
+        		{% endspaceless %}</ul>
+		{% endif %}  
 {% endblock %}
+
+{% comment %}
+{% block menu %}
+   <a href="/polls">Poll</a> |
+   <a href="/shorty">URL</a> |
+   <a href="/wiki/page/Start/">Wiki</a> |
+   <a href="/gallery/">Gallery</a> |
+   <a href="/meta">Meta</a> |
+   <a href="/blogs/">Blog</a> |
+   <a href="/contact/">Contact</a> |
+   <a href="/todos/">Todo</a> |
+   <a href="/experts/">Experts</a> |
+   <a href="/time/">Time</a> |
+{% endblock %}
+{% endcomment %}
 
 {% block footer %}
     {% include "_footer.html" %}
@@ -20,3 +46,12 @@
     {% analytics %}
     {% block extra_body %}{% endblock %}
 {% endblock %}
+
+{% comment %}
+<ul class="nav">
+<li id="tab_nav"> <a href="/a">Admin</a> </li>
+<li id="tab_nav"> <a href="/display_meta">Display Meta</a> </li>
+<li id="tab_nav"> <a href="/todos/">Todo</a> </li>
+		        
+</ul>
+{% endcomment %}
