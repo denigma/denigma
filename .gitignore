@@ -10,8 +10,9 @@ ami.sh
 *key.*
 
 # Virtual Environments:
-env
-envs
+ev/
+env/
+envs/
 
 # Machine-Specific Settings:
 local_settings.py
