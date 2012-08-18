@@ -194,6 +194,8 @@ Tagging
 -------
 
 Django tagging impairs south schema migration. It raises an NoMigration exception similiar as reported for django.contrib.auth [http://stackoverflow.com/questions/2845697/south-migration-error-nomigrations-exception-for-django-contrib-auth].
+The django tagging tables are now in Denigma but the app is not installed nor appear the tables to be properly linked. There seems to be only a relationship field in link table.
+This tables and the link relation should probaly be removed via raw sql statements before it is intended to implment tagging.
 
 
 sqlite
