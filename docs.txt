@@ -61,11 +61,11 @@ Alias /django/contrib/admin/media/ /home/denigma/env/lib/python2.6/site-packages
 ADMIN_MEDIA_PREFIX = '/django/contrib/admin/media/'
 
 Similiar Pinax static files were also not used right after deploying.
-Copying of the static files from the pinax_theme_botstrat/static/ into project/site/media and project/site/statics solved this problem: 
+Copying of the static files from the pinax_theme_botstrat/static/ into project/site/media solved this problem: 
 
 cp -rf /home/denigma/env/lib/python2.6/site-packages/pinax_theme_bootstrap/static/. /home/denigma/denigma/media
 
-Hower removing this files again did not abolished the styling.
+However removing this files again does not abolish the styling, immediatly but with some delay. Possible the cookies forget about it or something.
 
 'bool' object has no attribute 'status code'
 --------------------------------------------
@@ -258,6 +258,19 @@ Linux + nginx + uwsgi = awesome
 
 To run the server locally on a specific port, pass the ip to the manage.py by running it:
 ./manage.py runserver 0.0.0.0:8001
+
+or
+
+./manage.py runserver localhost:8002
+
+
+HTML
+----
+
+Severel ways exist to change the color of a hyperlink. For instance it is possible toe add a style attribute and insert a color property.
+
+<a herf="change-hyperlink-color.html", style="color: #CC0000">change hyperlink color</a>
+
 
 Usage Considerations
 ====================
