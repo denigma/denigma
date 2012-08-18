@@ -4,7 +4,9 @@
 {% block title %}{{ title }} | {% trans 'Denigma site admin' %}{% endblock %}
 
 {% block branding %}
-<h1 id="site-name">{% trans 'Denigma Project' %}</h1>
+{% comment %} <h1 id="site-name">{% trans 'Denigma Project' %}</h1> {% endcomment %}
+<h1 id="site-name">{% trans '<a href="/", style="color: #f4f379">Denigma Project</a>' %}</h1>
+ 
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
