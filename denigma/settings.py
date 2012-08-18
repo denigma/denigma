@@ -28,8 +28,10 @@ INTERNAL_IPS = [
 ]
 
 ADMINS = [
-    # ("Hevok", "hevok@denigma.de"),
+     ("Hevok", "hevok@denigma.de"),
 ]
+
+CONTACT_EMAIL = "age@liv.ac.uk"
 
 MANAGERS = ADMINS
 
@@ -235,6 +237,7 @@ INSTALLED_APPS = [
     "links",
     "books",
     "todos",
+    "pastebin",
     #"experts",
 
     "annotations",

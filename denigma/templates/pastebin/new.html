@@ -1,0 +1,21 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Paste Bin" %}{% endblock %}
+
+{% block body %}
+<div id="basic-form"?
+<fieldset>
+<legend>{% trans "New item" %}</legend>
+<form id="pastebin_new_form" method="POST" action="">{% csrf_token %}
+<div>{{ form.non_field_error }}</div>
+<div>{{ form.text.errors }}</div>
+<div>{{ form.text }}</div>
+<div><input type="hidden" name="action" value="paste" />
+<input type="submit" value="paste" class="button" /></div>
+</form>
+</fieldset>
+</div>
+{% endblock %}
+

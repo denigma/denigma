@@ -1,0 +1,12 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Paste Bin" %}{% endblock %}
+
+{% block body %}
+<h1>Pasted Item</h1>
+<pre>
+<p>{{ object.text }}</p>
+</pre>
+{% endblock %}
