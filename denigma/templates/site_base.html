@@ -5,15 +5,16 @@
 
 {% block nav %}
 	<ul class="nav">
+		{% comment %}<td class="tab rtba_pastbin"><div><a href="{% url pastebin_new %}">{% trans "PasteBin" %}</a></div></td> {% endcomment %}
 		<li id="tab_nav"> <a href="/polls">Poll</a> </li>
 		<li id="tab_nav"> <a href="/shorty">URL</a> </li>
 		<li id="tab_nav"> <a href="/wiki/page/Start/">Wiki</a> </li>
 		<li id="tab_nav"> <a href="/gallery/">Gallery</a> </li>
-		<li id="tab_nav"> <a href="/meta">Meta</a> </li>
 		<li id="tab_nav"> <a href="/blogs/">Blog</a> </li>
 		<li id="tab_nav"> <a href="/contact/">Contact</a> </li>
 		<li id="tab_nav"> <a href="/experts/">Experts</a> </li>
 		<li id="tab_nav"> <a href="/time/">Time</a> </li>
+		<li id="tab_nav"> <a href="/pastebin/">PasteBin</a> </li>
  		{% if user.is_authenticated %}{% spaceless %}
 			<li id="tab_space"> ____ </li>
 			<li id="tab_profile"><a href="{% url profile_detail user.username %}">{% trans "Profile" %}</a></li>
@@ -40,6 +41,9 @@
 
 {% block footer %}
     {% include "_footer.html" %}
+    {% if user.is_authenticated %}
+    <center><a href="/meta">Meta</a></center>
+    {% endif %}
 {% endblock %}
 
 {% block extra_body_base %}
