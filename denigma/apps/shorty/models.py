@@ -50,7 +50,7 @@ class ShortyURL(models.Model):
 
     @property
     def url(self):
-        return settings.BASE_URL + "/" + self.key
+        return settings.BASE_URL + "/url/" + self.key
 
 class Visit(models.Model):
     when = models.DateTimeField(auto_now_add=True)
