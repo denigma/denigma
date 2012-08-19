@@ -2,11 +2,25 @@
 
 {% load i18n %}
 
-{% block head_title %}{% trans "Paste Bin" %}{% endblock %}
+{% block title %}{% trans "Paste Bin" %}{% endblock %}
 
-{% block body %}
-<h1>Pasted Item</h1>
+{% block subtitle %}{% trans "Pasted Item" %}{% endblock %}
+
+{% block content %}
+{% comment %}<h1>Pasted Item</h1>{% endcomment %}
 <pre>
 <p>{{ object.text }}</p>
 </pre>
+<div id="basic-form">
+<fieldset>
+<legend>{% trans "Send Item" %}</legend>
+<form id="pastebin_send_form" method="POST" action="">{% csrf_token %}
+<div>{{ form.non_field_errors }}</div>
+<div>{{ form.recipient.errors }}</div>
+<div>Send to another user: {{ form.recipient }}</div>
+<input type="hidden" name="action" value="send" />
+<input type="hidden" name="uuid" value="{{ object.uuid }}" />
+</form>
+<fieldset>
+</div>
 {% endblock %}

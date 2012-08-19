@@ -6,4 +6,3 @@ class PastedItemAdmin(admin.ModelAdmin):
     fields = ('text', 'in_response_to', 'user',)
 
 admin.site.register(PastedItem, PastedItemAdmin)
-

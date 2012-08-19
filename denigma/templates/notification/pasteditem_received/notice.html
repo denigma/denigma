@@ -1,0 +1,2 @@
+{% load i18n %}
+{% blocktrans with pasted_item.get_absolute_url as pasted_item_url %}You recieved a <a href="{{ pasted_item_url }}">pasted item</a> from {{ sender }}.{% endblocktrans %}

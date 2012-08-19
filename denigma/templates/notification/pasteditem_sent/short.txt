@@ -1,0 +1,1 @@
+{% load i18n %}{% blocktrans %}{{ notice }} sent to {{ recipient }}{% endblocktrans %}

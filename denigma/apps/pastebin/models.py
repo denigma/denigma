@@ -23,5 +23,6 @@ class PastedItem(models.Model):
         super(PastedItem, self).save()
 
     def get_absolute_url(self):
-        return ('pastebin_detail', (), { 'slug': self.uuid }),
-    get_absoulute_url = models.permalink(get_absolute_url)
+        return ('pastebin_detail', (), { 'uuid': self.uuid })
+    get_absolute_url = models.permalink(get_absolute_url)
+

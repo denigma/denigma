@@ -1,0 +1,4 @@
+{% load i18n %}{% blocktrans with pasted_item.get_absolute_url as pasted_item_url %}
+{{ sender }} sent you a pasted item:
+
+http://{{ current_site }}{{ pasted_item_url }}{% endblocktrans %}
