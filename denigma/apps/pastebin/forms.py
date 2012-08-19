@@ -32,7 +32,7 @@ class SendItemForm(forms.Form):
     def clean_uuid(self):
         try:
             return PastedItem.objects.get(uuid=self.cleaned_data['uuid'])
-        except PasteItem.DoesNotExists:
+        except PastedItem.DoesNotExists:
             raise forms.ValidationError(_("The pasted item was not found."))
 
     def clean_recipient(self):
@@ -47,9 +47,10 @@ class SendItemForm(forms.Form):
         self.pasted_item = self.cleaned_data['uuid']
         self.recipient_user = self.cleaned_data['recipient']
         if notification:
-            notification.send([self.sender], "pasteditem_sent",
+           pass
+           notification.send([self.sender], "pasteditem_sent",
                               {'pasted_item': self.pasted_item,
                                'recipient': self.recipient_user,})
-            notification.send([self.recipient_user], "pasteditem_received", # If the last argument is wrong it raises a NoticeType matching query does not exist.
+           notification.send([self.recipient_user], "pasteditem_received", # If the last argument is wrong it raises a NoticeType matching query does not exist.
                               {'pasted_item': self.pasted_item,
                                'sender': self.sender,})

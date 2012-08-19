@@ -25,4 +25,3 @@ class PastedItem(models.Model):
     def get_absolute_url(self):
         return ('pastebin_detail', (), { 'uuid': self.uuid })
     get_absolute_url = models.permalink(get_absolute_url)
-
