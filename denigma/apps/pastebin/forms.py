@@ -47,7 +47,6 @@ class SendItemForm(forms.Form):
         self.pasted_item = self.cleaned_data['uuid']
         self.recipient_user = self.cleaned_data['recipient']
         if notification:
-           pass
            notification.send([self.sender], "pasteditem_sent",
                               {'pasted_item': self.pasted_item,
                                'recipient': self.recipient_user,})
