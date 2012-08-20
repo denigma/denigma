@@ -7,11 +7,13 @@
          <title>{%block subtitle%}{%endblock%}</title>
     </head>
     <body>
+        {% block menu %}
         <div>
-        Menu:   <a href="/">Root</a> |
+        Menu:   <a href="/">Home</a> |
                 <a href="/wiki/page/Start">Start</a> |
                 <a href="/wiki/page/SearchPage"> Search</a>
         </div>
+        {% endblock %}
         {% block content %}
         {% endblock %}
     </body>

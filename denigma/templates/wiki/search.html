@@ -1,9 +1,6 @@
 {% extends "wiki/base.html" %}
 
-{% block title %}Search page{% endblock %}
-
 {% block content %}
-<h1>Search Page</h1>
 
 <form method="post" action="">{% csrf_token %}
     {{form}}
@@ -11,7 +8,7 @@
 </form>
 
 {% if pages %}
-<h2>Search result for page name</h2>
+<h3>Search result for page name</h3>
 <u1>
 {% for page in pages %}
     <li><a href="/wiki/page/{{page.name}}/">{{page.name}}</a></li>
@@ -20,7 +17,7 @@
 {% endif %}
 
 {% if contents %}
-<h2>Search result for content</h2>
+<h3>Search result for content</h3>
 <u1>
 {% for page in contents %}
     <li><a href="/wiki/tag/{{page.name}}/">{{page.name}}</a></li>
