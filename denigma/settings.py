@@ -217,7 +217,7 @@ INSTALLED_APPS = [
     "idios",
     "metron",
     "south",   # Intelligent schema and data migrations.
-    #"taggit",  # "tagging",
+    "taggit",  # "tagging",
 #    "cms", # Content Management System.
 #    "mptt", # Utilties for implementing a modified pre-order traversal tree.
 #    "sekizai", # For javascipt and css management.
@@ -233,7 +233,7 @@ INSTALLED_APPS = [
     "southtut",
     "gallery",    
     "blogs",
-    #"blog",
+    "blog",
     "links",
     "books",
     "todos",

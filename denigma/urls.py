@@ -52,7 +52,7 @@ urlpatterns += patterns("",
     url(r'^todos/', include('todos.urls')),
     url(r'^experts/', include('experts.urls')),
     url(r'^pastebin/', include('pastebin.urls')),
-    url(r'^news/', include('news.urls')),
+    #url(r'^news/', include('news.urls')),
     url(r'^blog/', include('blog.urls')),
 )
 

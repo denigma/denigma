@@ -1,0 +1,11 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+
+{% for post in object_list %}
+
+<p>{{ post.created|date:"Y-m-d" }}: <a href="/blog/{{post.id}}">{{ post.title }}</a> ({{ post.modified|date:"Y-m-d" }})</p>
+
+{% endfor %}
+
+{% endblock %}
