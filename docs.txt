@@ -1,10 +1,15 @@
 Setting up Denigma
 ==================
 
-In order to set up Denigma locally just do the following.
+In order to set up Denigma locally just do the following:
 
 1. Git in:
 Go to the GIT bootcamp: https://github.com/
+In brief on UNIX. Install git:
+sudo apt-get git
+Configure git with your name and e-mail:
+git config --global user.name "FULL NAME"
+git config --global user.email email@address.com
 
 2. Fork Denigma:
 git clone https://github.com/hevok/denigma
@@ -21,6 +26,11 @@ denigma/manage.py runserver
 4. Change Denigma:
 git commit -am "Brief description of the change."
 git push origin master
+
+5. Keep Denigma Updated:
+To update to the latest version of Denigma, pull it from the master.
+git checkout master
+git pull
 
 
 Deploying Denigma
@@ -194,7 +204,7 @@ Tagging
 -------
 
 Django tagging impairs south schema migration. It raises an NoMigration exception similiar as reported for django.contrib.auth [http://stackoverflow.com/questions/2845697/south-migration-error-nomigrations-exception-for-django-contrib-auth].
-The django tagging tables are now in Denigma but the app is not installed nor appear the tables to be properly linked. There seems to be only a relationship field in link table.
+The django tagging tables are now in Denigma but the app is not installed nor appear the tables to be probably linked. There seems to be only a relationship field in link table.
 This tables and the link relation should probaly be removed via raw sql statements before it is intended to implment tagging.
 
 
@@ -301,6 +311,25 @@ python manage.py makemessages -l en
 
 Gettext need to be installed to get this commadn work:
 sudo aptitude install gettext
+
+
+BitNami
+-------
+
+BitNami provides a DjangoStack for deplyoing projects in the cloud. It might be intersting to try their images.
+
+Django
+------
+
+The high-level python-based web framework Django encourages rapid development and clean, pragmatic design.
+It was innitially developed by a fast-moving online-news operation. It was designed to hadle two challanges:
+1. intensive deadlines of a newsroom
+2. stringent requirements of expierenced Web developers.
+Django allowas ot build high-performing, elegant Web applications quickly.
+
+Generic forms
+-------------
+A generic detail form as well as the admin form can not have a modifable created and updated field which are defined in the database model as auto_now_add and auto_now.
 
 
 TODO
