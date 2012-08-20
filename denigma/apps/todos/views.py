@@ -47,7 +47,7 @@ def update_todo(request, todo_id):
         object_id=todo_id,
         model=Todo,
         template_name='todos/todo_form.html',
-        post_save_redirect='.todos/%(id)s'
+        post_save_redirect='/todos/%(id)s'
      )
 
 def view_todo(request, todo_id):

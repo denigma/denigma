@@ -1,5 +1,8 @@
 {% extends "site_base.html" %}
+{% block title %}Todo{% endblock %}
+
 {% block content %}
+This is a list of things which were proposed to improve Denigma.
 <html>
     
 <head>
@@ -22,14 +25,14 @@
 {% endif %}
 {% if todos %}
 <table border="1">
-<tr><td>Todo</td>
+<tr><td>Title</td>
     <td>Created</td>
     <td>Importance</td>
     <td>Updated</td>
     <td>Description</td>
     <td>Started</td>
     <td>Done</td>
-    <td>Stoped</td>
+    <td>Stopped</td>
     <td>del.</td>
 </tr>
 {% for todo in todos %}

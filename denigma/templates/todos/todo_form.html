@@ -1,6 +1,8 @@
+{% extends "site_base.html" %}
+{% block content %}
 <html>
 <head>
-<title>Edit Todo #{{object.id}}</title>
+<title>Edit Todo #{{ object.id }}</title>
 <style type="text/css">
     body {  font-family: arial, Helvetica, sans-setif;
             color: black;
@@ -9,17 +11,35 @@
 </head>
 <body>
 
-<form action="" method="POST">
+<form action="" method="POST">{% csrf_token %}
     <table>
     <tr><td valign="top">
             {{ form.title.label_tag }}
         <td>{{ form.title }}
+    <tr><td valign="top">
+            {{ form.created.label_tag }}
+        <td>{{ form.created }}
     <tr><td valign="top">
             {{ form.importance.label_tag }}
         <td>{{ form.importance }}
     <tr><td valign="top">
             {{ form.description.label_tag }}
         <td>{{ form.description }}
+    <tr><td valign="top">
+            {{ form.updated.label_tag }}
+        <td>{{ form.updated }}
+    <tr><td valign="top">
+            {{ form.owner.label_tag }}
+        <td>{{ form.owner }}
+    <tr><td valign="top">
+            {{ form.start_date.label_tag }}
+        <td>{{ form.start_date }}
+    <tr><td valign="top">
+           {{ form.done.label_tag }}
+       <td>{{ form.done }}
+    <tr><td valign="top">
+           {{ form.stop_date.label_tag }}
+       <td>{{ form.stop_date }}
     <tr><td colspan="2">
         <input type="submit" value="Save">
     </table>
@@ -29,3 +49,4 @@
 
 </body>
 </html>
+{% endblock %}
