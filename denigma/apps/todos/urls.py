@@ -18,7 +18,7 @@ urlpatterns = patterns('', # Pattern definition
     CreateView.as_view(
          model=Todo,
          template_name='todos/detail.html')
-    ),
+    ), # Depricacted?
 
     (r'^(?P<todo_id>\d+)/{0,1}$', views.update_todo),
     (r'^(?P<todo_id>\d+)/delete$', views.delete_todo),
