@@ -25,5 +25,5 @@ def whoiswho(request):
  
 def list(request):
     """Lists all users."""
-    users = Profile.objects.all()
-    return render_to_response('experts/list.html', {'users':users})
+    experts = Profile.objects.all()
+    return render_to_response('experts/list.html', {'experts':experts})

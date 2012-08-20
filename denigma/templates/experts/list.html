@@ -1,6 +1,9 @@
 {% extends "site_base.html" %}
+
 {% block title %}List of Experts{% endblock %}
+
 {% block content %}
+
 <p>These are the experts on one of the most fundamental questions in biology: Why do we age?
 <html>
   <head>
@@ -9,8 +12,8 @@
   <body>
     <table border="1">
       <tr><td><b>ID</b></td><td><b>Name</b></td><td><b>Affliation</b></td><td><b>Website</b></td><td><b>E-mail address</b></td><td><b>Work</b></td></tr>
-      {% for u in users %}
-      <tr><td> {{ u.id }} </td><td> {{ u.user_name }} </td><td> {{ u.affliation }} </td><td> <a href="{{ u.website }}">lab</a> </td><td> {{ u.email }} </td><td> {{ u.work }}</td></tr>
+      {% for e in experts %}
+      <tr><td> {{ e.id }} </td><td> {{ e.user_name }} </td><td> {{ e.affliation }} </td><td> <a href="{{ u.website }}">lab</a> </td><td> {{ e.email }} </td><td> {{ e.work }}</td></tr>
       {% endfor %}
     </table>
   </body>
