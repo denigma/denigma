@@ -2,6 +2,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django import forms
+
 from models import Page, Tag
 
 import markdown
@@ -37,6 +38,15 @@ def view_page(request, page_name):
     except Page.DoesNotExist:
         return render_to_response("./wiki/create.html", {"page_name":page_name})
     content = page.content
+
+    # Hyperlinking:
+    pages = tuple([p.name for p in Page.objects.all()])
+    words = content.split(' ')
+    for index, word in enumerate(words):
+       if word in pages:
+          words[index] = '<a href="/wiki/page/{0}">{0}</a>'.format(word)
+    content = " ".join(words)
+
     return render_to_response("./wiki/view.html", {"page_name":page_name, "content":markdown.markdown(content), "tags":tags})#
 
 def edit_page(request, page_name):
