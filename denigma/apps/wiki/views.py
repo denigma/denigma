@@ -11,6 +11,7 @@ import markdown
 class SearchForm(forms.Form):
     text = forms.CharField(label="Enter search term")
     search_content = forms.BooleanField(label="Search content", required=False)
+    search_tags = forms.BooleanField(label="Search tags", required=False)
 
 
 def search_page(request):
@@ -21,12 +22,19 @@ def search_page(request):
         if not f.is_valid():
             return render_to_response("/.wiki/search.html", {"form":f}) # Blank is invalid raise error.
         else:
-            pages = Page.objects.filter(name__contains = f.cleaned_data["text"]) # Normalized: i.e. gets converted to python construct.
+            pages = Page.objects.filter(name__icontains = f.cleaned_data["text"]) # Normalized: i.e. gets converted to python construct.
             term = f.cleaned_data["text"]
+
             contents = []
             if f.cleaned_data["search_content"]:
                 contents = Page.objects.filter(content__contains = f.cleaned_data["text"])
-            return render_to_response("./wiki/search.html", {"form":f, "pages":pages, "contents":contents, "term":term}, context_instance=RequestContext(request))
+
+            tags = []
+            if f.cleaned_data["search_tags"]:
+                tags = Tag.objects.filter(name__icontains = f.cleaned_data["text"])
+
+            return render_to_response("./wiki/search.html", {"form":f, "pages":pages, "contents":contents, "tags": tags, "term":term}, context_instance=RequestContext(request))
+
     f = SearchForm()
     return render_to_response("./wiki/search.html", {"form":f, "term":term}, context_instance=RequestContext(request))
 

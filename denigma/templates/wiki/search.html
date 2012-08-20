@@ -7,7 +7,7 @@
 </form>
 
 {% if pages %}
-<h3>Search result for page name</h3>
+<h3>Search result for page name:</h3>
 <u1>
 {% for page in pages %}
     <li><a href="/wiki/page/{{ page.name }}/">{{ page.name }}</a></li>
@@ -16,20 +16,30 @@
 
 {% else %}
 {% if term %}
-<h3>Page does not exist {{ term }}</h3>
+<h3>Page does not exist {{ term }}.</h3>
 <a href="/wiki/page/{{ term }}/edit">Create?</a>
 {% endif %}
 
 {% endif %}
+<p></p>
 
 {% if contents %}
-<h3>Search result for content</h3>
+<h3>Search result for content:</h3>
 <u1>
 {% for page in contents %}
     <li><a href="/wiki/tag/{{ page.name }}/">{{ page.name }}</a></li>
 {% endfor %}
 </u1>
+{% endif %}
+<p></p>
 
+{% if tags %}
+<h3>Search result for tags:</h3>
+<u1>
+{% for tag in tags %}
+   <li><a href="/wiki/tag/{{ tag.name }}/">{{ tag.name }}</a></li>
+{% endfor %}
+</u1>
 {% endif %}
 
 {% endblock %}
