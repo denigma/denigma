@@ -4,13 +4,13 @@
 
 {% block head_title %}{% trans "Welcome" %}{% endblock %}
 
+{% block title %}{% trans "sURL" %}{% endblock %}
 
-{% block subtitle %}
-<h1>{% trans "Shorten a URL and get email alerts" %}</h1>
-{% endblock %}
+{% block subtitle %}{% trans "shortening URL" %}{% endblock %}
 
 
 {% block content %}
+<p>Shortens a URL and allows to get email alerts.</p>
 <div class="shortenerForm">
   <form method="post" action="">
     {% csrf_token %}
