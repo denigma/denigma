@@ -71,11 +71,14 @@ def save_page(request, page_name):
     try:
         page = Page.objects.get(pk=page_name)
         page.content = content
-        for tag in tag_list:
-            page.tags.add(tag) # Creates relationships between the page and each tags.
     except Page.DoesNotExist:
         page = Page(name=page_name, content=content)
     page.save()
+
+    # Add tags:
+    for tag in tag_list:
+       page.tags.add(tag) # Creates relationships between the page and each tags.
+
     return HttpResponseRedirect("/wiki/page/" + page_name + "/")
 
 def view_tag(request, tag_name):
