@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, CreateView
 from polls.models import Poll
 
 
@@ -19,6 +19,12 @@ urlpatterns = patterns('',
             template_name='polls/results.html'),
         name='poll_results'),
     (r'^(?P<poll_id>\d+)/vote/$', 'polls.views.vote'),
+   url(r'^create/$',
+       CreateView.as_view(
+       model=Poll,
+       template_name='polls/create.html')),
+  url(r'^add', 'polls.views.add'), # Currently commted out in template.
+  url(r'^create/add', 'polls.views.create'),
 )
 
 

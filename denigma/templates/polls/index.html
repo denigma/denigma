@@ -1,6 +1,6 @@
 {% extends "site_base.html" %} 
 
-{% block title %}Poll{% endblock %}
+{% block title %}Polls{% endblock %}
 
 {% block content %}
 
@@ -13,6 +13,19 @@
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+<a href="/polls/create/">Create a new poll</a>
+<p></p>
+
+{% comment %}
+<h3>Add a poll:</h2>
+<form action="add" method="POST">{% csrf_token %}
+    Poll: <input type="text" name="question"><br>
+    Choice 1: <input type="text" name=choice1><br>
+    Choice 2: <input type="text" name=choice2><br>
+    Choice 3: <input type="text" name=choice3><br>
+    <input type="submit" value="Add">
+</form>
+{% endcomment %}
 
 {% endblock %}
 

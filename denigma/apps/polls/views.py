@@ -1,3 +1,5 @@
+import datetime
+
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.conf.urls.defaults import *
@@ -23,6 +25,39 @@ def vote(request, poll_id):
         # with POST data. This prevents data form being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('poll_results', args=(p.id,)))
+
+def add(request):
+   """Adds a new poll to the polls.
+   Might be used for mass insertion of polls.
+   Is currently commented out in template,
+   but fully functional if uncommented"""
+   poll = Poll(
+       question = request.POST['question'],
+       pub_date = datetime.datetime.now()
+   )
+   poll.save()
+   choice = Choice(poll=poll, choice= request.POST['choice1'], votes=0)
+   choice.save()
+   choice = Choice(poll=poll, choice= request.POST['choice2'], votes=0)
+   choice.save()
+   choice = Choice(poll=poll, choice= request.POST['choice3'], votes=0)
+   choice.save()
+   return HttpResponseRedirect('/polls/')
+
+def create(request):
+   """Creates a new poll instance."""
+   poll = Poll(
+       question = request.POST['question'],
+       pub_date = datetime.datetime.now()
+   )
+   poll.save()
+   choice = Choice(poll=poll, choice= request.POST['choice1'], votes=0)
+   choice.save()
+   choice = Choice(poll=poll, choice= request.POST['choice2'], votes=0)
+   choice.save()
+   choice = Choice(poll=poll, choice= request.POST['choice3'], votes=0)
+   choice.save()
+   return HttpResponseRedirect('/polls/%s' % poll.id)
 
 
 ##from django.template import Context, loader

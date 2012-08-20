@@ -1,8 +1,8 @@
 import datetime
+
 #from django.utils import timezone # Not avilable in Django 1.3.
 from django.db import models
 
-# Create your models here.
 
 class Poll(models.Model): #  Inherit from models class.
     question = models.CharField(max_length=200)

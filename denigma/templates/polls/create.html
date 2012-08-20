@@ -1,0 +1,13 @@
+{% extends "site_base.html" %}
+{% block title %}Polls{% endblock %}
+{% block subtitle %}Add a poll:{% endblock %}
+{% block content %}<br>
+<form action="add" method="POST">{% csrf_token %}
+    Poll: <input type="text" name="question"><br>
+    Choice 1: <input type="text" name=choice1><br>
+    Choice 2: <input type="text" name=choice2><br>
+    Choice 3: <input type="text" name=choice3><br>
+    <input type="submit" value="add">
+</form>
+{% endblock %}
+
