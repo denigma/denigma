@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<form action="" method="POST">
+<form action="" method="POST">{% csrf_token %}
     <p>Are you sure you want to delete
         todo #{{object.id}}:
         "{{object.title}}"?<br>

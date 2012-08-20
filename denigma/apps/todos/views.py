@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic.create_update import update_object, delete_object
+from django.template import RequestContext
 
 
 def todo_index(request):
@@ -20,7 +21,7 @@ def todo_index(request):
                                'choices': importance_choices,
                                'user': request.user,
                                'error_msg': request.GET.get('error_msg', ''),
-                               })
+                               }, context_instance=RequestContext(request))
 
 
 def add_todo(request):
@@ -96,7 +97,7 @@ def todo_login(request):
                               {'username': username,
                                'password': password,
                                'error_msg': error_msg,
-    })
+    }, context_instance=RequestContext(request))
 
 def todo_logout(request):
     logout(request)

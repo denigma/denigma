@@ -35,7 +35,7 @@
 </body>
 
 <p>Add a todo:<br>
-<form action="" method="POST">
+<form action="" method="POST">{% csrf_token %}
     <table>
     <tr><td valign="top">
             {{ form.title.label_tag }}

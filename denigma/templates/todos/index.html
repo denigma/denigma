@@ -20,29 +20,44 @@
 {% if error_msg %}
     <p class="error">{{ error_msg }}</p>
 {% endif %}
-    
+{% if todos %}
 <table border="1">
-<tr><td>del.</td>
-    <td>Todo</td>
+<tr><td>Todo</td>
+    <td>Created</td>
     <td>Importance</td>
+    <td>Updated</td>
     <td>Description</td>
+    <td>Started</td>
+    <td>Done</td>
+    <td>Stoped</td>
+    <td>del.</td>
 </tr>
 {% for todo in todos %}
+{% if not todo.done %}
 <tr>
-    <td><a href="{{todo.id}}/delete"><b>X</b></td>
     <td><a href="{{todo.id}}">{{todo.title}}</a></td>
+    <td>{{todo.created|date:"Y-m-d"}}</td> 
     <td>{{todo.text_importance}}</td>
+    <td>{{todo.updated|date:"Y-m-d"}}</td>
     <td>{{todo.short_description}}</td>
+    <td>{{todo.start_date|date:"Y-m-d"}}</td>
+    <td>{{todo.done}}</td>
+    <td>{{todo.stop_date|date:"Y-m-d"}}</td>
+    <td><a href="{{todo.id}}/delete"><b>X</b></td>
 </tr>
+{% endif %}
 {% endfor %}
 </table><br>
+{% else %}
+<p>There is nothing to do! Create new tasks to keep on development.</p>
+{% endif %}
 
+{% comment %}
 {% if todos %}
 <table border="1">
 <tr><td>Todo</td>
     <td>Importance</td>
-    <td>Start date</td>
-    <td>Stop date</td>
+
     <td>Created</td>
     <td>Updated</td>
     <td>Description</td>
@@ -62,9 +77,10 @@
 <p>You have nothing to do!</p>
 {% endif %}
 </body>
+{% endcomment %}
 
 <p>Add a todo:<br>
-<form action="add" method="POST">
+<form action="add" method="POST">{% csrf_token %}
     Todo:<input type="text" name="title"><br>
     Importance<select name="importance" />
     {% for value, importance in choices %}

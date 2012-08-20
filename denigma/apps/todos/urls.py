@@ -14,6 +14,6 @@ urlpatterns = patterns('', # Pattern definition
     (r'^add$', views.add_todo),
     (r'^(\d+)$', views.view_todo),
     (r'^(?P<todo_id>\d+)/{0,1}$', views.update_todo),
-    (r'^(?P<todo_id>\d+)\delete$', views.delete_todo),
-    (r'^(\d+)\edit$', 'todos.views.edit_todo'),
+    (r'^(?P<todo_id>\d+)/delete$', views.delete_todo),
+    (r'^(\d+)/edit$', 'todos.views.edit_todo'),
 )
