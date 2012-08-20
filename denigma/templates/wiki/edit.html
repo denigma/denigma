@@ -1,13 +1,12 @@
 {% extends "wiki/base.html" %}
 
-{%block title%}{{page_name}} - Editing{%endblock%}
+{% block subtitle %}{{ page_name }} - Editing{% endblock %}
 
-{%block content%}
-    <h1>Editing {{page_name}}</h1>
+{% block content %}
     <form method="post" action="/wiki/page/{{page_name}}/save/">
         {% csrf_token %}
-        <textarea name="content" rows="20" cols="60">{{content}}</textarea><br/>
-        Tags: <input name="tags", value="{{tags}}", maxlength="60", size="60/><br/>"/>
+        <textarea name="content" rows="20" cols="60">{{ content }}</textarea><br/>
+        Tags: <input name="tags", value="{{ tags }}", maxlength="60", size="60/><br/>"/>
         <input type="submit" value="Save Page"/>
     </form>
-{%endblock%}
+{% endblock %}

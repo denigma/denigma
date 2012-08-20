@@ -14,18 +14,22 @@ class SearchForm(forms.Form):
 
 
 def search_page(request):
+    """Searching for page."""
+    term = ''
     if request.method == "POST":
         f = SearchForm(request.POST)
         if not f.is_valid():
             return render_to_response("/.wiki/search.html", {"form":f}) # Blank is invalid raise error.
         else:
             pages = Page.objects.filter(name__contains = f.cleaned_data["text"]) # Normalized: i.e. gets converted to python construct.
+            term = f.cleaned_data["text"]
             contents = []
             if f.cleaned_data["search_content"]:
                 contents = Page.objects.filter(content__contains = f.cleaned_data["text"])
-            return render_to_response("./wiki/search.html", {"form":f, "pages":pages, "contents":contents}, context_instance=RequestContext(request))
+            return render_to_response("./wiki/search.html", {"form":f, "pages":pages, "contents":contents, "term":term}, context_instance=RequestContext(request))
     f = SearchForm()
-    return render_to_response("./wiki/search.html", {"form":f}, context_instance=RequestContext(request))
+    print term
+    return render_to_response("./wiki/search.html", {"form":f, "term":term}, context_instance=RequestContext(request))
 
 specialPages = {"SearchPage": search_page}
 
