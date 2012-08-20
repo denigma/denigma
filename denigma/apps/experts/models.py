@@ -55,7 +55,7 @@ class Profile(models.Model): # User
     working_hours = models.ManyToManyField("Day", through="WorkingHour", blank=True)
     user = models.ForeignKey(User, blank=True, null=True, unique=True, # user = models.OneToOneField(User, unique=True)
                              verbose_name=_('user'),
-                             related_name='profile')
+                             related_name='data')
     user_name = models.CharField(_('username'), max_length=30, unique=True, blank=True) #
     password = models.CharField(max_length=128, blank=True)
     first_name = models.CharField(_('first_name'), max_length=30) # models.TextField(max_length=50)

@@ -35,7 +35,7 @@ CONTACT_EMAIL = "age@liv.ac.uk"
 
 MANAGERS = ADMINS
 
-BACKEND = 'mysql'#lite3' # Either sqlite3 or mysql as well as later on also postgres.
+BACKEND = 'mysql'  # Either sqlite3 or mysql as well as later on also postgres.
 
 if BACKEND == 'sqlite3':
     DATABASES = {
@@ -68,7 +68,7 @@ else:
 # although not all choices may be available on all operating systems.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = "US/Eastern"
+TIME_ZONE = "Europe/Berlin"
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -216,9 +216,8 @@ INSTALLED_APPS = [
     "pagination",
     "idios",
     "metron",
-
-    "south", # Intelligent schema and data migrations.
-     #"tagging",
+    "south",   # Intelligent schema and data migrations.
+    #"taggit",  # "tagging",
 #    "cms", # Content Management System.
 #    "mptt", # Utilties for implementing a modified pre-order traversal tree.
 #    "sekizai", # For javascipt and css management.
@@ -234,11 +233,13 @@ INSTALLED_APPS = [
     "southtut",
     "gallery",    
     "blogs",
+    #"blog",
     "links",
     "books",
     "todos",
     "pastebin",
-    #"experts",
+    "experts",
+    #"news",
 
     "annotations",
     "expressions",

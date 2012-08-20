@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response
 
 
 def whoiswho(request):
-    profiles = [profile.user_name for profile in Profile.objects.all()]
+    profiles = [data.user_name for profile in Profile.objects.all()]
     
     from experts import main
     experts = main()
@@ -15,9 +15,9 @@ def whoiswho(request):
         expert = dict([(k,v) for k,v in vars(expert).items() if v]) # Removes none fields to prevent lsoe of data by updating. 
         expert['user_name'] = expert.pop('name')# del expert['name'] http://stackoverflow.com/questions/4406501/change-the-key-value-in-python-dictionary
 
-        if expert['user_name'] not in profiles:
+        if expert['user_name'] not in datas:
             profile = Profile(**expert)
-            profile.save()
+            data.save()
         else:
             Profile.objects.filter(user_name=expert['user_name']).update(**expert)
             
@@ -26,4 +26,4 @@ def whoiswho(request):
 def list(request):
     """Lists all users."""
     users = Profile.objects.all()
-    return render_to_response('users/list.html', {'users':users})
+    return render_to_response('experts/list.html', {'users':users})

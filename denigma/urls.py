@@ -19,7 +19,6 @@ urlpatterns = patterns("denigma.views",
     url(r'^display_meta/', 'display_meta'),
     url('^time/$', 'current_datetime'),
     url(r'^time/plus/(\d+)/$', 'hours_ahead'),  # d+ = wildcard
-    url(r'^pastebin/', include('pastebin.urls')),
 #    url(r'^', include('cms.urls')),
 )
 
@@ -41,7 +40,6 @@ urlpatterns += patterns("",
 urlpatterns += patterns("",
     url(r'^polls/', include('polls.urls')),
     url(r'^wiki/', include('wiki.urls')),
-    
     url(r'^shorty/$', 'shorty.views.home'),
     url(r'^e/([^/]+)/', 'shorty.views.manage', name='source'),
     url(r'^a/', include(admin.site.urls)),
@@ -52,7 +50,10 @@ urlpatterns += patterns("",
 #    url(r'^books/', inlcude('books.urls')),
     url(r'^contact/$', 'contact.views.contact'),
     url(r'^todos/', include('todos.urls')),
-    #url(r'^experts/', include('experts.urls')),
+    url(r'^experts/', include('experts.urls')),
+    url(r'^pastebin/', include('pastebin.urls')),
+    url(r'^news/', include('news.urls')),
+    url(r'^blog/', include('blog.urls')),
 )
 
 if settings.SERVE_MEDIA:
