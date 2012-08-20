@@ -6,32 +6,30 @@
 {% block nav %}
 	<ul class="nav">
 		{% comment %}<td class="tab rtba_pastbin"><div><a href="{% url pastebin_new %}">{% trans "PasteBin" %}</a></div></td> {% endcomment %}
-		<li id="tab_nav"> <a href="/polls">Poll</a> </li>
-		<li id="tab_nav"> <a href="/shorty">URL</a> </li>
+		<li id="tab_nav"> <a href="/polls">Polls</a> </li>
 		<li id="tab_nav"> <a href="/wiki/page/Start/">Wiki</a> </li>
+                <li id="tab_nav"> <a href="/experts/">Experts</a> </li>
+                <li id="tab_nav"> <a href="/blog/">Blog</a> </li>
+                <li id="tab_nav"> <a href="/shorty">sURL</a> </li>
 		<li id="tab_nav"> <a href="/gallery/">Gallery</a> </li>
-		<li id="tab_nav"> <a href="/blogs/">Blog</a> </li>
-		<li id="tab_nav"> <a href="/contact/">Contact</a> </li>
-		<li id="tab_nav"> <a href="/experts/">Experts</a> </li>
-		<li id="tab_nav"> <a href="/time/">Time</a> </li>
-		<li id="tab_nav"> <a href="/pastebin/">PasteBin</a> </li>
  		{% if user.is_authenticated %}{% spaceless %}
 			<li id="tab_space"> ____ </li>
 			<li id="tab_profile"><a href="{% url profile_detail user.username %}">{% trans "Profile" %}</a></li>
 			<li id="tab_notices"><a href="{% url notification_notices %}">{% trans "Notices" %}{% if notice_unseen_count %}({{ notice_unseen_count }}){% endif %}</a></li>
 			<li id="tab_todo"> <a href="/todos/">Todo</a> </li>
+		        <li id="tab_msg"> <a href="/pastebin/">Messaging</a> </li>
         		{% endspaceless %}</ul>
 		{% endif %}  
 {% endblock %}
 
 {% comment %}
 {% block menu %}
-   <a href="/polls">Poll</a> |
+   <a href="/polls">Polls</a> |
    <a href="/shorty">URL</a> |
    <a href="/wiki/page/Start/">Wiki</a> |
    <a href="/gallery/">Gallery</a> |
    <a href="/meta">Meta</a> |
-   <a href="/blogs/">Blog</a> |
+   <a href="/blog/">Blog</a> |
    <a href="/contact/">Contact</a> |
    <a href="/todos/">Todo</a> |
    <a href="/experts/">Experts</a> |
@@ -42,7 +40,9 @@
 {% block footer %}
     {% include "_footer.html" %}
     {% if user.is_authenticated %}
-    <center><a href="/meta">Meta</a></center>
+    <center>
+     <a href="/contact/">Contact</a> | <a href="/meta">Meta</a> | <a href="/time/">Time</a>
+    </center>
     {% endif %}
 {% endblock %}
 
@@ -55,7 +55,6 @@
 <ul class="nav">
 <li id="tab_nav"> <a href="/a">Admin</a> </li>
 <li id="tab_nav"> <a href="/display_meta">Display Meta</a> </li>
-<li id="tab_nav"> <a href="/todos/">Todo</a> </li>
-		        
+<li id="tab_nav"> <a href="/todos/">Todo</a> </li>		        
 </ul>
 {% endcomment %}
