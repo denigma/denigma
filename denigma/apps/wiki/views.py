@@ -28,7 +28,6 @@ def search_page(request):
                 contents = Page.objects.filter(content__contains = f.cleaned_data["text"])
             return render_to_response("./wiki/search.html", {"form":f, "pages":pages, "contents":contents, "term":term}, context_instance=RequestContext(request))
     f = SearchForm()
-    print term
     return render_to_response("./wiki/search.html", {"form":f, "term":term}, context_instance=RequestContext(request))
 
 specialPages = {"SearchPage": search_page}
