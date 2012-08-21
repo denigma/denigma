@@ -5,6 +5,7 @@ and returns an instance of HttpResponse.
 import datetime
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
+from django.template import RequestContext
 
 
 def root(request):
@@ -20,7 +21,8 @@ def display_meta(request):
     return HttpResponse('<table>%s</table>' % '\n'.join(html))
 
 def meta(request):
-    return render_to_response('meta.html', {'values':sorted(request.META.items())})
+    return render_to_response('meta.html', {'values':sorted(request.META.items())},
+                              context_instance=RequestContext(request))
 
 def current_datetime(request):
 ##    now = datetime.datetime.now()
@@ -30,7 +32,8 @@ def current_datetime(request):
 ##    return HttpResponse(html)
 ##    return render_to_response('current_datetime.html', {'current_date':now} )
     current_date = datetime.datetime.now()
-    return render_to_response('dateapp/current_datetime.html', locals())
+    return render_to_response('dateapp/current_datetime.html', locals(),
+                              context_instance=RequestContext(request))
 
 def hours_ahead(request, offset):
     try:
@@ -42,5 +45,6 @@ def hours_ahead(request, offset):
     #assert False
 ##    html = "<html><body>In %s hour(s), it will be %s.</body></html>" % (offset, dt)
 ##    return HttpResponse(html)
-    return render_to_response('dateapp/hours_ahead.html', locals())
+    return render_to_response('dateapp/hours_ahead.html', locals(),
+                             context_instance=RequestContext(request))
 
