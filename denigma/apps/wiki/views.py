@@ -20,7 +20,8 @@ def search_page(request):
     if request.method == "POST":
         f = SearchForm(request.POST)
         if not f.is_valid():
-            return render_to_response("/.wiki/search.html", {"form":f}) # Blank is invalid raise error.
+            return render_to_response("./wiki/search.html", {"form":f},
+                                      context_instance=RequestContext(request)) # Blank is invalid raise error.
         else:
             pages = Page.objects.filter(name__icontains = f.cleaned_data["text"]) # Normalized: i.e. gets converted to python construct.
             term = f.cleaned_data["text"]
@@ -42,7 +43,13 @@ def search_page(request):
     return render_to_response("./wiki/search.html", {"form":f, "term":term},
                               context_instance=RequestContext(request))
 
-specialPages = {"SearchPage": search_page}
+def index_page(request):
+   """"Creates a index, i.e. a list, of all entries in the Wiki."""
+   pages = Page.objects.all()
+   tags = Tag.objects.all()
+   return render_to_response("./wiki/index.html", {"pages": pages, "tags": tags},
+                             context_instance=RequestContext(request))
+
 
 def view_page(request, page_name):
     if page_name in specialPages: # Do not query database for special page names.
@@ -51,7 +58,8 @@ def view_page(request, page_name):
         page = Page.objects.get(pk=page_name)
         tags = page.tags.all()
     except Page.DoesNotExist:
-        return render_to_response("./wiki/create.html", {"page_name":page_name})
+        return render_to_response("./wiki/create.html", {"page_name":page_name},
+                                  context_instance=RequestContext(request))
     content = page.content
 
     # Hyperlinking:
@@ -102,4 +110,7 @@ def view_tag(request, tag_name):
     """Views all the pages that are tagged with a specific tag."""
     tag = Tag.objects.get(pk=tag_name)
     pages = tag.page_set.all()
-    return render_to_response("./wiki/tags.html", {"tag_name":tag_name, "pages":pages})
+    return render_to_response("./wiki/tags.html", {"tag_name": tag_name, "pages": pages},
+                              context_instance=RequestContext(request))
+
+specialPages = {"SearchPage": search_page, "IndexPage": index_page}

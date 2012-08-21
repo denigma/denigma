@@ -1,0 +1,22 @@
+{% extends "wiki/base.html" %}
+
+{% block subtitle %}Index{% endblock %}
+
+{% block content %}
+
+<hr>
+<h4>Terms:</h4>
+{% for page in pages %}
+
+<li><a href="/wiki/page/{{ page.name }}/">{{ page.name }}</a>{{ page.text }}</li>
+
+{% endfor %}
+
+<hr>
+<h4>Tags:</h4>
+{% for tag in tags %}
+<li><a href="/wiki/tag/{{ tag.name }}/">{{ tag.name }}</a></li>
+{% endfor %}
+<hr>
+
+{% endblock %}

@@ -1,5 +1,7 @@
 {% extends "wiki/base.html" %}
 
+{% block subtitle %}Search{% endblock %}
+
 {% block content %}
 <form method="post" action="">{% csrf_token %}
     {{ form }}
