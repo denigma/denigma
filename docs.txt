@@ -157,6 +157,12 @@ sudo umount /etc/mysql /var/lib/mysql /var/log/mysql /vol
 Restoring a snapshotted database
 --------------------------------
 
+sudo aptitude install git
+
+sudo su
+
+git https://github.com/hevok/denigma
+
 bash denigma/reconnect-ebs.sh
 
 bash denigma/open-port.sh
@@ -258,6 +264,14 @@ Same issue: http://stackoverflow.com/questions/10112953/url-subfolders-not-shown
 
 Exactly the same problem: http://stackoverflow.com/questions/2208728/forwarding-from-domain-names-whithout-using-frames?rq=1
 
+http://www.tonybhimani.com/2008/01/26/domain-redirection-using-apache-mod_rewrite-and-htaccess/
+
+http://www.widexl.com/tutorials/mod_rewrite.html
+
+Changing domain names with mod_rewrite: http://www.webmasterworld.com/forum92/152.htm
+Name-based Virtual Host Support:  http://httpd.apache.org/docs/2.2/vhosts/name-based.html
+
+redirect subdomains bar one: http://stackoverflow.com/questions/9712352/redirect-subdomains-bar-one
 
 Domain Redirection
 -----------------
@@ -327,10 +341,17 @@ It was innitially developed by a fast-moving online-news operation. It was desig
 2. stringent requirements of expierenced Web developers.
 Django allowas ot build high-performing, elegant Web applications quickly.
 
+
 Generic forms
 -------------
 A generic detail form as well as the admin form can not have a modifable created and updated field which are defined in the database model as auto_now_add and auto_now.
 
+
+Auto-log out and failed rendering
+---------------------------------
+
+Some views such as the Wiki and the experts invoke auto-log out and wrong rendering of the branding etc.
+It appears that adding the request.user to the render_to_response fixes this issue. It might be because user is used in the upper most templates.
 
 TODO
 ====
