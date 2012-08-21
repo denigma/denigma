@@ -1,9 +1,8 @@
-# Create your views here.
-from models import Profile
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.core.urlresolvers import reverse
+
+from models import Profile
 
 
 def whoiswho(request):
@@ -25,17 +24,9 @@ def whoiswho(request):
             
     return HttpResponse("WhoIsWho completed (%s experts)" % len(experts))
  
-def login():
-    pass
-
 def list(request):
     """Lists all users."""
-    if request.user.id is None:
-        pass
-        #return HttpResponseRedirect(reverse(login)) # To be written.
     experts = Profile.objects.all()
     return render_to_response('experts/list.html',
-                              {'experts':experts,
-                               'user': request.user,
-                               'error_msg': request.GET.get('error_msg', ''),
-                               }, context_instance=RequestContext(request))
+                              {'experts':experts},
+                              context_instance=RequestContext(request))
