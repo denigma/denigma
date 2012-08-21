@@ -1,10 +1,13 @@
 {% extends "blog/base.html" %}
+
+{% load hyperlink %}
+
 <h2>Test</h2>
 {% block content %}
 
 {% for post in object_list %}
 
-<h2><a href="/blog/{{post.id}}">{{ post.title }}</a></h2>
+<h3><a href="/blog/{{post.id}}">{{ post.title }}</a></h3>
 
 <div class="post_meta">
  created on {{ post.created }}
@@ -12,7 +15,7 @@
 </div>
 
 <div class="post_body">
-  {{ post.text|safe|linebreaks }}
+  {{ post.text|hyper|safe|linebreaks }}
 </div>
 
 <div class="tags">
