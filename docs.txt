@@ -367,6 +367,17 @@ It can be avoided by enforcing the scrollbar for all pages [http://www.daniweb.c
 
 There are alternative solutions [http://hicksdesign.co.uk/journal/forcing-scrollbars-now-even-better].
 
+Comments in CSS
+---------------
+The synthax for commenting in CSS code is enclosing slash-asterisk:
+
+/* comment */
+
+/* multiline 
+comment */
+
+For details on the synthax and bas data types in CSS see http://www.w3.org/TR/CSS2/syndata.html].
+
 
 TODO
 ====
