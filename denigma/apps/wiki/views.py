@@ -23,20 +23,23 @@ def search_page(request):
             return render_to_response("./wiki/search.html", {"form":f},
                                       context_instance=RequestContext(request)) # Blank is invalid raise error.
         else:
-            pages = Page.objects.filter(name__icontains = f.cleaned_data["text"]) # Normalized: i.e. gets converted to python construct.
             term = f.cleaned_data["text"]
+            if ' ' in term: # Multi word term -> MultiWordTerm
+               term = ''.join(term.title().split(' '))
+            print term
+            pages = Page.objects.filter(name__icontains=term) # Normalized: i.e. gets converted to python construct.
 
             contents = []
             if f.cleaned_data["search_content"]:
-                contents = Page.objects.filter(content__contains = f.cleaned_data["text"])
+                contents = Page.objects.filter(content__contains=term)
 
             tags = []
             if f.cleaned_data["search_tags"]:
-                tags = Tag.objects.filter(name__icontains = f.cleaned_data["text"])
+                tags = Tag.objects.filter(name__icontains=term)
 
             return render_to_response("./wiki/search.html",
                                       {"form":f, "pages":pages, "contents":contents,
-                                      "tags": tags, "term":term},
+                                      "tags":tags, "term":term},
                                       context_instance=RequestContext(request))
 
     f = SearchForm()
