@@ -9,7 +9,7 @@
 		<li id="tab_nav"> <a href="/polls">Polls</a> </li>
 		<li id="tab_nav"> <a href="/wiki/page/Start/">Wiki</a> </li>
                 <li id="tab_nav"> <a href="/experts/">Experts</a> </li>
-                <li id="tab_nav"> <a href="/blog/">Blog</a> </li>
+                <li id="tab_nav"> <a href="/blog/">News</a> </li>
                 <li id="tab_nav"> <a href="/shorty">sURL</a> </li>
 		<li id="tab_nav"> <a href="/gallery/">Gallery</a> </li>
  		{% if user.is_authenticated %}{% spaceless %}
@@ -25,7 +25,7 @@
 
 {% endblock %}
 
-{% comment %}
+{% comment %} A menu right below the navigation.
 {% block menu %}
    <a href="/polls">Polls</a> |
    <a href="/shorty">URL</a> |
@@ -53,11 +53,3 @@
     {% analytics %}
     {% block extra_body %}{% endblock %}
 {% endblock %}
-
-{% comment %}
-<ul class="nav">
-<li id="tab_nav"> <a href="/a">Admin</a> </li>
-<li id="tab_nav"> <a href="/display_meta">Display Meta</a> </li>
-<li id="tab_nav"> <a href="/todos/">Todo</a> </li>		        
-</ul>
-{% endcomment %}

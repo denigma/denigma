@@ -12,25 +12,29 @@
             <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>
         {% endblock %}
         </div>
-        
+
+        <hr>	
+	{% include "blog/news.html" %}
+        <hr>
+        <h2>Operating System-Specific Considerations</h2> 
         <div class="row">
             <div class="span4">
             {% block column-1 %}
-                <h2>Windows</h2>
+                <h3>Windows</h3>
                 <p>If you current operating system is Windows it is recommend to either extend the console with Cywing or better get <a href="http://www.ubuntu.com/download/desktop/windows-installer">Wubi</a> (Windows Ubuntu Installer) as a dual boot system which the latter one is very straight forward.</p>
                 <p><a class="btn" href="http://www.ubuntu.com/download/desktop/windows-installer">View details &raquo;</a></p>
             {% endblock %}
             </div>
             <div class="span4">
             {% block column-2 %}
-                <h2>Mac</h2>
+                <h3>Mac</h3>
                 <p>If you are on Mac OX this is fine as it is <a href="http://www.unix.org/">UNIX</a>-based system also the instruction will be majorly for Linux.<p>
                 <p><a class="btn" href="http://www.unix.org/">View details &raquo;</a></p>
             {% endblock %}
             </div>
             <div class="span4">
             {% block column-3 %}
-                <h2>Linux</h2>
+                <h3>Linux</h3>
                 <p>Linux is the most prefered system in which Denigma and the interation with it can run. Denigma itself is currently in an
                 <a href="http://www.ubuntu.com/">Ubuntu</a> environment implemented.</p>
                 <p><a class="btn" href="http://www.ubuntu.com/">View details &raquo;</a></p>
