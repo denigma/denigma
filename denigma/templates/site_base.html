@@ -42,11 +42,14 @@
 
 {% block footer %}
     {% include "_footer.html" %}
-    {% if user.is_authenticated %}
     <center>
+    {% if user.is_authenticated %}
      <a href="/contact/">Contact</a> | <a href="/meta">Meta</a> | <a href="/time/">Time</a>
+    {% else %}
+    <a href="/contact/">Contact</a> | <a href="/time/">Time</a>
     </center>
     {% endif %}
+
 {% endblock %}
 
 {% block extra_body_base %}
