@@ -1,9 +1,9 @@
 """Users urls."""
-from django.conf.urls.defaults import *
-import views
+from django.conf.urls.defaults import patterns
 
-urlpatterns = patterns('',
+
+urlpatterns = patterns('experts.views',
     (r'^whoiswho', 'whoiswho'),
     (r'^list', 'list'),
-    (r'^$', views.list)
+    (r'^$', 'list'),
 )
