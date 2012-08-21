@@ -351,7 +351,19 @@ Auto-log out and failed rendering
 ---------------------------------
 
 Some views such as the Wiki and the experts invoke auto-log out and wrong rendering of the branding etc.
-It appears that adding the request.user to the render_to_response fixes this issue. It might be because user is used in the upper most templates.
+It appears that adding the request context to the render_to_response fixes this issue. It might be because things like user site name is used in the upper most templates.
+Inclusion of the RequestContext is sufficient to eliminate this issue entierly.
+
+
+Overflow
+--------
+
+Longer pages lead to the inlcusion of a scroll bar whihc provokes a shift of the header to the left site.
+It can be avoided by enforcing the scrollbar for all pages [http://www.daniweb.com/web-development/web-design-html-and-css/threads/336106/thirteen-ore-more-rows-in-a-table-makes-my-header-shift].
+<style>body { overflow:scroll; }</style>
+
+There are alternative solutions [http://hicksdesign.co.uk/journal/forcing-scrollbars-now-even-better].
+
 
 TODO
 ====
@@ -360,5 +372,3 @@ TODO
 - restore.sh for restoring a snapshotted database.
 - Automate EC2 instance setup [http://www.turnkeylinux.org/blog/ec2-userdata].
 - Use Fabric for ssh control of Denigma [http://docs.fabfile.org/en/1.4.3/index.html].
-
-
