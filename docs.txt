@@ -193,6 +193,7 @@ Convert key
 It is noted that when FileZilla transferes data to a EC2 instance it results into a block of the internet connection.
 Possible another port such as 21 has to be prefered for connecting to an EC2 instance via sFTP.
 
+
 Customizing Django Admin
 ------------------------
 
@@ -272,6 +273,8 @@ Changing domain names with mod_rewrite: http://www.webmasterworld.com/forum92/15
 Name-based Virtual Host Support:  http://httpd.apache.org/docs/2.2/vhosts/name-based.html
 
 redirect subdomains bar one: http://stackoverflow.com/questions/9712352/redirect-subdomains-bar-one
+
+The solution to this dilema is to set up an A-Record in the DNS configuration fo the domain provider. The nameserver of the provider can be used and the elastic IP address inserted into the configuration.
 
 Domain Redirection
 -----------------
