@@ -8,11 +8,11 @@
 
 <div class="post_meta">
  created on {{ post.created }}
- modified on {{ post.modified }}
+ updated on {{ post.updated }}
 </div>
 
 <div class="post_body">
-  {{ post.body|safe|linebreaks }}
+  {{ post.text|safe|linebreaks }}
 </div>
 
 <div class="tags">
