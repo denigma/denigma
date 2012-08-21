@@ -7,10 +7,15 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.template import RequestContext
 
+from blog.models import Post
+
 
 def root(request):
-    """The root source of all Denigmas URLs."""
-    return render_to_response('root.html', locals())
+    """The root source of all Denigmas URLs.
+    Renders a dynamic home site with altered content."""
+    posts = Post.objects.filter(tags__name='news') # Fetches all news.
+    return render_to_response('homepage.html', {'posts': posts},
+                              context_instance=RequestContext(request))
 
 def display_meta(request):
     values = request.META.items()
@@ -50,3 +55,5 @@ def hours_ahead(request, offset):
 
 def google(request):
     render_to_response('google.html', locals())
+
+
