@@ -21,7 +21,7 @@ class BlogFeed(Feed):
 
 urlpatterns = patterns('blog.views',
     url(r'^$', ListView.as_view(
-                              queryset=Post.objects.all().order_by("-created")[:2],
+                              queryset=Post.objects.all().order_by("-created"),
                               template_name="blog/index.html")),
     url(r'^(?P<pk>\d+)$', DetailView.as_view(
                               model=Post,
