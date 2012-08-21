@@ -2,7 +2,7 @@
 {% block title %}Meta Data{% endblock %}
 {% block content %}
 <table>
-{% for k, v in values %} <tr><td> {{ k }} </td><td> {{ v }}{{value|linebreaks}} </td></tr> {% endfor %}
+{% for k, v in values %} <tr><td> {{ k }} </td><td> {{ v }}{{ value|linebreaks }} </td></tr> {% endfor %}
 </table>
 {% endblock %}
 
