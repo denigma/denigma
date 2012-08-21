@@ -35,7 +35,7 @@ class Todo(models.Model):
         return choices[self.importance]
 
     def short_description(self):
-        return self.description.split('\n')[0][:80]
+        return self.description.split('\n')[0][:80] + '...'
 
     def __unicode__(self):
         return self.title
