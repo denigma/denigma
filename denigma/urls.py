@@ -19,6 +19,7 @@ urlpatterns = patterns("denigma.views",
     url(r'^display_meta/', 'display_meta'),
     url('^time/$', 'current_datetime'),
     url(r'^time/plus/(\d+)/$', 'hours_ahead'),  # d+ = wildcard
+    url(r'^google', 'google'),
 #    url(r'^', include('cms.urls')),
 )
 
@@ -54,6 +55,7 @@ urlpatterns += patterns("",
     url(r'^pastebin/', include('pastebin.urls')),
     #url(r'^news/', include('news.urls')),
     url(r'^blog/', include('blog.urls')),
+    url(r'^home/', include('home.urls')),
 )
 
 if settings.SERVE_MEDIA:
