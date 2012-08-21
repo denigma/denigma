@@ -7,7 +7,7 @@
 
 <ul>
 {% for choice in poll.choice_set.all %}
-	<li>{{ choice.choice }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</lis>
+	<li>{{ choice.choice }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</list>
 	{% endfor %}
 </ul>
 
