@@ -1,14 +1,14 @@
-{% extends "wiki/base.html" %}
+{% extends "site_base.html" %}
 
 {% load wikilink %}
 
-{% block subtitle %}{{page_name}}{% endblock %}
+{% block subtitle %}{{ page_name }}{% endblock %}
 
 {% block content %}
    {% load markup %}
-    {% comment %}<h1>{{page_name}}</h1> {% endcomment %}
-     {{content|wikify|markdown}}
+    {% comment %}<h1>{{ page_name }}</h1>{% endcomment %}
+     {{ content|wikify|markdown }}
     <hr/>
-    <p>Tags: {% for tag in tags %}<a href="/wiki/tag/{{tag.name}}/">{{tag.name}}</a> {% endfor %}</p>
-    <a href="/wiki/page/{{page_name}}/edit/">Edit this page?</a>
+    <p>Tags: {% for tag in tags %}<a href="/wiki/tag/{{ tag.name }}/">{{ tag.name }}</a> {% endfor %}</p>
+    <a href="/wiki/page/{{ page_name }}/edit/">Edit this page?</a>
 {% endblock %}

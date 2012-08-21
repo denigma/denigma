@@ -33,10 +33,14 @@ def search_page(request):
             if f.cleaned_data["search_tags"]:
                 tags = Tag.objects.filter(name__icontains = f.cleaned_data["text"])
 
-            return render_to_response("./wiki/search.html", {"form":f, "pages":pages, "contents":contents, "tags": tags, "term":term}, context_instance=RequestContext(request))
+            return render_to_response("./wiki/search.html",
+                                      {"form":f, "pages":pages, "contents":contents,
+                                      "tags": tags, "term":term},
+                                      context_instance=RequestContext(request))
 
     f = SearchForm()
-    return render_to_response("./wiki/search.html", {"form":f, "term":term}, context_instance=RequestContext(request))
+    return render_to_response("./wiki/search.html", {"form":f, "term":term},
+                              context_instance=RequestContext(request))
 
 specialPages = {"SearchPage": search_page}
 
@@ -58,7 +62,10 @@ def view_page(request, page_name):
           words[index] = '<a href="/wiki/page/{0}">{0}</a>'.format(word)
     content = " ".join(words)
 
-    return render_to_response("./wiki/view.html", {"page_name":page_name, "content":markdown.markdown(content), "tags":tags})#
+    return render_to_response("./wiki/view.html", {"page_name":page_name, 
+                                                   "content": markdown.markdown(content),
+                                                   "tags":tags},
+                                                   context_instance=RequestContext(request)) # Important for correct rendering.
 
 def edit_page(request, page_name):
     try:
@@ -68,7 +75,9 @@ def edit_page(request, page_name):
     except Page.DoesNotExist:
         content  = ""
         tags = ''
-    return render_to_response("./wiki/edit.html", {"page_name":page_name, "content":content, "tags":tags}, context_instance=RequestContext(request, {}))  # Edited it later on.
+    return render_to_response("./wiki/edit.html",
+                              {"page_name":page_name, "content":content, "tags":tags},
+                              context_instance=RequestContext(request, {}))  # Edited it later on.
     
 def save_page(request, page_name):
     content = request.POST["content"]
