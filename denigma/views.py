@@ -13,7 +13,7 @@ from blog.models import Post
 def root(request):
     """The root source of all Denigmas URLs.
     Renders a dynamic home site with altered content."""
-    posts = Post.objects.all() #filter(tags__name='news') # Fetches all news.
+    posts = Post.objects.all().order_by('-created') #filter(tags__name='news') # Fetches all news.
     return render_to_response('homepage.html', {'posts': posts},
                               context_instance=RequestContext(request))
 
