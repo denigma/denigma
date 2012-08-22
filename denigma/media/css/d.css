@@ -1,0 +1,20 @@
+@charset "utf-8";
+
+
+span.left {
+    position: absolute;
+    left: 0;
+
+}
+span.right {
+    position: absolute;
+    right: 0;
+
+}
+
+div.line {
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+

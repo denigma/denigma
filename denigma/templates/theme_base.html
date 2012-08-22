@@ -17,6 +17,7 @@
             <link href="{% static "pinax/css/theme.css" %}" rel="stylesheet">
             <link href="{% static "bootstrap/css/bootstrap.css" %}" rel="stylesheet">
             <link href="{% static "bootstrap/css/bootstrap-responsive.css" %}" rel="stylesheet">
+            <link href="{% static "css/d.css" %}" rel="stylesheet">
             {% block extra_style %}{% endblock %}
         {% endblock %}
         {% block script_base %}
@@ -73,8 +74,24 @@
                 <div id="menu">
                     <div class="inner">
                         <div class="container">
+                            <b>
+                            {% block hierarchy %}
+                                  {% comment %}
+                                  Site > App > Model > View > Filter
+                                  Denigma > Species > Mouse
+                                  Denigma > Datasets > GenAge > Worm
+                                  {% endcomment %}
+				  <b><a href="/admin">{{ SITE_NAME }} db</a></b> 
+                                  {% comment %} {% if {{ SITE_NAME }} != { CURRENT_SITE }} %} {% endif %} 
+                                  {% if {{ APP_NAME }} %}<a href="{{ APP_NAME }}">{{ APP_NAME }}</a><b>></b>{% endif %}
+                                  {% if {{ MODEL_NAME }} %}<a href="{{ MODEL_NAME }}">{{ MODEL_NAME }}</a>>{% endif %}
+                                  {% if {{ VIEW_NAME }} %}<a href="{{ VIEW_NAME }}">{{ VIEW_NAME }}</a>>{% endif %}
+                                  {% endcomment %}
+                            {% endblock %}
+                            </b>
                             <center>
                             {% block menu %}
+				 
                                   {% comment %} 
                                      <a href="#tab_one">One</a> | <a href="#tab_two">Two</a> 
                                   {% endcomment %}
