@@ -1,5 +1,17 @@
 {% extends "site_base.html" %}
+
+{% block hierarchy %}
+<div class="line">
+    <span class="left">
+        <a href="/admin">{{ SITE_NAME }} db</a> >
+        <a href="/meta">Meta</a>
+   </span>
+</div>
+{% endblock %}
+
+
 {% block title %}Meta Data{% endblock %}
+
 {% block content %}
 <table>
 {% for k, v in values %} <tr><td> {{ k }} </td><td> {{ v }}{{ value|linebreaks }} </td></tr> {% endfor %}
