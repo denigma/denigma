@@ -1,21 +1,27 @@
 {% extends "shorty/base.html" %}
 
+{% block hierarchy %}
+<a href="/admin">{{ SITE_NAME }} db</a> >
+<a href="/shorty">sURL</a> >
+Edit >
+<a href={{ source.url }}">{{ source.url }}</a>
+{% endblock %}
+
 {% load i18n %}
 
-{% block head_title %}{% trans "Manage" %}{% endblock %}
-
-{% block page_title %}{% trans "Edit notification settings" %}{% endblock %}
+{% block subtitle %}{% trans "Manage" %}{% endblock %} {% comment %}head_title{% endcomment %}
 
 {% block content %}
+<h4>Edit notification settings</h4>{% comment %}page_title{% endcomment %}
 
 <div class="manageForm">
   <div class="url">
-    <label>{% trans "Original URL" %}</label>
+    <label>{% trans "Original URL:" %}</label>
     <span class="url"><a href="{{ source.url }}">{{ source.url }}</a></span>
   </div>
   <div class="email">
-    <label>{% trans "Notification Email" %}</label>
-    <span>{{ source.email }}</span>
+    <label>{% trans "Notification Email:" %}</label>
+    <span><a href="{{ source.email }}">{{ source.email }}</a></span>
   </div>
 
   <div class="shortened">

@@ -1,4 +1,10 @@
 {% extends "site_base.html" %}
+
+{% block hierarchy %}
+<a href="/admin">{{ SITE_NAME }} db</a> >
+<a href="/shorty">sURL</a>
+{% endblock %}
+
 {% comment %}{% block base %}{% endblock %} {% endcomment %}
 
 {% load i18n %}
@@ -7,6 +13,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} : {% endif %}{% block head_title %}{% endblock %}{% endblock %}</title>
+    {% block title %}sURL{% endblock %}
 
     {% comment %}
     IE hasLayout => http://www.satzansatz.de/cssd/onhavinglayout.html
