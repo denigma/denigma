@@ -1,6 +1,24 @@
 {% extends "site_base.html" %}
 
+{% block hierarchy %}
+<div class="line">
+    <span class="left">
+        <a href="/admin">{{ SITE_NAME }} db</a> >
+        <a href="/about">About</a> >
+        Terms of use
+
+   </span>
+   <span class="centre">
+       Menu:
+       <a href="/about">About</a> |
+       <a href="/about/terms">Terms</a> |
+       <a href="/about/privacy">Privacy</a>
+   </span>
+</div>
+{% endblock %} 
+
 {% block title %}Terms{% endblock %}
+
 {% block subtitle %}>>> import this{% endblock %}
 
 {% block content %}
