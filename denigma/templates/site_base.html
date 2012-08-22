@@ -10,7 +10,7 @@
 		<li id="tab_nav"> <a href="/wiki/page/Start/">Wiki</a> </li>
                 <li id="tab_nav"> <a href="/experts/">Experts</a> </li>
                 <li id="tab_nav"> <a href="/blog/">News</a> </li>
-                <li id="tab_nav"> <a href="/shorty">sURL</a> </li>
+                <li id="tab_nav"> <a href="/shorty">URLs</a> </li>
 		<li id="tab_nav"> <a href="/gallery/">Gallery</a> </li>
  		{% if user.is_authenticated %}{% spaceless %}
 			<li id="tab_space"> ____ </li>
@@ -43,10 +43,9 @@
 {% block footer %}
     {% include "_footer.html" %}
     <center>
+    <a href="/contact/">Contact</a> | <a href="/time/">Time</a> | <a href="/about/">About</a>
     {% if user.is_authenticated %}
-     <a href="/contact/">Contact</a> | <a href="/meta">Meta</a> | <a href="/time/">Time</a>
-    {% else %}
-    <a href="/contact/">Contact</a> | <a href="/time/">Time</a>
+    | <a href="/meta">Meta</a> |
     </center>
     {% endif %}
 

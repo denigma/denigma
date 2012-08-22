@@ -1,6 +1,24 @@
 {% extends "site_base.html" %}
 
+{% block hierarchy %}
+<div class="line">
+    <span class="left">
+        <a href="/admin">{{ SITE_NAME }} db</a> >
+        <a href="/about/what_next">About</a> >
+        What next?
+   </span>
+   <span class="centre">
+       Menu:
+       <a href="/about">About</a> |
+       <a href="/about/what_next">What Next?</a> |
+       <a href="/about/terms">Terms</a> |
+       <a href="/about/privacy">Privacy</a>
+   </span>
+</div>
+{% endblock %}
+
 {% load i18n %}
+
 {% load ifsetting_tag %}
 
 {% block head_title %}{% trans "What Next?" %}{% endblock %}
@@ -13,7 +31,7 @@
         
         <dl class="what_next">
             <dt><a href="{% url acct_email %}">Verify an email address</a></dt>
-            <dd>so you can receive notifications, reset your password and so people can find you more easily.</dd>
+            <dd>so you can receive notifications, reset your password and other people can find you more easily.</dd>
             
             <dt><a href="{% url profile_detail user.username %}">Fill out your profile</a></dt>
             <dd>so that Denigma can serve your needs and interests better.</dd>
@@ -26,7 +44,7 @@
                 {% endif %}
             {% endifsetting %}
             <dt> <a href="/polls">Vote in a poll</a></td>
-            <dd> So we know the consensus on fundamental questions.</dd>
+            <dd> So we know the consensus on most important fundamental questions to work on.</dd>
             <dt> <a href="/wiki">Check out the Wiki</a></td>
             <dd> Innovative Wiki of the next generation to create a common Ontology for computational purposes.</dd>
             <dt> <a href="/experts">See Experts</a></td>
@@ -34,7 +52,7 @@
             <dt> <a href="/blog">Read the Blog</a></td>
             <dd> Study the Blog which contains a selection of article on cutting-edge knowledge and technology as well as news on Denigma and its progress towards singularity.</dd>
             <dt> <a href="/shorty">Shorten URLs</a></td>
-            <dd> Denigmafy external URLs into via sURL.</dd>
+            <dd> Denigmafy external URLs via sURL.</dd>
             <dt> <a href="/gallery">See Gallery</a></td>
             <dd> Upload images/figures/pictures/photos which can be included anywhere in Denigma</dd>
             <dt> <a href="/tutorial">Do the Tutorial</a></td>
@@ -46,14 +64,16 @@
             
 
         </dl>
-         Remember Denigma should be fully editable as well as programmible.
-         Denigma can be changes in two fashions.
-          1. Content: regarding the actually content its composed of.
-          2. Design: how it is conceptional build.
-         Use soon as you Email address is verievied you receive staff status, you will be able to access the admin interface and get access to all the database tables in Denigma.
-         Data in Denigma is organized according to application (apps). There are for instance annotations, datasets and expressions.
-         The main
-
+        <p>Denigma is unique as everything in fully editable as well as programmible.
+        Denigma can in priniciple be changes in two fashions:</p>
+        <ol>
+        <li>Content: regarding the actually content its composed of.</li>
+        <li>Design: how it is conceptional build.</li>
+        </ol>
+        <p>As soon as your Email address is verivied you gain staff status and be able to access the admin interface and get access the tables in Denigma db.</p>
+        <p>Data in Denigma is organized according to application (apps). There are for instance annotations, datasets and expressions.
+        Functionality to Denigma can be easily added by just writing an app.
+        A todo can be converted into a DEP (Denigma Enhancement Proposal). This should preferbly written in restructured text.</p>
     {% else %}
             {% url acct_login as login_url %}
             
