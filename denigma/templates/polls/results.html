@@ -1,10 +1,16 @@
-{% extends 'site_base.html' %}
+{% extends 'polls/base.html' %}
 
-{% block title %}Poll{% endblock %}
+{% block hierarchy %}
+<a href="/admin">{{ SITE_NAME }} db</a> >
+<a href="/polls">Polls</a> >
+Poll =
+<a href="/polls/{{ poll.id }}">{{ poll.id }}</a> >
+Results
+{% endblock %}
+
 {% block subtitle %}{{ poll.question }}{% endblock %}
+
 {% block content %}
-
-
 <ul>
 {% for choice in poll.choice_set.all %}
 	<li>{{ choice.choice }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</list>
@@ -12,5 +18,4 @@
 </ul>
 
 <a href="/polls/{{ poll.id }}/">Vote again?</a>
-
 {% endblock %}
