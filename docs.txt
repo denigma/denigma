@@ -378,7 +378,16 @@ comment */
 
 For details on the synthax and bas data types in CSS see http://www.w3.org/TR/CSS2/syndata.html].
 
+Ctrl + F5 reloads the cached style in the browser.
 
+EMAIL
+-----
+
+There are two major possibilities to set up an email server.
+First Configure the email server yourself or use a third party provider.
+There are for instaance AWS SES Google Apps' gmail [http://stackoverflow.com/questions/5123098/aws-ses-vs-google-apps-gmail].
+
+The Amazon Simple Email Service (SES) can be used under the Free Tier [http://aws.amazon.com/ses/].
 TODO
 ====
 
