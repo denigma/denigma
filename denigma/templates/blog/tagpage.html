@@ -1,8 +1,25 @@
 {% extends "blog/base.html" %}
 
-{% block content %}
+{% block hierarchy %}
+<div class="line">
+    <span class="left">
+        <a href="/admin">{{ SITE_NAME }} db</a> >
+        <a href="/blog">Blog</a> >
+        Tag =
+        {{ tag }}
+   </span>
+   <span class="centre">
+       Menu:
+       <a href="/blog/">Blog</a> |
+       <a href="/blog/archive">Archive</a>
+   </span>
+</div>
+{% endblock %}
 
-<h2>Posts tagged: {{ tag }}</h2>
+
+{% block subtitle %}Posts tagged: {{ tag }}{% endblock %}
+
+{% block content %}
 
 {% for post in posts %}
 

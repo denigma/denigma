@@ -1,10 +1,35 @@
 {% extends "blog/base.html" %}
 
+{% block hierarchy %}
+<a href="/admin">{{ SITE_NAME }} db</a> >
+<a href="/blog">Blog</a> >
+<a href="/blog">News</a> >
+<a href="/blog/{{ post.id }}">{{ post.title }}</a>
+{% endblock %}
+
+{% block hierarchy %}
+<div class="line">
+    <span class="left">
+        <a href="/admin">{{ SITE_NAME }} db</a> >
+        <a href="/blog">Blog</a> >
+        <a href="/blog">News</a>
+        <a href="/blog/{{ post.id }}">{{ post.title }}</a>
+   </span>
+   <span class="centre">
+       Menu:
+       <a href="/blog/">Blog</a> |
+       <a href="/blog/archive">Archive</a>
+   </span>
+</div>
+{% endblock %}
+
+{% block subtitle %}News{% endblock %}
+
 {% load hyperlink %}
 
 {% block content %}
 
-<h2><a href="/blog/{{post.id}}">{{ post.title }}</a></h2>
+<h2><a href="/blog/{{ post.id }}">{{ post.title }}</a></h2>
 
 <div class="post_meta">
  created on {{ post.created }}
@@ -17,7 +42,7 @@
 
 <div class="tags">
   {% for tag in post.tags.all %}
-  <a href="/blog/tag/{{tag}}">{{tag}}</a>
+  <a href="/blog/tag/{{ tag }}">{{ tag }}</a>
   {% if not forloop.last %}, {% endif %}
   {% endfor %}
 </div>

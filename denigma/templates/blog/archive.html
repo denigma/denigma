@@ -1,5 +1,24 @@
 {% extends "blog/base.html" %}
 
+{% block hierarchy %}
+<div class="line">
+    <span class="left">
+        <a href="/admin">{{ SITE_NAME }} db</a> >
+        <a href="/blog/">Blog</a> >
+        <a href="/blog/archive">Archive</a>
+
+   </span>
+   <span class="centre">
+       Menu:
+       <a href="/blog/">Blog</a> |
+       <a href="/blog/archive">Archive</a>
+
+   </span>
+</div>
+{% endblock %} 
+
+{% block subtitle %}Archive{% endblock %}
+
 {% block content %}
 
 {% for post in object_list %}
