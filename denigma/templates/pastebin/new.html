@@ -1,8 +1,11 @@
-{% extends "site_base.html" %}
+{% extends "pastebin/base.html" %}
 
 {% load i18n %}
 
-{% block title %}{% trans "Paste Bin Messaging" %}{% endblock %}
+{% block hierarchy %}
+<a href="/admin">{{ SITE_NAME }} db</a> >
+<a href="/pastebin">Paste Bin Messaging</a>
+{% endblock %}
 
 {% block body %}
 <p>You can simple paste any kind of textual information which will stay <em>pristine</em>, i.e. not processed by mark-ups. It allows to communicate plain-text data and scripts with any one known to Denigma.</p>

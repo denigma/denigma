@@ -1,8 +1,12 @@
-{% extends "site_base.html" %}
+{% extends "pastebin/base.html" %}
 
-{% load i18n %}
+{% load i18n %}	
 
-{% block title %}{% trans "Paste Bin" %}{% endblock %}
+{% block hierarchy %}
+<a href="/admin">{{ SITE_NAME }} db</a> >
+<a href="/pastebin">Paste Bin Messaging</a> >
+{{ object.uuid }}
+{% endblock %}
 
 {% block subtitle %}{% trans "Pasted Item" %}{% endblock %}
 
