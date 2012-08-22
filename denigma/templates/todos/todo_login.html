@@ -1,3 +1,18 @@
+{% extends "todos/base.html" %}
+
+{% comment %}This is not gone by used as the link to the is only visible for logged in users.
+However, as it is still possible to access this site via the address directly it is necessary.
+{% endcomment %}
+
+{% block hierarchy %}
+<a href="/admin">{{ SITE_NAME }} db</a> >
+Todos >
+<a href="/todos/login">Login</a> 
+{% endblock %}
+
+{% block subtitle %}Login{% endblock %}
+
+{% block content %}
 <html>
 <head>
 <title>Todo Login</title>
@@ -14,7 +29,7 @@
     <p class="error">{{ error_msg }}</p>
 {% endif %}
 
-<form action="" method="POST">
+<form action="" method="POST"> {% csrf_token %}
     </table>
     <tr><td valign="top">Username:
         <td><input type="text" name="username"
@@ -29,3 +44,4 @@
 
 </body>
 </html>
+{% endblock %}
