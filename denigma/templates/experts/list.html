@@ -1,5 +1,11 @@
 {% extends "site_base.html" %}
 
+{% block hierarchy %}
+<a href="/admin">{{ SITE_NAME }} db</a> >
+Experts >
+List {% comment %}Consider to rename the view to index for consistence{% endcomment %}
+{% endblock %}
+
 {% block title %}List of Experts{% endblock %}
 
 {% block content %}
