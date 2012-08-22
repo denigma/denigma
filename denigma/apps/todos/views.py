@@ -15,7 +15,7 @@ def todo_index(request):
 ##    return HttpResponse(t.render(c))
     if request.user.id is None: # Catch people who haven't logged in.
         return HttpResponseRedirect(reverse(todo_login))
-    todos = Todo.objects.filter(owner=request.user).order_by('importance', 'title')
+    todos = Todo.objects.filter(owner=request.user).order_by('importance', '-created', 'title')
     return render_to_response('todos/index.html',
                               {'todos': todos,
                                'choices': importance_choices,
