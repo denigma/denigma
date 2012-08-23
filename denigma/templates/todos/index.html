@@ -27,15 +27,18 @@
 {% endif %}
 {% if todos %}
 <table border="1">
-<tr><td>Title</td>
-    <td>Created</td>
-    <td>Importance</td>
-    <td>Updated</td>
-    <td>Description</td>
-    <td>Started</td>
-    <td>Done</td>
-    <td>Stopped</td>
-    <td>del.</td>
+
+<tr>
+    <td><b>Title</b></td>
+    <td><b>Created</b></td>
+    <td><b>Importance</b></td>
+    <td><b>Updated</b></td>
+    <td><b>Description</b></td>
+    <td><b>Started</b></td>
+    <td><b>Done</b></td>
+    <td><b>Stopped</b></td>
+    <td><b>del.</b></td>
+</b>
 </tr>
 {% for todo in todos %}
 {% if not todo.done %}
