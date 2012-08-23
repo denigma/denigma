@@ -4,12 +4,13 @@
 
 {% block head_title %}{% trans "Welcome" %}{% endblock %}{% comment %}Not used{% endcomment %}
 
-{% block title %}{% trans "sURL" %}{% endblock %}
+{% block title %}{% trans "URLs" %}{% endblock %}
 
-{% block subtitle %}{% trans "shortening URL" %}{% endblock %}
+{% block subtitle %}{% trans "URL shortening" %}{% endblock %}
 
 {% block content %}
-<p>Shortens a URL and allows to get email alerts.</p>
+<p>Uniform resource locater (URL) is a defined string that references to an internet resource. 
+URLs shortens a URL and allows to get email alerts.</p>
 <div class="shortenerForm">
   <form method="post" action="">
     {% csrf_token %}
