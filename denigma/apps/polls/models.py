@@ -16,7 +16,8 @@ class Poll(models.Model): #  Inherit from models class.
     was_published_today.short_description = 'Published today?'
 
     def was_published_recently(self): # Note: not available with Django 1.3.
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=7) # A week.
+        return self.pub_date >= datetime.datetime.now() - datetime.timedelta(days=7)
+        #return self.pub_date >= timezone.now() - datetime.timedelta(days=7) # A week.
     
 
 class Choice(models.Model):
