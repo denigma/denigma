@@ -7,11 +7,11 @@ Denigma is the digital Engima destined to decipher life. This repository is plan
 
 Setting up Denigma
 ==================
-
 In order to set up Denigma locally just do the following 
 (Ubuntu or at least a UNIX environment is recommanded):
 
 1. Git in:
+----------
 
 Go to the GIT bootcamp: https://github.com/
 
@@ -27,10 +27,12 @@ git config --global user.name "FULL NAME"
 git config --global user.email email@address.com
 
 2. Fork Denigma::
+-----------------
 
 git clone https://github.com/hevok/denigma
 
 3. Start Denigma::
+------------------
 
 cd denigma
 virtualenv env
@@ -41,11 +43,13 @@ denigma/manage.py migrate --fake
 denigma/manage.py runserver
 
 4. Change Denigma::
+-------------------
 
 git commit -am "Brief description of the change."
 git push origin master
 
 5. Keep Denigma Updated:
+------------------------
 
 To update to the latest version of Denigma, pull it from the master::
 
