@@ -12,6 +12,7 @@ In order to set up Denigma locally just do the following
 
 1. Git in:
 ----------
+
 | Go to the GIT bootcamp: https://github.com/
 | In brief on UNIX:
 | Install git:
@@ -22,10 +23,12 @@ In order to set up Denigma locally just do the following
 
 2. Fork Denigma:
 -----------------
+
 | git clone https://github.com/hevok/denigma
 
 3. Start Denigma:
 ------------------
+
 | cd denigma
 | virtualenv env
 | . env/bin/activate
@@ -36,11 +39,13 @@ In order to set up Denigma locally just do the following
 
 4. Change Denigma:
 -------------------
+
 | git commit -am "Brief description of the change."
 | git push origin master
 
 5. Keep Denigma Updated:
 ------------------------
+
 | To update to the latest version of Denigma, pull it from the master:
 | git checkout master
 | git pull
