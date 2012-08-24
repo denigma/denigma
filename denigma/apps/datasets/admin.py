@@ -1,51 +1,13 @@
 from datasets.models import *#Gendr, Ultradian, Adult_Height_Association, BMAL1_Sites_Liver
 from django.contrib import admin
 
+
 class GendrAdmin(admin.ModelAdmin):
     list_display = ('gene_symbol','gene_name', 'alias', 'taxid', 'observation', 'pubmed_id', 'reference', 'classification', 'ensembl_gene_id', 'entrez_gene_id', 'mapping')
     search_fields = ['gene_symbol','gene_name','alias', 'entrez_gene_id', 'pubmed_id', 'reference']
     list_filter = ('mapping', 'taxid', 'classification')
 admin.site.register(Gendr, GendrAdmin)
 
-
-class TypeAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-admin.site.register(Type, TypeAdmin)
-
-
-class AdminGenAge(admin.ModelAdmin):
-    #Change fields to show =
-    list_display = ('symbol',
-                    #'alias',
-                    'name',      
-                    'taxid',
-                    #'description',
-                    'function',
-                    'observation',
-                    #'pubmed_id',
-                    'reference',
-                    #s'classification',
-                    #'manipulation',
-                    #'synergistic_epistasis',
-                    #'antagonistic_epistasis',
-                    'human_homologue',
-                    #'ensembl_gene_id',
-                    #'entrez_gene_id',
-                    #'mapping',
-                    )
-    list_filter = ['taxid',
-                   'classifications',
-                   'mapping'] #'manipulation',   #'classification',
-
-    search_fields = ['symbol', 'name', 'observation', 'alias', 'entrez_gene_id', 'ensembl_gene_id',
-                     'description', 'function', 'human_homologue', 'pubmed_id', 'reference']#'observation', 
-##    fields = ('entrez_gene_id', 'ensembl_gene_id', 'symbol', 'name', 'alias', 'taxid',
-##              'function', 'observation', 'classification', 'classifications', 'lifespan', 'intervention',
-##              'pubmed_id', 'references', 'references',
-##              'mean', 'median', '_25', '_75', 'maximum', 'manipulation')#'pmids'
-
-    filter_horizontal = ['classifications', 'regimen', 'intervention', 'references']
-admin.site.register(GenAge, AdminGenAge)
 
 class ReferenceAdmin(admin.ModelAdmin):
     list_display = ('pmid', 'journal', 'year',  'title')# 'title', 'journal', 'publication_date')#'year'
@@ -67,24 +29,7 @@ class ReferenceAdmin(admin.ModelAdmin):
 ##    get_sites.short_description = 'First Names'
 admin.site.register(Reference, ReferenceAdmin)
 
-class ManipulationTypeInline(admin.StackedInline): #http://charlesleifer.com/blog/self-referencing-many-many-through/
-    model = Manipulation
-    fk_name = 'type_of'
 
-class ManipulationAdmin(admin.ModelAdmin):
-    list_display = ('shortcut', 'name')
-    fields = ('shortcut', 'name', 'type')
-    filter_horizontal = ('type',)
-##    inlines = [ManipulationTypeInline]
-admin.site.register(Manipulation, ManipulationAdmin)
-
-class InterventionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'effect', 'mean', 'median', '_75', 'maximum','pmid')
-    fields = ('name', 'taxid', 'effect', 'mean', 'median', '_25', '_75', 'maximum','pmid', 'references', 'manipulation')
-    search_fields = ['name', 'pmid', 'effect']    
-    #raw_id_fields = ('reference',)
-    filter_horizontal = ('references','manipulation',)
-admin.site.register(Intervention, InterventionAdmin)
 
 class ChangeAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'gender', 'comparision', 'start', 'stop', 'tissue', 'pmid', 'reference', 'taxid')
@@ -256,17 +201,7 @@ class AcetylationAdmin(admin.ModelAdmin):
     list_display = ('ensembl_gene', 'h4k8', 'h4k12', 'h4k16', 'h3k9', 'h3k14', 'h3k18', 'h3k23', 'h3k27', 'h2ak7', 'h2bk11', 'h2bk16')
 admin.site.register(Acetylation, AcetylationAdmin)
 
-class RegimenAdmin(admin.ModelAdmin):
-    list_display = ('shortcut', 'name')
-admin.site.register(Regimen, RegimenAdmin)
 
-class LifespanAdmin(admin.ModelAdmin):
-    list_display = ('shortcut', 'name')
-admin.site.register(Lifespan, LifespanAdmin)
-
-##class SpeciesAdmin(admin.ModelAdmin):
-##    list_dispaly = ('taxid',)
-##admin.site.register(Species, SpeciesAdmin)
 
 class HumanBrainMethylationChangesAdmin(admin.ModelAdmin):
     list_display = ('name', 'chr', 'genomic_position_in_bp', 'symbol', 'distance_to_tss', 'stage_i_p_value_crblm', 'stage_i_p_value_fctx', 'stage_i_p_value_pons', 'stage_i_p_value_tctx', 'stage_ii_p_value_crblm', 'stage_ii_p_value_fctx', 'beta_coefficient_range', 'adjusted_r2_estimates_from_stage_i_crblm', 'adjusted_r2_estimates_from_stage_i_fctx', 'adjusted_r2_estimates_from_stage_i_pons', 'adjusted_r2_estimates_from_stage_i_tctx')

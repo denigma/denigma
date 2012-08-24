@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Taxonomy(models.Model):
     superkingdom = models.CharField(max_length=54, blank=True)
     tribe = models.CharField(max_length=87, blank=True)
@@ -71,10 +72,12 @@ class Taxonomy(models.Model):
     genus = models.CharField(max_length=147, blank=True)
     temperature = models.FloatField(null=True, blank=True)
     misspellings = models.TextField(blank=True)
+
     class Meta:
         db_table = u'taxonomy'
+
     def __unicode__(self):
-        return self.taxid
+        return u"{0} {1}".format(self.taxid, self.scientific_name)
         
 ##class Classsification(models.Model):
 ##    name = models.CharField(max_length=20)

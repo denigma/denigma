@@ -1,19 +1,5 @@
 from django.db import models
 
-# Create your models here.
-class Regimen(models.Model):
-    name = models.CharField(max_length=40)
-    shortcut = models.CharField(max_length=20)
-    description = models.TextField()
-    def __unicode__(self):
-        return self.shortcut
-
-class Lifespan(models.Model):
-    name = models.CharField(max_length=40)
-    shortcut = models.CharField(max_length=20)
-    def __unicode__(self):
-        return self.shortcut
-
 
 class Reference(models.Model):
     pmid = models.IntegerField(blank=True, null=True) #) # 
@@ -57,6 +43,7 @@ class Reference(models.Model):
     database_provider = models.CharField(max_length=100, blank=True)
     language = models.CharField(max_length=100, blank=True)
     email = models.EmailField(max_length=75, blank=True)
+
     class Meta():
         db_table = u'reference'        
     
@@ -73,10 +60,10 @@ class Reference(models.Model):
         elif self.title:
             return self.title
         else:
-            return self.pmid
+            return u'{0}'.format(self.pmid)
     
     def __unicode__(self):
-        return "%s" % self.pmid
+        return u"{0} {1}".format(self.pmid, self.title)
 
 
 class Signature(models.Model):
@@ -94,6 +81,7 @@ class Signature(models.Model):
     def __unicode__(self):
         return self.symbol
 
+
 class Author(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -101,49 +89,6 @@ class Author(models.Model):
 
     def __unicode__(self):
         return u'%s %s' % (self.first.name, self.last_name)
-
-class Manipulation(models.Model):
-    shortcut = models.CharField(max_length=10, null=True, blank=True)
-    name = models.CharField(max_length=50, null=True, blank=True)
-    type = models.ManyToManyField('self', symmetrical=False, related_name='type_of', blank=True)
-    #type = models.ManyToManyField('self', through='ManipulationType', symmetrical=False, related_name='type_of', blank=True)
-
-##    def add_manipulation_type(self, manipulation):
-##        relationship
-    
-    def __unicode__(self):
-        return self.name
-    
-    class Meta():
-        db_table = u'manipulation'
-
-##class ManipulationType(models.Model):
-##    from_manipulation = models.ForeignKey(Manipulation, related_name='from_manipulation')
-##    to_manipulation = models.ForeignKey(Manipulation, related_name='to_manipulation')
-##
-##    class Meta():
-##        db_table = u'manipulation_type'
-##        
-
-class Intervention(models.Model):
-    name = models.CharField(max_length=250)
-    taxid = models.IntegerField(blank=True, null=True)
-    background = models.CharField(max_length=250, blank=True)
-    sex = models.CharField(max_length=25, blank=True)
-    lifespans = models.CharField(max_length=25, blank=True)
-    effect = models.TextField(blank=True)
-    mean = models.CharField(max_length=15, null=True, blank=True)
-    median = models.CharField(max_length=15, null=True, blank=True)
-    _25 = models.CharField(max_length=15, null=True, blank=True)
-    _75 = models.CharField(max_length=15, null=True, blank=True)
-    maximum = models.CharField(max_length=15, null=True, blank=True)
-    pmid = models.CharField(max_length=250, blank=True)
-    references = models.ManyToManyField(Reference, blank=True)
-    manipulation = models.ManyToManyField(Manipulation, blank=True)
-    
-##    species = models.ManyToManyField(Species)
-    def __unicode__(self):
-        return self.name
 
 
 class Gendr(models.Model):
@@ -156,8 +101,8 @@ class Gendr(models.Model):
     function = models.CharField(max_length=500, blank=True)
     observation = models.TextField(blank=True)
     classification = models.CharField(max_length=10)
-    regimen = models.ManyToManyField(Regimen)
-    lifespan = models.ManyToManyField(Lifespan)
+    regimen = models.ManyToManyField('lifespan.Regimen')
+    lifespan = models.ManyToManyField('lifespan.Assay')
     taxid = models.IntegerField()
     pubmed_id = models.CharField(max_length=87, blank=True)
     reference = models.CharField(max_length=250, blank=True)
@@ -171,59 +116,6 @@ class Gendr(models.Model):
     def lifespans(self):
         return Lifespan.objects.filter(gendr__lifespan=self).all()
 
-
-class Type(models.Model):
-    name = models.CharField(max_length=25)
-    def __unicode__(self):
-        return self.name
-
-
-class GenAge(models.Model):  # Rename to Entity AgeFactor
-    entrez_gene_id = models.IntegerField(null=True, blank=True)
-    #geneid = models.ForeignKey(Gene, blank=True)   # Or Genes
-    mapping = models.IntegerField(null=True, blank=True)
-    ensembl_gene_id = models.CharField(max_length=18, blank=True)
-    symbol = models.CharField(max_length=13, blank=True)   # Rename to symbol.
-    name = models.CharField(max_length=244, blank=True)    # Rename to name.
-    alias = models.CharField(max_length=270, blank=True)
-    function = models.TextField(blank=True)    # Manually curated functional description field.
-    description = models.TextField(blank=True) # Automatically populated field for functional descriptions.
-    functional_description = models.TextField(blank=True)    
-    observation = models.TextField(blank=True)
-    classification = models.CharField(max_length=20, blank=True)
-    classifications = models.ManyToManyField('annotations.Classification')
-    regimen = models.ManyToManyField(Regimen, blank=True)
-    lifespan = models.ManyToManyField(Lifespan)
-    diet_regimen = models.CharField(max_length=250, blank=True)
-    life_span = models.CharField(max_length=250, blank=True)   
-    taxid = models.IntegerField(null=True, blank=True)
-    #species = models.ManyToManyField(Taxonomy)
-    pubmed_id = models.CharField(max_length=250, blank=True)
-    reference = models.CharField(max_length=250, blank=True)
-    references = models.ManyToManyField(Reference, blank=True)
-    mean = models.CharField(max_length=15, null=True, blank=True)
-    median = models.CharField(max_length=15, null=True, blank=True)
-    maximum = models.CharField(max_length=15, null=True, blank=True)
-    _75 = models.CharField(max_length=15, null=True, blank=True)
-    _25 = models.CharField(max_length=15, null=True, blank=True)
-    manipulation = models.CharField(max_length=250, null=True, blank=True)
-    intervention = models.ManyToManyField(Intervention, blank=True)
-    gene_intervention = models.CharField(max_length=250, null=True, blank=True)
-    synergistic_epistasis = models.CharField(max_length=33, blank=True)
-    antagonistic_epistasis = models.CharField(max_length=216, blank=True)
-    human_homologue = models.CharField(max_length=18, blank=True)
-    note = models.CharField(max_length=250, null=True, blank=True)
-    type = models.CharField(max_length=25, null=True, blank=True) # Gene, or drug
-    types = models.ManyToManyField(Type, blank=True)
-    
-    
-    def __unicode__(self):
-        return self.symbol
-
-    def data(self):
-        return self.entrez_gene_id, self.symbol, self.name, self.alias
-
-    data = property(data)
 
 class Change(models.Model):
     name = models.CharField(max_length=250)
@@ -316,6 +208,7 @@ class ClockModulator(models.Model):
     
     used Rna nucleotide accession version with __startwith clausal to map the remaining 4
     '''
+
     
 class HumanGenes(models.Model):
     mapping = models.IntegerField(null=True, blank=True)
@@ -350,6 +243,7 @@ class HumanGenes(models.Model):
     def __unicode__(self):
         return self.gene_symbol
 
+
 class JoanneGenes(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
     mapping = models.IntegerField(null=True, blank=True)
@@ -369,6 +263,7 @@ class JoanneGenes(models.Model):
     def __unicode__(self):
         return self.gene_symbol
 
+
 class MurineImprinted(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
     mapping = models.IntegerField(null=True, blank=True)
@@ -379,6 +274,7 @@ class MurineImprinted(models.Model):
     gene_name = models.CharField(max_length=74)
     classification = models.CharField(max_length=5)
     taxid = 10090
+
 
 class NewLongevityRegulators(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
