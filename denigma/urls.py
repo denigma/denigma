@@ -50,6 +50,7 @@ urlpatterns += patterns("",
     url(r'^todos/', include('todos.urls')),
     url(r'^experts/', include('experts.urls')),
     url(r'^pastebin/', include('pastebin.urls')),
+    url(r'^grappeli/', include('grappelli.urls')),
 )
 
 if settings.SERVE_MEDIA:

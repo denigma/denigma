@@ -295,6 +295,9 @@ DATABASES = {
 STATIC_ROOT = "$PROJECT_ROOT/media"
 TEMPLATE_DIRS = ["$PROJECT_ROOT/templates"]
 ADMIN_MEDIA_PREFIX = '/django/contrib/admin/media/'
+
+GRAPPELLI = False
+
 EOF
 
     if [ -n "$AWS_ACCESS_KEY" ]; then

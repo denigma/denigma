@@ -301,3 +301,14 @@ try:
     from key import *
 except ImportError:
     pass
+
+# Load the alternative admin interface:
+try:
+    if GRAPPELLI:
+        INSTALLED_APPS.insert(0, "grappelli")
+        GRAPPELLI_ADMIN_HEADLINE = 'Denigma'
+        GRAPPELLI_ADMIN_TITLE = 'Denigma'
+        ADMIN_MEDIA_PREFIX = STATIC_URL + 'grappelli/' # for grappelli 2.3.8 only.
+except ImportError:
+   pass
+

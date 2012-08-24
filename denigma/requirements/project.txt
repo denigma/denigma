@@ -14,3 +14,4 @@ PIL		# Used by gallery.
 #-e svn+http://django-tagging.googlecode.com/svn/trunk/#egg=django-tagging
 boto            # AWS API. 
 django-taggit   # Provides tagging functionality. 
+django-grappelli==2.3.8 # Alternative admin design with additional functionality.
