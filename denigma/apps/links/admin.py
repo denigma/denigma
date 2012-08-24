@@ -8,9 +8,9 @@ from links.models import Link
 
 
 class LinkAdmin(admin.ModelAdmin):
-    list_display = ('title', 'link', 'description', 'language', 'visibility', 'site')
+    list_display = ('title', 'link', 'description', 'creation', 'visibility', 'site')
     date_hierarchy = 'creation'
-    list_filter = ('visibility', 'site', 'creation', 'category')
+    list_filter = ('visibility', 'site', 'creation', 'category', 'language')
     search_fields = ('title', 'description', 'url')
     fieldsets = ((None, {'fields': ('title', 'description', 'url')}),
                  (_('Attributes'), {'fields': ('language', 'category',)}),
