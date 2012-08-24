@@ -12,21 +12,26 @@ In order to set up Denigma locally just do the following
 (Ubuntu or at least a UNIX environment is recommanded):
 
 1. Git in:
+
 Go to the GIT bootcamp: https://github.com/
 
 In brief on UNIX:
 
-Install git:
+Install git::
+
 sudo apt-get git
 
-Configure git with your name and e-mail:
+Configure git with your name and e-mail::
+
 git config --global user.name "FULL NAME"
 git config --global user.email email@address.com
 
-2. Fork Denigma:
+2. Fork Denigma::
+
 git clone https://github.com/hevok/denigma
 
-3. Start Denigma:
+3. Start Denigma::
+
 cd denigma
 virtualenv env
 . env/bin/activate
@@ -35,11 +40,14 @@ denigma/manage.py syncdb --all
 denigma/manage.py migrate --fake
 denigma/manage.py runserver
 
-4. Change Denigma:
+4. Change Denigma::
+
 git commit -am "Brief description of the change."
 git push origin master
 
 5. Keep Denigma Updated:
-To update to the latest version of Denigma, pull it from the master:
+
+To update to the latest version of Denigma, pull it from the master::
+
 git checkout master
 git pull
