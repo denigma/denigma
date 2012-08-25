@@ -1,7 +1,9 @@
+"""Annotation information majorly from external databases."""
 from django.db import models
 
 
 class Taxonomy(models.Model):
+    """Defines groups of biological organisms."""
     superkingdom = models.CharField(max_length=54, blank=True)
     tribe = models.CharField(max_length=87, blank=True)
     litter_rate = models.IntegerField(null=True, blank=True)
@@ -74,21 +76,17 @@ class Taxonomy(models.Model):
     misspellings = models.TextField(blank=True)
 
     class Meta:
-        db_table = u'taxonomy'
+        db_table = u"taxonomy" # rename table to annotations_taxonomy.
+        verbose_name_plural = u"taxonomies"
 
     def __unicode__(self):
         return u"{0} {1}".format(self.taxid, self.scientific_name)
         
-##class Classsification(models.Model):
-##    name = models.CharField(max_length=20)
-##
-##class Gene(models.Model):
-##    entrez_gene_id = models.IntegerField(primary_key=True)
-##    models.ManyToManyField(Classification)
 
 class Animal(models.Model):
     alternative_names = models.CharField(max_length=21, blank=True) # Field name made lowercase.
     taxid = models.IntegerField(null=True, blank=True) # Field name made lowercase.
+
     def __unicode__(self):
         return self.alternative_names
 
@@ -108,10 +106,14 @@ class Species(models.Model):
     def __unicode__(self):
         return self.common_name 
 
+    class Meta:
+        verbose_name_plural = u"species"
+
 
 class DiscontinuedId(models.Model):
     discontinued_id = models.IntegerField(primary_key=True)
     entrez_gene_id = models.IntegerField()
+
     def __unicode__(self):
         return u'%s, %s' % (self.discontinued_id, self.entrez_gene_id)
 
@@ -141,8 +143,9 @@ class Candidate(models.Model):
     rat_homolog_symbol = models.CharField(max_length = 500, default='', blank=True)
     human_homolog_symbol = models.CharField(max_length = 500, default='', blank=True)
     dr = models.FloatField(null=True, blank=True)
+
     class Meta:
-        db_table = u'Candidate'
+        db_table = u'Candidate' # Rename and move to datasets_candidates?
 
 
 class Entrez(models.Model):
@@ -164,6 +167,12 @@ class Entrez(models.Model):
     imgt_gene_db = models.CharField(max_length=16, blank=True)
     taxid = models.IntegerField()
 
+    def __unicode__(self):
+        return self.symbol
+
+    class Meta:
+         verbose_name_plural = u"entrez"
+
 
 class GO(models.Model):
     taxid = models.IntegerField()
@@ -174,8 +183,12 @@ class GO(models.Model):
     go_term = models.CharField(max_length=193)
     pmid = models.CharField(max_length=17, blank=True)
     category = models.CharField(max_length=9)
+
     def __unicode__(self):
         return u'%s, %s %s %s' % (self.go_id, self.go_term, self.entrez_gene_id, entrez_gene_id)
+
+    class Meta:
+         verbose_name = u"GO"
 
 
 class SGD_features(models.Model):
@@ -196,6 +209,12 @@ class SGD_features(models.Model):
     sequence_version = models.CharField(max_length=43)
     description = models.TextField(blank=True)
 
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = u"SGD feature"
+
 
 class SGD_gene_association(models.Model):
     sgd_id = models.CharField(max_length=10)
@@ -211,11 +230,18 @@ class SGD_gene_association(models.Model):
     date = models.IntegerField()
     source = models.CharField(max_length=9)
 
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = u"SGD gene association"
+
 
 class Classification(models.Model):
     title = models.CharField(max_length=30)
     name = models.CharField(max_length=30)
     shortcut = models.CharField(max_length=5)
+
     def __unicode__(self):
         return self.title
 
@@ -227,6 +253,9 @@ class Gene(models.Model):
     gene_symbol = models.CharField(max_length=30, blank=True)
     classes = models.CharField(max_length=30, blank=True)
 
+    def __unicode__(self):
+        return self.gene_symbol
+
 
 class HomoloGene(models.Model):
     hid = models.IntegerField()
@@ -236,25 +265,12 @@ class HomoloGene(models.Model):
     protein_gi = models.IntegerField()
     protein_accession = models.CharField(max_length=14)
 
+    def __unicode__(self):
+        return self.gene_symbol
 
-#class Entry(models.Model):
-#    name = models.CharField(max_length=10)
+    class Meta:
+        verbose_name = u"HomoloGene"
 
-#class Blog(models.Model):
-#    entry = models.ManyToManyField(Entry)
-#    title = models.CharField(max_length=10)
-    
-##class EnsemblHomolog(models.Model):
-##    ensembl_gene_id_a = models.CharField(max_length=18, db_index=True)
-##    ensembl_gene_id_b = models.CharField(max_length=18, db_index=True)
-##    homology_type = models.CharField(max_length=25, db_index=True)
-##    ds = models.FloatField(blank=True)
-##    dn = models.FloatField(blank=True)
-##    percentage_identity_a = models.IntegerField()
-##    percentage_identity_b = models.IntegerField()
-##    taxid_a = models.IntegerField()
-##    taxid_b = models.IntegerField()
-##    potential_homolog = models.BooleanField()
 
 class InParanoid(models.Model):
     group_number = models.IntegerField()
@@ -262,6 +278,17 @@ class InParanoid(models.Model):
     ensembl_gene_id_b = models.CharField(max_length=20)
     taxid_a = models.IntegerField()
     taxid_b = models.IntegerField()
+
+    def __unicode__(self):
+        return u"{0}: {1} ({2}) {3} ({4})".format(self.group_number, 
+                                                  self.ensembl_gene_id_a,
+                                                  self.taxid_a, 
+                                                  self.ensembl_gene_id_b,
+                                                  self.taxid_b)
+
+    class Meta:
+        verbose_name = u"InParanoid"
+
 
 class gene2ensembl(models.Model):
     taxid = models.IntegerField(db_index=True)
@@ -272,10 +299,28 @@ class gene2ensembl(models.Model):
     protein_accession = models.CharField(max_length=14)
     ensembl_protein_id = models.CharField(max_length=18)
 
+    def __unicode__(self):
+        return u"{0} {1} {2} {3} {4} {5} {6}".format(self.taxid,
+                                                 self.entrez_gene_id,
+                                                 self.ensembl_gene_id,
+                                                 self.rna_nucleotide_accession,
+                                                 self.ensembl_rna_id,
+                                                 self.protein_accession.
+                                                 self.protein_id)
+
+    class Meta:
+        verbose_name_plural = u"Gene2ensembl"
+
+
 class EnsemblEntrezGeneId(models.Model):
     ensembl_gene_id = models.CharField(max_length=18)
     entrez_gene_id = models.IntegerField()
     taxid = models.IntegerField()
+
+    def __unicode__(self):
+        return u"{0} {1} {2}".format(self.ensembl_gene_id, self.entrez_gene_id,
+                                     self.taxid)
+
 
 class Gen(models.Model):
     entrez_gene_id = models.IntegerField(primary_key=True)
@@ -322,6 +367,9 @@ class Gen(models.Model):
     dr_essential_ortholog = models.BooleanField()
     clock_modulator_ortholog = models.BooleanField()
 
+    def __unicode__(self):
+        return self.gene_symbol
+
 
 class Ortholog(models.Model):
     ortholog = models.IntegerField()
@@ -330,6 +378,15 @@ class Ortholog(models.Model):
     gene = models.IntegerField()
     gene_symbol = models.CharField(max_length=20, blank=True)
     gene_taxid = models.IntegerField()
+
+    def __unicode__(self):
+        return u"{0}: {1} {2} | {3}: {4} {5}".format(self.ortholog, 
+                                                     self.ortholog_symbol,
+                                                     self.ortholog_taxid,
+                                                     self.gene_id,
+                                                     self.gene_symbol,
+                                                     self.gene_taxid)
+
 
 class Entrez_Gene(models.Model):
     entrez_gene_id = models.IntegerField(primary_key = True)
@@ -349,6 +406,58 @@ class Entrez_Gene(models.Model):
     wormbase_id = models.CharField(max_length=14, blank=True)
     imgt_gene_db = models.CharField(max_length=16, blank=True)
     taxid = models.IntegerField()
+
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+       verbose_name = u"Entrez gene"
+
+# The following modules are in development:
+
+##class Entity(models.Model):
+##    """An entity which can be everything which has attributes."""
+##    #type = models.Choice(# or M2M
+##    name = models.CharField(max_length=250)
+##    db = model.ForeignKey(DB)
+##    attributes = model.ManyToManyField(Attribute)
+##    entity = models.ManyToManyField('Entity')
+##    modification = models.ManyToManyField('Modification')
+
+##class Relation(models.Model):
+##    a = models.ForeignKey(Entity, related_name='source') # parent
+##    b = models.ForeignKey(Entity, related_name='target') # child
+##    name = model.CharField(max_length=250)
+##    description = models.TextField(blank=True)
+##    directed = models.BooleanField()
+##    modification = models.ManyToManyField('Modification')
+
+##class Modification(models.Model):
+##    pass
+
+##class DB(models.Model):
+##    """A source DB."""
+##    name = models.CharField()
+##    description = models.TextField()
+##
+##class Attribute(models.Model):
+##    name = models.CharField()
+##    value = models.CharField()
+
+
+# The following models were depricated:
+
+##class EnsemblHomolog(models.Model):
+##    ensembl_gene_id_a = models.CharField(max_length=18, db_index=True)
+##    ensembl_gene_id_b = models.CharField(max_length=18, db_index=True)
+##    homology_type = models.CharField(max_length=25, db_index=True)
+##    ds = models.FloatField(blank=True)
+##    dn = models.FloatField(blank=True)
+##    percentage_identity_a = models.IntegerField()
+##    percentage_identity_b = models.IntegerField()
+##    taxid_a = models.IntegerField()
+##    taxid_b = models.IntegerField()
+##    potential_homolog = models.BooleanField()
 
 ##class member(models.Model):
 ##    member_id = models.IntegerField() #Too long, should be integer
@@ -404,33 +513,3 @@ class Entrez_Gene(models.Model):
 ##    taxid_b int NOT NULL,
 ##    db varchar(38) NOT NULL,
 ##    score int NOT NULL)'''
-
-    
-##class Entity(models.Model):
-##    """An entity which can be everything which has attributes."""
-##    #type = models.Choice(# or M2M
-##    name = models.CharField(max_length=250)
-##    db = model.ForeignKey(DB)
-##    attributes = model.ManyToManyField(Attribute)
-##    entity = models.ManyToManyField('Entity')
-##    modification = models.ManyToManyField('Modification')
-
-##class Relation(models.Model):
-##    a = models.ForeignKey(Entity, related_name='source') # parent
-##    b = models.ForeignKey(Entity, related_name='target') # child
-##    name = model.CharField(max_length=250)
-##    description = models.TextField(blank=True)
-##    directed = models.BooleanField()
-##    modification = models.ManyToManyField('Modification')
-
-##class Modification(models.Model):
-##    pass
-
-##class DB(models.Model):
-##    """A source DB."""
-##    name = models.CharField()
-##    description = models.TextField()
-##
-##class Attribute(models.Model):
-##    name = models.CharField()
-##    value = models.CharField()
