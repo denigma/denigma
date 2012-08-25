@@ -3,6 +3,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from contact.forms import ContactForm
+from django.contrib import messages
+from django.utils.translation import ugettext
+from django.core.urlresolvers import reverse
 
 
 def contact(request):
@@ -26,14 +29,19 @@ def contact(request):
             send_mail(
                 cd['subject'],
                 cd['message'],
-                cd.get('eimal', 'noreply@example.com'),
-                ['siteowner@example.com'],
+                cd.get('email', 'age@liv.ac.uk'), #'noreply@example.com'),
+                ['age@liv.ac.uk'],                #['siteowner@example.com'],
             )
-            return HttpResponseRedirect('/contact/thanks/')
+
+            messages.add_message(request, messages.SUCCESS,
+                ugettext("The enquiry has been sent."))
+            #return HttpResponseRedirect('/contact/thanks') # thanks/
+            return render_to_response('contact/thanks.html', context_instance=RequestContext(request))
+
     else:
         form = ContactForm(
             initial={'subject':'I love your site!'})
-    return render_to_response('contact_form.html', {'form':form}, context_instance=RequestContext(request))
+    return render_to_response('contact/form.html', {'form':form}, context_instance=RequestContext(request))
 
 ##    return render_to_response('contact_form.html', {
 ##        'errors':errors,
@@ -41,3 +49,6 @@ def contact(request):
 ##        'message':request.POST.get('message', ''),
 ##        'email':request.POST.get('email', ''),
 ##    })
+
+def thanks(request):
+    render_to_response('contact/thanks')
