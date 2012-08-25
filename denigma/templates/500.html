@@ -1,13 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C/DTD HTML 4.01/EN"
-    "http://www.w3.org/TR/html14/strict.dtd">
-<html lang="en">
-<head>
-    <title>Page unavailable</title>
-</head>
-<body>
-    <h1>Page unavailable</h1>
+{% extends "site_base.html" %}
+
+{% block title %}Page unavailable{% endblock %}
+
+{% block content %}
     <p>Sorry, but the requested page is unavalable due to a server hiccup.</p>
     
-    <p>Our engineers have been notified, so check later.</p>
-</body>
-</html>
+    <p>Denigma's core engineers have been notified, so check later.</p>
+{% endblock %}
