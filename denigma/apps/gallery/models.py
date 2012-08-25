@@ -9,3 +9,6 @@ class PhotoUrl(models.Model):
     def save(self):
         self.uploaded = datetime.now()
         models.Model.save(self)
+
+    def __unicode__(self):
+        return self.url.split('/')[-1]
