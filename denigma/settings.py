@@ -28,10 +28,11 @@ INTERNAL_IPS = [
 ]
 
 ADMINS = [
-     ("Hevok", "hevok@denigma.de"),
+     ("Hevok", "age@liv.ac.uk"),
 ]
 
 CONTACT_EMAIL = "age@liv.ac.uk"
+DEFAULT_FROM_EMAIL = "age@liv.ac.uk"
 
 MANAGERS = ADMINS
 
@@ -299,8 +300,10 @@ except ImportError:
 # key.py can be used to introduce access and screte keys such as used for S3.
 try:
     from key import *
+    print "Imported key. Email-backend = %s" % EMAIL_BACKEND
 except ImportError:
     pass
+    print "Did not import key."
 
 # Load the alternative admin interface:
 try:
