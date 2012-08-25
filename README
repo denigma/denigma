@@ -26,12 +26,13 @@ git clone https://github.com/hevok/denigma
 
 3. Get the Might to Create Virtual Environments:
 curl http://python-distribute.org/distribute_setup.py | python
-curl -O https://raw.github.com/pypa/virtualenv/master/virtualenv.py
-
-4. Start Denigma:
+easy_install virtualenv
 cd denigma
 virtualenv env
 . env/bin/activate
+
+4. Start Denigma
+apt-get install python-dev libmysqlclient16-dev # Database-backend.
 pip install -r denigma/requirements/project.txt
 denigma/manage.py syncdb --all
 denigma/manage.py migrate --fake
