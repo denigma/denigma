@@ -304,7 +304,7 @@ except ImportError:
 
 # Load the alternative admin interface:
 try:
-    if GRAPPELLI:
+    if "GRAPPELLI" in globals() and GRAPPELLI:
         INSTALLED_APPS.insert(0, "grappelli")
         GRAPPELLI_ADMIN_HEADLINE = 'Denigma'
         GRAPPELLI_ADMIN_TITLE = 'Denigma'
