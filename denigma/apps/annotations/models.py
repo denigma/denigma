@@ -2,6 +2,19 @@
 from django.db import models
 
 
+# Classifications Ontology:
+
+class Classification(models.Model):
+    title = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)
+    shortcut = models.CharField(max_length=5)
+
+    def __unicode__(self):
+        return self.title
+
+
+# Species annotations:
+
 class Taxonomy(models.Model):
     """Defines groups of biological organisms."""
     superkingdom = models.CharField(max_length=54, blank=True)
@@ -110,42 +123,7 @@ class Species(models.Model):
         verbose_name_plural = u"species"
 
 
-class DiscontinuedId(models.Model):
-    discontinued_id = models.IntegerField(primary_key=True)
-    entrez_gene_id = models.IntegerField()
-
-    def __unicode__(self):
-        return u'%s, %s' % (self.discontinued_id, self.entrez_gene_id)
-
-
-class Candidate(models.Model):
-    entrez_gene_id = models.IntegerField()
-    gene_symbol = models.CharField(max_length=40, blank=True)
-    gene_name = models.TextField(blank=True)
-    t = models.IntegerField()
-    s = models.IntegerField()
-    specificity =  models.FloatField(null=True, blank=True)
-    p_value = models.FloatField(db_column='p-Value', null=True, blank=True)
-    taxid = models.IntegerField()
-    query = models.CharField(max_length = 50)
-    classification = models.CharField(max_length = 30)    
-    seed = models.BooleanField()
-    yeast_homolog_id = models.CharField(max_length = 500, default='', blank=True)
-    worm_homolog_id = models.CharField(max_length = 500, default='', blank=True)
-    fly_homolog_id = models.CharField(max_length = 500, default='', blank=True)
-    mouse_homolog_id = models.CharField(max_length = 500, default='', blank=True)
-    rat_homolog_id = models.CharField(max_length = 500, default='',  blank=True)
-    human_homolog_id = models.CharField(max_length = 500, default='', blank=True)
-    yeast_homolog_symbol = models.CharField(max_length = 500, default='', blank=True)
-    worm_homolog_symbol = models.CharField(max_length = 500, default='', blank=True)
-    fly_homolog_symbol = models.CharField(max_length = 500, default='' , blank=True)
-    mouse_homolog_symbol = models.CharField(max_length = 500, default='', blank=True)
-    rat_homolog_symbol = models.CharField(max_length = 500, default='', blank=True)
-    human_homolog_symbol = models.CharField(max_length = 500, default='', blank=True)
-    dr = models.FloatField(null=True, blank=True)
-
-    class Meta:
-        db_table = u'Candidate' # Rename and move to datasets_candidates?
+# Gene annotations:
 
 
 class Entrez(models.Model):
@@ -172,6 +150,72 @@ class Entrez(models.Model):
 
     class Meta:
          verbose_name_plural = u"entrez"
+
+
+class Entrez_Gene(models.Model):
+    entrez_gene_id = models.IntegerField(primary_key = True)
+    gene_symbol = models.CharField(max_length=32)
+    gene_name = models.CharField(max_length=1, blank=True) # Is empty!!!!
+    locus_tag = models.CharField(max_length=25, blank=True)
+    symbol_from_nomenclature_authority = models.CharField(max_length=29, blank=True)
+    full_name_from_nomenclature_autority = models.CharField(max_length=251, blank=True)
+    ensembl_gene_id = models.CharField(max_length=18, blank=True)
+    mirbase = models.CharField(max_length=9, blank=True)
+    mgi = models.CharField(max_length=11, blank=True)
+    hgnc = models.IntegerField(blank=True)
+    mim = models.IntegerField(blank=True)
+    hprd = models.IntegerField(blank=True)
+    rgd = models.IntegerField(blank=True)
+    ratmap = models.CharField(max_length=1, blank=True) # Is empty!!!!
+    wormbase_id = models.CharField(max_length=14, blank=True)
+    imgt_gene_db = models.CharField(max_length=16, blank=True)
+    taxid = models.IntegerField()
+
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+       verbose_name = u"Entrez gene"
+
+
+class DiscontinuedId(models.Model):
+    discontinued_id = models.IntegerField(primary_key=True)
+    entrez_gene_id = models.IntegerField()
+
+    def __unicode__(self):
+        return u'%s, %s' % (self.discontinued_id, self.entrez_gene_id)
+
+
+class gene2ensembl(models.Model):
+    taxid = models.IntegerField(db_index=True)
+    entrez_gene_id = models.IntegerField(db_index=True)
+    ensembl_gene_id = models.CharField(max_length=18, db_index=True)
+    rna_nucleotide_accession = models.CharField(max_length=14)
+    ensembl_rna_id = models.CharField(max_length=18)
+    protein_accession = models.CharField(max_length=14)
+    ensembl_protein_id = models.CharField(max_length=18)
+
+    def __unicode__(self):
+        return u"{0} {1} {2} {3} {4} {5} {6}".format(self.taxid,
+                                                 self.entrez_gene_id,
+                                                 self.ensembl_gene_id,
+                                                 self.rna_nucleotide_accession,
+                                                 self.ensembl_rna_id,
+                                                 self.protein_accession.
+                                                 self.protein_id)
+
+    class Meta:
+        verbose_name_plural = u"Gene2ensembl"
+
+
+class EnsemblEntrezGeneId(models.Model):
+    ensembl_gene_id = models.CharField(max_length=18)
+    entrez_gene_id = models.IntegerField()
+    taxid = models.IntegerField()
+
+    def __unicode__(self):
+        return u"{0} {1} {2}".format(self.ensembl_gene_id, self.entrez_gene_id,
+                                     self.taxid)
 
 
 class GO(models.Model):
@@ -237,15 +281,6 @@ class SGD_gene_association(models.Model):
         verbose_name = u"SGD gene association"
 
 
-class Classification(models.Model):
-    title = models.CharField(max_length=30)
-    name = models.CharField(max_length=30)
-    shortcut = models.CharField(max_length=5)
-
-    def __unicode__(self):
-        return self.title
-
-
 class Gene(models.Model):
     entrez_gene_id = models.IntegerField(primary_key=True)
     taxid = models.IntegerField()
@@ -255,71 +290,6 @@ class Gene(models.Model):
 
     def __unicode__(self):
         return self.gene_symbol
-
-
-class HomoloGene(models.Model):
-    hid = models.IntegerField()
-    taxid = models.IntegerField()
-    entrez_gene_id = models.IntegerField()
-    gene_symbol = models.CharField(max_length=42)
-    protein_gi = models.IntegerField()
-    protein_accession = models.CharField(max_length=14)
-
-    def __unicode__(self):
-        return self.gene_symbol
-
-    class Meta:
-        verbose_name = u"HomoloGene"
-
-
-class InParanoid(models.Model):
-    group_number = models.IntegerField()
-    ensembl_gene_id_a = models.CharField(max_length=20)
-    ensembl_gene_id_b = models.CharField(max_length=20)
-    taxid_a = models.IntegerField()
-    taxid_b = models.IntegerField()
-
-    def __unicode__(self):
-        return u"{0}: {1} ({2}) {3} ({4})".format(self.group_number, 
-                                                  self.ensembl_gene_id_a,
-                                                  self.taxid_a, 
-                                                  self.ensembl_gene_id_b,
-                                                  self.taxid_b)
-
-    class Meta:
-        verbose_name = u"InParanoid"
-
-
-class gene2ensembl(models.Model):
-    taxid = models.IntegerField(db_index=True)
-    entrez_gene_id = models.IntegerField(db_index=True)
-    ensembl_gene_id = models.CharField(max_length=18, db_index=True)
-    rna_nucleotide_accession = models.CharField(max_length=14)
-    ensembl_rna_id = models.CharField(max_length=18)
-    protein_accession = models.CharField(max_length=14)
-    ensembl_protein_id = models.CharField(max_length=18)
-
-    def __unicode__(self):
-        return u"{0} {1} {2} {3} {4} {5} {6}".format(self.taxid,
-                                                 self.entrez_gene_id,
-                                                 self.ensembl_gene_id,
-                                                 self.rna_nucleotide_accession,
-                                                 self.ensembl_rna_id,
-                                                 self.protein_accession.
-                                                 self.protein_id)
-
-    class Meta:
-        verbose_name_plural = u"Gene2ensembl"
-
-
-class EnsemblEntrezGeneId(models.Model):
-    ensembl_gene_id = models.CharField(max_length=18)
-    entrez_gene_id = models.IntegerField()
-    taxid = models.IntegerField()
-
-    def __unicode__(self):
-        return u"{0} {1} {2}".format(self.ensembl_gene_id, self.entrez_gene_id,
-                                     self.taxid)
 
 
 class Gen(models.Model):
@@ -332,6 +302,7 @@ class Gen(models.Model):
     positive_gerontogene = models.BooleanField()
     negative_gerontogene = models.BooleanField()
     positive_ageing_suppressor = models.BooleanField()
+
     negative_ageing_suppressor = models.BooleanField()
     longevity_associated = models.BooleanField()
     ageing_differential = models.BooleanField()
@@ -371,6 +342,72 @@ class Gen(models.Model):
         return self.gene_symbol
 
 
+class Candidate(models.Model):
+    entrez_gene_id = models.IntegerField()
+    gene_symbol = models.CharField(max_length=40, blank=True)
+    gene_name = models.TextField(blank=True)
+    t = models.IntegerField()
+    s = models.IntegerField()
+    specificity =  models.FloatField(null=True, blank=True)
+    p_value = models.FloatField(db_column='p-Value', null=True, blank=True)
+    taxid = models.IntegerField()
+    query = models.CharField(max_length = 50)
+    classification = models.CharField(max_length = 30)    
+    seed = models.BooleanField()
+    yeast_homolog_id = models.CharField(max_length = 500, default='', blank=True)
+    worm_homolog_id = models.CharField(max_length = 500, default='', blank=True)
+    fly_homolog_id = models.CharField(max_length = 500, default='', blank=True)
+    mouse_homolog_id = models.CharField(max_length = 500, default='', blank=True)
+    rat_homolog_id = models.CharField(max_length = 500, default='',  blank=True)
+    human_homolog_id = models.CharField(max_length = 500, default='', blank=True)
+    yeast_homolog_symbol = models.CharField(max_length = 500, default='', blank=True)
+    worm_homolog_symbol = models.CharField(max_length = 500, default='', blank=True)
+    fly_homolog_symbol = models.CharField(max_length = 500, default='' , blank=True)
+    mouse_homolog_symbol = models.CharField(max_length = 500, default='', blank=True)
+    rat_homolog_symbol = models.CharField(max_length = 500, default='', blank=True)
+    human_homolog_symbol = models.CharField(max_length = 500, default='', blank=True)
+    dr = models.FloatField(null=True, blank=True)
+
+    class Meta:
+        db_table = u'Candidate' # Rename and move to datasets_candidates?
+
+
+# Homologs annotations:
+
+class HomoloGene(models.Model):
+    hid = models.IntegerField()
+    taxid = models.IntegerField()
+    entrez_gene_id = models.IntegerField()
+    gene_symbol = models.CharField(max_length=42)
+    protein_gi = models.IntegerField()
+    protein_accession = models.CharField(max_length=14)
+
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = u"HomoloGene"
+
+
+class InParanoid(models.Model):
+    group_number = models.IntegerField()
+    ensembl_gene_id_a = models.CharField(max_length=20)
+    ensembl_gene_id_b = models.CharField(max_length=20)
+    taxid_a = models.IntegerField()
+    taxid_b = models.IntegerField()
+
+    def __unicode__(self):
+        return u"{0}: {1} ({2}) {3} ({4})".format(self.group_number, 
+                                                  self.ensembl_gene_id_a,
+                                                  self.taxid_a, 
+                                                  self.ensembl_gene_id_b,
+                                                  self.taxid_b)
+
+    class Meta:
+        verbose_name = u"InParanoid"
+
+
+
 class Ortholog(models.Model):
     ortholog = models.IntegerField()
     ortholog_symbol = models.CharField(max_length=20, blank=True)
@@ -387,31 +424,6 @@ class Ortholog(models.Model):
                                                      self.gene_symbol,
                                                      self.gene_taxid)
 
-
-class Entrez_Gene(models.Model):
-    entrez_gene_id = models.IntegerField(primary_key = True)
-    gene_symbol = models.CharField(max_length=32)
-    gene_name = models.CharField(max_length=1, blank=True) # Is empty!!!!
-    locus_tag = models.CharField(max_length=25, blank=True)
-    symbol_from_nomenclature_authority = models.CharField(max_length=29, blank=True)
-    full_name_from_nomenclature_autority = models.CharField(max_length=251, blank=True)
-    ensembl_gene_id = models.CharField(max_length=18, blank=True)
-    mirbase = models.CharField(max_length=9, blank=True)
-    mgi = models.CharField(max_length=11, blank=True)
-    hgnc = models.IntegerField(blank=True)
-    mim = models.IntegerField(blank=True)
-    hprd = models.IntegerField(blank=True)
-    rgd = models.IntegerField(blank=True)
-    ratmap = models.CharField(max_length=1, blank=True) # Is empty!!!!
-    wormbase_id = models.CharField(max_length=14, blank=True)
-    imgt_gene_db = models.CharField(max_length=16, blank=True)
-    taxid = models.IntegerField()
-
-    def __unicode__(self):
-        return self.gene_symbol
-
-    class Meta:
-       verbose_name = u"Entrez gene"
 
 # The following modules are in development:
 
