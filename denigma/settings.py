@@ -225,7 +225,7 @@ INSTALLED_APPS = [
 #    "sekizai", # For javascipt and css management.
     
     # Pinax
-    "pinax.apps.account",
+    "account",
     "pinax.apps.signup_codes",
     
     # project
@@ -300,10 +300,8 @@ except ImportError:
 # key.py can be used to introduce access and screte keys such as used for S3.
 try:
     from key import *
-    print "Imported key. Email-backend = %s" % EMAIL_BACKEND
 except ImportError:
     pass
-    print "Did not import key."
 
 # Load the alternative admin interface:
 try:
