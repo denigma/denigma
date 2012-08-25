@@ -1,38 +1,3 @@
-Setting up Denigma
-==================
-
-In order to set up Denigma locally just do the following:
-
-1. Git in:
-Go to the GIT bootcamp: https://github.com/
-In brief on UNIX. Install git:
-sudo apt-get git
-Configure git with your name and e-mail:
-git config --global user.name "FULL NAME"
-git config --global user.email email@address.com
-
-2. Fork Denigma:
-git clone https://github.com/hevok/denigma
-
-3. Start Denigma:
-cd denigma
-virtualenv env
-. env/bin/activate
-pip install -r denigma/requirements/project.txt
-denigma/manage.py syncdb --all
-denigma/manage.py migrate --fake
-denigma/manage.py runserver
-
-4. Change Denigma:
-git commit -am "Brief description of the change."
-git push origin master
-
-5. Keep Denigma Updated:
-To update to the latest version of Denigma, pull it from the master.
-git checkout master
-git pull
-
-
 Deploying Denigma
 =================
 
@@ -77,6 +42,8 @@ cp -rf /home/denigma/env/lib/python2.6/site-packages/pinax_theme_bootstrap/stati
 
 However removing this files again does not abolish the styling, immediatly but with some delay. Possible the cookies forget about it or something.
 
+
+
 'bool' object has no attribute 'status code'
 --------------------------------------------
 
@@ -93,12 +60,14 @@ In the wiki view.html the load markup tag raised an error. Including the "django
 
 CSRF Problem
 ------------
+
 Submit forms such as those in the Wiki edit and search need to be tagged with a {% csrf_token %}.
-This worked fine for the edit form [http://jordanmessina.com/2010/05/24/django-1-2-csrf-verification-failed/]. However it failed on the search form. Deactivating by commenting out the django.middleware.csrf.CsrfViewMiddleware in the MIDDLEWARE_CLASSES resolved this problem, but is only a suboptimal solution. Adding a RequestContext handler to the render_to_response in the search view which was already present in the edit view resolved this issue [http://stackoverflow.com/questions/3197321/csrf-error-in-django].
+This worked fine for the edit form [findhttp://jordanmessina.com/2010/05/24/django-1-2-csrf-verification-failed/]. However it failed on the search form. Deactivating by commenting out the django.middleware.csrf.CsrfViewMiddleware in the MIDDLEWARE_CLASSES resolved this problem, but is only a suboptimal solution. Adding a RequestContext handler to the render_to_response in the search view which was already present in the edit view resolved this issue [http://stackoverflow.com/questions/3197321/csrf-error-in-django].
 
 
 mysql in virtual env 
 --------------------
+
 For interfacing with mysql of the purpose of database evolition libmysqlclient16-dev library is required [http://stackoverflow.com/questions/8868545/installing-mysql-for-python-within-virtual-environment].
 Note that the Ubuntu 12.04 repository does not contain these spcific library anymore, but rather that provides libmysqlclient-dev [http://askubuntu.com/questions/137788/problem-with-deleting-libmysqlclient16-dev-from-repository-of-12-04].
 
@@ -114,6 +83,7 @@ Runnig python denigma/manage.py migrate --list just returns that ENGINE is depri
 
 Adding South
 ------------
+
 South enables schema and data migration of a django-backend database [http://www.djangopro.com/2011/01/django-database-migration-tool-south-explained/].
 Migrations should be version-controlled [http://stackoverflow.com/questions/10083130/what-is-the-correct-way-to-deal-with-db-migration-while-using-south-django-and].
 In order to add South to Django project, development & production do the following [http://stackoverflow.com/questions/4035296/adding-south-to-django-project-development-production]: 
@@ -132,6 +102,78 @@ Alternatively to get a fresh Django database with existing South migrations sync
 ./manage.py migrate --fake
 
 If required south can be resetted [http://lincolnloop.com/blog/2011/jun/20/resetting-your-south-migrations/; https://groups.google.com/forum/?fromgroups#!topic/south-users/PxEskcnkibc[1-25]; https://groups.google.com/forum/#!msg/south-users/iIQT8ZWs2cI/GQ4kONoT5Q4J[1-25]]
+
+
+Moving a Model from one App to another
+--------------------------------------
+
+Moving models between apps is straightforward:
+[http://stackoverflow.com/questions/1258130/how-do-i-migrate-a-model-out-of-one-django-app-and-into-a-new-one].
+
+python manage.py schemamigration specific create_cat --auto
+python manage.py schemamigraiion common drop_cat --auto
+
+Data migration was done with hardcoded SQL:
+
+datasets:
+type
+Regimen
+Lifespan -> assay
+Manipulation
+Intervention
+GenAge -> factor
+datasets_genage_classifications 
+datasets_genage_intervention
+datasets_genage_lifespan 
+datasets_genage_references
+datasets_genage_regimen
+datasets_genage_types
+datasets_gendr_lifespan
+datasets_gendr_regimen
+datasets_intervention_manipulation 
+datasets_intervention_references
+
+lifespan:
+regimen
+type
+manipulation
+intervention
+factor
+type
+lifespan_factor_classifications 
+lifespan_factor_intervention
+lifespan_factor_lifespan 
+lifespan_factor_references
+lifespan_factor_regimen
+lifespan_factor_types
+datasets_gendr_lifespan
+datasets_gendr_regimen
+lifespan_intervention_manipulation 
+lifespan_intervention_references
+
+RENAME TABLE datasets_genage_classifications TO lifespan_factor_classifications;
+RENAME TABLE datasets_genage_intervention TO lifespan_factor_intervention;
+RENAME TABLE datasets_genage_lifespan TO lifespan_factor_assay;
+RENAME TABLE datasets_genage_regimen to lifespan_factor_regimen;
+RENAME TABLE datasets_genage_types TO datasets_factor_types;
+RENAME TABLE datasets_intervention_manipulation TO lifespan_intervention_manipulation;
+RENAME TABLE datasets_intervention_references TO lifespan_intervention_references;
+RENAME TABLE datasets_type TO lifespan_type;
+RENAME TABLE datasets_regimen TO lifespan_regimen;
+RENAME TABLE datasets_lifespan TO lifespan_assay;
+RENAME TABLE manipulation TO lifespan_manipulation;
+RENAME TABLE datasets_intervention TO lifespan_intervention;
+RENAME TABLE datasets_genage TO lifespan_factor;
+RENAME TABLE datasets_genage_references TO lifespan_factor_references;
+RENAME TABLE datasets_factor_types TO lifespan_factor_types;
+ALTER TABLE lifespan_factor_regimen CHANGE genage_id factor_id INT;
+ALTER TABLE lifespan_factor_assay CHANGE genage_id factor_id INT;
+ALTER TABLE lifespan_factor_assay CHANGE lifespan_id assay_id INT;
+ALTER TABLE lifespan_factor_intervention CHANGE genage_id factor_id INT;
+ALTER TABLE lifespan_factor_references CHANGE genage_id factor_id INT;
+ALTER TABLE lifespan_factor_types CHANGE genage_id factor_id INT;
+ALTER TABLE lifespan_factor_classifications CHANGe genage_id factor_id INT;
+
 
 mysql-ebs
 ---------
@@ -168,6 +210,7 @@ bash denigma/reconnect-ebs.sh
 bash denigma/open-port.sh
 
 sudo bash ./denigma/aws-django -n denigma -d https://github.com/hevok/denigma/raw/master/denigma.tgz -s "/s" -H <DNS> -D denigma -U denigma -P <PASSWORD>
+
 
 
 Transferring data onto EC2
@@ -276,11 +319,11 @@ redirect subdomains bar one: http://stackoverflow.com/questions/9712352/redirect
 
 The solution to this dilema is to set up an A-Record in the DNS configuration fo the domain provider. The nameserver of the provider can be used and the elastic IP address inserted into the configuration.
 
+
 Domain Redirection
 -----------------
 
 In frame redirection causes that numerous external links are not functional.
-
 
 
 UNIX
@@ -320,6 +363,7 @@ Pricing for EBS snapshots:
 
 Pinax
 -----
+
 Pinax is a framework build on top of Django that aims to provide several reusable apps.
 The latest development version is 0.9b1.dev10. The basic website tab is defined in templates/site_base.html and the actual text is localizable resource files like locale/LC_MESSAGES/django.po.
 he django.po files are autogenerated via 
@@ -335,6 +379,7 @@ BitNami
 
 BitNami provides a DjangoStack for deplyoing projects in the cloud. It might be intersting to try their images.
 
+
 Django
 ------
 
@@ -347,6 +392,7 @@ Django allowas ot build high-performing, elegant Web applications quickly.
 
 Generic forms
 -------------
+
 A generic detail form as well as the admin form can not have a modifable created and updated field which are defined in the database model as auto_now_add and auto_now.
 
 
@@ -367,8 +413,10 @@ It can be avoided by enforcing the scrollbar for all pages [http://www.daniweb.c
 
 There are alternative solutions [http://hicksdesign.co.uk/journal/forcing-scrollbars-now-even-better].
 
+
 Comments in CSS
 ---------------
+
 The synthax for commenting in CSS code is enclosing slash-asterisk:
 
 /* comment */
@@ -380,6 +428,7 @@ For details on the synthax and bas data types in CSS see http://www.w3.org/TR/CS
 
 Ctrl + F5 reloads the cached style in the browser.
 
+
 EMAIL
 -----
 
@@ -388,10 +437,16 @@ First Configure the email server yourself or use a third party provider.
 There are for instaance AWS SES Google Apps' gmail [http://stackoverflow.com/questions/5123098/aws-ses-vs-google-apps-gmail].
 
 The Amazon Simple Email Service (SES) can be used under the Free Tier [http://aws.amazon.com/ses/].
-TODO
-====
 
-- Need to get GIT from Denigma server working.
-- restore.sh for restoring a snapshotted database.
-- Automate EC2 instance setup [http://www.turnkeylinux.org/blog/ec2-userdata].
-- Use Fabric for ssh control of Denigma [http://docs.fabfile.org/en/1.4.3/index.html].
+
+Django Verbose names
+--------------------
+
+The representative name of a model in admin can be ovewritten via a meta class:
+
+class Meta:
+    verbose_name = "foo"
+    verbose_name_plural = "foobars"
+
+
+
