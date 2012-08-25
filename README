@@ -11,7 +11,7 @@ In order to set up Denigma locally just do the following
 (Ubuntu or at least a UNIX environment is recommanded):
 
 1. Git in:
-Go to the GIT bootcamp: https://github.com/
+Go to the GIT bootcamp (sign up if you haven't already): https://github.com/
 In brief on UNIX:
 
 sudo apt-get git # install git
