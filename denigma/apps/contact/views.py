@@ -26,12 +26,21 @@ def contact(request):
         form = ContactForm(request.POST)        
         if form.is_valid():
             cd = form.cleaned_data
-            send_mail(
-                cd['subject'],
-                cd['message'],
-                cd.get('email', 'age@liv.ac.uk'), #'noreply@example.com'),
-                ['age@liv.ac.uk'],                #['siteowner@example.com'],
-            )
+            try:
+                send_mail(
+                    cd['subject'],
+                    cd['message'] + " Send by " + cd['email'],
+                    cd.get('email', 'age@liv.ac.uk'), #'noreply@example.com'),
+                    ['age@liv.ac.uk'],                #['siteowner@example.com'],
+                )
+            except:
+                 # Because of the verfication problem with SES.
+                 send_mail(
+                    cd['subject'],
+                    cd['message'] + " Send by " + cd['email'],
+                    cd.get('mail', 'age@liv.ac.uk'),
+                    ['age@liv.ac.uk'],
+                 )
 
             messages.add_message(request, messages.SUCCESS,
                 ugettext("The enquiry has been sent."))
@@ -49,6 +58,3 @@ def contact(request):
 ##        'message':request.POST.get('message', ''),
 ##        'email':request.POST.get('email', ''),
 ##    })
-
-def thanks(request):
-    render_to_response('contact/thanks')
