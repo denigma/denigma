@@ -35,9 +35,9 @@ CONTACT_EMAIL = "age@liv.ac.uk"
 
 MANAGERS = ADMINS
 
-BACKEND = 'sqlite3'  # Either sqlite3 or mysql as well as later on also postgres.
+BACKEND = 'mysql'  # Either sqlite3 or mysql as well as later on also postgres.
 
-if BACKEND == 'mysql':
+if BACKEND == 'sqlite3':
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3", 	 # Add "postgresql_psycopg2", "postgresql", "mysql", "sqlite3" or "oracle".

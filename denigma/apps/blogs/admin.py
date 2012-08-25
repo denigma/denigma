@@ -3,7 +3,11 @@ from django.contrib import admin
 from blogs.models import Blog
 
 
-class AdminBlog(admin.ModelAdmin):
-    pass
+class BlogAdmin(admin.ModelAdmin):
+    list_display = ('title',)
+admin.site.register(Blog, BlogAdmin)
 
-admin.site.register(Blog, AdminBlog)
+#class EntryAdmin(admin.ModelAdmin):
+#    list_display = ('name',)
+#admin.site.register(Entry, EntryAdmin)
+

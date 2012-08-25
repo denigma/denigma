@@ -92,6 +92,7 @@ class Animal(models.Model):
     def __unicode__(self):
         return self.alternative_names
 
+
 class Species(models.Model):
     taxid = models.IntegerField(primary_key=True)
     short_name = models.CharField(max_length=7, blank=True)
@@ -107,25 +108,13 @@ class Species(models.Model):
     def __unicode__(self):
         return self.common_name 
 
-##class Taxonomy(models.Model):
-##    taxid = models.IntegerField(primary_key=True)
-##    short_name = models.CharField(max_length=7, blank=True)
-##    common_name = models.CharField(max_length=14, blank=True)
-##    alternative_names = models.ManyToManyField(Animal)
-##    latin_name = models.CharField(max_length=25, blank=True)
-##    latin_shortcut = models.CharField(max_length=15, blank=True)
-##    number_genes = models.IntegerField(null=True, blank=True)
-##    gendr_genes = models.IntegerField(null=True, blank=True)
-##    gendr_orthologs = models.IntegerField(null=True, blank=True)
-##    gendr_paralogs = models.IntegerField(null=True, blank=True)    
-##        class Meta()
-##        db_table = u'Taxonomy'
 
 class DiscontinuedId(models.Model):
     discontinued_id = models.IntegerField(primary_key=True)
     entrez_gene_id = models.IntegerField()
     def __unicode__(self):
         return u'%s, %s' % (self.discontinued_id, self.entrez_gene_id)
+
 
 class Candidate(models.Model):
     entrez_gene_id = models.IntegerField()
@@ -154,6 +143,7 @@ class Candidate(models.Model):
     dr = models.FloatField(null=True, blank=True)
     class Meta:
         db_table = u'Candidate'
+
 
 class Entrez(models.Model):
     entrez_gene_id = models.IntegerField(primary_key=True)
@@ -206,6 +196,7 @@ class SGD_features(models.Model):
     sequence_version = models.CharField(max_length=43)
     description = models.TextField(blank=True)
 
+
 class SGD_gene_association(models.Model):
     sgd_id = models.CharField(max_length=10)
     gene_symbol = models.CharField(max_length=10)
@@ -220,6 +211,7 @@ class SGD_gene_association(models.Model):
     date = models.IntegerField()
     source = models.CharField(max_length=9)
 
+
 class Classification(models.Model):
     title = models.CharField(max_length=30)
     name = models.CharField(max_length=30)
@@ -227,12 +219,14 @@ class Classification(models.Model):
     def __unicode__(self):
         return self.title
 
+
 class Gene(models.Model):
     entrez_gene_id = models.IntegerField(primary_key=True)
     taxid = models.IntegerField()
     classification = models.ManyToManyField(Classification)
     gene_symbol = models.CharField(max_length=30, blank=True)
     classes = models.CharField(max_length=30, blank=True)
+
 
 class HomoloGene(models.Model):
     hid = models.IntegerField()
@@ -242,12 +236,13 @@ class HomoloGene(models.Model):
     protein_gi = models.IntegerField()
     protein_accession = models.CharField(max_length=14)
 
-class Entry(models.Model):
-    name = models.CharField(max_length=10)
-    
-class Blog(models.Model):
-    entry = models.ManyToManyField(Entry)
-    title = models.CharField(max_length=10)
+
+#class Entry(models.Model):
+#    name = models.CharField(max_length=10)
+
+#class Blog(models.Model):
+#    entry = models.ManyToManyField(Entry)
+#    title = models.CharField(max_length=10)
     
 ##class EnsemblHomolog(models.Model):
 ##    ensembl_gene_id_a = models.CharField(max_length=18, db_index=True)

@@ -147,13 +147,6 @@ admin.site.register(HomoloGene, HomoloGeneAdmin)
 ##    list_filter = ['taxid_a', 'taxid_a',  'homology_type']
 ##admin.site.register(EnsemblHomolog, EnsemblHomologAdmin)
 
-class BlogAdmin(admin.ModelAdmin):
-    list_display = ('title',)
-admin.site.register(Blog, BlogAdmin)
-
-class EntryAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-admin.site.register(Entry, EntryAdmin)
 
 class InParanoidAdmin(admin.ModelAdmin):
     list_display = ('group_number', 'ensembl_gene_id_a', 'ensembl_gene_id_b', 'taxid_a', 'taxid_b')

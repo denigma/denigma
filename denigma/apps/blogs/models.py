@@ -18,7 +18,6 @@ from django.db import models
 ##      created = models.DateTimeField(auto_now_add=True)
 ##      updated = models.DateTomeField(auto_now=True)
 
-
 ##class Entry(models.Model):
 ##    published = models.BooleanField(db_index=True, default=True)
 ##    created = models.DateField(auto_now_add=True)
@@ -33,7 +32,8 @@ from django.db import models
 class Blog(models.Model):
     title = models.CharField(max_length=32)
     date = models.DateTimeField(auto_now_add=True)
-    text = models.TextField()
+    description = models.TextField()
+    #entry = models.ManyToManyField(Entry)
 
     def __unicode__(self):
        return self.title
