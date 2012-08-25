@@ -19,7 +19,6 @@
 
 <link rel="stylesheet" type="text/css"
     href="/site_media/sheets/style.css">
-<img src="/site_media/images/django.jpg">
 
 {% if error_msg %}
     <p class="error">{{ error_msg }}</p>
@@ -37,7 +36,6 @@
     <td><b>Done</b></td>
     <td><b>Stopped</b></td>
     <td><b>del.</b></td>
-</b>
 </tr>
 {% for todo in todos %}
 {% if not todo.done %}
@@ -50,7 +48,7 @@
     <td>{{todo.start_date|date:"Y-m-d"}}</td>
     <td>{{todo.done}}</td>
     <td>{{todo.stop_date|date:"Y-m-d"}}</td>
-    <td><a href="{{todo.id}}/delete"><b>X</b></td>
+    <td><a href="{{todo.id}}/delete"><b>X</b></a></td>
 </tr>
 {% endif %}
 {% endfor %}
@@ -86,7 +84,7 @@
 </body>
 {% endcomment %}
 
-<p>Add a todo:<br>
+<h3>Add a todo:</h3><br>
 <form action="add" method="POST">{% csrf_token %}
     Todo:<input type="text" name="title"><br>
     Importance<select name="importance" />
@@ -100,5 +98,5 @@
     <textarea name="description"></textarea>
     <input type="submit" value="Add">
 </form>
-</p>
+
 {% endblock %}
