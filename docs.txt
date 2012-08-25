@@ -434,9 +434,30 @@ EMAIL
 
 There are two major possibilities to set up an email server.
 First Configure the email server yourself or use a third party provider.
-There are for instaance AWS SES Google Apps' gmail [http://stackoverflow.com/questions/5123098/aws-ses-vs-google-apps-gmail].
+There are for instance AWS SES Google Apps' gmail [http://stackoverflow.com/questions/5123098/aws-ses-vs-google-apps-gmail].
 
 The Amazon Simple Email Service (SES) can be used under the Free Tier [http://aws.amazon.com/ses/].
+
+Django can easily be configured to use the SES service [http://hmarr.com/2011/jan/26/using-amazons-simple-email-service-ses-with-django/] via django-SES.
+
+First of all a Email address was added to the SES account and verified.
+
+django-ses was added to the requirements/project.txt and installed locally.
+
+Both the Email address of ADMINS and CONTACT_EMAIL was set to the Email address, but neither one appeared to be cruical.
+AWS access and secret keys were defined in key.py as well as email backend (nothing else):
+AWS_ACCESS_KEY_ID = 'YOUR-ACCESS-KEY-ID'
+AWS_SECRET_ACCESS_KEY = 'YOUR-SECRET-ACCESS-KEY'
+EMAIL_BACKEND = 'django_ses.SESBackend'
+
+This setup was tested locally by running the server (this was not critical) and going into the
+./manage.py shell
+from django.core.mail import send_mail
+send_mail("Subject", "Text", 'name@xyz.com', ['name@xyz.com'], fail_silently)
+
+Testing now wether the server need to run to get it working.
+
+Messaging via pasted items only works by placing DEFAULT_FROM_EMAIL constant into the settings.
 
 
 Django Verbose names
