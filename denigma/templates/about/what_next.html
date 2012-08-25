@@ -43,21 +43,21 @@
                     <dd>so the singularity can be reached earlier.</dd>
                 {% endif %}
             {% endifsetting %}
-            <dt> <a href="/polls">Vote in a poll</a></td>
+            <dt> <a href="/polls">Vote in a poll</a></dt>
             <dd> So we know the consensus on most important fundamental questions to work on.</dd>
-            <dt> <a href="/wiki">Check out the Wiki</a></td>
+            <dt> <a href="/wiki">Check out the Wiki</a></dt>
             <dd> Innovative Wiki of the next generation to create a common Ontology for computational purposes.</dd>
-            <dt> <a href="/experts">See Experts</a></td>
+            <dt> <a href="/experts">See Experts</a></dt>
             <dd> Get known with the experts of the most fundamental question of life.</dd>
-            <dt> <a href="/blog">Read the Blog</a></td>
+            <dt> <a href="/blog">Read the Blog</a></dt>
             <dd> Study the Blog which contains a selection of article on cutting-edge knowledge and technology as well as news on Denigma and its progress towards singularity.</dd>
-            <dt> <a href="/shorty">Shorten URLs</a></td>
+            <dt> <a href="/shorty">Shorten URLs</a></dt>
             <dd> Denigmafy external URLs via URLs.</dd>
-            <dt> <a href="/gallery">See Gallery</a></td>
+            <dt> <a href="/gallery">See Gallery</a></dt>
             <dd> Upload images/figures/pictures/photos which can be included anywhere in Denigma</dd>
-            <dt> <a href="/tutorial">Do the Tutorial</a></td>
+            <dt> <a href="/tutorial">Do the Tutorial</a></dt>
             <dd> In such you will learn how Denigma can effectivly be altered.</dd>      
-            <dt> <a href="/todos">What's To Do?</a></td>
+            <dt> <a href="/todos">What's To Do?</a></dt>
             <dd> Check out the todos. Grap a task or create a new one. Its up to you to which extend and how you want participate.</dd>
 
         </dl>
@@ -68,9 +68,21 @@
         <li>Design: how it is conceptional build.</li>
         </ol>
         <p>As soon as your Email address is verivied you gain staff status and be able to access the admin interface and get access the tables in Denigma db.</p>
-        <p>Data in Denigma is organized according to application (apps). There are for instance annotations, datasets and expressions.
-        Functionality to Denigma can be easily added by just writing an app.
+        <p>Data in Denigma is organized according to application (apps). There are for instance annotations, datasets, expressions and lifespan apps.</p>
+
+        <p><a href="/admin/annotations"><b>Annotations</b></a> integrates information majorly from external sources such as gene annotation databases.</p>
+
+        <p><a href="/admin/datasets"><b>Datasets</b></a> is a collection of diverse data (e.g. from individual studies) where each table represents a single dataset.</p>
+
+        <p><a href="/admin/expressions"><b>Expressions</b></a> contains transcriptomics or proteomics profiles of gene activity measurements.</p>
+
+        <p><a href="/admin/lifespan"><b>Lifespan</b></a> is most important constitute of Denigma which is dedicated to systematically decipher the aging process and reveal the limits of life. In the lifespan section the probaly most import model are describing the factors with limit lifespan.</p>
+        <p>Functionality to Denigma can be easily added by exting and existing app or just adding a new app.
         A todo can be converted into a DEP (Denigma Enhancement Proposal). This should preferbly written in restructured text.</p>
+        
+       <p>The source code of Denigma is positioned at Git Hub: <a href="https://github.com/hevok/denigma">Denigma Source</a></p>  
+       <p align="center"><i>May the source be with you, Luke!</i></p>
+        
     {% else %}
             {% url acct_login as login_url %}
             
