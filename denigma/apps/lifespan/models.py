@@ -18,6 +18,9 @@ from django.utils.translation import ugettext_lazy as _
 #    
 #    def __unicode__(self):
 #        return self.title
+#
+#    class Meta():
+#         verbose_name_plural = "studies"
 
 
 #class Experiment(models.Model):
@@ -65,6 +68,9 @@ from django.utils.translation import ugettext_lazy as _
 
 #    def __unicode__(self):
 #        return self.name
+#     
+#   class Meta():
+#       verbose_name_plural = "epistases"
 
 
 #class Comparision(models.Model):
@@ -108,6 +114,7 @@ class Regimen(models.Model):
 class Assay(models.Model):
     name = models.CharField(max_length=40)
     shortcut = models.CharField(max_length=20)
+
     def __unicode__(self):
         return self.shortcut
 
@@ -179,8 +186,8 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
     mean = models.CharField(max_length=15, null=True, blank=True)
     median = models.CharField(max_length=15, null=True, blank=True)
     maximum = models.CharField(max_length=15, null=True, blank=True)
-    _75 = models.CharField(max_length=15, null=True, blank=True)
-    _25 = models.CharField(max_length=15, null=True, blank=True)
+    _75 = models.CharField('75%ile', max_length=15, null=True, blank=True)
+    _25 = models.CharField('25%lie', max_length=15, null=True, blank=True)
     manipulation = models.CharField(max_length=250, null=True, blank=True)
     intervention = models.ManyToManyField(Intervention, blank=True)
     gene_intervention = models.CharField(max_length=250, null=True, blank=True)

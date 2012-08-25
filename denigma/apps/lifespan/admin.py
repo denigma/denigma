@@ -34,24 +34,13 @@ admin.site.register(Type, TypeAdmin)
 
 
 class AdminFactor(admin.ModelAdmin):
-    #Change fields to show =
     list_display = ('symbol',
-                    #'alias',
                     'name',      
                     'taxid',
-                    #'description',
                     'function',
                     'observation',
-                    #'pubmed_id',
                     'reference',
-                    #s'classification',
-                    #'manipulation',
-                    #'synergistic_epistasis',
-                    #'antagonistic_epistasis',
                     'human_homologue',
-                    #'ensembl_gene_id',
-                    #'entrez_gene_id',
-                    #'mapping',
                     )
     list_filter = ['taxid',
                    'classifications',
@@ -59,12 +48,16 @@ class AdminFactor(admin.ModelAdmin):
 
     search_fields = ['symbol', 'name', 'observation', 'alias', 'entrez_gene_id', 'ensembl_gene_id',
                      'description', 'function', 'human_homologue', 'pubmed_id', 'reference']#'observation', 
-##    fields = ('entrez_gene_id', 'ensembl_gene_id', 'symbol', 'name', 'alias', 'taxid',
-##              'function', 'observation', 'classification', 'classifications', 'lifespan', 'intervention',
-##              'pubmed_id', 'references', 'references',
-##              'mean', 'median', '_25', '_75', 'maximum', 'manipulation')#'pmids'
-
+    fieldsets = [
+        (None, {'fields': ['symbol', 'name', 'taxid']}),
+        ('Annotation', {'fields': ['entrez_gene_id', 'ensembl_gene_id', 'alias'], 'classes': ['collapse']}),
+        ('Description', {'fields': ['function', 'observation']}),
+        ('Lifespan Impact', {'fields': ['_25', 'mean', 'median', '_75', 'maximum'], 'classes': ['collapse']}),
+        (None, {'fields': ['classifications', 'intervention', 'assay', 'regimen', 'references']}),
+        ('Others', {'fields': ['description', 'pubmed_id', 'reference', 'life_span', 'classification', 'manipulation', 'gene_intervention', 'synergistic_epistasis', 'antagonistic_epistasis', 'human_homologue', 'type', 'types', 'note'], 'classes': ['collapse']})
+    ]        
     filter_horizontal = ['classifications', 'regimen', 'intervention', 'references']
+
 admin.site.register(Factor, AdminFactor)
 
 
