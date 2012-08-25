@@ -6,6 +6,7 @@ from models import Profile
 
 
 def whoiswho(request):
+    """Intended to synchronize Experts with the WhoisAge.""" 
     profiles = [data.user_name for profile in Profile.objects.all()]
     
     from experts import main
@@ -24,9 +25,9 @@ def whoiswho(request):
             
     return HttpResponse("WhoIsWho completed (%s experts)" % len(experts))
  
-def list(request):
-    """Lists all users."""
+def index(request):
+    """Lists all experts."""
     experts = Profile.objects.all()
-    return render_to_response('experts/list.html',
+    return render_to_response('experts/index.html',
                               {'experts':experts},
                               context_instance=RequestContext(request))
