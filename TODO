@@ -1,0 +1,9 @@
+Denigma Enhancment Protocol
+===========================
+
+This are Denigma Enhancment Proposals (DEPs):
+
+- Need to get GIT from Denigma server working.
+- restore.sh for restoring a snapshotted database.
+- Automate EC2 instance setup [http://www.turnkeylinux.org/blog/ec2-userdata].
+- Use Fabric for ssh control of Denigma [http://docs.fabfile.org/en/1.4.3/index.html].
