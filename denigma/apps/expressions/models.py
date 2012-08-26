@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 class YeastDR(models.Model):
     exp = models.FloatField()
@@ -12,8 +11,14 @@ class YeastDR(models.Model):
     mapping = models.IntegerField(null=True, blank=True)
     taxid = 4932
     name = 'wtcrvsyepd1'
+
     def __unicode(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "Yeast DR" # -differential expressed gene
+        verbose_name_plural = verbose_name
+
     
 class Lin2002(models.Model):
     orf = models.CharField(max_length=9)
@@ -28,8 +33,13 @@ class Lin2002(models.Model):
     mapping = models.IntegerField(null=True, blank=True)
     taxid = 4932
     name = 'Lin2002'
+
     def __unicode(self):
-        return 'Lin2002'
+        return gene_symbol
+
+    class Meta:
+       verbose_name = "DR, hxk2 and HAP4OE"
+       verbose_name_plural = verbose_name
 
 class sip2delta_aging(models.Model):
     orf = models.CharField(max_length=11)
@@ -45,8 +55,13 @@ class sip2delta_aging(models.Model):
     concentration = 'sip2'
     incubation = 'age'
     name = 'sip2_aging'
+
     def __unicode(self):
-        return 'sip2_aging'
+        return gene_symbol
+
+    class Meta:
+        verbose_name = "sip2 aging" #  differential expressed gene
+        verbose_name_plural = verbose_name
 
 class sip2delta_wt(models.Model):
     orf = models.CharField(max_length=11)
@@ -62,8 +77,13 @@ class sip2delta_wt(models.Model):
     concentration = 'sip2'
     incubation = 'wt'
     name = 'sip2_wt'
+
     def __unicode(self):
-        return 'sip2_wt'
+        return gene_symbol
+
+    class Meta:
+        verbose_name = "sip2" # differential expressed gene
+        verbose_name_plural = verbose_name
 
 class snf4delta_aging(models.Model):
     orf = models.CharField(max_length=11)
@@ -79,8 +99,13 @@ class snf4delta_aging(models.Model):
     strain = 'YB614'
     concentration = 'snf4'
     incubation = 'age'
+
     def __unicode(self):
-        return 'snf4_aging'
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "snf4 aging" #  differential expressed gene
+        verbose_name_plural = verbose_name
 
 class snf4delta_wt(models.Model):
     orf = models.CharField(max_length=11)
@@ -96,8 +121,13 @@ class snf4delta_wt(models.Model):
     concentration = 'snf4'
     incubation = 'wt'
     name = 'snf4_wt'
+
     def __unicode(self):
-        return 'snf4_wt'
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "snf4" # differential expressed gene
+        verbose_name_plural = verbose_name
 
 class wt_aging(models.Model):
     orf = models.CharField(max_length=11)
@@ -113,10 +143,17 @@ class wt_aging(models.Model):
     concentration = ''
     incubation = 'age'
     name = 'wt_aging'
+
     def __repr__(self):
-        return 'wt_aging'
+        return self.gene_symbol
+
     def __str__(self):
-        return 'wt_aging'
+        return "{0} {1} {2}".format(self.orf, self.gene_symbol, self.fold_change)
+
+    class Meta:
+        verbose_name = "Yeast aging" #  differential expressed gene
+        verbose_name_plural = verbose_name
+
 
 class Rapamycin(models.Model):
     orf = models.CharField(max_length=9)
@@ -134,6 +171,12 @@ class Rapamycin(models.Model):
     mapping = models.IntegerField(null=True, blank=True)
     taxid = 4932
     fold_change = models.FloatField()
+
+    def __unicode__(self):
+       return self.orf
+
+    class Meta:
+        verbose_name = "rapamycin differential expressed gene"
     
 class rapamycin_protein(models.Model):
     protein = models.CharField(max_length=9)
@@ -146,7 +189,14 @@ class rapamycin_protein(models.Model):
     strain = 'BJ5465'
     concentration = '200 nM'
     incubation = 'Rapamycin 70 min'
-    
+
+    def __unicode__(self):
+        return self.protein
+
+    class Meta:
+        verbose_name = "rapamycin differential expressed protein"
+
+
 class AgeMap(models.Model):
     unigene = models.CharField(max_length=9)
     gene_symbol = models.CharField(max_length=13, blank=True)
@@ -166,6 +216,14 @@ class AgeMap(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
     mapping = models.IntegerField(null=True, blank=True)
     taxid = 10090
+
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "AGEMAP"
+        verbose_name_plural = verbose_name
+
 
 class AgingSignature(models.Model):
     mapping = models.IntegerField(null=True, blank=True)
@@ -206,8 +264,14 @@ class AgingSignature(models.Model):
     q_value = models.FloatField()
     taxid = models.IntegerField(null=True, blank=True)
     classification = models.CharField(max_length=8)
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "Aging signature"
+        verbose_name_plural = "Aging signature"
+
 
 class AgingSignatureChi(models.Model):
     mapping = models.IntegerField(null=True, blank=True)
@@ -245,8 +309,14 @@ class AgingSignatureChi(models.Model):
     p_value = models.FloatField()
     taxid = models.IntegerField()
     classification = models.CharField(max_length=5)
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "Aging signature (chi)"
+        verbose_name_plural = "Aging signature (chi)"
+
 
 class AgingLui2010(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -256,6 +326,14 @@ class AgingLui2010(models.Model):
     pubmedid = models.IntegerField()
     reference = models.CharField(max_length=16)
     classification = models.CharField(max_length=5)
+
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "Aging gene expression changes originating from juvenile growth"
+        verbose_name_plural = "Aging gene expression changes originating from juvenile growth"
+
 
 class AgingTranscriptome(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -314,8 +392,13 @@ class AgingTranscriptome(models.Model):
     XM_894155 --> This sequence has been replaced by NM_030563. --> entrez_gene_id = 80750
     BC004022 --> entrez_gene_id = 80750
     '''
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "Aging transcriptome"
+
     
 class Cc3(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -337,8 +420,14 @@ class Cc3(models.Model):
     cycling = models.CharField(max_length=54)
     taxid = 6239
     classification = 'CD'
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "Light and temperature exntrained constant cold (3-day)"
+        verbose_name_plural = verbose_name
+
 
 class Cd(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -385,8 +474,12 @@ class Cd(models.Model):
     Changed Gene Igk-V19-14 in Dataset Cd from 16092 to 667881
     Changed Gene Mem1 in Dataset Cd from 17280 to 382620
     '''
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "constant darkness ciracdian gene"
 
 
 class CrSignature(models.Model):
@@ -400,8 +493,14 @@ class CrSignature(models.Model):
     p_value = models.FloatField()
     classification = models.CharField(max_length=5)
     taxid = 10090
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "DR-signature"
+        verbose_name_plural = "DR-signature"
+    
 
 class CrTranscriptome(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -451,8 +550,13 @@ class CrTranscriptome(models.Model):
     NM_021299 --> entrez_gene_id = 56248 chromosome = 19
     '''
     taxid = 10090
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+       verbose_name = "DR-transcriptome"
+
 
 class Dd(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -466,8 +570,14 @@ class Dd(models.Model):
     ensembl_gene_id = models.CharField(max_length=12)
     taxid = 7227
     classification = 'CD'
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+       verbose_name = "Light and temperature entrained constant darkness (3-day)"
+       verbose_name_plural = verbose_name
+
 
 class Dd3(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -489,8 +599,14 @@ class Dd3(models.Model):
     cycling = models.CharField(max_length=54)
     taxid = 6239
     classification = 'CD'
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "Light and temperature entrained constant darkness (3-day)"
+        verbose_name_plural = verbose_name
+
 
 class FastingInducedGenes(models.Model):
     gene_symbol = models.CharField(max_length=8, blank=True)
@@ -500,8 +616,13 @@ class FastingInducedGenes(models.Model):
     mapping = models.IntegerField(null=True, blank=True)
     taxid = 6239
     classification = 'DD DI'
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "fasting-induced gene"
+
 
 class ImprintedGeneNetwork(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -526,8 +647,13 @@ class ImprintedGeneNetwork(models.Model):
     Changed Gene GTL2 in Dataset ImprintedGeneNetwork from 14893 to 17263
     '''
     taxid = 10090
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "Imprinted aging differential expressed gene"
+
 
 class JuvenileInduced(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -540,8 +666,13 @@ class JuvenileInduced(models.Model):
     lung = models.FloatField()
     taxid = 10090
     classification = 'JI'
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "juvenile-induced gene"
+
 
 class JuvenileSuppressed(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -573,9 +704,13 @@ class JuvenileSuppressed(models.Model):
     gene_symbol = '2600005O03Rik'; gene_name = 'RIKEN cDNA 2600005O03 gene', probe_set = '1452912_at'
     gene_symbol = 'Dscc1'; gene_name = ' defective in sister chromatid cohesion 1 homolog (S. cerevisiae)' entrez_gene_id = 72107 
     '''
+
     def __unicode__(self):
         return self.gene_symbol
-##
+
+    class Meta:
+        verbose_name = "juvenile-suppressed gene"
+
 
 class Ld(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -589,8 +724,13 @@ class Ld(models.Model):
     ensembl_gene_id = models.CharField(max_length=12)
     taxid = 7227
     classification = 'CD'
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "Light/dark cycling circadian gene"
+
 
 class Ld3(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -612,8 +752,14 @@ class Ld3(models.Model):
     cycling = models.CharField(max_length=54)
     taxid = 6239
     classification = 'CD'
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "Light and temperature driven light/dark (day-3)"
+        verbose_name_plural = verbose_name
+
 
 class Lddd6(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -636,8 +782,14 @@ class Lddd6(models.Model):
     cycling = models.CharField(max_length=52)
     taxid = 6239
     classification = 'CD'
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+         verbose_name = "Light and Temperature entrained light/dark and constant darkness"
+         verbose_name_plural = verbose_name
+
 
 class PostnatalGeneticProgram(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -659,10 +811,15 @@ class PostnatalGeneticProgram(models.Model):
     p_value_1_vs_5_wk_rat_kidney = models.FloatField()
     classification = models.CharField(max_length=5)
     taxid = 10090
+
     def __unicode__(self):
         return self.gene_symbol
+
     class Meta:
         db_table = u'postnatal_genetic_program'
+        verbose_name = "postnatal genetic program"
+        verbose_name_plural = "postnatal genetic program"
+
 
 class Swindell2009(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -717,8 +874,14 @@ class Swindell2009(models.Model):
     it could be "Entpd4" --> entrez_gene_id = 67464
         
     '''
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "CR-signature"
+        verbose_name_plural = "CR-signature"
+
 
 class Wc5(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -740,8 +903,14 @@ class Wc5(models.Model):
     cycling = models.CharField(max_length=54)
     taxid = 6239
     classification = 'CD'
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "Light and temperature driven warm/cold cycling (day-5)"
+        verbose_name_plural = verbose_name
+
 
 class Wccc6(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -764,8 +933,14 @@ class Wccc6(models.Model):
     cycling = models.CharField(max_length=52)
     taxid = 6239
     classification = 'CD'
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = "Light and temperature entrained warm/cold and constant cold"
+        verbose_name_plural = verbose_name
+
 
 class miRNA_MSC_all(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -779,6 +954,14 @@ class miRNA_MSC_all(models.Model):
     b = models.FloatField()
     taxid = 9606
 
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "MSC miRNA "
+        verbose_name_plural = "MSC miRNA"
+
+
 class miRNA_MSC_young(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
     mapping = models.IntegerField(null=True, blank=True)
@@ -790,6 +973,14 @@ class miRNA_MSC_young(models.Model):
     adj_p_val = models.FloatField()
     b = models.FloatField()
     taxid = 9606
+
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "MSC young miRNA"
+        verbose_name_plural = "MSC young miRNA"
+
 
 class miRNA_young_old(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -803,6 +994,14 @@ class miRNA_young_old(models.Model):
     b = models.FloatField()
     taxid = 9606
 
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "MSC young vs. old miRNA"
+        verbose_name_plural = "MSC young vs. old miRNA"
+
+
 class WormDR(models.Model):
     probe_id = models.CharField(max_length=25)
     entrez_gene = models.CharField(max_length=24, blank=True)
@@ -813,6 +1012,12 @@ class WormDR(models.Model):
     fold_change = models.FloatField()
     entrez_gene_id = models.IntegerField(null=True, blank=True)
     mapping = models.IntegerField(null=True, blank=True)
+
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "nematode DR-differential expressed gene"
 
 
 class S288c_caffeine(models.Model):
@@ -842,6 +1047,14 @@ class S288c_caffeine(models.Model):
     incubation = "Caffeine 30 min"
     strain =  "S288c"
 
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "yeast 9 mM caffeine (S288c)"
+        verbose_name_plural = "yeast 9 mM caffeine (S288c)"
+
+
 class S288c_rapamycin(models.Model):
     probe_id = models.IntegerField()
     unigene_title = models.CharField(max_length=1, blank=True)
@@ -868,6 +1081,14 @@ class S288c_rapamycin(models.Model):
     concentration = "200 ng/mL"
     incubation = "Rapamycin 30 min"
     strain = "S288c"
+
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "yeast 200 ng/mL rapamycin 30 min (S288c)"
+        verbose_name_plural = "yeast 200 ng/mL rapamycin 30 min (S288c)"
+
 
 class Sigma2000_rapamycin(models.Model):
     probe_id = models.IntegerField()
@@ -896,6 +1117,14 @@ class Sigma2000_rapamycin(models.Model):
     incubation = "Rapamycin 30 min"
     strain =  "Sigma 2000"
 
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "yeast 200 ng/mL rapamcyin 30 min (Sigma 2000)"
+        verbose_name_plural = "yeast 200 ng/mL rapamycin 30 min (Sigma 2000)"
+
+
 class Sigma2000_caffeine(models.Model):
     probe_id = models.IntegerField()
     unigene_title = models.CharField(max_length=1, blank=True)
@@ -922,7 +1151,15 @@ class Sigma2000_caffeine(models.Model):
     concentration = "9 mM"
     incubation = "Caffeine 30 min"
     strain =  "Sigma 2000"
-    
+
+    def __unicode__(self):
+       return self.gene_symbol    
+
+    class Meta:
+        verbose_name = "yeast 9 mM caffeine 30 min (Sigma 2000)"
+        verbose_name_plural = "yeast 9 mM caffeine 30 min (Sigma 2000)"
+
+
 class W303a_0p3mM_caffeine(models.Model):
     probe_id = models.IntegerField()
     unigene_title = models.CharField(max_length=1, blank=True)
@@ -949,6 +1186,14 @@ class W303a_0p3mM_caffeine(models.Model):
     concentration = "0.3 mM"
     incubation = "Caffeine 30 min"
     strain =  "W303a"
+
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "yeast 0.3 mM caffeine 30 min (W303a)"
+        verbose_name_plural = "yeast 0.3 mM caffeine 30 min (W303a)"
+
 
 class W303a_1mM_caffeine(models.Model):
     probe_id = models.IntegerField()
@@ -977,6 +1222,14 @@ class W303a_1mM_caffeine(models.Model):
     incubation = "Caffeine 30 min"
     strain =  "W303a"
 
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "yeast 1 mM caffeine 30 min (W303a)"
+        verbose_name_plural = "yeast 1 mM caffeine 30 min (W303a)"
+
+
 class W303a_1ng_mL_rapamycin(models.Model):
     probe_id = models.IntegerField()
     unigene_title = models.CharField(max_length=1, blank=True)
@@ -1003,6 +1256,14 @@ class W303a_1ng_mL_rapamycin(models.Model):
     concentration = "1 ng/mL"
     incubation = "Rapamycin 30 min"
     strain =  "W303a"
+
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "yeast 1 ng/mL rapamycin 30 min (W303a)"
+        verbose_name_plural = "yeast 1 ng/mL rapamycin 30 min (W303a)"
+
 
 class W303a_200ng_mL_rapamycin(models.Model):
     probe_id = models.IntegerField()
@@ -1031,6 +1292,14 @@ class W303a_200ng_mL_rapamycin(models.Model):
     incubation = "Rapamycin 30 min"
     strain =  "W303a"
 
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "yeast 200 ng/mL rapamycin 30 min (W303a)"
+        verbose_name_plural = "yeast 200 ng/mL rapamcyin 30 min (W303a)"
+
+
 class W303a_3mM_caffeine(models.Model):
     probe_id = models.IntegerField()
     unigene_title = models.CharField(max_length=1, blank=True)
@@ -1058,6 +1327,14 @@ class W303a_3mM_caffeine(models.Model):
     incubation = "Caffeine 30 min"
     strain =  "W303a"
 
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "yeast 3 mM caffeine 30 min (W303a)"
+        verbose_name_plural = "yeast 3 mM caffeine 30 min (W303a)"
+
+
 class W303a_5ng_mL_rapamycin(models.Model):
     probe_id = models.IntegerField()
     unigene_title = models.CharField(max_length=1, blank=True)
@@ -1084,6 +1361,13 @@ class W303a_5ng_mL_rapamycin(models.Model):
     concentration = "5 ng/mL"
     incubation = "Rapamycin 30 min"
     strain =  "W303a"
+
+    def __unicode__(self):
+       return self.gene_symbol
+
+    class Meta:
+         verbose_name = "yeast 5 ng/mL rapamycin 30 min (W303a)"
+         verbose_name_plural = "yeast 5 ng/mL rapamycin 30 min (W303a)"
 
 
 class W303a_6mM_caffeine(models.Model):
@@ -1113,6 +1397,14 @@ class W303a_6mM_caffeine(models.Model):
     incubation = "Caffeine 30 min"
     strain =  "W303a"
 
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+         verbose_name = "yeast 6 mM caffeine 30 min (W303a)"
+         verbose_name_plural = "yeast 6 mM caffeine 30 min (W303a)"
+
+
 class W303a_9mM_caffeine(models.Model):
     probe_id = models.IntegerField()
     unigene_title = models.CharField(max_length=1, blank=True)
@@ -1139,6 +1431,13 @@ class W303a_9mM_caffeine(models.Model):
     concentration = "9 mM"
     incubation = "Caffeine 30 min"
     strain =  "W303a"
+
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "yeast 9 mM caffeine 30 min (W303a)"
+        verbose_name_plural = "yeast 9 mM caffeine 30 min (W303a)"
 
 
 class BY4741_rapamycin_200ng_mL_1h(models.Model):
@@ -1168,6 +1467,14 @@ class BY4741_rapamycin_200ng_mL_1h(models.Model):
     incubation = "Rapamycin 60 min"
     strain =  "BY4741"
 
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "yeast 200 ng/mL rapamycin 60 min (BY4741)"
+        verbose_name_plural = "yeast 200 ng/mL rapamycin 60 min (BY4741)"
+
+
 class BY4741_rapamycin_30min(models.Model):
     probe_id = models.CharField(max_length=12)
     unigene_title = models.CharField(max_length=1, blank=True)
@@ -1195,6 +1502,14 @@ class BY4741_rapamycin_30min(models.Model):
     incubation = "Rapamycin 30 min"
     strain =  "BY4741"
 
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+       verbose_name = "yeast rapamcyin 30 min (BY4741)"
+       verbose_name_plural = "yeast rapamycin 30 min (BY4741)"
+     
+
 class FlyDR_trn(models.Model):
     probe_id = models.CharField(max_length=23)
     entrez_gene = models.CharField(max_length=37, blank=True)
@@ -1206,6 +1521,13 @@ class FlyDR_trn(models.Model):
     fold_change = models.FloatField()
     entrez_gene_id = models.IntegerField(null=True, blank=True)
     mapping = models.IntegerField(null=True, blank=True)
+
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "fruit fly DR-translational" # differential expressed gene
+        verbose_name_plural = verbose_name
 
 
 class FlyDR_10day(models.Model):
@@ -1220,6 +1542,14 @@ class FlyDR_10day(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
     mapping = models.IntegerField(null=True, blank=True)
 
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "fruit fly DR-transcriptional (10 days)" # differential expressed gene
+        verbose_name_plural = verbose_name
+
+
 class FlyDR_40day(models.Model):
     probe_id = models.CharField(max_length=25)
     entrez_gene = models.CharField(max_length=37, blank=True)
@@ -1231,6 +1561,14 @@ class FlyDR_40day(models.Model):
     fold_change = models.FloatField()
     entrez_gene_id = models.IntegerField(null=True, blank=True)
     mapping = models.IntegerField(null=True, blank=True)
+
+    def __unicode__(self):
+       return self.gene_symbol
+
+    class Meta:
+       verbose_name = "fruit fly DR-transcriptional (40 days)" #  differential expressed genes 
+       verbose_name_plural = verbose_name
+
 
 class Spermidine(models.Model):
     probe_id = models.CharField(max_length=20, primary_key=True)
@@ -1256,6 +1594,11 @@ class Spermidine(models.Model):
     chromosome_location = models.CharField(max_length=1, blank=True)  #Delete, its empty
     fold_change = models.FloatField()
 
+    def __unicode__(self):
+        return self.gene_symbol
+   
+    class Meta:
+        verbose_name = "spermidine differential expressed gene" 
 
 
 class PI3K_m_vs_hx(models.Model):
@@ -1284,8 +1627,14 @@ class PI3K_m_vs_hx(models.Model):
     log2 = models.FloatField(blank=True)
     expressed = models.BooleanField(blank=True)
     p_value = models.FloatField(blank=True)
+
     def __unicode__(self):
         return self.ensembl_id
+
+    class Meta:
+        verbose_name = "PI3K/age-1 m vs. hx"
+        verbose_name_plural = verbose_name
+ 
 
 class PI3K_m_vs_N2(models.Model):
     ensembl_id = models.CharField(max_length=23, blank=True)
@@ -1308,8 +1657,14 @@ class PI3K_m_vs_N2(models.Model):
     log2 = models.FloatField(blank=True)
     expressed = models.BooleanField(blank=True)
     p_value = models.FloatField(blank=True)
+
     def __unicode__(self):
         return self.ensembl_id
+
+    class Meta:
+       verbose_name = "PI3K/age-1 m vs. N2"
+       verbose_name_plural = verbose_name
+    
 
 class PI3K(models.Model):
     entrez_gene_id = models.IntegerField(blank=True, null=True)
@@ -1349,14 +1704,23 @@ class PI3K(models.Model):
     def __unicode__(self):
         return self.ensembl_id
 
+    class Meta:
+        verbose_name = "PI3K age-1 m & hx vs. N2"
+        verbose_name_plural = verbose_name
+
 
 class germline_expressed_genes(models.Model):
     ensembl_id = models.CharField(max_length=11)
     symbol = models.CharField(max_length=9)
     chr = models.CharField(max_length=5)
     germline_tags = models.IntegerField()
+
     def __unicode__(self):
-        return self.ensembl_id
+        return self.symbol
+
+    class Meta:
+        verbose_name = "germline expressed gene"
+
 
 class Germline_specific_genes(models.Model):
     ensembl_id = models.CharField(max_length=10)
@@ -1367,8 +1731,13 @@ class Germline_specific_genes(models.Model):
     microarray = models.CharField(max_length=1)
     rnai = models.CharField(max_length=40)
     descriptions = models.CharField(max_length=65)
+
     def __unicode__(self):
         return self.ensembl_id
+
+    class Meta:
+        verbose_name = "germline-specific gene"
+   
 
 class IME1_overexpression(models.Model):
     probe_id = models.IntegerField()
@@ -1396,15 +1765,27 @@ class IME1_overexpression(models.Model):
     change_1 = models.FloatField()
     change_2 = models.FloatField()
     p_value = models.FloatField()
+
     def __unicode__(self):
-        return self.platform_spotid
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "IME1 overexpression"
+        verbose_name_plural = verbose_name
+
 
 class NDT80_knockout(models.Model):
     orf = models.CharField(max_length=9)
     fold_change = models.FloatField()
     p_value = models.FloatField()
+
     def __unicode__(self):
         return self.orf
+
+    class Meta:
+        verbose_name = "NDT80 knockout"
+        verbose_name_plural = verbose_name
+
 
 class NDT80_overexpression(models.Model):
     probe_id = models.IntegerField()
@@ -1432,8 +1813,14 @@ class NDT80_overexpression(models.Model):
     change_1 = models.FloatField()
     change_2 = models.FloatField()
     p_value = models.FloatField()
+
     def __unicode__(self):
-        return self.platform_spotid
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "NDT80 overexpression"
+        verbose_name_plural = verbose_name
+
 
 class Yeast_TF_binding(models.Model):
     orf = models.CharField(max_length=31, blank=True)
@@ -1642,8 +2029,13 @@ class Yeast_TF_binding(models.Model):
     yrr1 = models.FloatField(blank=True)
     zap1 = models.FloatField(blank=True)
     zms1 = models.FloatField(blank=True)
+
     def __unicode__(self):
         return self.orf
+
+    class Meta:
+        verbose_name = "yeast TF-binding"
+
 
 class Sporulation_2h_vs_0(models.Model):
     probe_id = models.IntegerField()
@@ -1668,8 +2060,14 @@ class Sporulation_2h_vs_0(models.Model):
     gene_name = models.CharField(max_length=240, blank=True)
     chromosome_location = models.CharField(max_length=1, blank=True) #Empty
     fold_change = models.FloatField()
+
     def __unicode__(self):
-        return self.platform_orf   
+        return self.gene_symbol
+   
+    class Meta:
+        verbose_name = "Sporulation 2h vs. 0h"
+        verbose_name_plural = verbose_name
+    
 
 class NDT80ER(models.Model):
     orf = models.CharField(max_length=9)
@@ -1737,6 +2135,13 @@ class NDT80ER(models.Model):
     ndt80er_8h = models.FloatField(blank=True)
     ndt80er_14h = models.FloatField(blank=True)
 
+    def __unicode__(self):
+        return self.orf
+
+    class Meta:
+        verbose_name = "NDT80 ergosterone induced"
+        verbose_name_plural = verbose_name
+
 
 class CeMM(models.Model):
     ensembl = models.CharField(max_length=20)
@@ -1746,8 +2151,14 @@ class CeMM(models.Model):
     pmid = 17023606 
     taxid = 6230
     info = "Negative value = down in CeMM"
+
     def __unicode__(self):
         return self.ensembl  
+
+    class Meta:
+       verbose_name = "CeMM"
+       verbose_name_plural = "CeMM"
+
 
 class TemporalLinkageDR(models.Model):
     genbank = models.CharField(max_length=8)
@@ -1762,8 +2173,14 @@ class TemporalLinkageDR(models.Model):
     pmid = 15044709
     taxid = 10090
     tissue = 'liver'
+
     def __unicode__(self):
         return self.symbol  
+
+    class Meta:
+         verbose_name = "Temporal linkage DR"
+         verbose_name_plural = verbose_name
+
 
 class AlteredGeneExpressionInCeMM(models.Model):
     fold_change = models.CharField(max_length=9)
@@ -1773,5 +2190,10 @@ class AlteredGeneExpressionInCeMM(models.Model):
     regulation = models.CharField(max_length=4)
     pmid = 17023606 
     taxid = 6230
+
     def __unicode__(self):
         return self.ensembl  
+
+    class Meta:
+       verbose_name = "Altered gene expression in CeMM"
+       verbose_name_plural = verbose_name     
