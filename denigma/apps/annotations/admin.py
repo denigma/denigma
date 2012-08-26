@@ -11,7 +11,7 @@ class AdminAnimal(admin.ModelAdmin):
                     'alternative_names')
     #list_filter = []
     search_fields = ['taxid',
-                    'alternative_names']
+                    'alternative_names', 'common_names', 'genbank_synonym']
 admin.site.register(Animal, AdminAnimal)
 
 class AdminSpecies(admin.ModelAdmin):
