@@ -78,6 +78,7 @@ class Signature(models.Model):
     tissue = models.CharField(max_length=30, blank=True)
     age = models.CharField(max_length=30, blank=True)
     name = models.CharField(max_length=50, blank=True)
+
     def __unicode__(self):
         return self.symbol
 
@@ -116,6 +117,10 @@ class Gendr(models.Model):
     def lifespans(self):
         return Lifespan.objects.filter(gendr__lifespan=self).all()
 
+    class Meta:
+       verbose_name = u"GenDR"
+       verbose_name_plural = u"GenDR"
+
 
 class Change(models.Model):
     name = models.CharField(max_length=250)
@@ -130,6 +135,7 @@ class Change(models.Model):
     description = models.TextField(blank=True)
     references = models.ManyToManyField(Reference, blank=True)
     description = models.TextField(max_length=250, blank=True)
+
     def __repr__(self):
         return self.name
 
@@ -148,12 +154,18 @@ class GenCC(models.Model):
     peak_mrna = models.CharField(max_length=5, blank=True)
     peak_protein = models.CharField(max_length=5, blank=True)
     peak_actvity = models.CharField(max_length=5, blank=True)
-    procession = '''
+    procession = """
     Identified entrez_gene_id 22339 for gene_symbol Vegf via Alias alias.
     Pp2a mapped to multiple genes via Alias alias.
-    '''  
+    """  
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+       verbose_name = u"GenCC"
+       verbose_name_plural = u"GenCC"
+
 
 class AdultHeightAssociation(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -170,6 +182,10 @@ class AdultHeightAssociation(models.Model):
     phet_m_vs_f = models.FloatField()
     taxid = 9606
 
+    def __unicode__(self):
+        return self.gene_symbol
+
+
 class CircadianSystemicEntrainedFactors(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
     mapping = models.IntegerField(null=True, blank=True)
@@ -177,8 +193,13 @@ class CircadianSystemicEntrainedFactors(models.Model):
     alias = models.CharField(max_length=13, blank=True)
     taxid = 10090
     classification = 'CS'
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+       verbose_name_plural = u"Circadian systemic entrained factors"
+
 
 class ClockModulator(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -203,11 +224,14 @@ class ClockModulator(models.Model):
     Record removed. NM_182831.1: This RefSeq was permanently suppressed because currently there is support for the transcript but not for the protein.
     --> gene_symbol = 'C16orf82' --> entrez_gene_id = 162083; alias = 'TNT'; other = "Protein TNT"
 
-    NM_020755 --> entrez_gene_id = 57515; alias = 'TDE2'; other_designation = 'tumor differentially expressed 2'
+    NM_020755 --> entrez_gene_id = 57515; alias = 'TDE2'; other_designation = 'tumor differentially expressed 2'    
 
-    
+
     used Rna nucleotide accession version with __startwith clausal to map the remaining 4
     '''
+
+    def __unicode__(self):
+       return self.gene_symbol
 
     
 class HumanGenes(models.Model):
@@ -240,8 +264,12 @@ class HumanGenes(models.Model):
     pubmed_ids = models.TextField()
     taxid = 9606
     classification = 'AA'
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+       verbose_name = u"Human gene"
 
 
 class JoanneGenes(models.Model):
@@ -260,8 +288,12 @@ class JoanneGenes(models.Model):
     longevity = models.CharField(max_length=18)
     taxid = 9606
     classification = 'LA'
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name_plural = u"Joanne genes"
 
 
 class MurineImprinted(models.Model):
@@ -275,6 +307,12 @@ class MurineImprinted(models.Model):
     classification = models.CharField(max_length=5)
     taxid = 10090
 
+    def __unicode__(self):
+       return self.symbol
+
+    class Meta:
+       verbose_name = u"murine imprinted gene"
+
 
 class NewLongevityRegulators(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -283,8 +321,13 @@ class NewLongevityRegulators(models.Model):
     phenotype = models.CharField(max_length=11)
     classification = models.CharField(max_length=2)
     taxid = 6239
+
     def __unicode__(self):
         return self.wormbase_id
+
+    class Meta:
+        verbose_name = u"new longevity regulator"
+
 
 class NewLongevityRegulatorsCandidates(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -293,8 +336,13 @@ class NewLongevityRegulatorsCandidates(models.Model):
     gene_symbol = models.CharField(max_length=9, blank=True)
     ensembl_gene_id = models.CharField(max_length=11)
     taxid = 6239
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+        verbose_name = u"new longevity regulator candidate"
+
 
 class SurvivingInTheCold(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -305,8 +353,13 @@ class SurvivingInTheCold(models.Model):
     embl = models.CharField(max_length=6)
     taxid = 4932
     classification = 'PG'
+
     def __unicode__(self):
         return self.locus_tag
+
+    class Meta:
+        verbose_name_plural = u"surviving in the cold"
+
 
 class HumanBrainDnaMethylationChanges(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -338,61 +391,12 @@ class HumanBrainDnaMethylationChanges(models.Model):
     taxid = 9606
     classification = 'AM'
 
-class K56Ac(models.Model):
-    ensembl_gene = models.CharField(max_length=9, primary_key = True)
-    level = models.FloatField()
-    expression = models.FloatField()
-    entrez_gene_id = models.IntegerField(null=True, blank=True)
-    mapping = models.IntegerField(null=True, blank=True)
-    taxid = 4932
-    pmid = 15882620 
+    def __unicode__(self):
+        return self.gene_symbol
 
+    class Meta:
+        verbose_name = u"human brain DNA methylation change"
 
-class Pokholok(models.Model):
-    ensembl_gene = models.CharField(max_length=19)
-    chr = models.IntegerField()
-    pos = models.IntegerField()
-    h3_ypd = models.FloatField(blank=True)
-    h4_ypd = models.FloatField(blank=True)
-    h3_h2o2 = models.FloatField(blank=True)
-    h3k9acvsh3_ypd = models.FloatField(blank=True)
-    h3k14acvsh3_ypd = models.FloatField(blank=True)
-    h3k14acvswce_ypd = models.FloatField(blank=True)
-    h3k14acvsh3_h2o2 = models.FloatField(blank=True)
-    h4acvsh3_ypd = models.FloatField(blank=True)
-    h4acvsh3_h2o2 = models.FloatField(blank=True)
-    h3k4me1vsh3_ypd = models.FloatField(blank=True)
-    h3k4me2vsh3_ypd = models.FloatField(blank=True)
-    h3k4me3vsh3_ypd = models.FloatField(blank=True)
-    h3k36me3vsh3_ypd = models.FloatField(blank=True)
-    h3k79me3vsh3_ypd = models.FloatField(blank=True)
-    esa1_ypd = models.FloatField(blank=True)
-    gcn5_ypd = models.FloatField(blank=True)
-    gcn4_aa = models.FloatField(blank=True)
-    gg_ypd = models.FloatField(blank=True)
-    noab_ypd = models.FloatField(blank=True)
-    entrez_gene_id = models.IntegerField(null=True, blank=True)
-    mapping = models.IntegerField(null=True, blank=True)
-    taxid = 4932
-    pmid = 16122420
-
-class Acetylation(models.Model):
-    ensembl_gene = models.CharField(max_length=9, primary_key=True)
-    h4k8 = models.FloatField()
-    h4k12 = models.FloatField()
-    h4k16 = models.FloatField()
-    h3k9 = models.FloatField()
-    h3k14 = models.FloatField()
-    h3k18 = models.FloatField()
-    h3k23 = models.FloatField()
-    h3k27 = models.FloatField()
-    h2ak7 = models.FloatField()
-    h2bk11 = models.FloatField()
-    h2bk16 = models.FloatField()
-    entrez_gene_id = models.IntegerField(null=True, blank=True)
-    mapping = models.IntegerField(null=True, blank=True)
-    taxid = 4932
-    pmid = 15186774
 
 class HumanBrainMethylationChanges(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
@@ -423,8 +427,87 @@ class HumanBrainMethylationChanges(models.Model):
     cpg_sequence_2kb = models.TextField(blank=True)
     taxid = 9606
     classification = 'AM' 
+
     def __unicode__(self):
         return self.symbol
+
+    class Meta:
+       verbose_name = "human brain methylation change"
+
+
+class K56Ac(models.Model):
+    ensembl_gene = models.CharField(max_length=9, primary_key = True)
+    level = models.FloatField()
+    expression = models.FloatField()
+    entrez_gene_id = models.IntegerField(null=True, blank=True)
+    mapping = models.IntegerField(null=True, blank=True)
+    taxid = 4932
+    pmid = 15882620 
+
+    def __unicode__(self):
+        return self.entrez_gene_symbol
+
+    class Meta:
+        verbose_name = "K56Ac"
+        verbose_name_plural = "K56Ac"
+
+
+class Pokholok(models.Model):
+    ensembl_gene = models.CharField(max_length=19)
+    chr = models.IntegerField()
+    pos = models.IntegerField()
+    h3_ypd = models.FloatField(blank=True)
+    h4_ypd = models.FloatField(blank=True)
+    h3_h2o2 = models.FloatField(blank=True)
+    h3k9acvsh3_ypd = models.FloatField(blank=True)
+    h3k14acvsh3_ypd = models.FloatField(blank=True)
+    h3k14acvswce_ypd = models.FloatField(blank=True)
+    h3k14acvsh3_h2o2 = models.FloatField(blank=True)
+    h4acvsh3_ypd = models.FloatField(blank=True)
+    h4acvsh3_h2o2 = models.FloatField(blank=True)
+    h3k4me1vsh3_ypd = models.FloatField(blank=True)
+    h3k4me2vsh3_ypd = models.FloatField(blank=True)
+    h3k4me3vsh3_ypd = models.FloatField(blank=True)
+    h3k36me3vsh3_ypd = models.FloatField(blank=True)
+    h3k79me3vsh3_ypd = models.FloatField(blank=True)
+    esa1_ypd = models.FloatField(blank=True)
+    gcn5_ypd = models.FloatField(blank=True)
+    gcn4_aa = models.FloatField(blank=True)
+    gg_ypd = models.FloatField(blank=True)
+    noab_ypd = models.FloatField(blank=True)
+    entrez_gene_id = models.IntegerField(null=True, blank=True)
+    mapping = models.IntegerField(null=True, blank=True)
+    taxid = 4932
+    pmid = 16122420
+
+    def __unicode__(self):
+        return self.ensembl_gene_id
+
+    class Meta:
+        verbose_name = "Histone modification"
+
+
+class Acetylation(models.Model):
+    ensembl_gene = models.CharField(max_length=9, primary_key=True)
+    h4k8 = models.FloatField()
+    h4k12 = models.FloatField()
+    h4k16 = models.FloatField()
+    h3k9 = models.FloatField()
+    h3k14 = models.FloatField()
+    h3k18 = models.FloatField()
+    h3k23 = models.FloatField()
+    h3k27 = models.FloatField()
+    h2ak7 = models.FloatField()
+    h2bk11 = models.FloatField()
+    h2bk16 = models.FloatField()
+    entrez_gene_id = models.IntegerField(null=True, blank=True)
+    mapping = models.IntegerField(null=True, blank=True)
+    taxid = 4932
+    pmid = 15186774
+
+    def __unicode__(self):
+       return self.ensembl_gene
+
 
 class OneyrCbSpecific(models.Model):
     chr = models.CharField(max_length=5)
@@ -437,7 +520,15 @@ class OneyrCbSpecific(models.Model):
     taxid = 9606
     tissue = 'cerebrellum'
     age = '1 year'
-    
+
+    def __unicode__(self):
+        return self.gene
+
+    class Meta:
+       verbose_name = "one year cerebellum specific"
+       verbose_name_plural = "one year cerebellum specific"
+
+
 class OneyrHippSpecific(models.Model):
     chr = models.CharField(max_length=5)
     start = models.IntegerField()
@@ -449,6 +540,14 @@ class OneyrHippSpecific(models.Model):
     taxid = 9606
     tissue = 'hippocampus'
     age = '1 year'
+
+    def __unicode__(self):
+        return self.gene
+
+    class Meta:
+       verbose_name = "one year hippocampus specific"
+       verbose_name_plural = "one year hippocampus specific"
+
     
 class AdultCbDynamic(models.Model):
     chr = models.CharField(max_length=5)
@@ -461,7 +560,15 @@ class AdultCbDynamic(models.Model):
     taxid = 9606
     tissue = 'cerebrellum'
     age = '6 weeks'
+
+    def __unicode__(self):
+        return self.gene
+
+    class Meta:
+       verbose_name = "adult cerebellum dynamic"
+       verbose_name_plural = "adult cerebellum dynamic"
     
+
 class AdultCbStable(models.Model):
     chr = models.CharField(max_length=5)
     start = models.IntegerField()
@@ -473,6 +580,14 @@ class AdultCbStable(models.Model):
     taxid = 9606
     tissue = 'cerebrellum'
     age = '6 weeks'
+
+    def __unicode__(self):
+        return self.gene
+
+    class Meta:
+        verbose_name = "adult cerebellum stable"
+        verbose_name_plural = "adult cerebellum stable"
+
     
 class AdultHippDynamic(models.Model):
     chr = models.CharField(max_length=5)
@@ -497,7 +612,15 @@ class AdultHippStable(models.Model):
     taxid = 9606
     tissue = 'hippocampus'
     age = '6 weeks'
-    
+
+    def __unicode__(self):
+       return self.gene
+
+    class Meta:
+       verbose_name = "adult hippocampus stable"
+       verbose_name_plural = "adult hippocampus stable"
+
+
 class CbSpecific(models.Model):
     chr = models.CharField(max_length=5)
     start = models.IntegerField()
@@ -508,6 +631,14 @@ class CbSpecific(models.Model):
     gene = models.IntegerField()
     taxid = 9606
     tissue = 'cerebrellum'
+
+    def __unicode__(self):
+        return self.gene
+
+    class Meta:
+         verbose_name = "cerebellum specific"
+         verbose_name_plural = "cerebellum specific"
+
     
 class HippSpecific(models.Model):
     chr = models.CharField(max_length=5)
@@ -520,6 +651,14 @@ class HippSpecific(models.Model):
     taxid = 9606
     tissue = 'hippocampus'
 
+    def __unicode__(self):
+        return self.gene
+
+    class Meta:
+        verbose_name = "hippocampus specific"
+        verbose_name_plural = "hippocampus specific"
+
+
 class P7CbDynamic(models.Model):
     chr = models.CharField(max_length=5)
     start = models.IntegerField()
@@ -531,6 +670,14 @@ class P7CbDynamic(models.Model):
     taxid = 9606
     tissue = 'cerebrellum'
     age = 'P7'
+
+    def __unicode__(self):
+        return self.gene
+
+    class Meta:
+        verbose_name = "P7 cerebellum dynamic"
+        verbose_name_plural = "P7 cerebellum dynamic"
+
     
 class P7HippDynamic(models.Model):
     chr = models.CharField(max_length=5)
@@ -544,6 +691,14 @@ class P7HippDynamic(models.Model):
     tissue = 'hippocampus'
     age = 'P7'
 
+    def __unicode__(self):
+        return self.gene
+
+    class Meta:
+        verbose_name = "P7 hippocampus dynamic" 
+        verbose_name_plural = "P7 hippocampus dynamic"
+
+
 class Ultradian(models.Model):
     orf = models.CharField(max_length=7)
     gene = models.CharField(max_length=5)
@@ -553,6 +708,13 @@ class Ultradian(models.Model):
     function = models.CharField(max_length=165,blank=True)
     f = models.IntegerField()
     o = models.FloatField(blank=True)
+
+    def __unicode__(self):
+        return self.gene
+
+    class Meta:
+        verbose_name = "Ultradian gene"
+
 
 class Adult_Height_Association(models.Model):
     locus_rank = models.IntegerField()
@@ -567,8 +729,13 @@ class Adult_Height_Association(models.Model):
     phet_m_vs_f = models.FloatField()
     taxid = 9606
     classification = 'JA'
+
     def __unicode__(self):
         return self.gene_symbol
+
+    class Meta:
+       verbose_name = "adult height association"
+
 
 class BMAL1_Sites_Liver(models.Model):
     chromosome = models.CharField(max_length=5)
@@ -593,6 +760,14 @@ class BMAL1_Sites_Liver(models.Model):
     taxid = 10090
     tissue = 'liver'
 
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+        verbose_name = "BMAL1 site liver"
+        verbose_name_plural = "BMAL1 sites liver"
+
+
 class DAM_Fernandez2011(models.Model):
     cpg_site = models.CharField(max_length=19)
     cgi = models.CharField(max_length=1)
@@ -600,9 +775,21 @@ class DAM_Fernandez2011(models.Model):
     correlation = models.FloatField()
     p_value = models.FloatField()
 
+    def __unicode_(self):
+       return self.gene_symbol
+
+    class Meta:
+        verbose_name = "aging differential methylated gene"
+ 
 
 class DR_Essential(models.Model):
     taxid = models.IntegerField()
     classification = models.CharField(max_length=10)
     entrez_gene_id = models.IntegerField(null=True, blank=True)
     gene_symbol = models.CharField(max_length=30)
+
+    def __unicode__(self):
+        return self.gene_symbol
+
+    class Meta:
+       verbose_name = "DR-essential gene"
