@@ -1,96 +1,95 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-#from datasets.models import Reference, Intervention
-#from annotations.models import Taxonomy
+from datasets.models import Reference
 
 
-#class Study(models.Model):
-#    """A lifespan study."""
-#    pmid = models.IntegerField(blank=True, null=True)
-#    title = models.CharField(max_length=250, blank=True, null=True)
-#    reference = models.ForeignKey(Reference, blank=True)
-#    notes = models.TextField(blank=True, null=True)
-#    integrated = models.BooleanField()
-#    created = models.DateTimeField(auto_now_add=True)
-#    updated = models.DateTimeField(auto_now=True)
-#    #experiments = models.OneToMany(Experiment) # ForeignKey?
-#    
-#    def __unicode__(self):
-#        return self.title
-#
-#    class Meta():
-#         verbose_name_plural = "studies"
+class Study(models.Model):
+    """A lifespan study."""
+    pmid = models.IntegerField(blank=True, null=True)
+    title = models.CharField(max_length=250, blank=True, null=True)
+    reference = models.ForeignKey(Reference, blank=True)
+    notes = models.TextField(blank=True, null=True)#
+    integrated = models.BooleanField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    #experiments = models.OneToMany(Experiment) # ForeignKey?
+    
+    def __unicode__(self):
+        return self.title
+
+    class Meta():
+        verbose_name_plural = "studies"
 
 
-#class Experiment(models.Model):
-#    """A lifespan experiment."""
-#    name = models.CharField(max_length=250, blank=True, null=True)
-#    data = models.TextField(blank=True, null=True)
-#    study = models.ForeignKey(Study)
-#    species = models.ForeignKey(Taxonomy)
-#    def __unicode__(self):
-#        return self.name
+class Experiment(models.Model):
+    """A lifespan experiment."""
+    name = models.CharField(max_length=250, blank=True, null=True)
+    data = models.TextField(blank=True, null=True)
+    study = models.ForeignKey(Study)
+    species = models.ForeignKey('annotations.Species')
+    def __unicode__(self):
+        return self.name
 
 
-#class Strain(models.Model):
-#    name = models.CharField(max_length=25)
-#
-#    def __unicode__(self):
-#         return self.name
+class Strain(models.Model):
+    name = models.CharField(max_length=25)
+
+    def __unicode__(self):
+         return self.name
 
 
-#class Measurement(models.Model):
-#    """A lifespan measurment from a table or graph."""
-#    experiment = models.ForeignKey(Experiment)
-#    comparisions = models.ManyToManyField("self", through="Comparision", symmetrical=False)
-#    control = models.BooleanField()
-#
-#    strain = models.ForeignKey(Strain, blank=True, null=True)
-#    genotype = models.CharField(max_length=50, blank=True, null=True)
-#    diet = models.CharField(max_length=150, blank=True, null=True)
-#    temperature = models.FloatField(blank=True, null=True)
-#    start = models.FloatField(blank=True, null=True) # Start age of treatment.
-#
-#    # Lifespan measurement type:
-#    mean = models.FloatField(blank=True, null=True)
-#    median = models.FloatField(blank=True, null=True)
-#    max = models.FloatField(blank=True, null=True)   # Maximum lifespan
-#    num = models.IntegerField(blank=True, null=True)
+class Measurement(models.Model):
+    """A lifespan measurment from a table or graph."""
+    experiment = models.ForeignKey(Experiment)
+    comparisions = models.ManyToManyField("self", through="Comparision", symmetrical=False)
+    control = models.BooleanField()
 
-#    def __unicode__(self):
-#         return u"{0} {1}".format(self.genotype, self.diet)
+    strain = models.ForeignKey(Strain, blank=True, null=True) # Genetic background.
+    genotype = models.CharField(max_length=50, blank=True, null=True) # Wild-type or mutant.
+    diet = models.CharField(max_length=150, blank=True, null=True)
+    temperature = models.FloatField(blank=True, null=True)
+    start = models.FloatField(blank=True, null=True) # Start age of treatment.
 
+    # Lifespan measurement type:
+    mean = models.FloatField(blank=True, null=True)
+    median = models.FloatField(blank=True, null=True)
+    max = models.FloatField(blank=True, null=True)   # Maximum lifespan
+    num = models.IntegerField(blank=True, null=True)
 
-#class Epistasis(models.Model):
-#    """A possible enhancement of the restricted choices field."""
-#    name = models.CharField(max_length=20)
-
-#    def __unicode__(self):
-#        return self.name
-#     
-#   class Meta():
-#       verbose_name_plural = "epistases"
+    def __unicode__(self):
+         return u"{0} {1}".format(self.genotype, self.diet)
 
 
-#class Comparision(models.Model):
-#    """A comparision between two lifespan measurements."""
-#    #EPISTATIC = (
-#    #    (1, _('Neutral')),
-#    #    (2, _('Addative')),
-#    #    (3, _('Multiplicative'))
-#    #           )
-#    experimental = models.ForeignKey(Measurement, related_name="experimental_group")
-#    control = models.ForeignKey(Measurement, related_name="control_group")
-#    #epistasis = models.PositiveSmallIntegerField(max_length=1, blank=True, null=True, choices=EPISTATIC)
-#    epistasis = models.ForeignKey(Epistasis, blank=True, null=True)
-#    intervention = models.ForeignKey(Intervention, blank=True, null=True) # ManyToMany?
-#    mean = models.FloatField(blank=True, null=True) # Mean lifespan extension.
-#    median = models.FloatField(blank=True, null=True) # Median lifespan extension.
-#    max = models.FloatField(blank=True, null=True) # Maximum lifespan extension.#
+class Epistasis(models.Model):
+    """A possible enhancement of the restricted choices field."""
+    name = models.CharField(max_length=20)
 
-#    def __unicode__(self):
-#        return u"{0} vs. {1}".format(self.experimental.genotype, self.control.genotype)
+    def __unicode__(self):
+        return self.name
+     
+    class Meta:
+        verbose_name_plural = "epistases"
+
+
+class Comparision(models.Model):
+    """A comparision between two lifespan measurements."""
+    #EPISTATIC = (
+    #    (1, _('Neutral')),
+    #    (2, _('Addative')),
+    #    (3, _('Multiplicative'))
+    #           )
+    experimental = models.ForeignKey(Measurement, related_name="experimental_group")
+    control = models.ForeignKey(Measurement, related_name="control_group")
+    #epistasis = models.PositiveSmallIntegerField(max_length=1, blank=True, null=True, choices=EPISTATIC)
+    epistasis = models.ForeignKey(Epistasis, blank=True, null=True)
+    intervention = models.ForeignKey('Intervention', blank=True, null=True) # ManyToMany?
+    mean = models.FloatField(blank=True, null=True) # Mean lifespan extension.
+    median = models.FloatField(blank=True, null=True) # Median lifespan extension.
+    max = models.FloatField(blank=True, null=True) # Maximum lifespan extension.#
+
+    def __unicode__(self):
+        return u"{0} vs. {1}".format(self.experimental.genotype, self.control.genotype)
 
 
 ## Migrated to lifespan:

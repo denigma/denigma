@@ -1,32 +1,32 @@
 from django.contrib import admin
 
-#from models import Study, Experiment, Measurement, Comparision, Epistasis
+from models import Study, Experiment, Measurement, Comparision, Epistasis, Strain
 from models import Type, Factor, Manipulation, Intervention, Regimen, Assay
 
 
-#class StudyAdmin(admin.ModelAdmin):
-#    fields = ['title', 'pmid', 'reference', 'notes', 'integrated']
-#    list_display = ('title', 'pmid', 'notes', 'created', 'updated', 'integrated')
+class StudyAdmin(admin.ModelAdmin):
+    fields = ['title', 'pmid', 'reference', 'notes', 'integrated']
+    list_display = ('title', 'pmid', 'notes', 'created', 'updated', 'integrated')
 
 
-#class ExperimentAdmin(admin.ModelAdmin):
-#    list_display = ('name', 'study')
+class ExperimentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'study')
 
 
-#class MeasurementAdmin(admin.ModelAdmin):
-#   list_display = ('genotype', 'mean', 'median', 'max')
+class MeasurementAdmin(admin.ModelAdmin):
+   list_display = ('genotype', 'mean', 'median', 'max')
 
 
-#class ComparisionAdmin(admin.ModelAdmin):
-#   list_display = ('__unicode__', 'mean', 'median', 'max')
+class ComparisionAdmin(admin.ModelAdmin):
+   list_display = ('__unicode__', 'mean', 'median', 'max')
 
 
-#admin.site.register(Study, StudyAdmin)
-#admin.site.register(Experiment, ExperimentAdmin)
-#admin.site.register(Measurement, MeasurementAdmin)
-#admin.site.register(Comparision, ComparisionAdmin)
-#admin.site.register(Epistasis)
-
+admin.site.register(Study, StudyAdmin)
+admin.site.register(Experiment, ExperimentAdmin)
+admin.site.register(Measurement, MeasurementAdmin)
+admin.site.register(Comparision, ComparisionAdmin)
+admin.site.register(Epistasis)
+admin.site.register(Strain)
 
 class TypeAdmin(admin.ModelAdmin):
     list_display = ('name',)
