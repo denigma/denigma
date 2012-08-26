@@ -74,7 +74,7 @@ class Profile(models.Model): # User
     zip_code = models.IntegerField(max_length=7, blank=True, null=True)
     country = models.CharField(max_length=30, blank=True)
     business_hours = models.ManyToManyField(BusinessHour, blank=True)
-    work = models.CharField(max_length=500, blank=True, null=True)
+    work = models.TextField(blank=True, null=True)
     website = models.URLField(_('website'), blank=True, verify_exists=True)
 
     
