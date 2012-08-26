@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 
 ##class Biogrid(models.Model):
 ##    biogrid_interaction_id = models.IntegerField(primary_key=True)
@@ -60,6 +58,12 @@ class miRecord(models.Model):
     original_description_mutation_site = models.TextField(blank=True)
     additional_note = models.CharField(max_length=141, blank=True)
 
+    def __unicode__(self):
+        return u"{0} - {1}".format(self.mirna_mature_id, self.target_gene_name)
+
+    class Meta:
+       verbose_name = "miRecord"
+
 
 class Modelling(models.Model):
     interactor_a = models.IntegerField(null=True, blank=True)
@@ -72,8 +76,12 @@ class Modelling(models.Model):
     is_primary = models.BooleanField()
     creation_date = models.DateField(blank=True, null=True)
 ##    website = models.URLField()
+
     def __unicode__(self):
         return u'%s, %s' % (self.source, self.target)
+
+    class Meta:
+        verbose_name_plural = "modelling"
 
 
 class Fly_TF_gene(models.Model):
@@ -95,6 +103,13 @@ class Fly_TF_gene(models.Model):
     target = models.IntegerField(blank=True)
     source_mapping = models.IntegerField(blank=True, null=True)
     target_mapping = models.IntegerField(blank=True, null=True)
+
+    def __unicode__(self):
+        return "{0} - {1}".format(self.tf_symbol, self.gene_symbol)
+
+    class Meta:
+       verbose_name = "fly TF - gene"
+
 
 ##class Interactome10090(models.Model):
 ##    interactor_a = models.IntegerField()
@@ -151,9 +166,16 @@ class Fly_TF_gene(models.Model):
 ##    source_database = models.CharField(max_length=134)
 ##    score = models.IntegerField()
 
+
 class tnet(models.Model):
     tf = models.CharField(max_length=7)
     tg = models.CharField(max_length=8)
+
+    def __unicode__(self):
+        return "{0} {1}".format(self.tf, self.tg)
+
+    class Meta:
+       verbose_name_plural = "Tnet"
 
 
 class Yeast_TF_ChIP_chip(models.Model):
@@ -363,8 +385,14 @@ class Yeast_TF_ChIP_chip(models.Model):
     yrr1 = models.FloatField(blank=True)
     zap1 = models.FloatField(blank=True)
     zms1 = models.FloatField(blank=True)
+
     def __unicode__(self):
         return self.orf
+
+    class Meta:
+        verbose_name = "yeast TF ChIP-chip"
+        verbose_name_plural = verbose_name
+
 
 ##class Interactome10090(models.Model):
 ##    interactor_a = models.IntegerField()
@@ -421,6 +449,7 @@ class Yeast_TF_ChIP_chip(models.Model):
 ##    source_database = models.CharField(max_length=134)
 ##    score = models.IntegerField()
 
+
 class Yeastract(models.Model):
     tf = models.CharField(max_length=7)
     tf_ensembl_id = models.CharField(max_length=9)
@@ -431,8 +460,14 @@ class Yeastract(models.Model):
     target = models.IntegerField(blank=True, null=True)
     source_mapping = models.IntegerField(blank=True, null=True)
     target_mapping = models.IntegerField(blank=True, null=True)
+
     def __unicode__(self):
         return self.tf_ensembl_id
+
+    class Meta:
+        verbose_name = "YEASTRACT"
+        verbose_name_plural = verbose_name
+
 
 ##class Int(models.Model):
 ##    unique_id_a = models.IntegerField()

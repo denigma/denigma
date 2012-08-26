@@ -5,6 +5,10 @@ from django.contrib import admin
 ##    model = Choice
 ##    extra = 3
 
+class Fly_TF_geneAdmin(admin.ModelAdmin): pass
+admin.site.register(Fly_TF_gene, Fly_TF_geneAdmin)
+
+
 class AdminYeastract(admin.ModelAdmin):
     list_display = ('tf', 'target_gene', 'source', 'target')
     search_fields = ['tf', 'target', 'source', 'target']
