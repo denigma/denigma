@@ -53,7 +53,7 @@ def hours_ahead(request, offset):
     return render_to_response('dateapp/hours_ahead.html', locals(),
                              context_instance=RequestContext(request))
 
-def google(request):
-    render_to_response('google.html', locals())
+def google(request, term):
+    return render_to_response('google.html', term)
 
 
