@@ -60,7 +60,7 @@ class sip2delta_aging(models.Model):
         return gene_symbol
 
     class Meta:
-        verbose_name = "sip2 aging" #  differential expressed gene
+        verbose_name = "SIP2delta aging" #  differential expressed gene
         verbose_name_plural = verbose_name
 
 class sip2delta_wt(models.Model):
@@ -82,7 +82,7 @@ class sip2delta_wt(models.Model):
         return gene_symbol
 
     class Meta:
-        verbose_name = "sip2" # differential expressed gene
+        verbose_name = "SIP2delta" # differential expressed gene
         verbose_name_plural = verbose_name
 
 class snf4delta_aging(models.Model):
@@ -104,7 +104,7 @@ class snf4delta_aging(models.Model):
         return self.gene_symbol
 
     class Meta:
-        verbose_name = "snf4 aging" #  differential expressed gene
+        verbose_name = "SNF4delta aging" #  differential expressed gene
         verbose_name_plural = verbose_name
 
 class snf4delta_wt(models.Model):
@@ -126,7 +126,7 @@ class snf4delta_wt(models.Model):
         return self.gene_symbol
 
     class Meta:
-        verbose_name = "snf4" # differential expressed gene
+        verbose_name = "SNF4delta" # differential expressed gene
         verbose_name_plural = verbose_name
 
 class wt_aging(models.Model):
