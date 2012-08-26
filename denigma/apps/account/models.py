@@ -69,10 +69,12 @@ def create_account(sender, instance=None, **kwargs):
     if instance is None:
         return
     account, created = Account.objects.get_or_create(user=instance)
-    send_mail("Accound Created: {0}".format(str(account)), 
-              "A new account was created for: {0}".format(account.info()),
-              'age@liv.ac.uk',
-              ['age@liv.ac.uk'])
+    if created:
+        send_mail("Account Created: {0}".format(str(account)), 
+                  "A new account was created for: {0}".format(account.info()),
+                  'age@liv.ac.uk',
+                  ['age@liv.ac.uk'])
+
 
 # @@@ move to emailconfirmation app?
 @receiver(post_save, sender=User)
