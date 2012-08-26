@@ -95,7 +95,7 @@ def mark_user_active(sender, instance=None, **kwargs):
     user = kwargs.get("email_address").user
     user.is_active = True
     user.save()
-    send_mail("Email Confirmed for {0}".format(str(account)),
+    send_mail("Email Confirmed for {0}".format(user.username),
               """The Email address was confirmed:
               User: {0}
               First name: {1}

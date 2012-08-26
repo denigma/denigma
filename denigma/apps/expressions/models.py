@@ -1705,7 +1705,7 @@ class PI3K(models.Model):
         return self.ensembl_id
 
     class Meta:
-        verbose_name = "PI3K age-1 m & hx vs. N2"
+        verbose_name = "PI3K/age-1 m & hx vs. N2"
         verbose_name_plural = verbose_name
 
 
