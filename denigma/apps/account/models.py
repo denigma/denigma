@@ -70,11 +70,13 @@ def create_account(sender, instance=None, **kwargs):
         return
     account, created = Account.objects.get_or_create(user=instance)
     if created:
-        send_mail("Account Created: {0}".format(str(account)), 
-                  "A new account was created for: {0}".format(account.info()),
-                  'age@liv.ac.uk',
-                  ['age@liv.ac.uk'])
-
+        try: # Creating users locally without Email support fails.
+            send_mail("Account Created: {0}".format(str(account)), 
+                     "A new account was created for: {0}".format(account.info()),
+                     'age@liv.ac.uk',
+                    ['age@liv.ac.uk'])
+        except:
+            print "Account created, did not send mail."
 
 # @@@ move to emailconfirmation app?
 @receiver(post_save, sender=User)
