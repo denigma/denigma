@@ -122,5 +122,40 @@ class Membership(models.Model):
     invite_reason = models.CharField(max_length=64)
 
 
+
+
+
+"""Modelling persons and their attributes:""" 
+
+#class Person(models.Model):
+#    name = models.CharField(max_length=10)
+#    attributes = models.ManyToManyField('Attribute, through='Has',
+#                                         blank=True, null=True)
+
+
+#class Has(models.Model):
+#   person = model.ForeignKey('Person')
+#   attribute = models.ForeignKey('Attribute')
+#   value = models.CharField(max_length=10)
+
+
+#class Attribute(models.Model):
+#   name = models.CharField(max_length=10)
+#   atype = model.CharField(max_length=2,
+#                          choices=(('TF', 'true/false'),
+#                                   ('IN', 'text')))
+
+
+#class PersonAdminForm(forms.ModelForm):
+#    class Meta:
+#        model = Person
+#
+#    attrs = forms.ModelMultipleChoiceField(\
+#        label='Attributes',
+#        queryset=Attribute.objects.all()
+#        widget = forms.CheckboxSelectMulitple(),
+#    )
+
+
 if __name__ == '__main__':
     pass
