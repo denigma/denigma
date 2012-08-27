@@ -73,7 +73,7 @@ def create_account(sender, instance=None, **kwargs):
         try: # Creating users locally without Email support fails.
             send_mail("Account Created: {0}".format(str(account)), 
                      "A new account was created for: {0}".format(account.info()),
-                     'age@liv.ac.uk',
+                     'hevok@denigma.de',
                     ['age@liv.ac.uk'])
         except:
             print "Account created, did not send mail."
@@ -105,5 +105,5 @@ def mark_user_active(sender, instance=None, **kwargs):
               First name: {1}
               Last name: {2}
               E-mail: {3}""".format(user.username, user.first_name, user.last_name, user.email),
-              'age@liv.ac.uk',
+              'hevok@denigma.de',
               ['age@liv.ac.uk'])

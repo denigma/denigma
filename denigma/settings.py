@@ -28,11 +28,11 @@ INTERNAL_IPS = [
 ]
 
 ADMINS = [
-     ("Hevok", "age@liv.ac.uk"),
+     ("Hevok", "hevok@denigma.de"),
 ]
 
-CONTACT_EMAIL = "age@liv.ac.uk"
-DEFAULT_FROM_EMAIL = "age@liv.ac.uk"
+CONTACT_EMAIL = "hevok@denigma.de"
+DEFAULT_FROM_EMAIL = "hevok@denigma.de"
 
 MANAGERS = ADMINS
 
