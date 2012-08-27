@@ -30,7 +30,7 @@ def contact(request):
                 send_mail(
                     cd['subject'],
                     cd['message'] + " Send by " + cd['email'],
-                    cd.get('email', 'age@liv.ac.uk'), #'noreply@example.com'),
+                    cd.get('email', 'hevok@denigma.de'), #'noreply@example.com'),
                     ['age@liv.ac.uk'],                #['siteowner@example.com'],
                 )
             except:
@@ -38,7 +38,7 @@ def contact(request):
                  send_mail(
                     cd['subject'],
                     cd['message'] + " Send by " + cd['email'],
-                    cd.get('mail', 'age@liv.ac.uk'),
+                    cd.get('mail', 'hevok@denigma.de'),
                     ['age@liv.ac.uk'],
                  )
 
