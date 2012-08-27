@@ -36,7 +36,7 @@ DEFAULT_FROM_EMAIL = "hevok@denigma.de"
 
 MANAGERS = ADMINS
 
-BACKEND = 'mysql'  # Either sqlite3 or mysql as well as later on also postgres.
+BACKEND = 'sqlite3'  # Either sqlite3 or mysql as well as later on also postgres.
 
 if BACKEND == 'sqlite3':
     DATABASES = {
