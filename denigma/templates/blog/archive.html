@@ -20,11 +20,18 @@
 {% block subtitle %}Archive{% endblock %}
 
 {% block content %}
-
-{% for post in object_list %}
-
-<p>{{ post.created|date:"Y-m-d" }}: <a href="/blog/{{ post.id }}">{{ post.title }}</a> ({{ post.updated|date:"Y-m-d" }})</p>
-
-{% endfor %}
-
+    <table>
+        <tr>
+        <td><b>Created</b></td>
+        <td><b>Title</b></td>
+        <td><b>(Updated)</b></td>
+        </tr>
+        {% for post in object_list %}
+             <tr>
+             <td>{{ post.created|date:"Y-m-d" }}:</td>
+             <td><a href="/blog/{{ post.id }}">{{ post.title }}</a></td>
+             <td>({{ post.updated|date:"Y-m-d" }})</td>
+             </tr>
+        {% endfor %}
+     </table>
 {% endblock %}
