@@ -477,6 +477,8 @@ SES can alternatively also be used with Postman and Postix [ Using Amazon SES in
 
 For sending Emails via gmail account a few settings need to be declared [http://stackoverflow.com/questions/6914687/django-sending-email].
 
+Gmail can be used to send Emails of a specfific domain via SES. However, the Email address of this domain can not be addressed via SES as it is sayed to be blacklisted. Fortunately, it is not necessary to send Emails from Denigma to Denigma so far.  
+
 Django Verbose names
 --------------------
 
