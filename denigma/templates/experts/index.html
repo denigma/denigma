@@ -10,6 +10,8 @@ List {% comment %}Consider to rename the view to index for consistence{% endcomm
 
 {% block content %}
 
+{% load obfuscation %}
+
 {% if experts %}
     <p>These are the experts on one of the most fundamental questions in biology: Why do we age? This list is synchronized with the <a href="http://whoswho.senescence.info/">WhosAge</a> database created by Joao Pedro de Magalhaes.</p>
     <table border="1">
@@ -18,7 +20,7 @@ List {% comment %}Consider to rename the view to index for consistence{% endcomm
         <td><b>Name</b></td>
         <td><b>Affliation</b></td>
         <td><b>Website</b></td>
-        {% comment %}<td><b>E-mail address</b></td>{% endcomment %}
+        <td><b>E-mail address</b></td>
         <td><b>Work</b></td>
         </tr>
         {% for e in experts %}
@@ -27,7 +29,7 @@ List {% comment %}Consider to rename the view to index for consistence{% endcomm
             <td>{{ e.user_name }}</td>
             <td>{{ e.affliation }}</td>
             <td><a href="{{ e.website }}">lab</a></td>
-            {% comment %}<td><a href="{{ e.email }}">{{ e.email }}</a></td>{% endcomment %}
+            <td><a href="mailto:{{ e.email }}">{{ e.email|obfuscate }}</a></td>
             <td>{{ e.work }}</td>
             </tr>
         {% endfor %}
