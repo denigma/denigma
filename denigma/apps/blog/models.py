@@ -3,8 +3,8 @@ from taggit.managers import TaggableManager
 
 
 class Post(models.Model):
-    created = models.DateField(auto_now_add=True)
-    updated = models.DateField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=250)
     text = models.TextField()
     tags = TaggableManager()
