@@ -9,13 +9,22 @@ from django.template import RequestContext
 
 from blog.models import Post
 
+from django import forms
+
+
+class SearchForm(forms.Form):
+   text = forms.CharField(label="")#label="Site-wide search")
+
 
 def root(request):
     """The root source of all Denigmas URLs.
     Renders a dynamic home site with altered content."""
-    posts = Post.objects.all().order_by('-created') #filter(tags__name='news') # Fetches all news.
-    return render_to_response('homepage.html', {'posts': posts},
+    posts = Post.objects.all().order_by('-created', '-id') #filter(tags__name='news') # Fetches all news.
+    searchform = SearchForm()
+    return render_to_response('homepage.html', {'posts': posts, 'searchform': searchform},
                               context_instance=RequestContext(request))
+
+
 
 def display_meta(request):
     values = request.META.items()
