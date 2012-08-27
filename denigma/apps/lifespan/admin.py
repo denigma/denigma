@@ -76,6 +76,7 @@ class InterventionAdmin(admin.ModelAdmin):
     list_display = ('name', 'effect', 'mean', 'median', '_75', 'maximum','pmid')
     fields = ('name', 'taxid', 'effect', 'mean', 'median', '_25', '_75', 'maximum','pmid', 'references', 'manipulation')
     search_fields = ['name', 'pmid', 'effect']    
+    list_filter = ('taxid', 'manipulation')
     #raw_id_fields = ('reference',)
     filter_horizontal = ('references','manipulation',)
 admin.site.register(Intervention, InterventionAdmin)
