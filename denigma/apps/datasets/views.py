@@ -10,7 +10,7 @@ from django.db.models import Q
 def update(request):
     from Bio import Entrez
     from Bio import Medline
-    Entrez.email = "age@liv.ac.uk"
+    Entrez.email = "hevok@denigma.de"
     
     print "updating"
     references = Reference.objects.all()
