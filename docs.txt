@@ -1,3 +1,7 @@
+=============
+Documentation
+=============
+
 Deploying Denigma
 =================
 
@@ -459,6 +463,19 @@ Testing now wether the server need to run to get it working.
 
 Messaging via pasted items only works by placing DEFAULT_FROM_EMAIL constant into the settings.
 
+A restriction of SES is that it only allows sending Emails, but not retrieving. For this purpose gmail is suitable [http://stackoverflow.com/questions/10640507/how-to-configure-email-accounts-like-supportxyz-com-or-feedbackxyz-com-on-aws]. In such AWS SES will be used to send mail and mail will be recieved by the domain's Gmail user.
+
+After creating by account by Google APPs, domains can be added by visiting www.google.com/a/domain.tld. Following the instruction a html Email conformation can bea ccomplished. Then MX records if the domain provider need to be changed as instructed. This may take up to 24 hours.
+
+DNS stands for Domain Name System (Internet address book). CNAME are for subdomain [http://support.google.com/a/bin/answer.py?hl=en&answer=53340].
+
+Evolution can be configured to access Email handled by gmail [https://help.ubuntu.com/community/UsingGmailWithEvolution].
+
+Office can also be configured to directly use the domain by changing the MX records [http://onlinehelp.microsoft.com/en-us/office365-enterprises/gg584186.aspx].
+
+SES can alternatively also be used with Postman and Postix [ Using Amazon SES in Python with Postman and Postfix], but here Django will be used.
+
+For sending Emails via gmail account a few settings need to be declared [http://stackoverflow.com/questions/6914687/django-sending-email].
 
 Django Verbose names
 --------------------
@@ -468,6 +485,4 @@ The representative name of a model in admin can be ovewritten via a meta class:
 class Meta:
     verbose_name = "foo"
     verbose_name_plural = "foobars"
-
-
 
