@@ -38,7 +38,7 @@ def contact(request):
                  send_mail(
                     cd['subject'],
                     cd['message'] + " Send by " + cd['email'],
-                    cd.get('mail', 'hevok@denigma.de'),
+                    cd.get('email', 'hevok@denigma.de'),
                     ['age@liv.ac.uk'],
                  )
 
