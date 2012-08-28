@@ -13,5 +13,8 @@ class PhotoUrl(models.Model):
     def __unicode__(self):
         return self.url.split('/')[-1]
 
+    def name(self):
+        return self.url.split('/')[-1].split('/')[0]
+
     class Meta:
         verbose_name = u"Photo URL"
