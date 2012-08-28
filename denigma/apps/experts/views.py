@@ -31,3 +31,9 @@ def index(request):
     return render_to_response('experts/index.html',
                               {'experts':experts},
                               context_instance=RequestContext(request))
+
+def detail(request, expertname):
+    """Shows the detail view of an expert."""
+    expert = Profile.objects.get(user_name=expertname.replace('_', ' '))
+    return render_to_response('experts/detail.html', {'expert': expert},
+                             context_instance=RequestContext(request))

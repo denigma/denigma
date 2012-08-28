@@ -76,8 +76,10 @@ class Profile(models.Model): # User
     business_hours = models.ManyToManyField(BusinessHour, blank=True)
     work = models.TextField(blank=True, null=True)
     website = models.URLField(_('website'), blank=True, verify_exists=True)
-
     
     def __unicode(self):
         name = self.first_name + self.last_name
         return name
+
+    def get_absolute_url(self):
+        return "/experts/%s/" % self.user_name.replace(' ', '_')

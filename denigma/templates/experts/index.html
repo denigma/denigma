@@ -16,7 +16,6 @@ List {% comment %}Consider to rename the view to index for consistence{% endcomm
     <p>These are the experts on one of the most fundamental questions in biology: Why do we age? This list is synchronized with the <a href="http://whoswho.senescence.info/">WhosAge</a> database created by Joao Pedro de Magalhaes.</p>
     <table border="1">
         <tr>
-        <td><b>ID</b></td>
         <td><b>Name</b></td>
         <td><b>Affliation</b></td>
         <td><b>Website</b></td>
@@ -25,8 +24,7 @@ List {% comment %}Consider to rename the view to index for consistence{% endcomm
         </tr>
         {% for e in experts %}
             <tr>
-            <td>{{ e.id }}</td>
-            <td>{{ e.user_name }}</td>
+            <td><a href="{{ e.get_absolute_url }}">{{ e.user_name }}</a></td>
             <td>{{ e.affliation }}</td>
             <td><a href="{{ e.website }}">lab</a></td>
             {% if user.is_authenticated %}
