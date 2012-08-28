@@ -3,6 +3,27 @@
 {% block title %}Tutorial{% endblock %}
 
 {% block content %}
+
+<h3>Overview</h3>
+<p>Denigma is unique as everything in it is fully editable as well as programmible.
+Denigma can in priniciple be changes in two fashions:</p>
+<ol>
+<li>Content: regarding the actually content its composed of.</li>
+<li>Design: how it is conceptional built.</li>
+</ol>
+<p>As soon as your Email address is verified you gain staff status and will be able to access the admin interface, hence recieve acces to the tables in Denigma db.</p>
+<p>Data in Denigma is organized according to application (apps). There are for instance annotations, interactions, datasets, expressions and lifespan apps.:</p>
+<p><a href="/admin/annotations"><b>Annotations</b></a> integrates information majorly from external sources such as gene annotation databases.</p>
+
+<p><a href="/admin/interactions"><b>Interactions</b></a> is specialized on integrating heterogenous interaction types.</p>
+
+<p><a href="/admin/expressions"><b>Expressions</b></a> contains transcriptomics or proteomics profiles of gene activity measurements.</p>
+
+<p><a href="/admin/datasets"><b>Datasets</b></a> is a collection of other diverse data (e.g. from individual studies) where each table represents a single dataset.</p>
+
+<p><a href="/admin/lifespan"><b>Lifespan</b></a> is most important constitute of Denigma which is dedicated to systematically decipher the aging process and reveal the limits of life. In the lifespan section the probaly most import model are describing the factors with limit lifespan.
+
+<h3>Viewing Entries in Denigma db</h3>
 <p>To switch to the admin interface of Denigma click either on Denigm db on the left top in the hierarchy navigation or under your username in the right corner on admin. Both ways are equivallent.</p>
 
 <p>You will now be confronted with a list of all the applications installed in denigma as well as all the models which represent database tables.</p>
@@ -11,6 +32,20 @@
 
 <p>Each entry can be seen with all its associated information and should be fully editable.</p>
 
-{% endblock %}
+<h3>Changing Denigma db</h3>
+<p>Denigma's core philosphy is that everything is modifyable by everyone. Denigm's Wiki and Todos already fullfil this criterion nicely. In addition all other data content can be modified in the Denigma's db admin.</p> 
 
-         
+<h3>Programming Denigma</h3>
+<p>Functionality to Denigma can easily be added by altering an existing app or just adding a new app.</p>
+
+<p>Denigma's source code is open and its whole creation from the beginning is totally documented with version control system.</p>
+<p>The source code of Denigma is positioned at Git Hub: <a href="https://github.com/hevok/denigma">Denigma Source</a></p>
+<p align="center"><i>May the source be with you, Luke!</i></p>
+
+<h3>Denigma Enhancment Proposal Protocol</h3>
+<p>A todo can be converted into a DEP (Denigma Enhancement Proposal). This should preferbly written in restructured text.</p>
+
+{% endblock %}   
+
+
+
