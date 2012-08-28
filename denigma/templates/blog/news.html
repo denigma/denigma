@@ -1,4 +1,7 @@
+{% load markup %}
+
 <h2>News</h2>
+
 {% for post in posts %}
 
 <h3><a href="/blog/{{ post.id }}">{{ post.title }}</a></h3>
@@ -9,7 +12,7 @@
 <div/>
 
 <div class="post_body">
-    {{ post.brief|safe|linebreaks }} <a href="/blog/{{ post.id }}">Read More</a>
+    {{ post.brief|markdown|safe|linebreaks }} <a href="/blog/{{ post.id }}">Read More</a>
 </div>
 
 <div class="tags">
