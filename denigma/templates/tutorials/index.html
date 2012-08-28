@@ -15,7 +15,12 @@
     {% for tutorial in tutorials %}
         <h3>{{ tutorial.title }}</h3>
         {{ tutorial.text|markdown }}
+        {% for image in tutorial.images.all %}
+           <img src={{ image.url }} alt={{ image.name }}/>
+        {% endfor %}
     {% endfor %}
+
+
 {% else %}<p>There are currently no tutorials.</p>
 {% endif %}
 

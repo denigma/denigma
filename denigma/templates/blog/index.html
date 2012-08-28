@@ -20,10 +20,15 @@
 
 {% load hyperlink %}
 
+
 <h2>Test</h2>
 {% block content %}
 
 {% for post in object_list %}
+
+<table border="0" color="white">
+<tr>
+<td>
 
 <h3><a href="/blog/{{post.id}}">{{ post.title }}</a></h3>
 
@@ -42,7 +47,14 @@
   {% if not forloop.last %}, {% endif %}
   {% endfor %}
 </div>
+</td>
 
+<td>
+{% for image in post.images.all %}
+<img src={{ image.url }} width="150" height="150" alt={{ images.name }} /></td>
 {% endfor %}
-
+</td>
+</tr>
+</table>
+{% endfor %}
 {% endblock %}

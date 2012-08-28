@@ -24,7 +24,7 @@
 
 {% block content %}
 
-<h2><a href="/blog/{{ post.id }}">{{ post.title }}</a></h2>
+<h3><a href="/blog/{{ post.id }}">{{ post.title }}</a></h3>
 
 <div class="post_meta">
  created on {{ post.created }}
@@ -40,6 +40,13 @@
       <a href="/blog/tag/{{ tag }}">{{ tag }}</a>
   {% if not forloop.last %}, {% endif %}
   {% endfor %}
+</div>
+
+<div class="images">
+   {% for image in post.images.all %}
+      <img src={{ image.url }} alt={{ image.name }}/>
+   
+   {% endfor %}
 </div>
 
 {% endblock %}
