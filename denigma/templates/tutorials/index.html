@@ -2,16 +2,21 @@
 
 {% load markup %}
 
-{% block title %}Tutorial{% endblock %}
+{% block title %}Tutorials{% endblock %}
 
 {% block content %}
 <p>Everything you need to know about Denigma.</p>
-{% for tutorial in tutorials %}
-<li>{{ tutorial.title }}</li>
-{% endfor %}
-<hr>
-{% for tutorial in tutorials %}
-<h3>{{ tutorial.title }}</h3>
-{{ tutorial.text|markdown }}
-{% endfor %}
+{% if tutorials %}
+    {% for tutorial in tutorials %}
+
+        <li>{{ tutorial.title }}</li>
+    {% endfor %}
+    <hr>
+    {% for tutorial in tutorials %}
+        <h3>{{ tutorial.title }}</h3>
+        {{ tutorial.text|markdown }}
+    {% endfor %}
+{% else %}<p>There are currently no tutorials.</p>
+{% endif %}
+
 {% endblock %}
