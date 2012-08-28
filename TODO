@@ -1,5 +1,9 @@
-Denigma Enhancment Protocol
-===========================
+=====================================
+Denigma Enhancement Proposal Protocol
+=====================================
+
+DEPs
+====
 
 This are Denigma Enhancement Proposals (DEPs):
 
@@ -7,3 +11,22 @@ This are Denigma Enhancement Proposals (DEPs):
 - restore.sh for restoring a snapshotted database.
 - Automate EC2 instance setup [http://www.turnkeylinux.org/blog/ec2-userdata].
 - Use Fabric for ssh control of Denigma [http://docs.fabfile.org/en/1.4.3/index.html].
+
+
+Data app
+--------
+
+The blog, news, wiki, tutorial app and several other follow the same pattern:
+Each one contains an data entry which has a title, a text and tags associated.
+tags itself can be data entry or linked to be a data entry. There are further 
+meta data associated with each entry such as date of creation (created), 
+update (updated).
+
+Another field might declare whether it is drafted or not.
+Each entry content (text) needs to be rendered in html and have automatically 
+assigned hyperlinks and should allow to use markup languages. Further images 
+need to be associated to a entry.
+
+It is therefore proposed to have a single data app which eliminates the redundance 
+between all this different apps. Either tags or another table maybe it can be called 
+type or category declares what type of entry it is.
