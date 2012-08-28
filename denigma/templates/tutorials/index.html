@@ -1,0 +1,17 @@
+{% extends "site_base.html" %}
+
+{% load markup %}
+
+{% block title %}Tutorial{% endblock %}
+
+{% block content %}
+<p>Everything you need to know about Denigma.</p>
+{% for tutorial in tutorials %}
+<li>{{ tutorial.title }}</li>
+{% endfor %}
+<hr>
+{% for tutorial in tutorials %}
+<h3>{{ tutorial.title }}</h3>
+{{ tutorial.text|markdown }}
+{% endfor %}
+{% endblock %}
