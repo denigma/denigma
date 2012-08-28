@@ -12,6 +12,7 @@
                 <li id="tab_nav"> <a href="/blog/">News</a> </li>
                 <li id="tab_nav"> <a href="/shorty">URLs</a> </li>
 		<li id="tab_nav"> <a href="/gallery/">Gallery</a> </li>
+                <li id="tab nav"> <a href="/tutorials/">Tutorials</a> </li>
  		{% if user.is_authenticated %}{% spaceless %}
 			<li id="tab_space"> ____ </li>
 			<li id="tab_profile"><a href="{% url profile_detail user.username %}">{% trans "Profile" %}</a></li>
