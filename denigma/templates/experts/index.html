@@ -29,7 +29,11 @@ List {% comment %}Consider to rename the view to index for consistence{% endcomm
             <td>{{ e.user_name }}</td>
             <td>{{ e.affliation }}</td>
             <td><a href="{{ e.website }}">lab</a></td>
-            <td><a href="mailto:{{ e.email }}">{{ e.email|obfuscate }}</a></td>
+            {% if user.is_authenticated %}
+                <td><a href="mailto:{{ e.email }}">{{ e.email|obfuscate }}</a></td>
+            {% else %}
+                <td><a href="/account/login/">{{ e.email|obfuscate }}</a></td>
+            {% endif %}
             <td>{{ e.work }}</td>
             </tr>
         {% endfor %}
