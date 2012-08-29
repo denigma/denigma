@@ -1,5 +1,7 @@
 {% extends "blog/base.html" %}
 
+{% load markup %}
+
 {% block hierarchy %}
 <div class="line">
     <span class="left">
@@ -36,7 +38,7 @@
 </div>
 
 <div class="post_body">
-  {{ post.text|hyper|safe|linebreaks }}
+  {{ post.text|markdown|hyper|safe|linebreaks }}
 </div>
 
 <div class="tags">
