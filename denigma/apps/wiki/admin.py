@@ -4,6 +4,7 @@ from models import Page, Tag
 
 class PageAdmin(admin.ModelAdmin):
    list_display = ('name', 'tagged',)
+   list_filter = ('tags',)
 
    def tagged(self, obj):
        return " ".join([tag.name for tag in obj.tags.all()])
