@@ -15,10 +15,11 @@
 {% block content %}
    {% load markup %}
    <h3>{{ tutorial.title }}</h3>
-   {{ tutorial.text }}
+   {{ tutorial.text|markdown }}
    {% for image in tutorial.images.all %}
    <img src={{ image.url }} alt={{ image.name }}/>
    {% endfor %}
 
-<a href="/tutorials/{{tutorial.id }}/edit">Edit?</a>
+{% comment %}<a href="/tutorials/{{tutorial.id }}/edit">Edit?</a>{% endcomment %}
+<a href="/admin/blog/post/{{ tutorial.id }}">Edit?</a>
 {% endblock %}
