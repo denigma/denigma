@@ -247,8 +247,9 @@ Restoring a snapshotted database
 
 ::
 
-$ sudo aptitude install git
+$ cd ..
 $ sudo su
+$ aptitude install git
 $ git https://github.com/hevok/denigma
 $ bash denigma/reconnect-ebs.sh
 $ bash denigma/open-port.sh
@@ -361,7 +362,7 @@ So now the question is how to set it up that it displays the domain name
 and the subfolders, e.g. http://mydomain.org/subfolder/, and only
 replaces the base address of the server?
 #
-A possibility would be to edit the .htaccesa file
+A possibility would be to edit the .htaccess file
 [http://support.lunarpages.com/knowledge_bases/article/549].
 
 The .htaccess file: [http://en.wikipedia.org/wiki/Htaccess].
