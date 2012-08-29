@@ -75,6 +75,8 @@
                     <div class="inner">
                         <div class="container">
                             <b>
+
+
                             {% block hierarchy %}
                                   {% comment %}
                                   Site > App > Model > View > Filter
@@ -88,6 +90,19 @@
                                   {% if {{ VIEW_NAME }} %}<a href="{{ VIEW_NAME }}">{{ VIEW_NAME }}</a>>{% endif %}
                                   {% endcomment %}
                             {% endblock %}
+
+{% comment %}Site-wide search function
+{% block search %}
+<right>
+<div align="right">
+<form method="post" action="" align="right">{% csrf_token %}
+    {{ searchform }}
+    <input type="submit" value="Search"/>
+</form>
+</div>
+</right>
+{% endblock search %}
+{% endcomment %}
                             </b>
                             <center>
                             {% block menu %}
@@ -106,9 +121,6 @@
 
         </div>
         {% endblock %}
-
-
-
 
             <div id="context">
                 <div class="inner">
