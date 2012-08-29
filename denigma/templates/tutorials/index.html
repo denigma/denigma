@@ -18,6 +18,8 @@
 
         <li><a href="/tutorials/{{ tutorial.id }}/view/">{{ tutorial.title }}</a></li>
     {% endfor %}
+    <p></p>
+    <a href="/admin/blog/post/add/">Add another one</a>
     <hr>
     {% for tutorial in tutorials %}
         <h3><a href="/tutorials/{{ tutorial.id }}/view">{{ tutorial.title }}</a></h3>
