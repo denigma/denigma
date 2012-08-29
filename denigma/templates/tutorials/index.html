@@ -20,7 +20,7 @@
     {% endfor %}
     <hr>
     {% for tutorial in tutorials %}
-        <h3>{{ tutorial.title }}</h3>
+        <h3><a href="/tutorials/{{ tutorial.id }}/view">{{ tutorial.title }}</a></h3>
         {{ tutorial.text|markdown }}
         {% for image in tutorial.images.all %}
            <img src={{ image.url }} alt={{ image.name }}/>
