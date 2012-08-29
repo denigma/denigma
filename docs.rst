@@ -17,12 +17,13 @@ Deploying Denigma
 To deploy Denigma in the clouds the Amazone Web Service (AWS) is used.
 
 1. Launch an Ubuntu AMI:
-Preferable a maverick build such as the ami-975a6de3 (called Giter; which 
-ships a GIT repository) or the ami-fd7b4089 (called Daily which is up-to-date 
-and does not require updating/upgrading or more precise minimal 
-updating/upgrading). Set up of Giter takes approximately 7 minutes and the 
-Daily takes 3 minutes due to the already installed updates (However the 
-inclusion of additional third-party libraries increased this time slightly).
+
+   Preferable a maverick build such as the ami-975a6de3 (called Giter; which 
+   ships a GIT repository) or the ami-fd7b4089 (called Daily which is 
+   up-to-date and does not require updating/upgrading or more precise minimal 
+   updating/upgrading). Set up of Giter takes approximately 7 minutes and the 
+   Daily takes 3 minutes due to the already installed updates (However the 
+   inclusion of additional third-party libraries increased this time slightly).
 
 2. Create and mount an seperate EBS Volume to it.
 
@@ -30,13 +31,9 @@ inclusion of additional third-party libraries increased this time slightly).
 Control Center (use bash ami.sh). On the machine: ::
 
 $ sudo su
-
 $ cd ..
-
 $ aptitude install git # Only on Daily, not necessary on Giter. 
-
 $ git clone https://github.com/hevok/denigma
-
 $ bash denigma/configure.sh
 
 
@@ -133,23 +130,16 @@ South enables schema and data migration of a django-backend database
 Migrations should be version-controlled 
 [http://stackoverflow.com/questions/10083130/what-is-the-correct-way-to-deal-with-db-migration-while-using-south-django-and].
 In order to add South to Django project, development & production do the 
-following [http://stackoverflow.com/questions/4035296/adding-south-to-django-project-development-production]: 
+following [http://stackoverflow.com/questions/4035296/adding-south-to-django-project-development-production]: ::
 
 $ ./manage.py snycdb
-
 $ ./manage.py convert_to_south myproject.myapp
-
-Change models
-
+# Change models
 $ ./manage.py schemamigration pyproject.myapp --auto
-
 $ ./manage.py migrate myproject.myapp
-
-Alternatively to get a fresh Django database with existing South migrations 
-sync all tables and perform fake migration [http://www.troeger.eu/cms/?p=317].
-
+# Alternatively to get a fresh Django database with existing South migrations 
+# sync all tables and perform fake migration [http://www.troeger.eu/cms/?p=317].
 $ ./manage.py syncdb --all
-
 $ ./manage.py migrate --fake
 
 If required south can be resetted 
@@ -168,70 +158,69 @@ $ ./manage.py schemamigraiion common drop_cat --auto
 
 However, data migration to the lifespan was done with hardcoded SQL:
 
-datasets:
-type
-Regimen
-Lifespan -> assay
-Manipulation
-Intervention
-GenAge -> factor
-datasets_genage_classifications 
-datasets_genage_intervention
-datasets_genage_lifespan 
-datasets_genage_references
-datasets_genage_regimen
-datasets_genage_types
-datasets_gendr_lifespan
-datasets_gendr_regimen
-datasets_intervention_manipulation 
-datasets_intervention_references
+| datasets:
+| type
+| Regimen
+| Lifespan -> assay
+| Manipulation
+| Intervention
+| GenAge -> factor
+| datasets_genage_classifications 
+| datasets_genage_intervention
+| datasets_genage_lifespan 
+| datasets_genage_references
+| datasets_genage_regimen
+| datasets_genage_types
+| datasets_gendr_lifespan
+| datasets_gendr_regimen
+| datasets_intervention_manipulation 
+| datasets_intervention_references
 
 lifespan:
-regimen
-type
-manipulation
-intervention
-factor
-type
-lifespan_factor_classifications 
-lifespan_factor_intervention
-lifespan_factor_lifespan 
-lifespan_factor_references
-lifespan_factor_regimen
-lifespan_factor_types
-datasets_gendr_lifespan
-datasets_gendr_regimen
-lifespan_intervention_manipulation 
-lifespan_intervention_references
+| regimen
+| type
+| manipulation
+| intervention
+| factor
+| type
+| lifespan_factor_classifications 
+| lifespan_factor_intervention
+| lifespan_factor_lifespan 
+| lifespan_factor_references
+| lifespan_factor_regimen
+| lifespan_factor_types
+| datasets_gendr_lifespan
+| datasets_gendr_regimen
+| lifespan_intervention_manipulation 
+| lifespan_intervention_references
 
-RENAME TABLE datasets_genage_classifications TO lifespan_factor_classifications;
-RENAME TABLE datasets_genage_intervention TO lifespan_factor_intervention;
-RENAME TABLE datasets_genage_lifespan TO lifespan_factor_assay;
-RENAME TABLE datasets_genage_regimen to lifespan_factor_regimen;
-RENAME TABLE datasets_genage_types TO datasets_factor_types;
-RENAME TABLE datasets_intervention_manipulation TO lifespan_intervention_manipulation;
-RENAME TABLE datasets_intervention_references TO lifespan_intervention_references;
-RENAME TABLE datasets_type TO lifespan_type;
-RENAME TABLE datasets_regimen TO lifespan_regimen;
-RENAME TABLE datasets_lifespan TO lifespan_assay;
-RENAME TABLE manipulation TO lifespan_manipulation;
-RENAME TABLE datasets_intervention TO lifespan_intervention;
-RENAME TABLE datasets_genage TO lifespan_factor;
-RENAME TABLE datasets_genage_references TO lifespan_factor_references;
-RENAME TABLE datasets_factor_types TO lifespan_factor_types;
-ALTER TABLE lifespan_factor_regimen CHANGE genage_id factor_id INT;
-ALTER TABLE lifespan_factor_assay CHANGE genage_id factor_id INT;
-ALTER TABLE lifespan_factor_assay CHANGE lifespan_id assay_id INT;
-ALTER TABLE lifespan_factor_intervention CHANGE genage_id factor_id INT;
-ALTER TABLE lifespan_factor_references CHANGE genage_id factor_id INT;
-ALTER TABLE lifespan_factor_types CHANGE genage_id factor_id INT;
-ALTER TABLE lifespan_factor_classifications CHANGe genage_id factor_id INT;
+| RENAME TABLE datasets_genage_classifications TO lifespan_factor_classifications;
+| RENAME TABLE datasets_genage_intervention TO lifespan_factor_intervention;
+| RENAME TABLE datasets_genage_lifespan TO lifespan_factor_assay;
+| RENAME TABLE datasets_genage_regimen to lifespan_factor_regimen;
+| RENAME TABLE datasets_genage_types TO datasets_factor_types;
+| RENAME TABLE datasets_intervention_manipulation TO lifespan_intervention_manipulation;
+| RENAME TABLE datasets_intervention_references TO lifespan_intervention_references;
+| RENAME TABLE datasets_type TO lifespan_type;
+| RENAME TABLE datasets_regimen TO lifespan_regimen;
+| RENAME TABLE datasets_lifespan TO lifespan_assay;
+| RENAME TABLE manipulation TO lifespan_manipulation;
+| RENAME TABLE datasets_intervention TO lifespan_intervention;
+| RENAME TABLE datasets_genage TO lifespan_factor;
+| RENAME TABLE datasets_genage_references TO lifespan_factor_references;
+| RENAME TABLE datasets_factor_types TO lifespan_factor_types;
+| ALTER TABLE lifespan_factor_regimen CHANGE genage_id factor_id INT;
+| ALTER TABLE lifespan_factor_assay CHANGE genage_id factor_id INT;
+| ALTER TABLE lifespan_factor_assay CHANGE lifespan_id assay_id INT;
+| ALTER TABLE lifespan_factor_intervention CHANGE genage_id factor_id INT;
+| ALTER TABLE lifespan_factor_references CHANGE genage_id factor_id INT;
+| ALTER TABLE lifespan_factor_types CHANGE genage_id factor_id INT;
+| ALTER TABLE lifespan_factor_classifications CHANGe genage_id factor_id INT;
 
 
 mysql-ebs
 ---------
  
-
 Prepare db for snapshot: ::
 
 $ mysql -u root
