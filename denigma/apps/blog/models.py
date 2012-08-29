@@ -9,7 +9,7 @@ class Post(models.Model):
     title = models.CharField(max_length=250)
     text = models.TextField()
     tags = TaggableManager()
-    images = models.ManyToManyField('gallery.PhotoUrl')
+    images = models.ManyToManyField('gallery.PhotoUrl', blank=True)
 
     def __unicode__(self):
         return self.title
