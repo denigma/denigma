@@ -224,45 +224,35 @@ mysql-ebs
 Prepare db for snapshot: ::
 
 $ mysql -u root
-
 $ FLUSH TABLES WITH READ LOCK;
-
 $ SHOW MASTER STATUS;
-
 $ SYSTEM sudo xfs_freeze -f /vol
 
 
 Create Snapshot: ::
 
 $ SYSTEM sudo xfs_freeze -u /vol
-
 $ UNLOCK TABLES; # Release lock.
-
 $ EXIT
 
 
 Clean up: ::
 
 $ sudo /etc/init.d/mysql stop
-
 $ sudo umount /etc/mysql /var/lib/mysql /var/log/mysql /vol
 
 
 Restoring a snapshotted database
 --------------------------------
 
+::
+
 $ sudo aptitude install git
-
 $ sudo su
-
 $ git https://github.com/hevok/denigma
-
 $ bash denigma/reconnect-ebs.sh
-
 $ bash denigma/open-port.sh
-
 $ sudo bash ./denigma/aws-django -n denigma -d https://github.com/hevok/denigma/raw/master/denigma.tgz -s "/s" -H <DNS> -D denigma -U denigma -P <PASSWORD>
-
 
 
 Transferring data onto EC2
@@ -419,7 +409,7 @@ running it: ::
 
 $ ./manage.py runserver 0.0.0.0:8001
 
-or
+or ::
 
 $ ./manage.py runserver localhost:8002
 
@@ -561,10 +551,13 @@ EMAIL_BACKEND = 'django_ses.SESBackend'
 
 This setup was tested locally by running the server (this was not critical) and going into the
 
+::
+
 $ ./manage.py shell
 
->>> from django.core.mail import send_mail
+::
 
+>>> from django.core.mail import send_mail
 >>> send_mail("Subject", "Text", 'name@xyz.com', ['name@xyz.com'], fail_silently)
 
 Testing now wether the server need to run to get it working.
