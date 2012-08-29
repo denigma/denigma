@@ -1,0 +1,24 @@
+{% extends "tutorials/base.html" %}
+
+{% block hierarchy %}
+<div class="line">
+<span class="left">
+    <a href="/admin">{{ SITE_NAME }} db</a> >
+    <a href="/tutorials">Tutorials</a> >
+    Tutorial =
+    <a href="/tutorials/{{ tutorial.id }}/view">{{ tutorial.title }}</a> >
+    View
+</span>
+</div>
+{% endblock %}
+
+{% block content %}
+   {% load markup %}
+   <h3>{{ tutorial.title }}</h3>
+   {{ tutorial.text }}
+   {% for image in tutorial.images.all %}
+   <img src={{ image.url }} alt={{ image.name }}/>
+   {% endfor %}
+
+<a href="/tutorials/{{tutorial.id }}/edit">Edit?</a>
+{% endblock %}
