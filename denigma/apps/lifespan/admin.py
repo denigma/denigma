@@ -7,7 +7,7 @@ from models import Type, Factor, Manipulation, Intervention, Regimen, Assay
 class StudyAdmin(admin.ModelAdmin):
     fields = ['title', 'pmid', 'reference', 'notes', 'integrated']
     list_display = ('title', 'pmid', 'notes', 'created', 'updated', 'integrated')
-
+    search_fields = ('title', 'pmid', 'notes')
 
 class ExperimentAdmin(admin.ModelAdmin):
     list_display = ('name', 'study')
