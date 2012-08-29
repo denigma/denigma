@@ -23,6 +23,9 @@ have dendencies to other apps, but this need to be programmed in a defense way
 in such that the app is also minimal functional in isolation. The modularity 
 of each indiviudal app needs to be guaranted and fully tested.
 
+Modularity should also be applied to every documentation piece asscoiated with 
+Denigma, including this document here.
+
 
 Data app
 --------
