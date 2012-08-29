@@ -38,7 +38,7 @@
 </div>
 
 <div class="post_body">
-  {{ post.text|markdown|hyper|safe|linebreaks }}
+  {{ post.text|markdown|hyper|safe}} {% comment %}|linebreaks }}# markdown already does linebreaks{% endcomment %}
 </div>
 
 <div class="tags">
