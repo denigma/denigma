@@ -1,15 +1,22 @@
-{% extends "site_base.html" %}
+{% extends "tutorials/base.html" %}
 
 {% load markup %}
 
-{% block title %}Tutorials{% endblock %}
+{% block hierarchy %}
+<div class="line">
+<span class="left">
+    <a href="/admin">{{ SITE_NAME }} db</a> >
+    <a href="/tutorials">Tutorials</a>
+</span>
+</div>
+{% endblock %}
 
 {% block content %}
 <p>Everything you need to know about Denigma.</p>
 {% if tutorials %}
     {% for tutorial in tutorials %}
 
-        <li>{{ tutorial.title }}</li>
+        <li><a href="/tutorials/{{ tutorial.id }}/view/">{{ tutorial.title }}</a></li>
     {% endfor %}
     <hr>
     {% for tutorial in tutorials %}
