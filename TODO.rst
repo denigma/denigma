@@ -82,7 +82,7 @@ for exactly such a purpose.
 
 Of course, there are obstacles in making everything modifyable in Denigma. 
 For this reason a  user authentication system was created. Only verified 
-users can access all the data structure behind Denigma and change to the 
+users can access all the data structure behind Denigma and makes changes to the 
 shape and content of its underlying database which will be tracked back to 
 the user and and time of change. In such we don't run in the risk that 
 someone corrupts the database. We can just go back and reverse any wrong 
@@ -90,10 +90,45 @@ changes.
 
 While south tracks all changes in database schema, The backup app (code name 
 north) save/tracks all changes to the content of an app. If a entry gets 
-deleted it will be backuped. If the title or centent of an entry is changed the 
+deleted it will be backed up. If the title or content of an entry is changed the 
 changes will be saved with associated meta data such as modifing user and time 
 of modification. The changes must be able to be visualised so that it is 
 possible revisit the history of an entry. 
+
+A lightweight implementation of this concept is django-reversion.
+
+The compatible version of django-revision (1.5.3 for Django-1.3.2) was added to the requirements/project and installed.
+django-reversion==1.5.3
+
+::
+
+$ pip install -r requirements/project.txt
+
+Note the latest version reversion-1.6.1 is only compatible with django-1.4.1 but not yet  django-1.5.
+
+Then 'reversion' was added to the INSTALLED_APPS in setting and database synced: ::
+
+$ ./manage.py syncdb
+
+As south was already installed, reversion needed to be migrated: ::
+
+$ ./manage.py migrate reversion
+
+Next revision was integrated with the admin for the respective models.
+The required models were simply register with a sublcass of reversion.VersionAdmin: ::
+
+import reversion
+
+class YourModelAdmin(reversion.VersionAdmin):
+    pass
+
+admin.site.register(YourModel, YourModelAdmin)
+
+Whenever a model was registered with VersionAdmin the following command needs to be executed: ::
+
+$ ./manage.py createinitialrevisions
+
+This command triggers the population of the version database with an inital set of model data.
 
 Signing up is made simple. All what is required for now is just a user name and 
 a password for identifying an individual.
@@ -120,6 +155,12 @@ Haystack/Whoosch and another Xapian/Djapian
 [http://www.vlent.nl/weblog/2010/10/14/searching-django-site-part-1-what-and-why/].
 
 
+Blog Authors
+------------
+
+The block Post should contain the information on which user created it and who updated it and when and what.
+
+
 The Future of Denigma
 ---------------------
 
@@ -132,6 +173,8 @@ This is just the beginning. Further DEPs might be:
 - Use Fabric for ssh control of Denigma 
   [http://docs.fabfile.org/en/1.4.3/index.html].
 - Move Denigma db to RDS.
+- Repair or delete blogs (its broken)
+- Candidates is empty, delete it.
 
 May Denigma's future be bright!
 

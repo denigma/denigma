@@ -1,13 +1,18 @@
 from django.contrib import admin
+
+import reversion
+
 from models import Todo
 
 
-class TodoAdmin(admin.ModelAdmin):
-    fields = ('title', 'description', 'importance', 'start_date', 'stop_date', 'done', 'owner')# 'updated')# 'created',
+class TodoAdmin(reversion.VersionAdmin):
+    fields = ('title', 'description', 'importance', 'start_date', 'stop_date',
+              'done', 'owner') # 'updated')# 'created',
     list_display = ['title', 'description', 'importance',
                     'start_date', 'stop_date', 'created', 'updated', 'done']
     search_fields = ['title', 'description']
     list_filter  = ('done', 'importance',)
+
 
 admin.site.register(Todo, TodoAdmin)
 

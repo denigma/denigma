@@ -1,5 +1,9 @@
-from interactions.models import * #Yeastract, Biogrid
 from django.contrib import admin
+
+import reversion
+
+from models import *
+
 
 ##class ChoiceInline(admin.TabularInline): #StackedInline
 ##    model = Choice
@@ -35,7 +39,7 @@ admin.site.register(Yeastract, AdminYeastract)
 ##    search_fields = [ 'organism_interactor_a', 'organism_interactor_b', 'official_symbol_interactor_a', 'official_symbol_interactor_b', 'pubmed_id']
 ##admin.site.register(Biogrid, AdminBiogrid)
 
-class ModellingAdmin(admin.ModelAdmin):
+class ModellingAdmin(reversion.VersionAdmin):
     #list_display = ('interactor_a', 'source', 'interaction_type', 'target', 'interactor_b', 'pmid', 'taxid', 'primary', 'date')
     list_display = ('source', 'EntrezS', 'interaction_type', 'target', 'EntrezT', 'taxid', 'PubMed','is_primary', 'creation_date')
     search_fields = ('source', 'interaction_type', 'target')

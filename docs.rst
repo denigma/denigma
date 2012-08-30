@@ -606,4 +606,12 @@ class Meta:
     verbose_name = "foo"
     verbose_name_plural = "foobars"
 
+
+user access in models methods
+-----------------------------
+
+To access current user information in the models.py for templated views the request.user should be passed to the e.g. models methods. For the Admin interface the request user can be passed in the admin.py under the method save [http://stackoverflow.com/questions/10991460/django-get-current-user-in-model-save].
+
+
+
 #234567891123456789212345678931234567894123456789512345678961234567897123456789

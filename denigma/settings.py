@@ -220,6 +220,7 @@ INSTALLED_APPS = [
     "metron",
     "south",   # Intelligent schema and data migrations.
     "taggit",  # "tagging",
+    "reversion",# Revision-control for models.
 #    "cms", # Content Management System.
 #    "mptt", # Utilties for implementing a modified pre-order traversal tree.
 #    "sekizai", # For javascipt and css management.

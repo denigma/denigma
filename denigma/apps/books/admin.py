@@ -1,13 +1,20 @@
 from django.contrib import admin
+
+import reversion
+
 from books.models import Publisher, Author, Book
 
 
-class AuthorAdmin(admin.ModelAdmin):
+class PublisherAdmin(reversion.VersionAdmin):
+    pass
+
+
+class AuthorAdmin(reversion.VersionAdmin):
     list_display = ('first_name', 'last_name', 'email')
     search_fields = ('first_name', 'last_name')
 
 
-class BookAdmin(admin.ModelAdmin):
+class BookAdmin(reversion.VersionAdmin):
     list_display = ('title', 'comment', 'url_link', 'status_link', 'publisher', 'publication_date')
     list_filter = ('publication_date',)
     search_fields = ('title', 'comment')
@@ -27,6 +34,6 @@ class BookAdmin(admin.ModelAdmin):
     status_link.allow_tags = True
 
 
-admin.site.register(Publisher)
+admin.site.register(Publisher, PublisherAdmin)
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Book, BookAdmin)

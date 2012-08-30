@@ -1,8 +1,11 @@
 from django.contrib import admin
+
+import reversion
+
 from models import PhotoUrl
 
 
-class PhotoUrlAdmin(admin.ModelAdmin):
+class PhotoUrlAdmin(reversion.VersionAdmin):
     pass
 ##    #fields = ['pub_date', 'question']
 ##    fieldsets = [
@@ -14,6 +17,7 @@ class PhotoUrlAdmin(admin.ModelAdmin):
 ##    list_filter = ['pub_date']
 ##    search_fields = ['question']
 ##    date_hierachy = 'pub_date'
+
 
 admin.site.register(PhotoUrl, PhotoUrlAdmin)
 

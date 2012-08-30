@@ -1,6 +1,8 @@
 from datasets.models import *#Gendr, Ultradian, Adult_Height_Association, BMAL1_Sites_Liver
 from django.contrib import admin
 
+import reversion
+
 
 class GendrAdmin(admin.ModelAdmin):
     list_display = ('gene_symbol','gene_name', 'alias', 'taxid', 'observation', 'pubmed_id', 'reference', 'classification', 'ensembl_gene_id', 'entrez_gene_id', 'mapping')
@@ -9,7 +11,7 @@ class GendrAdmin(admin.ModelAdmin):
 admin.site.register(Gendr, GendrAdmin)
 
 
-class ReferenceAdmin(admin.ModelAdmin):
+class ReferenceAdmin(reversion.VersionAdmin):
     list_display = ('pmid', 'journal', 'year',  'title')# 'title', 'journal', 'publication_date')#'year'
     list_filter = ['year']
     #fields = ('pmid', 'title', 'authors', 'year', 'research_notes')
@@ -31,7 +33,7 @@ admin.site.register(Reference, ReferenceAdmin)
 
 
 
-class ChangeAdmin(admin.ModelAdmin):
+class ChangeAdmin(reversion.VersionAdmin):
     list_display = ('name', 'description', 'gender', 'comparision', 'start', 'stop', 'tissue', 'pmid', 'reference', 'taxid')
     list_filter = ['comparision', 'taxid', 'tissue']
     search_fields = ['name', 'pmid', 'reference']
@@ -59,9 +61,7 @@ class DAM_Fernandez2011Admin(admin.ModelAdmin):
     search_fields = ['cpg_site', 'cgi', 'gene_symbol']
 admin.site.register(DAM_Fernandez2011, DAM_Fernandez2011Admin)
 
-
-
-class GenCCAdmin(admin.ModelAdmin):
+class GenCCAdmin(reversion.VersionAdmin):
     list_display = ('entrez_gene_id', 'mapping', 'gene_symbol', 'alias', 'taxid', 'function', 'observation', 'pubmed_id', 'reference', 'classification', 'peak_mrna', 'peak_protein', 'peak_actvity')
     search_fields = ['entrez_gene_id', 'gene_symbol', 'alias']
     list_filter = ['mapping',

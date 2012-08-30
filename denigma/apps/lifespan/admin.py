@@ -1,39 +1,43 @@
 from django.contrib import admin
 
+import reversion
+
 from models import Study, Experiment, Measurement, Comparision, Epistasis, Strain
 from models import Type, Factor, Manipulation, Intervention, Regimen, Assay
 
 
-class StudyAdmin(admin.ModelAdmin):
+
+class StudyAdmin(reversion.VersionAdmin):
     fields = ['title', 'pmid', 'reference', 'notes', 'integrated']
     list_display = ('title', 'pmid', 'notes', 'created', 'updated', 'integrated')
     search_fields = ('title', 'pmid', 'notes')
 
-class ExperimentAdmin(admin.ModelAdmin):
+
+class ExperimentAdmin(reversion.VersionAdmin):
     list_display = ('name', 'study')
 
 
-class MeasurementAdmin(admin.ModelAdmin):
+class MeasurementAdmin(reversion.VersionAdmin):
    list_display = ('genotype', 'mean', 'median', 'max')
 
 
-class ComparisionAdmin(admin.ModelAdmin):
+class ComparisionAdmin(reversion.VersionAdmin):
    list_display = ('__unicode__', 'mean', 'median', 'max')
 
 
-admin.site.register(Study, StudyAdmin)
-admin.site.register(Experiment, ExperimentAdmin)
-admin.site.register(Measurement, MeasurementAdmin)
-admin.site.register(Comparision, ComparisionAdmin)
-admin.site.register(Epistasis)
-admin.site.register(Strain)
+class EpistasisAdmin(reversion.VersionAdmin):
+    pass
 
-class TypeAdmin(admin.ModelAdmin):
+
+class StrainAdmin(reversion.VersionAdmin):
+    pass
+
+
+class TypeAdmin(reversion.VersionAdmin):
     list_display = ('name',)
-admin.site.register(Type, TypeAdmin)
 
 
-class AdminFactor(admin.ModelAdmin):
+class AdminFactor(reversion.VersionAdmin):
     list_display = ('symbol',
                     'name',      
                     'taxid',
@@ -58,40 +62,46 @@ class AdminFactor(admin.ModelAdmin):
     ]        
     filter_horizontal = ['classifications', 'regimen', 'intervention', 'references']
 
-admin.site.register(Factor, AdminFactor)
 
-
-class ManipulationAdmin(admin.ModelAdmin):
+class ManipulationAdmin(reversion.VersionAdmin):
     list_display = ('shortcut', 'name')
     fields = ('shortcut', 'name', 'type')
     filter_horizontal = ('type',)
 ##    inlines = [ManipulationTypeInline]
-admin.site.register(Manipulation, ManipulationAdmin)
+
 
 class ManipulationTypeInline(admin.StackedInline): #http://charlesleifer.com/blog/self-referencing-many-many-through/
     model = Manipulation
     fk_name = 'type_of'
 
-class InterventionAdmin(admin.ModelAdmin):
+
+class InterventionAdmin(reversion.VersionAdmin):
     list_display = ('name', 'effect', 'mean', 'median', '_75', 'maximum','pmid')
     fields = ('name', 'taxid', 'effect', 'mean', 'median', '_25', '_75', 'maximum','pmid', 'references', 'manipulation')
     search_fields = ['name', 'pmid', 'effect']    
     list_filter = ('taxid', 'manipulation')
     #raw_id_fields = ('reference',)
     filter_horizontal = ('references','manipulation',)
+
+
+class RegimenAdmin(reversion.VersionAdmin):
+    list_display = ('shortcut', 'name')
+
+
+class AssayAdmin(reversion.VersionAdmin):
+    list_display = ('shortcut', 'name')
+
+
+admin.site.register(Study, StudyAdmin)
+admin.site.register(Experiment, ExperimentAdmin)
+admin.site.register(Measurement, MeasurementAdmin)
+admin.site.register(Comparision, ComparisionAdmin)
+admin.site.register(Epistasis, EpistasisAdmin)
+admin.site.register(Strain, StrainAdmin)
+admin.site.register(Type, TypeAdmin)
+admin.site.register(Factor, AdminFactor)
+admin.site.register(Manipulation, ManipulationAdmin)
 admin.site.register(Intervention, InterventionAdmin)
-
-
-class RegimenAdmin(admin.ModelAdmin):
-    list_display = ('shortcut', 'name')
 admin.site.register(Regimen, RegimenAdmin)
-
-
-class AssayAdmin(admin.ModelAdmin):
-    list_display = ('shortcut', 'name')
 admin.site.register(Assay, AssayAdmin)
 
-
-##class SpeciesAdmin(admin.ModelAdmin):
-##    list_dispaly = ('taxid',)
-##admin.site.register(Species, SpeciesAdmin)
