@@ -1,7 +1,7 @@
 {% extends "wiki/base.html" %}
 
 {% load wikilink %}
-{% load hyperling %}
+{% load hyperlink %}
 
 {% block hierarchy %}
 <div class="line">
@@ -25,7 +25,7 @@
 {% block content %}
    {% load markup %}
     {% comment %}<h1>{{ page_name }}</h1>{% endcomment %}
-     {{ content|wikify|markdown|hyper }}
+     {{ content|wikify|hyper|markdown }}
     <hr/>
     <p>Tags: {% for tag in tags %}<a href="/wiki/tag/{{ tag.name }}/">{{ tag.name }}</a> {% endfor %}</p>
     <a href="/wiki/page/{{ page_name }}/edit/">Edit this page?</a>
