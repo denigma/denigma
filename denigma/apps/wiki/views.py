@@ -48,8 +48,8 @@ def search_page(request):
 
 def index_page(request):
    """"Creates a index, i.e. a list, of all entries in the Wiki."""
-   pages = Page.objects.all()
-   tags = Tag.objects.all()
+   pages = Page.objects.all().order_by('name')
+   tags = Tag.objects.all().order_by('name')
    return render_to_response("./wiki/index.html", {"pages": pages, "tags": tags},
                              context_instance=RequestContext(request))
 
