@@ -1,5 +1,6 @@
 from django.contrib import admin
-from gallery.models import PhotoUrl
+from models import PhotoUrl
+
 
 class PhotoUrlAdmin(admin.ModelAdmin):
     pass
