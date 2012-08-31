@@ -39,6 +39,7 @@
 
 <div class="tags">
   {% for tag in article.tags.all %}
+  <b>Keywords:</b>
   <a href="/blog/tag/{{tag}}">{{tag}}</a>
   {% if not forloop.last %}, {% endif %}
   {% endfor %}
@@ -53,5 +54,8 @@
 </tr>
 </table>
 {% endfor %}
+
+<p></p>
+<a href="/admin/blog/post/add/">Add</a>
 {% endblock %}
 
