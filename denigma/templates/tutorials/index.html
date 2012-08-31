@@ -23,11 +23,14 @@ given in a series of tutorials. Each tutorial should be modular like an app. Tut
     <a href="/admin/blog/post/add/">Add another one</a>
     <hr>
     {% for tutorial in tutorials %}
+        <table><tr><td>
         <h3><a href="/tutorials/{{ tutorial.id }}/view">{{ tutorial.title }}</a></h3>
         {{ tutorial.text|markdown }}
+        </dt><td>
         {% for image in tutorial.images.all %}
-           <img src={{ image.url }} alt={{ image.name }}/>
+           <img src={{ image.url }} width="200" height="200" alt={{ image.name }}/>
         {% endfor %}
+        </td></tr></table>
     {% endfor %}
     <p></p>
 
