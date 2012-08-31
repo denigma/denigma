@@ -29,11 +29,14 @@
 </div>
 
 <div class="tags">
+  Keywords:
   {% for tag in post.tags.all %}
       <a href="/blog/tag/{{ tag }}">{{ tag }}</a>
   {% if not forloop.last %}, {% endif %}
   {% endfor %}
 </div>
+
+<p> </p>
 
 <div class="images">
    {% for image in post.images.all %}
@@ -41,6 +44,7 @@
 
    {% endfor %}
 </div>
+<a href="/admin/blog/post/{{ post.id }}/">Edit</a>
 
 {% endblock %}
 
