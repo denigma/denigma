@@ -246,6 +246,7 @@ INSTALLED_APPS = [
     "lifespan",
     "home",
     "tutorials",
+    "articles",
 
     "annotations",
     "expressions",

@@ -6,6 +6,7 @@ from taggit.managers import TaggableManager
 class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    published = models.BooleanField(db_index=True, default=True)
     title = models.CharField(max_length=250)
     text = models.TextField()
     tags = TaggableManager()

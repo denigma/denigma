@@ -1,0 +1,57 @@
+{% extends "articles/base.html" %}
+
+{% load markup %}
+{% load abstraction %}
+
+{% block hierarchy %}
+<div class="line">
+    <span class="left">
+        <a href="/admin">{{ SITE_NAME }} db</a> >
+        <a href="/articles">Articles</a> >
+        <a href="/articles">Index</a>
+   </span>
+
+</div>
+{% endblock %}
+
+{% block subtitle %}Index{% endblock %}
+
+{% load hyperlink %}
+
+{% block content %}
+
+{% for article in object_list %}
+
+<table border="0" color="white">
+<tr>
+<td>
+
+<h3><a href="/articles/{{article.id}}">{{ article.title }}</a></h3>
+
+<div class="post_meta">
+ created on {{ article.created }}
+ updated on {{ article.updated }}
+</div>
+
+<div class="post_body">
+  {{ article.text|abstract|markdown|hyper|safe}}
+</div>
+
+<div class="tags">
+  {% for tag in article.tags.all %}
+  <a href="/blog/tag/{{tag}}">{{tag}}</a>
+  {% if not forloop.last %}, {% endif %}
+  {% endfor %}
+</div>
+</td>
+
+<td>
+{% for image in article.images.all %}
+<img src={{ image.url }} width="150" height="150" alt={{ images.name }} /></td>
+{% endfor %}
+</td>
+</tr>
+</table>
+{% endfor %}
+{% endblock %}
+
