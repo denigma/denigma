@@ -162,7 +162,7 @@ admin.site.register(NewLongevityRegulators, NewLongevityRegulatorsAdmin)
 
 class NewLongevityRegulatorsCandidatesAdmin(admin.ModelAdmin):
     list_display = ('gene_symbol', 'ensembl_gene_id', 'wormbase_id', 'entrez_gene_id', 'mapping')
-    search_fields = ['wormbase_id', 'entrez_gene_id', 'gene_symbol']
+    search_fields = ['wormbase_id', 'entrez_gene_id', 'ensembl_gene_id', 'gene_symbol']
     list_filter = ['mapping']
 admin.site.register(NewLongevityRegulatorsCandidates, NewLongevityRegulatorsCandidatesAdmin)
 
