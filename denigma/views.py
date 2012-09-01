@@ -24,8 +24,6 @@ def root(request):
     return render_to_response('homepage.html', {'posts': posts, 'searchform': searchform},
                               context_instance=RequestContext(request))
 
-
-
 def display_meta(request):
     values = request.META.items()
     values.sort()
