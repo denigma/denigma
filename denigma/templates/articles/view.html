@@ -14,15 +14,16 @@
 </div>
 {% endblock %}
 
-{% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
 
+<h1>{{ post.title }}</h1>
 
 <div class="post_meta">
  created on {{ post.created }}
  modified on {{ post.updated }}
 </div>
+<br>
 
 <div class="post_body">
   {{ post.text|markdown|hyper|safe }}
