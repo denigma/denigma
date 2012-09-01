@@ -38,8 +38,8 @@
 </div>
 
 <div class="tags">
+<b>Keywords:</b>
   {% for tag in article.tags.all %}
-  <b>Keywords:</b>
   <a href="/blog/tag/{{tag}}">{{tag}}</a>
   {% if not forloop.last %}, {% endif %}
   {% endfor %}
