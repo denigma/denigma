@@ -1,6 +1,7 @@
 {% extends "tutorials/base.html" %}
 
 {% load markup %}
+{% load hyperlink %}
 
 {% block hierarchy %}
 <div class="line">
@@ -25,7 +26,7 @@ given in a series of tutorials. Each tutorial should be modular like an app. Tut
     {% for tutorial in tutorials %}
         <table><tr><td>
         <h3><a href="/tutorials/{{ tutorial.id }}/view">{{ tutorial.title }}</a></h3>
-        {{ tutorial.text|markdown }}
+        {{ tutorial.text|markdown|hyper|safe }}
         </dt><td>
         {% for image in tutorial.images.all %}
            <img src={{ image.url }} width="100" height="100" alt={{ image.name }}/>

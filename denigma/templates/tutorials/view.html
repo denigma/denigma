@@ -1,5 +1,8 @@
 {% extends "tutorials/base.html" %}
 
+{% load markup %}
+{% load hyperlink %}
+
 {% block hierarchy %}
 <div class="line">
 <span class="left">
@@ -13,9 +16,8 @@
 {% endblock %}
 
 {% block content %}
-   {% load markup %}
    <h3>{{ tutorial.title }}</h3>
-   {{ tutorial.text|markdown }}
+   {{ tutorial.text|markdown|hyper|safe }}
    {% for image in tutorial.images.all %}
    <img src={{ image.url }} alt={{ image.name }}/>
    {% endfor %}

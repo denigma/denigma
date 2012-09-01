@@ -1,4 +1,5 @@
 {% load markup %}
+{% load hyperlink %}
 
 <h2>News</h2>
 
@@ -13,7 +14,7 @@
 <div/>
 
 <div class="post_body">
-    {{ post.brief|markdown|safe|linebreaks }} <a href="/blog/{{ post.id }}">Read More</a>
+    {{ post.brief|markdown|hyper|safe }} <a href="/blog/{{ post.id }}">Read More</a>
 </div>
 
 <div class="tags">

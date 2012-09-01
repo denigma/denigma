@@ -19,8 +19,6 @@
 
 {% block subtitle %}Articles{% endblock %}
 
-{% load hyperlink %}
-
 {% block content %}
 
 {% for article in object_list %}
@@ -37,7 +35,7 @@
 </div>
 
 <div class="post_body">
-  {{ article.text|markdown|hyper|safe}} {% comment %}|linebreaks }}# markdown already does linebreaks{% endcomment %}
+  {{ article.text|restructuredtext|markdown|safe}} {% comment %}|linebreaks }}# markdown already does linebreaks{% endcomment %}
 </div>
 
 <div class="tags">
