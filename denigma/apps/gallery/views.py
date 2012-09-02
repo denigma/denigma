@@ -22,7 +22,7 @@ from models import PhotoUrl
 class UploadForm(forms.Form):
     file = forms.ImageField(label='Select photo to upload')
 
-bucket = "testingbucket1234"
+bucket = "dgallery"
 
 def index(request):
     def store_in_s3(filename, content):
