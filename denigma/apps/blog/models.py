@@ -18,7 +18,8 @@ class Post(models.Model):
     def brief(self):
         return self.text[:150] + '...'
 
-
+    def slugify(self):
+        return self.title.replace(' ', '_')
 
 
 
