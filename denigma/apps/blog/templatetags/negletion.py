@@ -1,0 +1,45 @@
+"""Provides template tags that makes the use of both markdown and
+ReStructured Text compatible."""
+import re
+from django import template
+
+
+header1 = re.compile("<p>#(.+)</p>")
+header2 = re.compile("<p>##(.+)")
+header3 = re.compile("<p>###(.+)")
+header4 = re.compile("<p>####(.+)")
+
+#h1 = re.compile("<h1>(.+?)</h1>")
+#h2 = re.compile("<h2>(.+?)</h2>")
+#h3 = re.compile("<h3>(.+?)</h3>")
+#h4 = re.compile("<h4>(.+?)</h4>")
+
+register = template.Library()
+
+@register.filter
+def negle(value):
+    """Presevers image urls in combination with neglete wrapped around
+    restructedtext."""
+    return value.replace('<img src="http://', "@@")
+
+
+@register.filter
+def neglete(value):
+    """Negletes the from ReStructured Text performed html demarkuping."""
+    value.replace('&lt;', '<')\
+         .replace('&quot;', '"')\
+         .replace('&gt;', '>')\
+         .replace('&#64;&#64;', '<img src="http://')
+    value = header4.sub(r"<h4>\1</h4>", value)
+    value = header3.sub(r"<h3>\1</h3><p>", value)
+    value = header2.sub(r"<h2>\1</h2><p>", value)
+    value = header1.sub(r"<h1>\1</h1>", value)
+
+    #value = h4.sub(r"<h5>\1</h5>", value)
+    #value = h3.sub(r"<h4>\1</h4>", value)
+    #value = h2.sub(r"<h3>\1</h3>", value)
+    #value = h1.sub(r"<h2>\1</h2>", value)
+
+
+
+    return value

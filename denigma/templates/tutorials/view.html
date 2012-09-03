@@ -2,6 +2,7 @@
 
 {% load markup %}
 {% load hyperlink %}
+{% load negletion %}
 
 {% block hierarchy %}
 <div class="line">
@@ -17,7 +18,7 @@
 
 {% block content %}
    <h3>{{ tutorial.title }}</h3>
-   {{ tutorial.text|markdown|hyper|safe }}
+   {{ tutorial.text|markdown|restructuredtext|hyper|neglete|safe }}
    {% for image in tutorial.images.all %}
    <img src={{ image.url }} alt={{ image.name }}/>
    {% endfor %}

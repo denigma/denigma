@@ -16,11 +16,8 @@ class Post(models.Model):
         return self.title
 
     def brief(self):
-        return self.text[:150] + '...'
-
+        return self.text.replace('\r', '')\
+                        .replace('Abstract\n========', '')\
+                        .replace('## Abstract', '')[:150] + '...'
     def slugify(self):
         return self.title.replace(' ', '_')
-
-
-
-
