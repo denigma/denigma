@@ -17,7 +17,7 @@ class Post(models.Model):
 
     def brief(self):
         if self.text.startswith("reStructured"):
-              return self.text.replace('\r', '').split('Abstract\n========\n\n')[1].replace('==', '').split('\n')[0]
+              return self.text.replace('\r', '').split('Abstract\n========\n\n')[1].replace('==', '').split('\n')[0][:150] + '...'
         return self.text.replace('\r', '')\
                         .replace('Abstract\n========', '')\
                         .replace('## Abstract', '')[:150] + '...'
