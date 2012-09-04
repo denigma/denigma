@@ -7,12 +7,12 @@ import views
 from models import Todo
 
 
-urlpatterns = patterns('', # Pattern definition
-    (r'^login$', views.todo_login),
-    (r'^logout$', views.todo_logout),
+urlpatterns = patterns('todos.views', # Pattern definition
+    (r'^login$', 'todo_login'),
+    (r'^logout$', 'todo_logout'),
                        
-    (r'^$', views.todo_index),
-    (r'^add$', views.add_todo),
+    (r'^$', 'todo_index'),
+    (r'^add$', 'add_todo'),
 
     (r'^(\d+)/$', #views.view_todo),
     CreateView.as_view(
@@ -20,7 +20,7 @@ urlpatterns = patterns('', # Pattern definition
          template_name='todos/detail.html')
     ), # Depricacted?
 
-    (r'^(?P<todo_id>\d+)/{0,1}$', views.update_todo),
-    (r'^(?P<todo_id>\d+)/delete$', views.delete_todo),
-    (r'^(\d+)/edit$', 'todos.views.edit_todo'),
+    (r'^(?P<todo_id>\d+)/{0,1}$', 'update_todo'),
+    (r'^(?P<todo_id>\d+)/delete$', 'delete_todo'),
+    (r'^(\d+)/edit$', 'edit_todo'),
 )
