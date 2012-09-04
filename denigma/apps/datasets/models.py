@@ -1,5 +1,10 @@
 from django.db import models
 
+from Bio import Entrez, Medline
+
+
+Entrez.email = "hevok@denigma.de"
+
 
 class Reference(models.Model):
     pmid = models.IntegerField(blank=True, null=True) #) # 
@@ -65,6 +70,23 @@ class Reference(models.Model):
     def __unicode__(self):
         return u"{0} {1}".format(self.pmid, self.title)
 
+    def save(self, *args, **kwargs):
+        if not self.pk:
+          # This code only happens if the objects is not in the database yet.
+          # Otherwise it would have pk.
+          if self.pmid:
+             handle = Entrez.esummary(db="pubmed", id=self.pmid)
+             r = Entrez.read(handle)
+             r = r[0] #  reference.
+             self.title = r['Title']
+             self.issue = r['Issue']
+             self.pages = r['Pages']
+             self.authors = '; '.join(r['AuthorList'])
+             self.journal = r['FullJournalName']
+             self.year = int(r['PubDate'].split(' ')[0])
+             self.language = r['LangList'][0]
+        super(Reference, self).save(*args, **kwargs)
+ 
 
 class Signature(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
