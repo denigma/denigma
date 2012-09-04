@@ -18,4 +18,5 @@ django-taggit   # Provides tagging functionality.
 django-grappelli==2.3.8 # Alternative admin design with additional functionality.
 django-reversion==1.5.3 # Model version control system.
 docutils # Documentation utilities.
-
+numpy # Required for BioPython
+biopython # For EUtils
