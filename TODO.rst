@@ -160,6 +160,63 @@ Blog Authors
 
 The block Post should contain the information on which user created it and who updated it and when and what.
 
+The text in the templates should not be static. Rather than they should be saved as database entries under appropiate names in such that they will be editbale in the admin panel.
+
+
+Dynamic Page Content
+--------------------
+
+Information hardcoded in the templates need to be moved into a database-backend and being edidtable
+both via the admin interface and directly on the site. These pieces of information need to be made
+persistent in either a relational (app) or non-relational (i.e. key-value look-up storage) backend.
+
+One way to accomplish this would be to pass a data object containing all entries of the data app as
+dictionary mapping title to entries.
+
+Therefore in the views.py
+namespace = [post.title for post in Post.objects.all()]
+return render_to_response('appname/templatename.html', {'namepace': namespace})
+
+Although this approach works it produces considerbale overhead as the database will be queried for all
+data objects each time the view gets called.
+
+An alternative is to explicilty fetch the required information from data and pass them to the template.
+
+An attractive way to achieve the above mentioning is to use django-constance, which allows to define 
+settings constance that are stored in redis backend and already provides an admin interface app for 
+editing this constances. settings can be imported into views and passed to templates
+[https://github.com/comoga/django-constance].
+
+
+Literature Retrieval
+--------------------
+
+Each refernence should have a link to its full-text article as well as PDF in S3 storage.
+
+
+Editable Content
+----------------
+
+Editable Tables
+~~~~~~~~~~~~~~~
+Denigma needs to provide a beautiful representation of its table content.
+The tables need to be interactive and each row can be editied with DetailView.
+Filters can be applyied on and column. A similiar framework to the dynamic 
+simulation UI - Data Grid Components has to be employed for this 
+[http://nextgensim.info/grids].
+
+Editable Text
+~~~~~~~~~~~~~
+The Etch content editor need to be utilized [http://etchjs.com/].
+
+
+Article should be passed to the address bar by their titles.
+For this to occur a article title need to be slugfied. A templatetag
+could do this job by replacing spaces with other characters.
+
+
+
+
 
 The Future of Denigma
 ---------------------
@@ -172,11 +229,10 @@ This is just the beginning. Further DEPs might be:
   [http://www.turnkeylinux.org/blog/ec2-userdata].
 - Use Fabric for ssh control of Denigma 
   [http://docs.fabfile.org/en/1.4.3/index.html].
-- Move Denigma db to RDS.
+- Move Denigma db to RDS
 - Repair or delete blogs (its broken)
 - Candidates is empty, delete it.
 
 May Denigma's future be bright!
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
-
