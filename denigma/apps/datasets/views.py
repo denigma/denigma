@@ -16,38 +16,39 @@ def update(request):
     references = Reference.objects.all()
     for i in references:
         try:
-            handle = Entrez.esummary(db='pubmed', id=i.pmid)
-            r = Entrez.read(handle)
-            #or k, v in r[0].items():
-                    #print k,':', v
-            #print type(r)
+            if i.pmid:
+                handle = Entrez.esummary(db='pubmed', id=i.pmid)
+                r = Entrez.read(handle)
+                #or k, v in r[0].items():
+                        #print k,':', v
+                #print type(r)
 
-            r = r[0]
-            i.title=r['Title']
-            #print i.pmid, type(i.pmid), i.title
-            i.issue=r['Issue']
-            #print i.issue
-            i.volume=r['Volume']
-            #print i.volume
-            i.pages=r['Pages']
-            #print i.pages
-            i.authors='; '.join(r['AuthorList'])
-            #print "authorslenght", len('; '.join(r['AuthorList']))
-            #print i.authors
-            #i.epub_date=datetime.date(r['EPubDate'])
-            #print i.epub_date
-            i.journal=r['FullJournalName']
-            i.year=int(r['PubDate'].split(' ')[0])
-            #print i.year
-            i.language=r['LangList'][0]
-            #print i.language
+                r = r[0]
+                i.title=r['Title']
+                #print i.pmid, type(i.pmid), i.title
+                i.issue=r['Issue']
+                #print i.issue
+                i.volume=r['Volume']
+                #print i.volume
+                i.pages=r['Pages']
+                #print i.pages
+                i.authors='; '.join(r['AuthorList'])
+                #print "authorslenght", len('; '.join(r['AuthorList']))
+                #print i.authors
+                #i.epub_date=datetime.date(r['EPubDate'])
+                #print i.epub_date
+                i.journal=r['FullJournalName']
+                i.year=int(r['PubDate'].split(' ')[0])
+                #print i.year
+                i.language=r['LangList'][0]
+                #print i.language
 
 ##            handle = Entrez.efetch(db="pubmed",id=id,rettype="medline",retmode="text")
 ##            records = Medline.parse(handle)
 ##            for r in records: pass
 ##            i.abstract=r['AB']
             
-            i.save()
+               i.save()
         except ValueError:
             print "Error, by retrieving pubmed data.", i.pmid, len(r), type(r)
             try:
