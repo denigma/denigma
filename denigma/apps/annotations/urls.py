@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Urls for news."""
-from django.conf.urls.defaults import *
-
-from d.annotations.views import find
+from django.conf.urls.defaults import patterns, url
 
 
-urlpatterns = patterns('',
-                       (r'^$', find),)
+urlpatterns = patterns('annotations.views',
+                      url(r'^add_data', 'add_data'),
+                      url(r'^$', 'index'),
+)

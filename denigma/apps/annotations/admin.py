@@ -3,6 +3,9 @@ from django.contrib import admin
 
 import reversion
 
+class TissueAdmin(reversion.VersionAdmin):
+    pass
+
 
 class TaxonomyAdmin(admin.ModelAdmin):
     list_display = ('taxid', 'scientific_name')
@@ -228,9 +231,10 @@ class OrthologAdmin(admin.ModelAdmin):
 
 class Entrez_GeneAdmin(admin.ModelAdmin):
     list_display = ('entrez_gene_id', 'gene_symbol', 'gene_name', 'locus_tag', 'symbol_from_nomenclature_authority', 'full_name_from_nomenclature_autority', 'ensembl_gene_id', 'mirbase', 'mgi', 'hgnc', 'mim', 'hprd', 'rgd', 'ratmap', 'wormbase_id', 'imgt_gene_db', 'taxid')
+
+
 admin.site.register(Entrez_Gene, Entrez_GeneAdmin)
-
-
+admin.site.register(Tissue, TissueAdmin)
 admin.site.register(Taxonomy, TaxonomyAdmin)
 admin.site.register(Animal, AnimalAdmin)
 admin.site.register(Species, SpeciesAdmin)
@@ -248,3 +252,4 @@ admin.site.register(gene2ensembl, gene2ensemblAdmin)
 admin.site.register(EnsemblEntrezGeneId, EnsemblEntrezGeneIdAdmin)
 admin.site.register(Gen, GenAdmin)
 admin.site.register(Ortholog, OrthologAdmin) 
+

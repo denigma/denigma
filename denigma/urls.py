@@ -53,6 +53,7 @@ urlpatterns += patterns("",
     url(r'^grappeli/', include('grappelli.urls')),
     url(r'^tutorials/', include('tutorials.urls'), name="tutorials"),
     url(r'^articles/', include('articles.urls'), name="articles"),
+    url(r'^annotations/', include('annotations.urls'), name="annotations"),
 )
 
 if settings.SERVE_MEDIA:
