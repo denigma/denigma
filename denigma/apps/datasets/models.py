@@ -1,3 +1,6 @@
+from time import strptime
+from datetime import datetime
+
 from django.db import models
 
 from Bio import Entrez, Medline
@@ -10,7 +13,8 @@ class Reference(models.Model):
     pmid = models.IntegerField(blank=True, null=True) #) # 
     title = models.CharField(max_length=250, blank=True)
     authors = models.TextField(blank=True)  #models.ManyToManyField(Author) max_length=250, 
-    keywords = models.CharField(max_length=250, blank=True)
+    abstract = models.TextField(blank=True)
+    keywords = models.TextField(blank=True) #CharField(max_length=250, blank=True) #
     link = models.URLField(blank=True)
     url = models.URLField(blank=True)
     journal = models.CharField(max_length=250, blank=True)
@@ -72,21 +76,51 @@ class Reference(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-          # This code only happens if the objects is not in the database yet.
-          # Otherwise it would have pk.
-          if self.pmid:
-             handle = Entrez.esummary(db="pubmed", id=self.pmid)
-             r = Entrez.read(handle)
-             r = r[0] #  reference.
-             self.title = r['Title']
-             self.issue = r['Issue']
-             self.pages = r['Pages']
-             self.authors = '; '.join(r['AuthorList'])
-             self.journal = r['FullJournalName']
-             self.year = int(r['PubDate'].split(' ')[0])
-             self.language = r['LangList'][0]
-        super(Reference, self).save(*args, **kwargs)
- 
+            # This code only happens if the objects is not in the database yet.
+            # Otherwise it would have pk.
+            try:
+                Reference._for_write = True
+                return Reference.objects.get(pmid=self.pmid), False
+            except Reference.DoesNotExist:
+                Reference.fetch_data(self)
+                super(Reference, self).save(*args, **kwargs)
+
+    @staticmethod
+    def fetch_data(self):
+        """Queries Entrez EUtils to retrieve information on a reference."""
+        if self.pmid:
+            handle = Entrez.esummary(db="pubmed", id=self.pmid)
+            r = Entrez.read(handle)
+            print r
+            r = r[0] #  reference.
+            self.title = r['Title']
+            #self.abstract =
+            self.volume = r['Volume'] 
+            self.issue = r['Issue']
+            self.pages = r['Pages']
+            self.authors = '; '.join(r['AuthorList'])
+            self.journal = r['FullJournalName']
+            self.alternate_journal = r['Source']
+            self.year = int(r['PubDate'].split(' ')[0])
+            self.language = r['LangList'][0]
+            self.doi = r['DOI']
+
+            handle = Entrez.efetch(db="pubmed", id=self.pmid, rettype="medline", retmode="text")
+            records = Medline.parse(handle)
+            for record in records: pass
+            self.abstract = record.get('AB', '')
+            s = record['EDAT']
+            self.date = datetime(*strptime(s, "%Y/%m/%d %H:%M")[0:5])
+            print "; ".join(record.get('MH', ''))
+            self.keywords = "; ".join(record.get('MH', '')) # MeSH terms
+
+    def update(self):
+       """Updates all reference that have a pmid with information from Entrez."""
+       references = Reference.objects.all()
+       for reference in references:
+           Reference.fetch_data(reference)
+           reference.save()
+                   
 
 class Signature(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
