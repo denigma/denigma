@@ -137,10 +137,13 @@ a password for identifying an individual.
 Simplifing Account Creation
 ---------------------------
 
-User account creation can be even more simplified for known experts. The 
-default user name will be assumed to be FirstName_LastName. Only the Email 
-field is required and password will be send by email. User names actually need 
-to be changeable too.
+User account creation can be even more simplified.
+The username should be made optional and only a Email address should be 
+required the username will then be infered from the Emial address.
+User names actually need to be changeable too.
+For known experts the default user name will be assumed to be
+FirstName_LastName. Only the Email field is required and password will be
+send by email.
 
 
 Global Site-wide Search
@@ -191,7 +194,7 @@ editing this constances. settings can be imported into views and passed to templ
 Literature Retrieval
 --------------------
 
-Each refernence should have a link to its full-text article as well as PDF in S3 storage.
+Each referenence should have a link to its full-text article as well as PDF in S3 storage.
 
 
 Editable Content
@@ -213,8 +216,6 @@ The Etch content editor need to be utilized [http://etchjs.com/].
 Article should be passed to the address bar by their titles.
 For this to occur a article title need to be slugfied. A templatetag
 could do this job by replacing spaces with other characters.
-
-
 
 
 
