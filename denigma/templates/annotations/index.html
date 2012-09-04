@@ -1,0 +1,13 @@
+{% extends "annotations/base.html" %}
+
+{% block subtitle %}Index{% endblock %}
+
+{% block content %}
+<p>Bulk upload of annotation data. Specify the model and input the data:</p>
+<form action="add_data" method="POST">{% csrf_token %}
+Model:<input type="text" name="model"<br>
+<textarea name="data"></textarea><br>
+<input type="submit" value="Add"><br>
+</form>
+{% endblock %}
+
