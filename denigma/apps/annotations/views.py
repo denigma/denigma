@@ -10,7 +10,7 @@ from models import Tissue
 
 def index(request):
     return render_to_response('annotations/index.html',
-                              context_instance=RequestContext(request)
+                              context_instance=RequestContext(request))
 
 def add_data(request):
     """Bulk upload function for annotation data."""
