@@ -552,5 +552,22 @@ user access in models methods
 To access current user information in the models.py for templated views the request.user should be passed to the e.g. models methods. For the Admin interface the request user can be passed in the admin.py under the method save [http://stackoverflow.com/questions/10991460/django-get-current-user-in-model-save].
 
 
+Database Charset
+----------------
+The default charset in MySQL is latin1, which is suboptimal as it only provides
+a very limited character set. utf8 is the apperent best coding format. To
+convert a table. To convert a given table to utf8 command this: ::
+    ALTER TABLE <table_name> CONVERT TO CHARACTER SET utf8;
+
+The whole database should better have utf8 as default set and therefore a total
+conversion is required.
+
+Admin Bootstrap
+---------------
+TO install bootstrap look for the admin interface: ::
+    $ git clone https://github.com/gkuhn1/django-admin-templates-twitter-bootstrap/
+    $ pip install -e git+https://github.com/gkuhn1/django-admin-templates-twitter-bootstrap/#egg=django-admin-templates-twitter-bootstrap
+
+
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
