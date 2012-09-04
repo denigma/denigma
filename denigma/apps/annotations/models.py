@@ -13,6 +13,18 @@ class Classification(models.Model):
         return self.title
 
 
+class Tissue(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    synonyms = models.TextField(blank=True)
+    hierarchy = models.IntegerField(blank=True, null=True)
+    identifier = models.IntegerField(blank=True, null=True) # DAA cross-reference.
+    notes = models.TextField(blank=True, null=True)
+
+    def __unicode__(self):
+        return self.name
+
+
 # Species annotations:
 
 class Taxonomy(models.Model):
