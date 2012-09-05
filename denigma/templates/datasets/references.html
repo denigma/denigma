@@ -10,17 +10,21 @@
 
 {% block content %}
 
-{% for reference in references %}
-<p>
-{{ reference.id }}
-{{ reference.pmid }}
-{{ reference.title }}
-{{ reference.year }}
-</p>
-{% endfor %}
+{% if references %}
+    {% for reference in references %}
+        <p>
+        {{ reference.id }}
+        {{ reference.pmid }}
+        {{ reference.title }}
+        {{ reference.year }}
+    </p>
+    {% endfor %}
+    {% if user.is_authenticated %}
+        <a href="/datasets/references/update">Update the references information with Entrez EUtils</a>
+    {% endif %}
 
-{% if user.is_authenticated %}
-    <a href="/datasets/references/update">Update the references information with Entrez EUtils</a>
+{% else %}
+    <p>There are no references in the database.</p>
+
 {% endif %}
-
 {% endblock %}
