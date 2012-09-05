@@ -1,0 +1,17 @@
+{% extends "annotations/base.html" %}
+
+{% block hierarchy %}
+<a href="/admin/">{{ SITE_NAME }} db</a> >
+<a href="/annotations/">Annotations</a>
+{% endblock hierarchy %}
+
+{% block subtitle %}Bulk Upload{% endblock %}
+
+{% block content %}
+<p>Specify the model and input the annotation data:</p>
+<form action="bulk_upload" method="POST">{% csrf_token %}
+Model:<input type="text" name="model"<br>
+<textarea name="data"></textarea><br>
+<input type="submit" value="Add"><br>
+</form>
+{% endblock %}

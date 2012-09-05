@@ -1,13 +1,24 @@
 {% extends "annotations/base.html" %}
 
+{% block hierarchy %}
+<a href="/admin">{{ SITE_NAME }} db</a> >
+<a href="/annotations">Annotations</a> >
+Index
+{% endblock hierarchy %}
+
 {% block subtitle %}Index{% endblock %}
 
 {% block content %}
-<p>Bulk upload of annotation data. Specify the model and input the data:</p>
-<form action="add_data" method="POST">{% csrf_token %}
-Model:<input type="text" name="model"<br>
-<textarea name="data"></textarea><br>
-<input type="submit" value="Add"><br>
-</form>
+<a href="/admin/annotations/">Annotation tables</a>
+<center><img src="http://dgallery.s3.amazonaws.com/building.png" alt="building" width=200 height=200></center>
+    {% if user.is_authenticated %}
+        <p>Specify the model and input the annotation data:</p>
+        <form action="bulk_upload" method="POST">{% csrf_token %}
+        Model:<input type="text" name="model"<br>
+        <textarea name="data"></textarea><br>
+        <input type="submit" value="Add"><br>
+        </form>
+    {% endif %}
 {% endblock %}
+
 
