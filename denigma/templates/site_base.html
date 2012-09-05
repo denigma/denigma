@@ -12,8 +12,14 @@
                 <li id="tab_nav"> <a href="/shorty">URLs</a> </li>
 		<li id="tab_nav"> <a href="/gallery/">Gallery</a> </li>
                 <li id="tab nav"> <a href="/tutorials/">Tutorials</a> </li>
+                <li id="tab_space"> __ </li>
+                <li id="tab nav">
+                <form class="navbar_search" action="/search/"> {% comment %} Replace this with haystack/Whoosh {% endcomment %}
+                     <input type="hidden" name="models" value="data">
+                     <input type="text" class="search-query span1" name="q" placeholder="Search" value="">
+                </form></li>
  		{% if user.is_authenticated %}{% spaceless %}
-			<li id="tab_space"> ____ </li>
+			<li id="tab_space"> __ </li>
 			<li id="tab_profile"><a href="{% url profile_detail user.username %}">{% trans "Profile" %}</a></li>
 			<li id="tab_notices"><a href="{% url notification_notices %}">{% trans "Notices" %}{% if notice_unseen_count %}({{ notice_unseen_count }}){% endif %}</a></li>
 			<li id="tab_todo"> <a href="/todos/">Todo</a> </li>
