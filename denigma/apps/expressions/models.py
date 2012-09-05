@@ -1,6 +1,32 @@
 from django.db import models
 
 
+#class Profile(models.Model):
+#    title = models.CharField()
+#    species = models.ForeignKey('annotations.Species')
+
+
+#class Transcript(models.Model):
+#    probe_id = models.CharField(max_length=255)
+#    profile = ForeignKey(Profile)
+
+
+#class Intensity(models.Model):
+#    value = models.FloatField()
+#    probe = models.ForeignKey('Transcript') 
+
+
+#class Contrast(models.Model):
+#    exp = models.ManyToManyField(Profile)
+#    ctr = models.ManyToManyField(Profile)
+
+#    ratio = models.FloatField()
+#    pvalue = models.FloatField()
+
+
+#class Signature(models.Model):
+#    pass
+
 class YeastDR(models.Model):
     exp = models.FloatField()
     ctr = models.FloatField()
