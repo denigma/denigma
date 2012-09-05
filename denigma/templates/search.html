@@ -1,0 +1,14 @@
+{% extends "site_base.html" %}
+
+{% block hierarchy %}
+<a href="/admin/>Denigma db</a>
+<a href="/search>Search</a>
+{% endblock hierarchy %}
+
+{% block title %}Site-wide Search{% endblock %}
+
+{% block content %}
+<p>You searched for: {{ term }}</p>
+<p>Searching is not yet enabled.</p>
+<center><img src="http://dgallery.s3.amazonaws.com/building.png" alt="building" width=200 height=200></center>
+{% endblock %}
