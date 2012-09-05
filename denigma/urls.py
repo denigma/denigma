@@ -20,6 +20,7 @@ urlpatterns = patterns("denigma.views",
     url('^time/$', 'current_datetime'),
     url(r'^time/plus/(\d+)/$', 'hours_ahead'),  # d+ = wildcard
     url(r'^google(?P<term>\w+)', 'google'),
+    url(r'^search/(?P<term>.*)', 'search'), # Side-wide search
 #    url(r'^', include('cms.urls')),
 )
 
@@ -54,6 +55,10 @@ urlpatterns += patterns("",
     url(r'^tutorials/', include('tutorials.urls'), name="tutorials"),
     url(r'^articles/', include('articles.urls'), name="articles"),
     url(r'^annotations/', include('annotations.urls'), name="annotations"),
+    url(r'^interactions/', include('interactions.urls'), name="interactions"),
+    url(r'^expressions/', include('expressions.urls'), name="expressions"),
+    url(r'^datasets/', include('datasets.urls'), name="datasets"),
+    url(r'^lifespan/', include('lifespan.urls'), name="lifespan"),
 )
 
 if settings.SERVE_MEDIA:

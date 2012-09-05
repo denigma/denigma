@@ -63,4 +63,8 @@ def hours_ahead(request, offset):
 def google(request, term):
     return render_to_response('google.html', term)
 
-
+def search(request, term):
+    """Site-wide search functionality"""
+    term = request.META['QUERY_STRING'].split('models=data&q=')[1]
+    return render_to_response('search.html', {'term': term},
+                              context_instance=RequestContext(request))
