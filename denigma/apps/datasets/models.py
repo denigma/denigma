@@ -52,10 +52,7 @@ class Reference(models.Model):
     name_of_database = models.CharField(max_length=100, blank=True)
     database_provider = models.CharField(max_length=100, blank=True)
     language = models.CharField(max_length=100, blank=True)
-    email = models.EmailField(max_length=75, blank=True)
-
-    class Meta():
-        db_table = u'reference'        
+    email = models.EmailField(max_length=75, blank=True)        
     
     def __repr__(self):
         if self.authors and self.title:
