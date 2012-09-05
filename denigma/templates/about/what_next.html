@@ -1,31 +1,20 @@
-{% extends "site_base.html" %}
+{% extends "about/base.html" %}
 
 {% block hierarchy %}
-<div class="line">
-    <span class="left">
         <a href="/admin">{{ SITE_NAME }} db</a> >
         <a href="/about/what_next">About</a> >
         What next?
-   </span>
-   <span class="centre">
-       Menu:
-       <a href="/about">About</a> |
-       <a href="/about/what_next">What Next?</a> |
-       <a href="/about/terms">Terms</a> |
-       <a href="/about/privacy">Privacy</a>
-   </span>
-</div>
 {% endblock %}
+
+{% block subtitle %}What's next?{% endblock %}
 
 {% load i18n %}
 
 {% load ifsetting_tag %}
 
-{% block head_title %}{% trans "What Next?" %}{% endblock %}
+{% comment %}{% block head_title %}{% trans "What Next?" %}{% endblock %}{% endcomment %}
 
 {% block body %}
-    <h1>{% trans "What Next?" %}</h1>
-    
     {% if user.is_authenticated %}
         <p>Here are some things to do to get started with Denigma:</p>
         

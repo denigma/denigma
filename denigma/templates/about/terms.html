@@ -1,28 +1,15 @@
-{% extends "site_base.html" %}
+{% extends "about/base.html" %}
 
 {% block hierarchy %}
-<div class="line">
-    <span class="left">
-        <a href="/admin">{{ SITE_NAME }} db</a> >
-        <a href="/about">About</a> >
-        Terms of use
+    <a href="/admin">{{ SITE_NAME }} db</a> >
+    <a href="/about">About</a> >
+    Terms of use
+{% endblock hierarchy %}
 
-   </span>
-   <span class="centre">
-       Menu:
-       <a href="/about">About</a> |
-       <a href="/about/what_next">What Next?</a> |
-       <a href="/about/terms">Terms</a> |
-       <a href="/about/privacy">Privacy</a>
-   </span>
-</div>
-{% endblock %} 
-
-{% block title %}Terms{% endblock %}
-
-{% block subtitle %}>>> import this{% endblock %}
+{% block subtitle %}Terms{% endblock %}
 
 {% block content %}
+<h4>>>> import this</h4>
 <p>The Zen of Python, by Tim Peters</p>
 <li>Beautiful is better than ugly.</li>
 <li>Explicit is better than implicit.</li>

@@ -1,22 +1,9 @@
-{% extends "site_base.html" %}
+{% extends "about/base.html" %}
 
 {% block hierarchy %}
-<div class="line">
-    <span class="left">
-        <a href="/admin">{{ SITE_NAME }} db</a> >
-        About
-   </span>
-   <span class="centre">
-       Menu:
-       <a href="/about">About</a> |
-       <a href="/about/what_next">What Next?</a> |
-       <a href="/about/terms">Terms</a> |
-       <a href="/about/privacy">Privacy</a>
-   </span>
-</div>
-{% endblock %}
-
-{% block title %}About{% endblock %}
+    <a href="/admin">{{ SITE_NAME }} db</a> >
+    About
+{% endblock hierarchy %}
 
 {% block content %}
 <b>Denigma</b> is the acronym for <b>D</b>ynamic <b>E</b>legant <b>N</b>ext-<b>I</b>nnovative <b>G</b>eneration <b>M</b>anagement <b>A</b>dministrator.
