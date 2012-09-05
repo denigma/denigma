@@ -12,7 +12,11 @@ def index(request):
     return render_to_response('annotations/index.html',
                               context_instance=RequestContext(request))
 
-def add_data(request):
+#def bulk_upload(request):
+#   return render_to_response('annotations/bulk_upload.html',
+#                             context_instance=RequestContext(request))
+
+def bulk_upload(request):
     """Bulk upload function for annotation data."""
     model_name = request.POST['model']
     data = request.POST['data'].split('\n') 
@@ -35,4 +39,8 @@ def add_data(request):
     msg = "Received %s lines of data on %s for model %s" % (len(data)-1, header.values(), model_name)
     messages.add_message(request, messages.SUCCESS, ugettext(msg))
     return HttpResponseRedirect('/annotations/')
-         
+
+
+def species(request):
+    return render_to_response('annotations/species.html',
+                             context_instance=RequestContext(request))         
