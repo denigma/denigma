@@ -10,7 +10,7 @@ Entrez.email = "hevok@denigma.de"
 
 
 class Reference(models.Model):
-    pmid = models.IntegerField(blank=True, null=True) #) # 
+    pmid = models.IntegerField(blank=True, null=True, unique=True) #) # 
     title = models.CharField(max_length=250, blank=True)
     authors = models.TextField(blank=True)  #models.ManyToManyField(Author) max_length=250, 
     abstract = models.TextField(blank=True)
@@ -80,7 +80,11 @@ class Reference(models.Model):
             # Otherwise it would have pk.
             try:
                 Reference._for_write = True
-                return Reference.objects.get(pmid=self.pmid), False
+                if self.pmid:
+                    return Reference.objects.get(pmid=self.pmid) #, False
+                    print "Did not failed"
+                else:
+                    super(Reference, self).save(*args, **kwargs)
             except Reference.DoesNotExist:
                 Reference.fetch_data(self)
                 super(Reference, self).save(*args, **kwargs)
@@ -94,7 +98,6 @@ class Reference(models.Model):
             print r
             r = r[0] #  reference.
             self.title = r['Title']
-            #self.abstract =
             self.volume = r['Volume'] 
             self.issue = r['Issue']
             self.pages = r['Pages']
@@ -120,7 +123,21 @@ class Reference(models.Model):
        for reference in references:
            Reference.fetch_data(reference)
            reference.save()
-                   
+
+    @staticmethod
+    def duplicates():
+       """Returns all duplicate entries.
+       For now it checks only pmids."""
+       references = Reference.objects.all() 
+       pmids = {}
+       duplicates = []
+       for reference in references:
+           if reference.pmid:
+               if reference.pmid in pmids:
+                   duplicates.extend([reference, pmids[reference.pmid]])
+               else:
+                   pmids[reference.pmid] = reference
+       return duplicates
 
 class Signature(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
