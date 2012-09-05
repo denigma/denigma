@@ -5,14 +5,10 @@
 {% load negletion %}
 
 {% block hierarchy %}
-<div class="line">
-    <span class="left">
-        <a href="/admin">{{ SITE_NAME }} db</a> >
-        <a href="/articles">Articles</a> >
-        Article >
-        <a href="/articles/{{ post.id }}">{{ post.title }}</a>
-   </span>
-</div>
+    <a href="/admin">{{ SITE_NAME }} db</a> >
+    <a href="/articles">Articles</a> >
+    Article >
+    <a href="/articles/{{ post.id }}">{{ post.title }}</a>
 {% endblock %}
 
 {% block subtitle %}Article{% endblock %}
