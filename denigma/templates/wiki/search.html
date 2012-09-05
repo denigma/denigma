@@ -1,19 +1,10 @@
 {% extends "wiki/base.html" %}
 
 {% block hierarchy %}
-<div class="line">
-<span class="left">
     <a href="/admin">{{ SITE_NAME }} db</a> >
     <a href="/wiki">Wiki</a> >
     Search
-</span>
-<span class="centre">
-    Menu:   <a href="/wiki/page/Start">Start</a> |
-            <a href="/wiki/page/SearchPage">Search</a> |
-            <a href="/wiki/page/IndexPage">Index</a>
-</span>
-</div>
-{% endblock %} 
+{% endblock hierarchy %} 
 
 {% block subtitle %}Search{% endblock %}
 
