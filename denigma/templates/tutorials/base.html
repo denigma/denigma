@@ -2,3 +2,10 @@
 
 {% block title %}Tutorials{% endblock %}
 
+{% block hierarchy %}
+    <a href="/admin">{{ SITE_NAME }} db</a> >
+    <a href="/tutorials">Tutorials</a> >
+    Tutorial =
+    <a href="/tutorials/{{ tutorial.id }}/view">{{ tutorial.title }}</a> >
+    View
+{% endblock %}
