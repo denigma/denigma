@@ -1,0 +1,20 @@
+{% extends "datasets/base.html" %}
+
+{% block hierarchy %}
+<a href="/admin/">{{ SITE_NAME }} db</a> >
+<a href="/datasets">Datasets</a> >
+<a href="/datasets/references">References</a>
+{% endblock hierarchy %}
+
+{% block subtitle %}References{% endblock %}
+
+{% block content %}
+{% for reference in references %}
+<p>
+{{ reference.id }}
+{{ reference.pmid }}
+{{ reference.title }}
+{{ reference.year }}
+</p>
+{% endfor %}
+{% endblock %}
