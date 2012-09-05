@@ -28,7 +28,6 @@ def update_references(request):
 
 def duplicates(request):
     dups = Reference.duplicates()
-    print dups
     return render_to_response('datasets/references.html', {'references': dups},
                               context_instance=RequestContext(request))
 
