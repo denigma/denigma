@@ -4,15 +4,11 @@
 
 {% block subtitle %}{% endblock %}
 
-{% comment %}
-{% block menu %}
-    <div>
-        Menu:   <a href="/wiki/page/Start">Start</a> |
-                <a href="/wiki/page/SearchPage">Search</a> |
-                <a href="/wiki/page/IndexPage">Index</a>
-    </div>
-{% endblock %}
-{% endcomment %}
+{% block options %}
+    <a href="/wiki/page/Start">Start</a> |
+    <a href="/wiki/page/SearchPage">Search</a> |
+    <a href="/wiki/page/IndexPage">Index</a>
+{% endblock options %}
 
 
 {% block content %}
