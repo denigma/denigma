@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from time import strptime
 from datetime import datetime
 
@@ -11,16 +12,16 @@ Entrez.email = "hevok@denigma.de"
 
 class Reference(models.Model):
     pmid = models.IntegerField(blank=True, null=True, unique=True) #) # 
-    title = models.CharField(max_length=250, blank=True)
+    title = models.CharField(max_length=400, blank=True)
     authors = models.TextField(blank=True)  #models.ManyToManyField(Author) max_length=250, 
-    abstract = models.TextField(blank=True)
-    keywords = models.TextField(blank=True) #CharField(max_length=250, blank=True) #
+    abstract = models.TextField(blank=True, null=True)
+    keywords = models.TextField(blank=True, null=True) #CharField(max_length=250, blank=True) #
     link = models.URLField(blank=True)
     url = models.URLField(blank=True)
     journal = models.CharField(max_length=250, blank=True)
     year = models.IntegerField(blank=True, null=True)
-    volume = models.IntegerField(blank=True, null=True)
-    issue = models.CharField(max_length=10, blank=True) # Was Integer, but encounterd "2-3" value!
+    volume = models.CharField(max_length=20, blank=True, null=True)
+    issue = models.CharField(max_length=10, blank=True, null=True) # Was Integer, but encounterd "2-3" value!
     pages = models.CharField(max_length=10, blank=True)
     start_page = models.IntegerField(blank=True, null=True)
     epub_date = models.DateField(blank=True, null=True)
@@ -29,10 +30,10 @@ class Reference(models.Model):
     short_title = models.CharField(max_length=50, blank=True)
     alternate_journal = models.CharField(max_length=150, blank=True)
     issn = models.IntegerField(blank=True, null=True)
-    doi = models.CharField(max_length=30,blank=True)
+    doi = models.CharField(max_length=100, blank=True, null=True)
     original_publication = models.CharField(max_length=100, blank=True)
-    reprint_editione = models.CharField(max_length=100, blank=True)
-    reviewed_itemse = models.CharField(max_length=100, blank=True)
+    reprint_edition = models.CharField(max_length=100, blank=True)
+    reviewed_items = models.CharField(max_length=100, blank=True)
     legal_note = models.CharField(max_length=100, blank=True)
     pmcid = models.IntegerField(blank=True, null=True)
     nihmsid = models.IntegerField(blank=True, null=True)
@@ -88,41 +89,59 @@ class Reference(models.Model):
             except Reference.DoesNotExist:
                 Reference.fetch_data(self)
                 super(Reference, self).save(*args, **kwargs)
+        else:
+            super(Reference, self).save(*args, **kwargs)
 
     @staticmethod
     def fetch_data(self):
         """Queries Entrez EUtils to retrieve information on a reference."""
         if self.pmid:
+          try:
             handle = Entrez.esummary(db="pubmed", id=self.pmid)
             r = Entrez.read(handle)
-            print r
+            #print r
             r = r[0] #  reference.
             self.title = r['Title']
-            self.volume = r['Volume'] 
-            self.issue = r['Issue']
+            self.volume = r.get('Volume', None) or None
+            self.issue = r.get('Issue', None) or None
             self.pages = r['Pages']
             self.authors = '; '.join(r['AuthorList'])
             self.journal = r['FullJournalName']
             self.alternate_journal = r['Source']
             self.year = int(r['PubDate'].split(' ')[0])
             self.language = r['LangList'][0]
-            self.doi = r['DOI']
+            self.doi = r.get('DOI', None)
 
             handle = Entrez.efetch(db="pubmed", id=self.pmid, rettype="medline", retmode="text")
             records = Medline.parse(handle)
             for record in records: pass
-            self.abstract = record.get('AB', '')
+            self.abstract = record.get('AB', None)
             s = record['EDAT']
-            self.date = datetime(*strptime(s, "%Y/%m/%d %H:%M")[0:5])
-            print "; ".join(record.get('MH', ''))
-            self.keywords = "; ".join(record.get('MH', '')) # MeSH terms
+            try: self.date = datetime(*strptime(s, "%Y/%m/%d %H:%M")[0:5])
+            except: self.date = datetime(*strptime(s, "%Y/%m/%d")[0:3])
+            #print "; ".join(record.get('MH', ''))
+            self.keywords = "; ".join(record.get('MH', '')) or None # MeSH terms
+          except Exception as e:
+               print "Failed fetching information"
+               print e, self
 
-    def update(self):
+    @property
+    def info(self):
+        r = self
+        return "Title: %s\n Volume: %s\n Issue: %s\n Pages: %s\n Authors: %s\n Journal: %s\n Alternate_journal: %s\n Year: %s\n Language: %s\n DOI: %s\n Abstract: %s\n Date: %s\n Keywords: %s\n"\
+               % (r.title, r.volume, r.issue, r.pages, r.authors,r.journal, r.alternate_journal, r.year, r.language, r.doi, r.abstract, r.date, r.keywords) 
+
+    @staticmethod
+    def update():
        """Updates all reference that have a pmid with information from Entrez."""
        references = Reference.objects.all()
        for reference in references:
            Reference.fetch_data(reference)
-           reference.save()
+           try:
+               reference.save()
+           except Exception as e:
+               print e
+               print reference.info, type(reference.volume), type(reference.issue), type(reference.pages)
 
     @staticmethod
     def duplicates():

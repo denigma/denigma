@@ -13,6 +13,8 @@ def index(request):
 
 def update_references(request):
     Reference.update()
+    render_to_response('datasets/index.html',
+                      context_instance=RequestContext(request))
 
 #        try:
 #        except ValueError:
