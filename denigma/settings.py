@@ -64,6 +64,13 @@ else:
         }
     }
 
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(PROJECT_ROOT, 'whoosh_index'),
+    },
+}
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -221,6 +228,7 @@ INSTALLED_APPS = [
     'south',   # Intelligent schema and data migrations.
     'taggit',  # "tagging",
     'reversion',# Revision-control for models.
+    'haystack', # Searching
 #    'cms", # Content Management System.
 #    'mptt", # Utilties for implementing a modified pre-order traversal tree.
 #    'sekizai", # For javascipt and css management.
