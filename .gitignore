@@ -4,6 +4,7 @@
 *.save*
 *.db
 denigma.sql*
+whoosh_index
 
 # Access Keys:
 ami.sh
