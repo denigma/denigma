@@ -20,7 +20,8 @@ urlpatterns = patterns("denigma.views",
     url('^time/$', 'current_datetime'),
     url(r'^time/plus/(\d+)/$', 'hours_ahead'),  # d+ = wildcard
     url(r'^google(?P<term>\w+)', 'google'),
-    url(r'^search/(?P<term>.*)', 'search'), # Side-wide search
+    #url(r'^search/(?P<term>.*)', 'search'), # Side-wide search
+    url(r'^search/', include('haystack.urls')),
 #    url(r'^', include('cms.urls')),
 )
 
