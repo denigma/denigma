@@ -7,6 +7,9 @@ class Tag(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return '/wiki/tag/%s' % self.name
+
 
 class Page(models.Model):
     name = models.CharField(max_length=20, primary_key=True)
@@ -15,3 +18,6 @@ class Page(models.Model):
     
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return '/wiki/page/%s' % self.name
