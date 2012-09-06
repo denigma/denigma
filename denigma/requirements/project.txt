@@ -20,3 +20,8 @@ django-reversion==1.5.3 # Model version control system.
 docutils # Documentation utilities.
 numpy # Required for BioPython
 biopython # For EUtils
+
+# Searching:
+whoosh
+-e git://github.com/toastdriven/django-haystack.git@master#egg=django-haystack
+
