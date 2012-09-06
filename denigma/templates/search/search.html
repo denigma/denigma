@@ -2,7 +2,7 @@
 
 {% block hierarchy %}
 <a href="/admin/">{{ SITE_NAME }} db</a> >
-Site-Wide Search
+<a href="/search/">Site-Wide Search</a>
 {% endblock hierarchy %}
 
 {% block title %}Search{% endblock %}
@@ -23,11 +23,11 @@ Site-Wide Search
             <h3>Results</h3>
 
             {% for result in page.object_list %}
-                {% if result.object.published %}
+               {# {% if result.object.published %} #}
                     <p>
-                       <a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a>
+                       <a href="{{ result.object.get_absolute_url }}">{{ result.object }}</a>
                     </p>
-               {% endif %}
+               {# {% endif %} #}
             {% empty %}
                 <p>No results found.</p>
             {% endfor %}
