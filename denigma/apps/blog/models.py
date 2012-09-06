@@ -23,3 +23,6 @@ class Post(models.Model):
                         .replace('## Abstract', '')[:150] + '...'
     def slugify(self):
         return self.title.replace(' ', '_')
+
+    def get_absolute_url(self):
+        return '/blog/%i' % self.id
