@@ -156,7 +156,63 @@ Denigma's Wiki.
 There are numerous ways on how to implement searching. One option would be 
 Haystack/Whoosch and another Xapian/Djapian
 [http://www.vlent.nl/weblog/2010/10/14/searching-django-site-part-1-what-and-why/].
+For Denigma it was decided to use the former as they are clean pure python implementations.
 
+Haystack and whoosh need to be added to the requirements: ::
+    ...
+    whoosh
+    -e git://github.com/toastdriven/django-haystack.git@master#egg=django-haystack
+    ...
+
+Haystack has to be added to the INSTALLED_APPS within the settings.py: ::
+    ...
+    INSTALLED_APPS = [
+        ...
+        'haystack',
+        ...
+
+Specify the Haystack connections, e.g. for Whoosh: ::
+    HAYSTACK_CONNECTIONS = {
+        'default': {
+            'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+            'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'), # use PROJECT_ROOT instead of os.path.dirname(__file__)
+        }, 
+     }
+
+
+Create search_indexes.py in the corresponding app folder: ::
+    import datetime
+    from haystack import indexes
+    from apps.blog.models import Post
+
+
+    class PostIndex(indexes.SearchIndex, indexes.Indexable):
+        created = indexes.DateTimeField(model_attr='created')
+        updated = indexes.DateTimeField(model_attr='updated')
+
+        text = indexes.CharField(document=True, use_template=True)
+        tags = indexes.MultiValueField()
+
+        def get_model(self):
+            return Post
+
+        def index_queryset(self):
+            """Used when the entire index for model is updated."""
+            return self.get_model().objects.filter(created__lte=datetime.datetime.now())
+
+An additional file <modelname>_text.txt need to be create in the template directory called
+sarch/indexes/myapp/<modelname>_text.txt and the following need to be placed within it:
+{{ object.title }}
+{{ object.text }}
+
+Add the search view to the URLconf: ::
+    ...
+    (r'^search/', include('haystack.urls')),
+    ...
+
+Lastly reindex by runnig the following command: ::
+    $./manage.py rebuild_index
+ 
 
 Blog Authors
 ------------
