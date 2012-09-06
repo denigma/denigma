@@ -138,7 +138,7 @@ class Reference(models.Model):
                reference.save()
            except Exception as e:
                print e
-               print reference.info, type(reference.volume), type(reference.issue), type(reference.pages)
+               #print reference.info, type(reference.volume), type(reference.issue), type(reference.pages)
 
     @staticmethod
     def duplicates():
