@@ -1,6 +1,6 @@
 import datetime
 from haystack import indexes
-from apps.blog.models import Post
+from models import Post
 
 
 class PostIndex(indexes.SearchIndex, indexes.Indexable):
