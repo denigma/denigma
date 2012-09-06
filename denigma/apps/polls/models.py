@@ -24,6 +24,9 @@ class Poll(models.Model): #  Inherit from models class.
     was_published_recently.boolean = True
     was_published_recently.short_description = 'Published recently?'    
 
+    def get_absolute_url(self):
+        return '/polls/%i/vote/' % self.id
+
 
 class Choice(models.Model):
     poll = models.ForeignKey(Poll)
@@ -33,6 +36,8 @@ class Choice(models.Model):
     def __unicode__(self):
         return self.choice
 
+    def get_absolute_url(self):
+       return '/polls/%i/vote/' % self.poll.id
 
 
     
