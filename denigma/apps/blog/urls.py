@@ -35,4 +35,5 @@ urlpatterns = patterns('blog.views',
     url(r'^articles/$', ListView.as_view(
                               queryset=Post.objects.filter(published=False).order_by("-created", "-id"),
                               template_name="blog/articles.html")),
+    url(r'^admin/$', 'custom_admin_view'), 
 )
