@@ -134,6 +134,34 @@ Signing up is made simple. All what is required for now is just a user name and
 a password for identifying an individual.
 
 
+Tracking User Changes
+---------------------
+
+The admin history is keept as logs which can be accessed as LogEntry.objects.log_action()
+[http://stackoverflow.com/questions/2684980/admin-panel-recent-actions] and enhanced
+[http://djangosnippets.org/snippets/1052/].
+The Pro Django Book explains an approach how to track changes made by user [http://prodjango.com/].
+
+A simple solution as it was applied in the reference model is to make the 
+discriminative fields (i.e. the poperties that determine whether an entry is the 
+same) unique (such as pmid and title) but also allow them to be 
+blank. A update view and duplicate view was created to manage this.
+If more than one field together makes something unique the unique_togethr in the
+Meta inner class should be used
+[https://docs.djangoproject.com/en/dev/ref/models/options/#unique-together].
+
+
+Checking if an Entry Already Exists
+-----------------------------------
+
+There are several way to check whether an entry already exists and therefore 
+prevent duplicate entries. A simple way is to use the helper function
+get_or_create() [http://stackoverflow.com/questions/1821176/django-check-whether-an-object-already-exists-before-adding].
+
+To specify behaviour on the creation of a model, overwrite the save() method and
+check if self.pk is None, which is the case not yet created entries
+[http://stackoverflow.com/questions/2307943/django-overriding-the-model-create-method].
+
 Simplifing Account Creation
 ---------------------------
 
@@ -183,7 +211,7 @@ Specify the Haystack connections, e.g. for Whoosh: ::
 Create search_indexes.py in the corresponding app folder: ::
     import datetime
     from haystack import indexes
-    from apps.blog.models import Post
+    from models import Post
 
 
     class PostIndex(indexes.SearchIndex, indexes.Indexable):
@@ -211,8 +239,30 @@ Add the search view to the URLconf: ::
     ...
 
 Lastly reindex by runnig the following command: ::
-    $./manage.py rebuild_index
+    $ ./manage.py rebuild_index
  
+Unsure that whoosh_index is writeable: ::
+    $ chmod 777 whoosh_index
+
+The richard project [https://github.com/willkg/richard] which is used by pyvideo.org
+[http://pyvideo.org/search/?models=videos.video&q=django+customizing] is an excellent
+example for the implementation of this libraries.
+
+The search template should really be redesigned and perfom a default search. The results
+need to be better annotated (e.g. from which model the information stems and in which 
+context the term was found.Spell correction and auto-completion should be included.
+The global search field should be in grey if not selected and placed more in the centre
+of the upper navigation panel.
+
+The rebuild_indexes need to be automated and performed regular.
+An alternative real-time search function can be implemented.
+
+Optionally other search engines can be utilized.
+
+Look into the Haystack documentation for more details on implementation way to accomplish
+the above proposed enhancement and other functionalities of value
+[http://django-haystack.readthedocs.org/en/latest/].
+
 
 Blog Authors
 ------------
@@ -273,6 +323,57 @@ Article should be passed to the address bar by their titles.
 For this to occur a article title need to be slugfied. A templatetag
 could do this job by replacing spaces with other characters.
 
+
+Tags
+----
+
+Denigma currently employs three flavours of tags:
+1. Taggit for the Blog posts
+2. A simply custom tag for the Wiki
+3. A Category tag with optional description for the Links
+
+Those need to be united into a single system.
+
+One possibility is that the data entries (alias blog posts) can themself function
+as tags via a ManyToMany field with itself. Further hierarchical relationships
+need to be implemented. For this to happen the entries need to provide all the
+functionality of taggit, tagging modules.
+
+
+Automating Schemamigration
+-------------------------
+
+South only performs semi-automated schemamigration. It would be usefull to totally
+automate this process.
+
+The django-admin-models-editor would provide an excellent starting point as it already
+includes a GUI for creating models, generates code for models using HTML forms and 
+allows to create models within the admin interface. It is still sub-optimal in the way
+it splits the models.py and admin.py. 
+
+It just need to be extended to als edit existing models and integrated with South.
+It also need to be extend to cover more field options to deal with things like
+"choices".
+
+Database schema defination could also made more graphical with for instance
+[http://gaesql.appspot.com/]. 
+
+Another graphical tool runs the other wayL the graph command from django-extensions 
+generates UML form Django models [http://code.google.com/p/uml-to-django/].
+
+
+Tree Menus
+----------
+
+For menus django-treemenus enables generic tree-structured menuing system 
+[http://code.google.com/p/django-treemenus/].
+
+
+NoSQL Database
+--------------
+
+Denigma needs a powerful NoSQL database-backend
+Considered are MongoDB, Neo4j, titan, and orientdb.
 
 
 The Future of Denigma
