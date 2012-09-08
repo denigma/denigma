@@ -122,41 +122,6 @@ Runnig python denigma/manage.py migrate --list just returns that ENGINE is
 depriciated [http://jira.osqa.net/browse/OSQA-712].
 
 
-Adding South
-------------
-
-South enables schema and data migration of a django-backend database 
-[http://www.djangopro.com/2011/01/django-database-migration-tool-south-explained/].
-Migrations should be version-controlled 
-[http://stackoverflow.com/questions/10083130/what-is-the-correct-way-to-deal-with-db-migration-while-using-south-django-and].
-In order to add South to Django project, development & production do the 
-following [http://stackoverflow.com/questions/4035296/adding-south-to-django-project-development-production]: ::
-
-$ ./manage.py snycdb
-$ ./manage.py convert_to_south myproject.myapp
-# Change models
-$ ./manage.py schemamigration pyproject.myapp --auto
-$ ./manage.py migrate myproject.myapp
-# Alternatively to get a fresh Django database with existing South migrations 
-# sync all tables and perform fake migration [http://www.troeger.eu/cms/?p=317].
-$ ./manage.py syncdb --all
-$ ./manage.py migrate --fake
-
-If required south can be resetted 
-[http://lincolnloop.com/blog/2011/jun/20/resetting-your-south-migrations/; https://groups.google.com/forum/?fromgroups#!topic/south-users/PxEskcnkibc[1-25]; https://groups.google.com/forum/#!msg/south-users/iIQT8ZWs2cI/GQ4kONoT5Q4J[1-25]].
-
-
-Moving a Model from one App to another
---------------------------------------
-
-Moving models between apps is straightforward
-[http://stackoverflow.com/questions/1258130/how-do-i-migrate-a-model-out-of-one-django-app-and-into-a-new-one]: ::
-
-$ ./manage.py schemamigration specific create_cat --auto
-
-$ ./manage.py schemamigraiion common drop_cat --auto
-
-
 mysql-ebs
 ---------
  
@@ -240,7 +205,7 @@ Database Renaming
 -----------------
 
 There are several ways on how to rename a database. The simplist appears to use
-a strict which renames all tables in conjuction with another database table 
+a script which renames all tables in conjuction with another database table 
 [http://stackoverflow.com/questions/67093/how-do-i-quickly-rename-a-mysql-database-change-schema-name].
 
 
@@ -562,6 +527,7 @@ convert a table. To convert a given table to utf8 command this: ::
 The whole database should better have utf8 as default set and therefore a total
 conversion is required.
 
+
 Admin Bootstrap
 ---------------
 TO install bootstrap look for the admin interface: ::
@@ -569,5 +535,12 @@ TO install bootstrap look for the admin interface: ::
     $ pip install -e git+https://github.com/gkuhn1/django-admin-templates-twitter-bootstrap/#egg=django-admin-templates-twitter-bootstrap
 
 
+UnicodeError
+------------
+
+Some text raise UniCodeError when tried to print to terminal.
+The follwing transformation solves this problem:
+text = text.encode('ascii', 'ignore') 
+[http://stackoverflow.com/questions/3224268/python-unicode-encode-error].
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
