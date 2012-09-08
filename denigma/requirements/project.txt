@@ -25,3 +25,7 @@ biopython # For EUtils
 whoosh
 -e git://github.com/toastdriven/django-haystack.git@master#egg=django-haystack
 
+# Web crawling:
+BeautifulSoup
+bottlenose # Wrapper for Amazon product advertising API.
+python-amazon-product-api # For retrieving information on Books from Amazon.
