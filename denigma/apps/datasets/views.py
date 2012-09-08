@@ -35,5 +35,4 @@ def references(request):
     references = Reference.objects.all()
     return render_to_response('datasets/references.html', {'references': references},
                               context_instance=RequestContext(request))
-    
-    
+
