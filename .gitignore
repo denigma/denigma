@@ -5,6 +5,8 @@
 *.db
 denigma.sql*
 whoosh_index
+memo # dynamic programming memory of the bibliography.
+output* # article outputs.
 
 # Access Keys:
 ami.sh
