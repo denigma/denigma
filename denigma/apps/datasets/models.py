@@ -81,6 +81,21 @@ class Reference(models.Model):
                 if self.pmid:
                     return Reference.objects.get(pmid=self.pmid) #, False
                     print "Did not failed"
+                elif self.title:
+                    print self.title
+                    handle = Entrez.esearch(db='pubmed', term=self.title)
+                    print "Got handle"
+                    record = Entrez.read(handle)
+                    print "Got record", record
+                    print record['Count'], type(record['Count'])
+                    if record['Count'] == "1":
+                       print "Record count is 1"
+                       self.pmid = record['IdList'][0]
+                       print self.title, self.pmid
+                       Reference.fetch_data(self)
+                       super(Reference, self).save(*args, **kwargs)
+                    else: 
+                       pass # Raise Exception and state the the given information yielded more than one reference.
                 else:
                     super(Reference, self).save(*args, **kwargs)
             except Reference.DoesNotExist:
