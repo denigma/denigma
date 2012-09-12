@@ -21,7 +21,7 @@ LOG = dict(AWS_KEY = AWS_KEY,
 
 
 def search(title=''):
-    """Amazome quick search function."""
+    """Amazon quick search function."""
     api = API(LOG['AWS_KEY'], LOG['SECRET_KEY'], LOG['LOCAL'], LOG['ASSOC_TAG'])
     node = api.item_search('Books', Title=title, Publisher=publisher)
     for page in node:
