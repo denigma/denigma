@@ -9,8 +9,15 @@ from models import Type, Factor, Manipulation, Intervention, Regimen, Assay
 
 class StudyAdmin(reversion.VersionAdmin):
     fields = ['title', 'pmid', 'link', 'reference', 'notes', 'integrated']
-    list_display = ('title', 'pmid', 'notes', 'created', 'updated', 'integrated')
+    list_display = ('title', 'pmid', 'full_text', 'notes', 'created', 'updated', 'integrated')
     search_fields = ('title', 'pmid', 'notes')
+
+    def full_text(self, obj):
+        if obj.link:
+           return '<a href="%s">%s</a>' % (obj.link, 'available')
+        else:
+           return 'Not linked'
+    full_text.allow_tags = True
 
 
 class ExperimentAdmin(reversion.VersionAdmin):
