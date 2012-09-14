@@ -9,13 +9,55 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
 
-        # Changing field 'Reference.volume'
-        db.alter_column(u'datasets_reference', 'volume', self.gf('django.db.models.fields.CharField')(max_length=20, null=True))
+        # Changing field 'Reference.label'
+        db.alter_column('datasets_reference', 'label', self.gf('django.db.models.fields.CharField')(max_length=100, null=True))
+
+        # Changing field 'Reference.reprint_edition'
+        db.alter_column('datasets_reference', 'reprint_edition', self.gf('django.db.models.fields.CharField')(max_length=100, null=True))
+
+        # Changing field 'Reference.author_address'
+        db.alter_column('datasets_reference', 'author_address', self.gf('django.db.models.fields.CharField')(max_length=150, null=True))
+
+        # Changing field 'Reference.notes'
+        db.alter_column('datasets_reference', 'notes', self.gf('django.db.models.fields.CharField')(max_length=100, null=True))
+
+        # Changing field 'Reference.research_notes'
+        db.alter_column('datasets_reference', 'research_notes', self.gf('django.db.models.fields.CharField')(max_length=100, null=True))
+
+        # Changing field 'Reference.reviewed_items'
+        db.alter_column('datasets_reference', 'reviewed_items', self.gf('django.db.models.fields.CharField')(max_length=100, null=True))
+
+        # Changing field 'Reference.caption'
+        db.alter_column('datasets_reference', 'caption', self.gf('django.db.models.fields.CharField')(max_length=100, null=True))
+
+        # Changing field 'Reference.legal_note'
+        db.alter_column('datasets_reference', 'legal_note', self.gf('django.db.models.fields.CharField')(max_length=100, null=True))
 
     def backwards(self, orm):
 
-        # Changing field 'Reference.volume'
-        db.alter_column(u'datasets_reference', 'volume', self.gf('django.db.models.fields.CharField')(max_length=10, null=True))
+        # Changing field 'Reference.label'
+        db.alter_column('datasets_reference', 'label', self.gf('django.db.models.fields.CharField')(default='', max_length=100))
+
+        # Changing field 'Reference.reprint_edition'
+        db.alter_column('datasets_reference', 'reprint_edition', self.gf('django.db.models.fields.CharField')(default='', max_length=100))
+
+        # Changing field 'Reference.author_address'
+        db.alter_column('datasets_reference', 'author_address', self.gf('django.db.models.fields.CharField')(default='', max_length=150))
+
+        # Changing field 'Reference.notes'
+        db.alter_column('datasets_reference', 'notes', self.gf('django.db.models.fields.CharField')(default='', max_length=100))
+
+        # Changing field 'Reference.research_notes'
+        db.alter_column('datasets_reference', 'research_notes', self.gf('django.db.models.fields.CharField')(default='', max_length=100))
+
+        # Changing field 'Reference.reviewed_items'
+        db.alter_column('datasets_reference', 'reviewed_items', self.gf('django.db.models.fields.CharField')(default='', max_length=100))
+
+        # Changing field 'Reference.caption'
+        db.alter_column('datasets_reference', 'caption', self.gf('django.db.models.fields.CharField')(default='', max_length=100))
+
+        # Changing field 'Reference.legal_note'
+        db.alter_column('datasets_reference', 'legal_note', self.gf('django.db.models.fields.CharField')(default='', max_length=100))
 
     models = {
         'datasets.acetylation': {
@@ -467,16 +509,16 @@ class Migration(SchemaMigration):
             'pos': ('django.db.models.fields.IntegerField', [], {})
         },
         'datasets.reference': {
-            'Meta': {'object_name': 'Reference', 'db_table': "u'reference'"},
+            'Meta': {'object_name': 'Reference'},
             'abstract': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'access_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'accession_number': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'alternate_journal': ('django.db.models.fields.CharField', [], {'max_length': '150', 'blank': 'True'}),
+            'alternate_journal': ('django.db.models.fields.CharField', [], {'max_length': '150', 'null': 'True', 'blank': 'True'}),
             'article_number': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'author_address': ('django.db.models.fields.CharField', [], {'max_length': '150', 'blank': 'True'}),
+            'author_address': ('django.db.models.fields.CharField', [], {'max_length': '150', 'null': 'True', 'blank': 'True'}),
             'authors': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'call_number': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'caption': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'caption': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'database_provider': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'doi': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
@@ -487,26 +529,26 @@ class Migration(SchemaMigration):
             'issue': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
             'journal': ('django.db.models.fields.CharField', [], {'max_length': '250', 'blank': 'True'}),
             'keywords': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'label': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'label': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'language': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'legal_note': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'link': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
+            'legal_note': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'link': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'name_of_database': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'nihmsid': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'notes': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'notes': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'original_publication': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'pages': ('django.db.models.fields.CharField', [], {'max_length': '10', 'blank': 'True'}),
             'pmcid': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'pmid': ('django.db.models.fields.IntegerField', [], {'unique': 'True', 'null': 'True', 'blank': 'True'}),
-            'reprint_edition': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'research_notes': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'reviewed_items': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'short_title': ('django.db.models.fields.CharField', [], {'max_length': '50', 'blank': 'True'}),
+            'reprint_edition': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'research_notes': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'reviewed_items': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'short_title': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
             'start_page': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '400', 'blank': 'True'}),
             'translated_author': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'type_of_article': ('django.db.models.fields.CharField', [], {'max_length': '10', 'blank': 'True'}),
-            'url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
+            'type_of_article': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
+            'url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'volume': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'year': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
         },

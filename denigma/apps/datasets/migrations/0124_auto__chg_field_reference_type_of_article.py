@@ -9,13 +9,13 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
 
-        # Changing field 'Reference.volume'
-        db.alter_column(u'datasets_reference', 'volume', self.gf('django.db.models.fields.CharField')(max_length=20, null=True))
+        # Changing field 'Reference.type_of_article'
+        db.alter_column('datasets_reference', 'type_of_article', self.gf('django.db.models.fields.CharField')(max_length=10, null=True))
 
     def backwards(self, orm):
 
-        # Changing field 'Reference.volume'
-        db.alter_column(u'datasets_reference', 'volume', self.gf('django.db.models.fields.CharField')(max_length=10, null=True))
+        # Changing field 'Reference.type_of_article'
+        db.alter_column('datasets_reference', 'type_of_article', self.gf('django.db.models.fields.CharField')(default='', max_length=10))
 
     models = {
         'datasets.acetylation': {
@@ -467,7 +467,7 @@ class Migration(SchemaMigration):
             'pos': ('django.db.models.fields.IntegerField', [], {})
         },
         'datasets.reference': {
-            'Meta': {'object_name': 'Reference', 'db_table': "u'reference'"},
+            'Meta': {'object_name': 'Reference'},
             'abstract': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'access_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'accession_number': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
@@ -490,7 +490,7 @@ class Migration(SchemaMigration):
             'label': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'language': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'legal_note': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'link': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
+            'link': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'name_of_database': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'nihmsid': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'notes': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
@@ -505,8 +505,8 @@ class Migration(SchemaMigration):
             'start_page': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '400', 'blank': 'True'}),
             'translated_author': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'type_of_article': ('django.db.models.fields.CharField', [], {'max_length': '10', 'blank': 'True'}),
-            'url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
+            'type_of_article': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
+            'url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'volume': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'year': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
         },
