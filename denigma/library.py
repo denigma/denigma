@@ -74,7 +74,7 @@ class Bibliography(dict):
         except:
             "Did not load Bibliography."
 
-       # self.memo = shelve.open(os.path.join(self.path, 'memo'))
+        self.memo = shelve.open(os.path.join(self.path, 'memo'))
             
         self.findings = [] # Stores the last fetched ids.
 	
@@ -157,13 +157,13 @@ class Bibliography(dict):
                     #print k, v
         try:
            reference = Reference(pmid=id,
-                              title=r['TI'],
-                              journal=r['TA'], # jounral abbreviation
-                              alternate_journal=r['JT'], #journal title
+                              title=r.get('TI', None) or r['BTI'][0],
+                              journal=r.get('TA', None) or r['CTI'][0], # journal abbreviation
+                              alternate_journal=r.get('JT', None), #journal title
                               abstract=r.get('AB', ''),
                               language=r['LA'][0],
-                              authors=r.get('FAU', ''),
-                              au=r['AU'],
+                              authors=r.get('FAU', '') or r['FED'],
+                              au=r.get('AU', '') or r['ED'],
                               date=r.get('EDAT', None),
                               issue=r.get('IP', ''),
                               volume=r.get('VI', ''),
