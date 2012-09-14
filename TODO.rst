@@ -130,8 +130,11 @@ $ ./manage.py createinitialrevisions
 
 This command triggers the population of the version database with an inital set of model data.
 
+Another alternative is django-cutemodel [https://github.com/foxx/django-cutemodel].
+
 Signing up is made simple. All what is required for now is just a user name and 
 a password for identifying an individual.
+
 
 
 Tracking User Changes
