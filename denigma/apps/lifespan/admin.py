@@ -16,7 +16,7 @@ class StudyAdmin(reversion.VersionAdmin):
         if obj.link:
            return '<a href="%s">%s</a>' % (obj.link, 'available')
         else:
-           return 'Not linked'
+           return 'not linked'
     full_text.allow_tags = True
 
 

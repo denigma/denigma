@@ -31,7 +31,10 @@ class Study(models.Model):
         kwargs['pmid'] = self.pmid
         if self.link:
            kwargs['link'] = self.link
-        reference, created = Reference.objects.get_or_create(*args, **kwargs)
+        if self.pmid: 
+           reference, created = Reference.objects.get_or_create(pmid=self.pmid, defaults=kwargs)
+        elif self.title:
+           reference, created = Reference.objects.get_or_create(title__contains=self.title, defaults=kwargs)
         self.pmid = reference.pmid
         self.title = reference.title
         self.reference = reference
