@@ -77,6 +77,8 @@ import os
 import sys
 import re
 
+#from sa import *
+
 try: 
    from denigma.publication import Bibliography, Reference # as Bib
 except ImportError:
@@ -104,8 +106,6 @@ except ImportError:
 
 
 LATIN = ['cis-', 'trans-', 'omics', 'in vivo', 'in vitro', 'in silico', 'in situ', 'C. elegans']
-#234567891123456789212345678931234567894123456789512345678961234567897123456789
-#from sa import *
 
 
 def show_exception_and_exit(exec_type, exc_value, tb):
@@ -766,7 +766,7 @@ class Section:
     It can be just followed by paragraphs it should contain or
     by used in by its text parameters and passing a mutline string containing
     paragraphs seperated by two newline '\n\n' characters."""
-    def __init__(self, title, level=None, text=None):
+    def __init__(self, title, level=None, text=''):
         self.title = title
         self.level = level or 1
         self.text = text
@@ -778,10 +778,19 @@ class Section:
     def __repr__(self):
         return self.title
 
+    def append(self, string):
+        #if isinstance(self.text, list):
+        self.paragraphs.append(string)
+        #elif isinstance(self, str):
+        self.text += string
+
+    def __len__(self):
+        return len(self.paragraphs)
+
 
 class Subsection:
     """A subsection is level lower of the preceding section."""
-    def __init__(self, title, level=None, text=None):
+    def __init__(self, title, level=None, text=''):
         #Section.__init__(self, args, kwargs)
         #super(Subsection, self).__init__(args, kwargs)
         self.title = title
@@ -790,6 +799,7 @@ class Subsection:
         self.paragraphs = []
         #if isinstance(article.section, Section):
         article.sections[-1].subsections.append(self)
+        article.subsections = []
         #else: pass
         #article.section
         article.section = self
@@ -1122,3 +1132,8 @@ else:
     #print article
     #sys.stdin.read(1)
     #os.system("pause")
+
+
+#234567891123456789212345678931234567894123456789512345678961234567897123456789
+
+
