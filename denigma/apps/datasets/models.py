@@ -94,8 +94,9 @@ class Reference(models.Model):
                        print self.title, self.pmid
                        Reference.fetch_data(self)
                        super(Reference, self).save(*args, **kwargs)
-                    else: 
-                       pass # Raise Exception and state the the given information yielded more than one reference.
+                    else:
+                       super(Reference, self).save(*args, **kwargs) # Just save the given information.
+                       # Raise Exception and state the the given information yielded more than one reference.
                 else:
                     super(Reference, self).save(*args, **kwargs)
             except Reference.DoesNotExist:
