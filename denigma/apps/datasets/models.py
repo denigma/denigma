@@ -16,8 +16,8 @@ class Reference(models.Model):
     authors = models.TextField(blank=True)  #models.ManyToManyField(Author) max_length=250, 
     abstract = models.TextField(blank=True, null=True)
     keywords = models.TextField(blank=True, null=True) #CharField(max_length=250, blank=True) #
-    link = models.URLField(blank=True)
-    url = models.URLField(blank=True)
+    link = models.URLField(blank=True, null=True)
+    url = models.URLField(blank=True, null=True)
     journal = models.CharField(max_length=250, blank=True)
     year = models.IntegerField(blank=True, null=True)
     volume = models.CharField(max_length=20, blank=True, null=True)
@@ -26,33 +26,33 @@ class Reference(models.Model):
     start_page = models.IntegerField(blank=True, null=True)
     epub_date = models.DateField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)
-    type_of_article = models.CharField(max_length=10, blank=True)
-    short_title = models.CharField(max_length=50, blank=True)
-    alternate_journal = models.CharField(max_length=150, blank=True)
+    type_of_article = models.CharField(max_length=10, blank=True, null=True)
+    short_title = models.CharField(max_length=50, blank=True, null=True)
+    alternate_journal = models.CharField(max_length=150, blank=True, null=True)
     issn = models.IntegerField(blank=True, null=True)
     doi = models.CharField(max_length=100, blank=True, null=True)
     original_publication = models.CharField(max_length=100, blank=True)
-    reprint_edition = models.CharField(max_length=100, blank=True)
-    reviewed_items = models.CharField(max_length=100, blank=True)
-    legal_note = models.CharField(max_length=100, blank=True)
+    reprint_edition = models.CharField(max_length=100, blank=True, null=True)
+    reviewed_items = models.CharField(max_length=100, blank=True, null=True)
+    legal_note = models.CharField(max_length=100, blank=True, null=True)
     pmcid = models.IntegerField(blank=True, null=True)
     nihmsid = models.IntegerField(blank=True, null=True)
     article_number = models.IntegerField(blank=True, null=True)
     accession_number = models.IntegerField(blank=True, null=True)
     call_number = models.IntegerField(blank=True, null=True)
-    label = models.CharField(max_length=100, blank=True)
-    notes = models.CharField(max_length=100, blank=True)    # Make it to a ManyToManyField.
-    research_notes = models.CharField(max_length=100, blank=True) # dito.
+    label = models.CharField(max_length=100, blank=True, null=True)
+    notes = models.CharField(max_length=100, blank=True, null=True)    # Make it to a ManyToManyField.
+    research_notes = models.CharField(max_length=100, blank=True, null=True) # dito.
     #file_attachment = models.FileField(blank=True)
-    author_address = models.CharField(max_length=150, blank=True)
+    author_address = models.CharField(max_length=150, blank=True, null=True)
     #figure = models.ImageField(blank=True)
-    caption = models.CharField(max_length=100, blank=True)
+    caption = models.CharField(max_length=100, blank=True, null=True)
     access_date = models.DateField(blank=True, null=True)
-    translated_author = models.CharField(max_length=100, blank=True)
-    name_of_database = models.CharField(max_length=100, blank=True)
-    database_provider = models.CharField(max_length=100, blank=True)
-    language = models.CharField(max_length=100, blank=True)
-    email = models.EmailField(max_length=75, blank=True)        
+    translated_author = models.CharField(max_length=100, blank=True, null=True)
+    name_of_database = models.CharField(max_length=100, blank=True, null=True)
+    database_provider = models.CharField(max_length=100, blank=True, null=True)
+    language = models.CharField(max_length=100, blank=True, null=True)
+    email = models.EmailField(max_length=75, blank=True, null=True)        
     
     def __repr__(self):
         if self.authors and self.title:
@@ -78,10 +78,10 @@ class Reference(models.Model):
             # Otherwise it would have pk.
             try:
                 Reference._for_write = True
-                if self.pmid:
+                if self.pmid or 'pmid' in kwargs:
                     return Reference.objects.get(pmid=self.pmid) #, False
                     print "Did not failed"
-                elif self.title:
+                elif self.title or 'title' in kwargs:
                     print self.title
                     handle = Entrez.esearch(db='pubmed', term=self.title)
                     print "Got handle"
@@ -111,7 +111,7 @@ class Reference(models.Model):
           try:
             handle = Entrez.esummary(db="pubmed", id=self.pmid)
             r = Entrez.read(handle)
-            #print r
+            # print r
             r = r[0] #  reference.
             self.title = r['Title']
             self.volume = r.get('Volume', None) or None
@@ -129,13 +129,23 @@ class Reference(models.Model):
             for record in records: pass
             self.abstract = record.get('AB', None)
             s = record['EDAT']
-            try: self.date = datetime(*strptime(s, "%Y/%m/%d %H:%M")[0:5])
-            except: self.date = datetime(*strptime(s, "%Y/%m/%d")[0:3])
             #print "; ".join(record.get('MH', ''))
             self.keywords = "; ".join(record.get('MH', '')) or None # MeSH terms
           except Exception as e:
                print "Failed fetching information"
                print e, self
+          if not self.title:
+            from library import Bibliography
+            bib = Bibliography()
+            r = bib.efetch(id=self.pmid)
+            self.__dict__.update(r.__dict__)
+
+            # Transforming lists into strings:
+            self.keywords = "; ".join(self.keywords)
+            selfauthors = "; ".join(self.authors)
+
+          try: self.date = datetime(*strptime(s, "%Y/%m/%d %H:%M")[0:5])
+          except: self.date = datetime(*strptime(s, "%Y/%m/%d")[0:3])
 
     @property
     def info(self):
@@ -169,6 +179,7 @@ class Reference(models.Model):
                else:
                    pmids[reference.pmid] = reference
        return duplicates
+
 
 class Signature(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
