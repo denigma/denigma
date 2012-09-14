@@ -35,6 +35,10 @@ class Study(models.Model):
            reference, created = Reference.objects.get_or_create(pmid=self.pmid, defaults=kwargs)
         elif self.title:
            reference, created = Reference.objects.get_or_create(title__contains=self.title, defaults=kwargs)
+        if not created:
+           reference.__dict__.update(**kwargs)
+           reference.save()
+           print reference
         self.pmid = reference.pmid
         self.title = reference.title
         self.reference = reference
