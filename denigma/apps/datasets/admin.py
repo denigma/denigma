@@ -23,7 +23,7 @@ class ReferenceAdmin(reversion.VersionAdmin):
 ##    filter_horizontal = ('authors',)
 ##    raw_id_fields = ('publisher',)
     list_search = ['pmid', 'year', ]
-    search_fields = ['title', 'pmid', 'author', 'year']
+    search_fields = ['title', 'pmid', 'authors', 'year']
 
     def author(self, obj):
         if not obj.authors:
