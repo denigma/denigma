@@ -6,20 +6,37 @@ from datasets.models import Reference
 
 class Study(models.Model):
     """A lifespan study."""
-    pmid = models.IntegerField(blank=True, null=True)
-    title = models.CharField(max_length=250, blank=True, null=True)
-    reference = models.ForeignKey(Reference, blank=True)
-    notes = models.TextField(blank=True, null=True)#
+    pmid = models.IntegerField(blank=True, null=True, unique=True)
+    title = models.CharField(max_length=250, blank=True, null=True, unique=True)
+    reference = models.ForeignKey(Reference, blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
     integrated = models.BooleanField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     #experiments = models.OneToMany(Experiment) # ForeignKey?
     
     def __unicode__(self):
-        return self.title
+        return self.reference.__unicode__()
 
     class Meta():
         verbose_name_plural = "studies"
+
+    def save(self, *args, **kwargs):
+        print """Check whether study is already in references."""
+        print "*args", args
+        print "**kwargs", kwargs
+        kwargs['title'] = self.title
+        kwargs['pmid'] = self.pmid
+        reference, created = Reference.objects.get_or_create(*args, **kwargs)
+        print reference, created
+        self.pmid = reference.pmid
+        self.title = reference.title
+        self.reference = reference
+        print "*args 2", args
+        print "**kwargs 2", kwargs
+        #study = Study.objects.get_or_create(*args, **kwargs)
+        #study.save()
+        super(Study, self).save()
 
 
 class Experiment(models.Model):
