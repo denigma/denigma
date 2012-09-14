@@ -12,7 +12,7 @@ admin.site.register(Gendr, GendrAdmin)
 
 
 class ReferenceAdmin(reversion.VersionAdmin):
-    list_display = ('pmid', 'journal', 'year',  'title')# 'title', 'journal', 'publication_date')#'year'
+    list_display = ('pmid', 'title', 'author', 'year', 'journal', 'full_text')# 'title', 'journal', 'publication_date')#'year'
     list_filter = ['year']
     #fields = ('pmid', 'title', 'authors', 'year', 'research_notes')
     #raw_id_fields = ('intervention',)
@@ -23,8 +23,26 @@ class ReferenceAdmin(reversion.VersionAdmin):
 ##    filter_horizontal = ('authors',)
 ##    raw_id_fields = ('publisher',)
     list_search = ['pmid', 'year', ]
-    search_fields = ['title', 'pmid', 'authors', 'year']
+    search_fields = ['title', 'pmid', 'author', 'year']
 
+    def author(self, obj):
+        if not obj.authors:
+           return ""
+        authors = obj.authors.split(' ')
+        if len(authors) == 1:
+            return authors[0]
+        elif len(authors) == 2:
+           return "%s & %s" % (authors[0], authors[1])
+        else:
+           return "%s et al." % authors[0]
+    author.allow_tags = True
+
+    def full_text(self, obj):
+        if obj.link:
+            return '<a href="%s">%s</a>' % (obj.link, 'available')
+        else:
+            return 'not linked'
+    full_text.allow_tags = True
 ##
 ##    def first_names(self, obj): #Note that this method can also be on the Model not just ModelAdmin
 ##        return ','.join(a.first_name for a in obj.authors.all())    #http://stackoverflow.com/questions/2861923/how-do-i-reference-django-model-from-another-model
