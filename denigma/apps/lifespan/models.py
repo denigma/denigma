@@ -8,6 +8,7 @@ class Study(models.Model):
     """A lifespan study."""
     pmid = models.IntegerField(blank=True, null=True, unique=True)
     title = models.CharField(max_length=250, blank=True, null=True, unique=True)
+    link = models.URLField(blank=True, null=True)
     reference = models.ForeignKey(Reference, blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     integrated = models.BooleanField()
@@ -16,26 +17,24 @@ class Study(models.Model):
     #experiments = models.OneToMany(Experiment) # ForeignKey?
     
     def __unicode__(self):
-        return self.reference.__unicode__()
+        if self.reference:
+            return self.reference.__unicode__()
+        else:
+            return "{0} {1}".format(self.pmid, self.title)
 
     class Meta():
         verbose_name_plural = "studies"
 
     def save(self, *args, **kwargs):
-        print """Check whether study is already in references."""
-        print "*args", args
-        print "**kwargs", kwargs
+        """Check whether study is already in references and fetches annotation."""
         kwargs['title'] = self.title
         kwargs['pmid'] = self.pmid
+        if self.link:
+           kwargs['link'] = self.link
         reference, created = Reference.objects.get_or_create(*args, **kwargs)
-        print reference, created
         self.pmid = reference.pmid
         self.title = reference.title
         self.reference = reference
-        print "*args 2", args
-        print "**kwargs 2", kwargs
-        #study = Study.objects.get_or_create(*args, **kwargs)
-        #study.save()
         super(Study, self).save()
 
 

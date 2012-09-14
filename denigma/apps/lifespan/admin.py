@@ -8,7 +8,7 @@ from models import Type, Factor, Manipulation, Intervention, Regimen, Assay
 
 
 class StudyAdmin(reversion.VersionAdmin):
-    fields = ['title', 'pmid', 'reference', 'notes', 'integrated']
+    fields = ['title', 'pmid', 'link', 'reference', 'notes', 'integrated']
     list_display = ('title', 'pmid', 'notes', 'created', 'updated', 'integrated')
     search_fields = ('title', 'pmid', 'notes')
 
