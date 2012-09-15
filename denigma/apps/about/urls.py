@@ -9,4 +9,7 @@ urlpatterns = patterns("",
     url(r"^dmca/$", direct_to_template, {"template": "about/dmca.html"}, name="dmca"),
     url(r"^what_next/$", direct_to_template, {"template": "about/what_next.html"}, name="what_next"),
     url(r"^tutorial/$", direct_to_template, {"template": "about/tutorial.html"}, name="tutorial"),
+    url(r"^matrix/$", 'about.views.matrix', {'number':0}),
+    url(r"^matrix/(?P<number>[\w]+)/$", 'about.views.matrix'),
+    url(r"^matrix/(?P<number>[\w]+)/choice/(?P<color>[\w]+)", 'about.views.choice'),
 )

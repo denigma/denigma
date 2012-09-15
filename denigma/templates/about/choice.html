@@ -1,0 +1,22 @@
+{% extends "about/base.html" %}
+
+{% load markup %}
+{% load hyperlink %}
+
+{% block hierarchy %}
+    <a href="/admin/">{{ SITE_NAME }} db</a> >
+    <a href="/about/">About</a> >
+    <a href="/about/matrix/0">Matrix</a> >
+    <a href="/about/matrix/{{ number }}">Path of Truth {{ number }}</a> >
+    Choice >
+    <a href="/about/matrix/{{ number }}/choice/{{ color }}">{{ color }}
+{% endblock %}
+
+{% block subtitle %}{{ result.title }}{% endblock %} 
+
+{% block content %}
+    {{ result.text|markdown|hyper|safe }}
+    <p>Or go back to the <a href="/about/matrix/0/">Paths of Truth</a></p>
+{% endblock %}
+
+

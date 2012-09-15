@@ -1,0 +1,24 @@
+{% extends "about/base.html" %}
+
+{% load markup %}
+{% load hyperlink %}
+
+{% block hierarchy %}
+    <a href="/admin/">{{ SITE_NAME }} db</a> >
+    <a href="/about/">About</a> >
+    <a href="/about/matrix/0">Matrix</a> >
+    <a href="/about/matrix/{{ number }}">Path of Truth {{ number }}</a>
+{% endblock %}
+
+{% block subtitle %}{{ path.title }}{% endblock %} 
+
+{% block content %}
+    {{ path.text|markdown|hyper|safe }}
+    {% if not number == "0" %}
+        <center>
+        <a href="choice/red">Truth</a>
+        <img src="http://3.bp.blogspot.com/_ahOToy1EVkE/S1ssdEoVTSI/AAAAAAAAAtM/_xb1-kNwtIM/s400/Matrix.jpg" alt="chose a pill">
+        <a href="choice/blue">Lie</a> 
+        </center>
+    {% endif %}
+{% endblock %}
