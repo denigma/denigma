@@ -26,7 +26,7 @@ urlpatterns = patterns('blog.views',
                               template_name="blog/index.html")),
     url(r'^(?P<pk>\d+)$', DetailView.as_view(
                               model=Post,
-                              template_name="blog/post.html")),
+                              template_name="blog/view.html")),
     url(r'archive/$', ListView.as_view(
                               queryset=Post.objects.filter(published=True).order_by("-created", "-id"),
                               template_name="blog/archive.html")),
