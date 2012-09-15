@@ -68,6 +68,7 @@ urlpatterns += patterns("",
     url(r'^datasets/', include('datasets.urls'), name="datasets"),
     url(r'^lifespan/', include('lifespan.urls'), name="lifespan"),
     url(r'^sitemap\.xml', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
+    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/media/img/favicon.ico'}), # Site icon
 )
 
 if settings.SERVE_MEDIA:
