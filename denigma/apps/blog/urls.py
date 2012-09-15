@@ -9,17 +9,17 @@ from feeds import BlogFeed
 urlpatterns = patterns('blog.views',
     url(r'^$', ListView.as_view(
                               queryset=Post.objects.filter(published=True).order_by("-created", "-id"),
-                              template_name="blog/index.html")),
+                              template_name="blog/index.html"), name='blog'),
     url(r'^(?P<pk>\d+)$', DetailView.as_view(
                               model=Post,
                               template_name="blog/view.html")),
     url(r'archive/$', ListView.as_view(
                               queryset=Post.objects.filter(published=True).order_by("-created", "-id"),
-                              template_name="blog/archive.html")),
+                              template_name="blog/archive.html"), name='archive'),
     url(r'^tag/(?P<tag>\w+)$', 'tagpage'),
-    url(r'^feed/$', BlogFeed()),
+    url(r'^feed/$', BlogFeed(), name='feed'),
     url(r'^articles/$', ListView.as_view(
                               queryset=Post.objects.filter(published=False).order_by("-created", "-id"),
-                              template_name="blog/articles.html")),
+                              template_name="blog/articles.html"), name='articles'),
     url(r'^admin/$', 'custom_admin_view'), 
 )

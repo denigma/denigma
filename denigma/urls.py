@@ -10,6 +10,13 @@ from staticfiles.urls import staticfiles_urlpatterns
 
 from pinax.apps.account.openid_consumer import PinaxConsumer
 
+from sitemaps import SiteMap, SiteSiteMap
+
+
+sitemaps = {
+   'Denigma': SiteMap,
+   'pages': SiteSiteMap(['contact', 'archive']),
+}
 
 handler500 = "pinax.views.server_error"
 
@@ -31,14 +38,14 @@ urlpatterns += patterns("",
     url(r"^admin/invite_user/$", "pinax.apps.signup_codes.views.admin_invite_user", name="admin_invite_user"),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^a/', include(admin.site.urls)),
-    url(r'^about/', include("about.urls")),
+    url(r'^about/', include("about.urls"), name='about'),
     url(r'^account/', include("account.urls")),#, pinax.apps.account.urls")),
     url(r'^openid/', include(PinaxConsumer().urls)),
     url(r'^profiles/', include("idios.urls")),
     url(r'^notices/', include("notification.urls")),
     url(r'^announcements/', include("announcements.urls")),
-    url(r'^polls/', include('polls.urls')),
-    url(r'^wiki/', include('wiki.urls')),
+    url(r'^polls/', include('polls.urls'), name='polls'),
+    url(r'^wiki/', include('wiki.urls'), name='wiki'),
     url(r'^shorty/$', 'shorty.views.home'),
     url(r'^e/([^/]+)/', 'shorty.views.manage', name='source'),
     url(r'^url/(\w+)/', 'shorty.views.visit', name='visit'),
@@ -48,7 +55,7 @@ urlpatterns += patterns("",
     #url(r'^news/', include('news.urls')), # Blogs is currently functioning as news medium.
     #url(r'^links/', include('links.urls')),
     #url(r'^books/', inlcude('books.urls')),
-    url(r'^contact/$', 'contact.views.contact'),
+    url(r'^contact/$', 'contact.views.contact', name='contact'),
     url(r'^todos/', include('todos.urls')),
     url(r'^experts/', include('experts.urls')),
     url(r'^pastebin/', include('pastebin.urls')),
@@ -60,6 +67,7 @@ urlpatterns += patterns("",
     url(r'^expressions/', include('expressions.urls'), name="expressions"),
     url(r'^datasets/', include('datasets.urls'), name="datasets"),
     url(r'^lifespan/', include('lifespan.urls'), name="lifespan"),
+    url(r'^sitemap\.xml', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
 )
 
 if settings.SERVE_MEDIA:
