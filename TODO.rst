@@ -379,6 +379,22 @@ Denigma needs a powerful NoSQL database-backend
 Considered are MongoDB, Neo4j, titan, and orientdb.
 
 
+Icons
+-----
+Include icons in the navigation just behind the labels
+Take an example from: http://kfalck.net/
+<li class="active"><a href="/"><i class="icon-list"></i> Home</a></li>
+
+
+Visit Counter
+-------------
+Denigma should be able to count how often its main site as well as individual
+parts are visited and keep track of statics on traffic.
+
+django-hitcounts, django-visits-counter or django-visits are attractive ways of
+easily implemented such functionality. 
+
+
 The Future of Denigma
 ---------------------
 
