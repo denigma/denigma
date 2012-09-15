@@ -8,7 +8,8 @@
 {% block body_class %}Home{% endblock %}
 
 {% block banner %}
-    <h1>{% trans "Denigma - The Digital Enigma" %}</h1>
+{# <img src="http://dgallery.s3.amazonaws.com/denigma_pos.png" alt="Denigma"></td> #}
+    <table><tr><td>
     <p>
         {% blocktrans %}
         <b>Denigma</b> is a <a href="http://djangoproject.com/">Django</a>
@@ -20,7 +21,6 @@
         other reasons.
         {% endblocktrans %}
     </p>
-    <h2>Rationality</h2>
     <p>
         {% blocktrans %}
         This is a open source project providing a platform for both life and computer scientists
@@ -31,7 +31,11 @@
         but in its very heart its all silicon.
         {% endblocktrans %}
     </p>
-   {% if user.is_authenticated %}
+    </td>
+    <td><center> <img src="http://dgallery.s3.amazonaws.com/denigma_pos.png" alt="Denigma The Digital Enigma" height="500" width="500"></td>
+    
+    </tr></table>
+    {% if user.is_authenticated %}
         {% url what_next as what_next_url %}
         <p class="what_next">{% blocktrans %}Wondering <a href="{{ what_next_url }}" class="btn primary large">What Next</a>?{% endblocktrans %}</p>
     {% else %}
