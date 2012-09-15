@@ -3,21 +3,7 @@ from django.views.generic import ListView, DetailView
 from django.contrib.syndication.views import Feed
 
 from models import Post
-
-
-class BlogFeed(Feed):
-    title = "Denigma"
-    description = "The digital Enigma."
-    link = "/blog/feed/"
-
-    def items(self):
-       return Post.objects.all().order_by("created")[:2]
-    def item_title(self, item):
-       return item.title
-    def item_description(self, item):
-       return item.body
-    def item_link(self, item):
-       return u"/blog/%d" % item.id
+from feeds import BlogFeed
 
 
 urlpatterns = patterns('blog.views',
