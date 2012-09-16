@@ -2,16 +2,14 @@
 
 {% load markup %}
 {% load abstraction %}
+{% load hyperlink %}
 
 {% block hierarchy %}
-    <a href="/admin">{{ SITE_NAME }} db</a> >
-    <a href="/articles">Articles</a> >
+    > <a href="/articles">Articles</a> >
     <a href="/articles">Index</a>
 {% endblock %}
 
 {% block subtitle %}Index{% endblock %}
-
-{% load hyperlink %}
 
 {% block content %}
 

@@ -3,9 +3,8 @@
 {% load i18n %}	
 
 {% block hierarchy %}
-<a href="/admin">{{ SITE_NAME }} db</a> >
-<a href="/pastebin">Paste Bin Messaging</a> >
-{{ object.uuid }}
+    > <a href="/pastebin">Paste Bin Messaging</a>
+    > {{ object.uuid }}
 {% endblock %}
 
 {% block subtitle %}{% trans "Pasted Item" %}{% endblock %}

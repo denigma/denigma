@@ -1,9 +1,11 @@
 {% extends "site_base.html" %}
 
+{% block head_title %}Annotations{% endblock %}
+
 {% block options %}
-<a href="/annotations/">Index</a>
-{% comment %}<a href="/annotations/species">Species</a>{% endcomment %}
-{% comment %}<a href="/annotations/bulk_upload">Bulk Upload</a>{% endcomment %}
+    <a href="/annotations/">Index</a>
+    {# <a href="/annotations/species">Species</a> #}
+    {# <a href="/annotations/bulk_upload">Bulk Upload</a> #}
 {% endblock options %}
 
 {% block title %}Annotations{% endblock %}

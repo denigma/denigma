@@ -5,8 +5,7 @@
 {% load negletion %}
 
 {% block hierarchy %}
-    <a href="/admin">{{ SITE_NAME }} db</a> >
-    <a href="/articles">Articles</a> >
+    > <a href="/articles">Articles</a> >
     Article >
     <a href="/articles/{{ post.id }}">{{ post.title }}</a>
 {% endblock %}

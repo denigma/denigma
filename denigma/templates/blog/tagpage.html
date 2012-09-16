@@ -1,10 +1,9 @@
 {% extends "blog/base.html" %}
 
 {% block hierarchy %}
-        <a href="/admin">{{ SITE_NAME }} db</a> >
-        <a href="/blog">Blog</a> >
-        Tag =
-        {{ tag }}
+    ><a href="/blog">Blog</a> >
+    Tag =
+    {{ tag }}
 {% endblock %}
 
 {% block subtitle %}Posts tagged: {{ tag }}{% endblock %}
@@ -12,9 +11,11 @@
 {% block content %}
 
 {% for post in posts %}
-
-<p>{{ post.created|date:"Y-m-d" }}: <a href="/blog/{{post.id}}">{{ post.title }}</a> ({{ post.updated|date:"Y-m-d" }})</p>
-
+    <p>
+       {{ post.created|date:"Y-m-d" }}: 
+           <a href="/blog/{{post.id}}">{{ post.title }}</a>
+          ({{ post.updated|date:"Y-m-d" }})
+    </p>
 {% endfor %}
 
 {% endblock %}

@@ -1,8 +1,9 @@
 {% extends "site_base.html" %}
 
+{% block head_title %}URLs{% endblock %}
+
 {% block hierarchy %}
-    <a href="/admin">{{ SITE_NAME }} db</a> >
-    <a href="/shorty">URLs</a>
+    > <a href="/shorty">URLs</a>
 {% endblock hierarchy %}
 
 {% comment %}{% block base %}{% endblock %} {% endcomment %}
@@ -12,9 +13,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" xml:lang="{{ LANGUAGE_CODE }}" lang="{{ LANGUAGE_CODE }}">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} : {% endif %}{% block head_title %}{% endblock %}{% endblock %}</title>
-    {% block title %}sURL{% endblock %}
-
+    <title>
     {% comment %}
     IE hasLayout => http://www.satzansatz.de/cssd/onhavinglayout.html
     {% endcomment %}

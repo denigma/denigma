@@ -84,7 +84,7 @@
 
                                   <span class="left">
 
-                                  {% block hierarchy %}
+                                  <b><a href="/admin">{{ SITE_NAME }} db</a>{% block hierarchy %}
 
                                   {% comment %}
                                   Site > App > Model > View > Filter
@@ -92,15 +92,13 @@
                                   Denigma > Datasets > GenAge > Worm
                                   {% endcomment %}
 
-				  <b><a href="/admin">{{ SITE_NAME }} db</a></b>
-
                                   {% comment %} {% if {{ SITE_NAME }} != { CURRENT_SITE }} %} {% endif %} 
                                   {% if {{ APP_NAME }} %}<a href="{{ APP_NAME }}">{{ APP_NAME }}</a><b>></b>{% endif %}
                                   {% if {{ MODEL_NAME }} %}<a href="{{ MODEL_NAME }}">{{ MODEL_NAME }}</a>>{% endif %}
                                   {% if {{ VIEW_NAME }} %}<a href="{{ VIEW_NAME }}">{{ VIEW_NAME }}</a>>{% endif %}
                                   {% endcomment %}
 
-                                  {% endblock hierarchy %}
+                                  {% endblock hierarchy %}</b>
                                   </span>
     
                                   <span class="centre">{% block options %}{% endblock options %}</span>

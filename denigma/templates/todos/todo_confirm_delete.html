@@ -1,11 +1,10 @@
 {% extends "todos/base.html" %}
 
 {% block hierarchy %}
-<a href="/admin">{{ SITE_NAME }} db</a> >
-<a href="/todos">Todos</a> >
-Todo =
-<a href="/todos/{{ object.id }}">{{ object.title }}</a> >
-<a href="/todos/{{ object.id }}/delete">Delete</a>
+   > <a href="/todos">Todos</a> >
+   Todo =
+   <a href="/todos/{{ object.id }}">{{ object.title }}</a> >
+   <a href="/todos/{{ object.id }}/delete">Delete</a>
 {% endblock %}
 
 {% block subtitle %}Todo{% endblock %}

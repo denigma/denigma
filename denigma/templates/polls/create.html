@@ -1,10 +1,9 @@
 {% extends "polls/base.html" %}
 
 {% block hierarchy %}
-<a href="/admin">{{ SITE_NAME }} db</a> >
-<a href="/polls">Polls</a> >
-Poll =
-<a href="/polls/create">Create</a>
+    > <a href="/polls">Polls</a>
+    > Poll
+    = <a href="/polls/create">Create</a>
 {% endblock %}
 
 {% block subtitle %}Add a poll:{% endblock %}

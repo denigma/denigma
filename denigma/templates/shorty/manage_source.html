@@ -1,10 +1,9 @@
 {% extends "shorty/base.html" %}
 
 {% block hierarchy %}
-<a href="/admin">{{ SITE_NAME }} db</a> >
-<a href="/shorty">sURL</a> >
-Edit >
-<a href={{ source.url }}">{{ source.url }}</a>
+    > <a href="/shorty">sURL</a> >
+    Edit >
+    <a href={{ source.url }}">{{ source.url }}</a>
 {% endblock %}
 
 {% load i18n %}

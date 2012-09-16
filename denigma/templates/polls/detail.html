@@ -1,13 +1,13 @@
 {% extends "polls/base.html" %}
 
 {% block hierarchy %}
-<a href="/admin">{{ SITE_NAME }} db</a> >
-<a href="/polls">Polls</a> >
-Poll =
-{{ poll.id }}
+    > <a href="/polls">Polls</a>
+    > Poll
+    = {{ poll.id }}
 {% endblock %}
 
 {% block title %}Poll{% endblock %}
+
 {% block subtitle %}{{ poll.question }}{% endblock %}
 
 {% block content %}<div id="body"><div class="inner"><div class="container">
