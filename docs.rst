@@ -543,4 +543,35 @@ The follwing transformation solves this problem:
 text = text.encode('ascii', 'ignore') 
 [http://stackoverflow.com/questions/3224268/python-unicode-encode-error].
 
+
+Favicon
+-------
+The small icon in the address bar is called favicon.ico [1].
+There are eat least three different ways to implement it [2].
+1. On apache server by adding this to the httpd.conf [2,3]: ::
+    LoadModule alias_module modules/mod_alias.so
+    <LocationMatch "^/favicon.ico">
+        SetHandler default
+    </LocationMatch>
+    alias /favicon.ico /home/denigma/denigma/media/img/favicon.ico
+2. On URLconf [2,4-5]: ::
+    url(r'^favicon\.ico$', 'django.views.generic.simple.redirect_to',
+       {'url': '/media/img/favicon.ico'}), # Site icon
+3. In the base template header (such as theme_base.html) [2,5]: ::
+    <link rel="shortcut icon" type="image/x-icon" href="/media/img/favicon.ico">
+    <link href="/media/img/favicon.ico" rel="icon" type="image/x-icon">
+
+All three were implemented but only third approach seems to work.
+The respective icon was generate with GIMP by using a png to start with
+If transparency is desired an alpha layer (if not alrady there) and
+the background color removed. The ong was scaled to 16x16 pixel (px) [6,7].
+
+[1] http://en.wikipedia.org/wiki/Favicon
+[2] http://community.webfaction.com/questions/774/create-an-icon-for-a-django-app
+[3] http://www.pkshiu.com/loft/archive/2008/08/serving-favicon-in-an-django-app-using-apache
+[4] http://www.netboy.pl/2011/10/add-favicon-ico-robots-txt-to-a-django-project/
+[5] http://www.codekoala.com/blog/2008/setup-faviconico-django/
+[6] http://www.aha-soft.com/faq/make_website_icon.htm
+[7] http://tools.dynamicdrive.com/favicon/
+
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
