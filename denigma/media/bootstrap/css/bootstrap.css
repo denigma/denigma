@@ -552,8 +552,8 @@ textarea {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 label {
-  display: block;
-  margin-bottom: 5px;
+  /* display: block; */
+  margin-bottom: 1px;
   color: #333333;
 }
 input,
@@ -578,7 +578,7 @@ select,
   height: auto;
 }
 label input, label textarea, label select {
-  display: block;
+  /* display: block; */
 }
 input[type="image"], input[type="checkbox"], input[type="radio"] {
   width: auto;
