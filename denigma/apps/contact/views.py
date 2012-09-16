@@ -49,7 +49,7 @@ def contact(request):
 
     else:
         form = ContactForm(
-            initial={'subject':'I love your site!'})
+            initial={'subject':'For the singularity!'})
     return render_to_response('contact/form.html', {'form':form}, context_instance=RequestContext(request))
 
 ##    return render_to_response('contact_form.html', {
