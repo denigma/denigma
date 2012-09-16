@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.conf.urls.defaults import *
-from django.views.generic.simple import direct_to_template
+from django.views.generic.simple import direct_to_template, redirect_to
 from django.conf.urls.static import static
 
 from django.contrib import admin
@@ -68,9 +68,9 @@ urlpatterns += patterns("",
     url(r'^datasets/', include('datasets.urls'), name="datasets"),
     url(r'^lifespan/', include('lifespan.urls'), name="lifespan"),
     url(r'^sitemap\.xml', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
-    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/media/img/favicon.ico'}), # Site icon
+    url(r'^favicon\.ico$', 'django.views.generic.simple.redirect_to',
+       {'url': '/media/img/favicon.ico'}), # Site icon
 )
-
 if settings.SERVE_MEDIA:
     urlpatterns += patterns("",
         url(r'', include("staticfiles.urls")),
