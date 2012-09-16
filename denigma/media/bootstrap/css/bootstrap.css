@@ -3461,9 +3461,9 @@ a.thumbnail:hover {
   color: #ffffff;
 }
 .hero-unit {
-  padding: 60px; /* 60 */
+  padding: 6px; /* 60 */
   margin-bottom: 30px; /* 3 */
-  background-color: # f5f5f5; /* f5f5f5; 993399 FF99CC */ FFEEEE ffeeff
+  background-color: #f5f5f5; /* f5f5f5; 993399 FF99CC */ FFEEEE ffeeff
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
