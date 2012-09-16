@@ -15,7 +15,7 @@
                 <li id="tab_space"> __ </li>
                 <li id="tab nav">
                 <form class="navbar_search" action="/search/"> {% comment %} Replace this with haystack/Whoosh {% endcomment %}
-                     <input type="hidden" name="models" value="data">
+                     <input type="hidden" name="models" value="blog.post">
                      <input type="text" class="search-query span1" name="q" placeholder="Search" value="">
                 </form></li>
  		{% if user.is_authenticated %}{% spaceless %}
