@@ -2,6 +2,7 @@
 
 {% load markup %}
 {% load hyperlink %}
+{% load crosslink %}
 
 {% block hierarchy %}
     > <a href="/blog">Blog</a> >
@@ -21,7 +22,7 @@
 </div>
 
 <div class="post_body">
-  {{ post.text|markdown|hyper|safe }}
+  {{ post.text|markdown|hyper|recross|safe }}
 </div>
 
 <div class="tags">
