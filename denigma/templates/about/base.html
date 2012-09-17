@@ -1,13 +1,15 @@
 {% extends "site_base.html" %}
 
+{% load url from future %}
+
 {% block head_title %}About{% endblock %}
 
 {% block options %}
-    <a href="/about">About</a> |
-    <a href="/about/what_next">What Next?</a> |
-    <a href="/about/terms">Terms</a> |
-    <a href="/about/privacy">Privacy</a> |
-    <a href="/about/matrix/0">Matrix</a>
+    <a href="{% url 'about' %}">About</a> |
+    <a href="{% url 'terms' %}">Terms</a> |
+    <a href="{% url 'privacy' %}">Privacy</a> |
+    <a href="{% url 'what_next' %}">What Next?</a> |
+    <a href="{% url 'matrix' %}">Matrix</a>
 {% endblock %} 
 
 {% block title %}About{% endblock %}

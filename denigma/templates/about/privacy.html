@@ -2,11 +2,11 @@
 
 {% block hierarchy %}
     > <a href="/about">About</a> >
-    Privacy of usage
+    {{ flatpage.title }} of usage
 {% endblock hierarchy %}
 
-{% block subtitle %}Privacy{% endblock %}
+{% block subtitle %}{{ flatpage.title }}{% endblock %}
 
 {% block content %}
-All personal data will be kept confident by Denigma. Do not worry.
+    {{ flatpage.content }}
 {% endblock %}
