@@ -395,6 +395,15 @@ django-hitcounts, django-visits-counter or django-visits are attractive ways of
 easily implemented such functionality. 
 
 
+Cross-linking
+-------------
+Denigma supports mutliple kinds of highly effective automatic cross-linking facilities. The most powerfull is
+`recross`, a template tag based on regular expression multi-term replacement.
+Individual cross-linking algorithms might be utilized in the views of for instance in the derivates such as
+the tutorials. It is also considered to establish a dictionary of important sections in Dengima and use the for
+mapping to cross-link also sites which are not direct derivates of the blog posts.
+
+
 The Future of Denigma
 ---------------------
 
