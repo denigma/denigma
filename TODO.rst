@@ -402,7 +402,7 @@ Denigma supports mutliple kinds of highly effective automatic cross-linking faci
 Individual cross-linking algorithms might be utilized in the views of for instance in the derivates such as
 the tutorials. It is also considered to establish a dictionary of important sections in Dengima and use the for
 mapping to cross-link also sites which are not direct derivates of the blog posts.
-
+Also explicit cross-links shoul be supported too in order to avoid wrong auto-directing.
 
 The Future of Denigma
 ---------------------
