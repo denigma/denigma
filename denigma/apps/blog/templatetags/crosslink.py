@@ -4,7 +4,7 @@ import re
 
 from django import template
 
-from apps.blog.models import Post
+from blog.models import Post
 
 
 register = template.Library()
