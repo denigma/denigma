@@ -5,11 +5,11 @@ from models import Post
 
 class BlogFeed(Feed):
     title = "Denigma"
-    description = "The digital Enigma."
+    description = "The Digital Enigma."
     link = "/blog/feed/"
 
     def items(self):
-       return Post.objects.filter(published=True).order_by("created")[:25]
+       return Post.objects.filter(published=True).order_by("-created")[:25]
 
     def item_title(self, item):
        return item.title
