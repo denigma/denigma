@@ -13,10 +13,13 @@
 {{ annotations.text|markdown|safe }}
 
     {% if user.is_authenticated %}
-        <p>Specify the model and input the annotation data:</p>
+        <hr>
+        <p>It is possible to bulk upload annotations.
+        Specify the model and input the annotation data:</p>
         <form action="bulk_upload" method="POST">{% csrf_token %}
-        Model:<input type="text" name="model"<br>
-        <textarea name="data"></textarea><br>
+        <b>Model: </b><input type="text" name="model"<br>
+        <br>
+        <b>Data: </b><textarea name="data"></textarea><br>
         <input type="submit" value="Add"><br>
         </form>
     {% endif %}
