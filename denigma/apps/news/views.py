@@ -2,7 +2,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 
-from apps.blog.models import Post
+from blog.models import Post
 
 
 def index(request):
