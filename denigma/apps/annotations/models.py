@@ -6,11 +6,15 @@ from django.db import models
 
 class Classification(models.Model):
     title = models.CharField(max_length=30)
-    name = models.CharField(max_length=30)
-    shortcut = models.CharField(max_length=5)
+    slug = models.CharField(max_length=30)
+    abbreviation = models.CharField(max_length=5)
+    description = models.TextField(blank=True)
 
     def __unicode__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return "/admin/annotations/classification/%i" % self.pk
 
 
 class Tissue(models.Model):
@@ -24,6 +28,8 @@ class Tissue(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return "/annotations/tissues/%i" % self.pk
 
 # Species annotations:
 
@@ -130,6 +136,10 @@ class Species(models.Model):
 
     def __unicode__(self):
         return self.common_name 
+
+    def get_absolute_url(self):
+        return "/admin/annotations/species/%i" % self.pk
+
 
     class Meta:
         verbose_name_plural = u"species"

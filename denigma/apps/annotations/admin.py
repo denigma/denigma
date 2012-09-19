@@ -41,7 +41,8 @@ class SpeciesAdmin(reversion.VersionAdmin):
 
 
 class ClassificationAdmin(reversion.VersionAdmin):
-    list_display = ('title', 'shortcut')
+    list_display = ('title', 'abbreviation', 'slug', 'description')
+    search_fields = ['title', 'abbreviation', 'slug', 'description']
 
 
 class GeneAdmin(admin.ModelAdmin):

@@ -1,0 +1,6 @@
+{{ object.taxid }}
+{{ object.short_name }}
+{{ object.common_name }}
+{{ object.alternative_names }}
+{{ object.latin_name }}
+{{ object.latin_shortcut }} 
