@@ -5,11 +5,13 @@ from django.contrib import messages
 from django.utils.translation import ugettext
 from django.core.urlresolvers import reverse
 
+from blog.models import Post
 from models import Tissue
 
 
 def index(request):
-    return render_to_response('annotations/index.html',
+    annotations = Post.objects.get(title='Annotations') 
+    return render_to_response('annotations/index.html', {'annotations': annotations},
                               context_instance=RequestContext(request))
 
 #def bulk_upload(request):
@@ -43,4 +45,14 @@ def bulk_upload(request):
 
 def species(request):
     return render_to_response('annotations/species.html',
-                             context_instance=RequestContext(request))         
+                              context_instance=RequestContext(request))         
+
+def tissues(request):
+    tissues = Tissue.objects.all()
+    return render_to_response('annotations/tissues.html', {'tissues': tissues},
+                              context_instance=RequestContext(request))
+
+def tissue(request, pk):
+    tissue = Tissue.objects.get(pk=pk)
+    return render_to_response('annotations/tissue.html', {'tissue': tissue},
+                              context_instance=RequestContext(request))

@@ -1,5 +1,7 @@
 {% extends "annotations/base.html" %}
 
+{% load markup %}
+
 {% block hierarchy %}
     > <a href="/annotations">Annotations</a>
     > Index
@@ -8,8 +10,8 @@
 {% block subtitle %}Index{% endblock %}
 
 {% block content %}
-<a href="/admin/annotations/">Annotation tables</a>
-<center><img src="http://dgallery.s3.amazonaws.com/building.png" alt="building" width=200 height=200></center>
+{{ annotations.text|markdown|safe }}
+
     {% if user.is_authenticated %}
         <p>Specify the model and input the annotation data:</p>
         <form action="bulk_upload" method="POST">{% csrf_token %}

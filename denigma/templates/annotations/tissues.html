@@ -1,0 +1,42 @@
+{% extends "annotations/base.html" %}
+
+{% block head_title %}Tissues{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/annotations/">Annotations</a>
+    > Tissues
+{% endblock %}
+
+{% block subtitle %}Tissues{% endblock %}
+
+{% block content %}
+<p>These are all the tissues and cell types defined in an animal organism:</p>
+    <table border="1">
+        <tr><td><b>Name</b></td>
+            <td><b>Description</b></td>
+            <td><b>Synonyms</b></td>
+            <td><b>Hierarchy</b></td>
+        </tr>
+        {% for tissue in tissues %}
+        <tr>
+            <td><a href="/annotations/tissues/{{ tissue.id }}">{{ tissue.name }}</td>
+            <td>{{ tissue.description }}</td>
+            <td>{{ tissue.synonyms }}</td>
+            <td>{{ tissue.hierarchy }}</td>
+        </tr>
+        
+       {% endfor %}
+    </table>
+    <br>
+    <p><b><a href="/admin/annotations/tissue/add">Add tissue</a></b></p>
+
+    {% comment %}
+    <hr>
+    <h3>Add Tissue:</h3>
+    <form action="add_tissues" method="POST">{% csrf_token %}
+    <input type="text" name="tissues">
+    </form>
+    {% endcomment %}
+
+{% endblock %}
+

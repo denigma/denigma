@@ -1,0 +1,24 @@
+{% extends "annotations/base.html" %}
+
+{% block head_title %}Tissue = {{ tissue.name }}{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/annotations/">Annotations</a>
+    > <a href="/annotations/tissues/">Tissues</a>
+    > Tissue
+    = {{ tissue.name }}
+{% endblock %}
+
+{% block subtitle %}
+    Tissue
+{% endblock %}
+
+{% block content %}
+        <p><b>Name:</b> {{ tissue.name }}</p>
+        <p><b>Descrption:</b> {{ tissue.description }}</p>
+        <p><b>Synonyms:</b> {{ tissue.synonyms }}</p>
+        <p><b>Hierarchy:</b> {{ tissue.hierarchy }}</p>
+        <p><b>Notes:</b> {{ tissue.notes }}</p>
+<p><b><a href="/admin/annotations/tissue/{{ tissue.id }}">Edit</a></b></p>
+{% endblock %}
+
