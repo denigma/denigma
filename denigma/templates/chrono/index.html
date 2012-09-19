@@ -1,0 +1,36 @@
+{% extends "chrono/base.html" %}
+
+{%  load staticfiles %}
+
+{% block subtitle %}Index{% endblock %}
+
+{% block extra_script %}
+    <script type="text/javascript" src="{% static "js/jquery-1.7.2.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.unobtrusive-ajax.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+    <hr>
+    <h4>Denigma's Time via Unobtrusive ajax</h4>
+    <br>
+    <table>
+    <tr>
+    <td>
+    <form action="/time/gettime/" method="get">
+        <input type="submit" value="Get time"/>
+    </form>
+    </td>
+    <td>
+
+    </td>
+    <td>
+    <form action="/time/gettime" method="get" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#divTime">
+        <input type="submit" value="Get time through ajax"/>
+    </form>
+    </td>
+    </tr>
+    </table>
+    <h4>Server Time</h4>
+    <div id="divTime">{{ time }}</div>
+
+{% endblock %}

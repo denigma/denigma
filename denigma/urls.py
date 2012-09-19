@@ -24,8 +24,6 @@ urlpatterns = patterns("denigma.views",
     url(r'^$', 'home', name="home"),
     url(r'^meta/$', 'meta'),
     url(r'^display_meta/', 'display_meta'),
-    url('^time/$', 'current_datetime'),
-    url(r'^time/plus/(\d+)/$', 'hours_ahead'),  # d+ = wildcard
     url(r'^google(?P<term>\w+)', 'google'),
     #url(r'^search/(?P<term>.*)', 'search'), # Side-wide search
     url(r'^search/', include('haystack.urls')),
@@ -70,6 +68,7 @@ urlpatterns += patterns("",
     url(r'^sitemap\.xml', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
     url(r'^favicon\.ico$', 'django.views.generic.simple.redirect_to',
        {'url': '/media/img/favicon.ico'}), # Site icon
+    url(r'^time/', include('chrono.urls')),
 )
 if settings.SERVE_MEDIA:
     urlpatterns += patterns("",

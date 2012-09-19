@@ -1,0 +1,15 @@
+{% extends "site_base.html" %}
+
+{% block head_title %}Time{% endblock %}
+
+{% block hierarchy %}
+    > Chrono
+{% endblock %}
+
+{% block options %}
+   <a href="/time/current">Classic</a> |
+   <a href="/time/gettime">Ajax</a> |
+   <a href="/time/plus/12">Ahead</a>
+{% endblock %}
+
+{% block title %}Chrono{% endblock %}
