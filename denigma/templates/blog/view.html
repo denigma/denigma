@@ -4,13 +4,15 @@
 {% load hyperlink %}
 {% load crosslink %}
 
+{% block head_title %}Post{% endblock %}
+
 {% block hierarchy %}
     > <a href="/blog">Blog</a> >
     <a href="/blog">Posts</a> >
     <a href="/blog/{{ post.id }}">{{ post.title }}</a>
 {% endblock hierarchy %}
 
-{% block subtitle %}News{% endblock %}
+{% block subtitle %}Post{% endblock %}
 
 {% block content %}
 
