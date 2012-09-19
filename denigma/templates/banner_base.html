@@ -1,5 +1,6 @@
 {% extends "site_base.html" %}
 
+{% load url from future %}
 {% load i18n %}
 
 {% block body_base %}
@@ -15,6 +16,8 @@
 
         <hr>	
 	{% include "blog/news.html" %}
+        <br>
+        <h4><a href="{% url 'news' %}">All News</a></h4>
         <hr>
         <h2>Operating System-Specific Considerations</h2> 
         <div class="row">

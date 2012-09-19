@@ -21,7 +21,7 @@ sitemaps = {
 handler500 = "pinax.views.server_error"
 
 urlpatterns = patterns("denigma.views",
-    url(r'^$', 'root', name="root"),
+    url(r'^$', 'home', name="home"),
     url(r'^meta/$', 'meta'),
     url(r'^display_meta/', 'display_meta'),
     url('^time/$', 'current_datetime'),
@@ -33,7 +33,7 @@ urlpatterns = patterns("denigma.views",
 )
 
 urlpatterns += patterns("",
-    url(r"^homepage", direct_to_template, {"template": "homepage.html",}, name="home"), # For fast static rendering. 
+    url(r"^homepage", direct_to_template, {"template": "homepage.html",}, name="homepage"), # For fast static rendering. 
     url(r'^home/', include('home.urls')),
     url(r"^admin/invite_user/$", "pinax.apps.signup_codes.views.admin_invite_user", name="admin_invite_user"),
     url(r'^admin/', include(admin.site.urls)),
@@ -52,7 +52,7 @@ urlpatterns += patterns("",
     url(r'^gallery/', include('gallery.urls')),
     url(r'^blogs/', include('blogs.urls')),
     url(r'^blog/', include('blog.urls')),
-    #url(r'^news/', include('news.urls')), # Blogs is currently functioning as news medium.
+    url(r'^news/$', include('news.urls')), # Blogs is currently functioning as news medium.
     #url(r'^links/', include('links.urls')),
     #url(r'^books/', inlcude('books.urls')),
     url(r'^contact/$', 'contact.views.contact', name='contact'),
