@@ -3,8 +3,10 @@ from django.contrib import admin
 
 import reversion
 
+
 class TissueAdmin(reversion.VersionAdmin):
-    pass
+    list_display = ('name', 'description', 'synonyms')
+    search_fields = ['name', 'description', 'synonyms', 'notes']
 
 
 class TaxonomyAdmin(admin.ModelAdmin):
