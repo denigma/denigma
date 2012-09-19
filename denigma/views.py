@@ -2,7 +2,6 @@
 A view is just a Python function that takes an HttpRequest as its parameter
 and returns an instance of HttpResponse.
 """
-import datetime
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.template import RequestContext
@@ -24,6 +23,15 @@ def home(request):
     return render_to_response('homepage.html', {'posts': posts, 'searchform': searchform},
                               context_instance=RequestContext(request))
 
+def search(request, term):
+    """Site-wide search functionality"""
+    term = request.META['QUERY_STRING'].split('models=data&q=')[1]
+    return render_to_response('search.html', {'term': term},
+        context_instance=RequestContext(request))
+
+def google(request, term):
+    return render_to_response('google.html', term)
+
 def display_meta(request):
     values = request.META.items()
     values.sort()
@@ -34,14 +42,4 @@ def display_meta(request):
 
 def meta(request):
     return render_to_response('meta.html', {'values':sorted(request.META.items())},
-                              context_instance=RequestContext(request))
-
-
-def google(request, term):
-    return render_to_response('google.html', term)
-
-def search(request, term):
-    """Site-wide search functionality"""
-    term = request.META['QUERY_STRING'].split('models=data&q=')[1]
-    return render_to_response('search.html', {'term': term},
                               context_instance=RequestContext(request))

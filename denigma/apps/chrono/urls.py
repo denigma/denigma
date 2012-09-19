@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import url, patterns
 
+
 urlpatterns = patterns('chrono.views',
     url(r'^$', 'index', name='chrono'),
     url(r'^gettime/$', 'gettime', name='gettime'),
