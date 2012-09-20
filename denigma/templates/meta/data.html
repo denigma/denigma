@@ -1,0 +1,17 @@
+{% extends "meta/base.html" %}
+
+{% block hierarchy %}
+   < <a href="/meta/">Meta</a>
+   < Data
+{% endblock %}
+
+{% block subtitle %}Data{% endblock %}
+
+{% block content %}
+    {% if user.is_superuser %}
+        <table>
+            {% for k, v in values %} <tr><td> {{ k }} </td><td> {{ v }}{{ value|linebreaks }} </td></tr> {% endfor %}
+        </table>
+    {% endif  %}
+{% endblock %}
+

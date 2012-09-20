@@ -1,0 +1,66 @@
+{% extends "meta/base.html" %}
+
+{% block head_title %}Activity{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/meta/">Meta</a>
+    > Activity
+    = {{ u.username }}
+{% endblock %}
+
+{% block subtitle %}Actvity{% endblock %}
+
+{% block content %}
+    {% if user.is_superuser %}
+        <b>ID:</b> {{ u.id }}<br>
+        <b>Name:</b> {{ u.username }}<br>
+        <b>First name:</b> {{ u.first_name }}<br>
+        <b>Last name:</b> {{ u.last_name }}<br>
+        <b>Email:</b> {{ u.email }}<br>
+        <b>Staff:</b> {{ u.is_staff }}<br>
+        <b>Super:</b> {{ u.is_superuser }}<br>
+        <b>Last login:</b> {{ u.last_login }}<br>
+        <b>Joined:</b> {{ u.date_joined }}
+        <hr>
+        {% if page %}
+            <table border="1">
+                <tr>
+                    <td><b>ID</b></td>
+                    <td><b>Action time</b></td>
+                    <td><b>User</b></td>
+                    <td><b>Content type</b></td>
+                    <td><b>Object ID</b></td>
+                    <td><b>Object representation</b></td>
+                    <td><b>Action flag</b></td>
+                    <td><b>Change message</b></td>
+                </tr>
+            {% for log in page.object_list %}
+                    <tr>
+                        <td>{{ log.id }}</td>
+                        <td>{{ log.action_time }}</td>
+                        <td>{{ log.user_id }}</td>
+                        <td>{{ log.content_type }}</td>
+                        <td>{{ log.object_id }}</td>
+                        <td>{{ log.object_repr }}</td>
+                        <td>{{ log.action_flag }}</td>
+                        <td>{{ log.change_message }}</td>
+                {% endfor %}
+            {% else %}
+                <p>No activity</p>
+            {% endif %}
+            </tr>
+        </table>
+        <br>
+        {% if page.has_previous %}
+            <a href="?page={{  page.previous_page_number }}">prev</a>
+        {% endif %}
+        | {{  page.number }} |
+        {% if page.has_next %}
+            <a href="?page={{ page.next_page_number }}">next</a>
+        {% endif %}
+
+    {% endif %}
+{% endblock %}
+
+
+

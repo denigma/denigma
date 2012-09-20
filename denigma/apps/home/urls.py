@@ -1,8 +1,8 @@
-from django.conf.urls.defaults import patterns
+from django.conf.urls.defaults import patterns, url
 
 
 urlpatterns = patterns('home.views',
-   (r'^$', 'index'),
-   (r'^base', 'base'),
-   (r'^page', 'page'),
+   url(r'^$', 'index'),
+   url(r'^base', 'base'),
+   url(r'^page', 'page'),
 )

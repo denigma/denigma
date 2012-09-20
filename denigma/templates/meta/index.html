@@ -1,0 +1,36 @@
+{% extends "meta/base.html" %}
+
+{% block head_title %}Meta{% endblock %}
+
+{% block subtitle %}Index{% endblock %}
+
+{% block content %}
+    {% if user.is_superuser %}
+        <table>
+            <tr>
+                <td><b>ID</b></td>
+                <td><b>Name</b></td>
+                <td><b>First</b></td>
+                <td><b>Last</b></td>
+                <td><b>Email</b></td>
+                <td><b>Staff</b></td>
+                <td><b>Super</b></td>
+                <td><b>Last login</b></td>
+                <td><b>Joined</b></td>
+            </tr>
+            {% for user in users %}
+               <tr>
+                   <td>{{ user.id }}</td>
+                   <td><a href="/meta/activity/{{ user.id }}">{{ user.username }}</a></td>
+                   <td>{{ user.first_name }}</td>
+                   <td>{{ user.last_name }}</td>
+                   <td>{{ user.email }}</td>
+                   <td>{{ user.is_staff }}</td>
+                   <td>{{ user.is_superuser }}</td>
+                   <td>{{ user.last_login }}</td>
+                   <td>{{ user.date_joined }}</td>
+               </tr>
+        {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}

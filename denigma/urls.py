@@ -22,8 +22,6 @@ handler500 = "pinax.views.server_error"
 
 urlpatterns = patterns("denigma.views",
     url(r'^$', 'home', name="home"),
-    url(r'^meta/$', 'meta'),
-    url(r'^display_meta/', 'display_meta'),
     url(r'^google(?P<term>\w+)', 'google'),
     #url(r'^search/(?P<term>.*)', 'search'), # Side-wide search
     url(r'^search/', include('haystack.urls')),
@@ -69,6 +67,7 @@ urlpatterns += patterns("",
     url(r'^favicon\.ico$', 'django.views.generic.simple.redirect_to',
        {'url': '/media/img/favicon.ico'}), # Site icon
     url(r'^time/', include('chrono.urls')),
+    url(r'^meta/', include('meta.urls')),
 )
 if settings.SERVE_MEDIA:
     urlpatterns += patterns("",

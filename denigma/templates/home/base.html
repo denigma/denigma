@@ -1,3 +1,11 @@
-{% extends "theme_base.html" %}
+{% extends "site_base.html" %}
 
-{% block content %}{% endblock %}
+{% block head_title %}Home{% endblock %}
+
+{% block hierarchy %}
+   > Home
+{% endblock %}
+
+{% block options %}
+  <a href="/home/index.html/">Index</a>
+{% endblock %}

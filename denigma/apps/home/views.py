@@ -19,3 +19,4 @@ def page(request):
    return render_to_response('home/page.html',
                              context_instance=RequestContext(request))
 
+

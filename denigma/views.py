@@ -32,14 +32,3 @@ def search(request, term):
 def google(request, term):
     return render_to_response('google.html', term)
 
-def display_meta(request):
-    values = request.META.items()
-    values.sort()
-    html = []
-    for k, v in values:
-        html.append('<tr><td>%s</td><td>%s</td></tr>' % (k, v))
-    return HttpResponse('<table>%s</table>' % '\n'.join(html))
-
-def meta(request):
-    return render_to_response('meta.html', {'values':sorted(request.META.items())},
-                              context_instance=RequestContext(request))

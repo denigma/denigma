@@ -267,6 +267,7 @@ INSTALLED_APPS = [
     'about',
     'profiles',
     'chrono',
+    'meta'
 ]
 
 FIXTURE_DIRS = [
