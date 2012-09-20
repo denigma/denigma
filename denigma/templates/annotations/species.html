@@ -12,18 +12,18 @@
     {% for aspecies in species %}
         <hr>
         <table>
-        <tr> 
+        <td> 
         <h4>{{ aspecies.common_name }}</h4>
         <i>{{ aspecies.latin_name }}</i> (id = {{ aspecies.taxid }}) <br>
         {{ aspecies.description }}
         <a href="/annotations/species/{{ aspecies.pk }}">Read more</a><br>
 
-        <tr>
-        <tr/>
+        </td>
+        <td>
         {% for image in aspecies.images.all %}
            <img src={{ image.url }} width="150" height="150" alt={{ image.name }}>
         {% endfor %}
-        <tr>
+        </td>
         </table>
         <br>
     {% endfor %}

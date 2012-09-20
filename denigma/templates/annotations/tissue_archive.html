@@ -4,7 +4,8 @@
 
 {% block hierarchy %}
     > <a href="/annotations/">Annotations</a>
-    > Tissue Archive
+    > <a href="/annotations/tissues">Tissues</a>
+    > Archive
 {% endblock %}
 
 {% block subtitle %}Tissue Archive{% endblock %}
@@ -17,7 +18,7 @@
         </tr>
         {% for tissue in tissues %}
         <tr>
-            <td><a href="/annotations/tissues/{{ tissue.id }}">{{ tissue.name }}</td>
+            <td><a href="/annotations/tissue/{{ tissue.id }}">{{ tissue.name }}</td>
             <td>{{ tissue.hierarchy }}</td>
         </tr>
         

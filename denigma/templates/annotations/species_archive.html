@@ -3,6 +3,7 @@
 {% block head_title %}Species Archive{% endblock %}
 
 {% block hierarchy %}
+     > <a href="/annotations/">Annotations</a>
      > <a href="/annotations/species/">Species</a>
      > Archive
 {% endblock %}
@@ -24,5 +25,5 @@
         <a href="?page={{  page.next_page_number }}">next</a>
     {% endif %}
     <hr>
-    <a href="/admin/annotations/taxonomy/add/">Add species</a>
+    <b><a href="/admin/annotations/taxonomy/add/">Add species</a></b>
 {% endblock %}
