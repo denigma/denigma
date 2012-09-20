@@ -8,9 +8,12 @@
 {% block subtitle %}{{ species.common_name }}{% endblock %}
 
 {% block content %}
-    <i>{{ species.latin_name }}</i> <br>
-    {{ species.short_name }} <br>
-    {{ species.description }} <br>
+    <b>Scientific name:</b> <i>{{ species.latin_name }}</i> <br>
+    <b>Taxonomy ID:</b> {{ species.taxid }}</br>
+    <b>Common name:</b> {{ species.common_name }}<br>
+    <b>Short name:</b> {{ species.short_name }}<br>
+    <b>Number of genes:</b> {{ species.number_genes }}<br>
+    <b>Description:</b> {{ species.description }}<br>
     {% for image in species.images.all %}
         <img src="{{ image.url }}" alt="{{ image.name }}">
     {% endfor %}
