@@ -17,8 +17,8 @@
 {% block content %}
    <br>
    <h4>{{ classification.title }} ({{ classification.abbreviation }})</h4>
-   <p>{{ classification.description|markdown|hyper|recross|safe }}</p><br>
-<br>
-<b><a href="/admin/annotations/classification/{{ classification.pk }}">Edit class</b>
+   <p>{{ classification.description|markdown|hyper|recross|safe }}</p>
+   <br>
+   <b><a href="/admin/annotations/classification/{{ classification.pk }}">Edit class</b>
 {% endblock %}
 
