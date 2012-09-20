@@ -4,31 +4,27 @@
 
 {% block hierarchy %}
     > <a href="/annotations/">Annotations</a>
-    > Tissues
+    > Tissue Archive
 {% endblock %}
 
-{% block subtitle %}Tissues{% endblock %}
+{% block subtitle %}Tissue Archive{% endblock %}
 
 {% block content %}
-<p>These are all the tissues and cell types defined in an animal organism:</p>
-    <table border="1">
+<p>These is an extensive archive of all the major tissues and cell types present in animal organism:</p>
+    <table border="0">
         <tr><td><b>Name</b></td>
-            <td><b>Description</b></td>
-            <td><b>Synonyms</b></td>
             <td><b>Hierarchy</b></td>
         </tr>
         {% for tissue in tissues %}
         <tr>
-            <td><a href="/annotations/tissue/{{ tissue.id }}">{{ tissue.name }}</td>
-            <td>{{ tissue.description }}</td>
-            <td>{{ tissue.synonyms }}</td>
+            <td><a href="/annotations/tissues/{{ tissue.id }}">{{ tissue.name }}</td>
             <td>{{ tissue.hierarchy }}</td>
         </tr>
         
        {% endfor %}
     </table>
     <br>
-    <p><b><a href="/admin/annotations/tissues/add">Add tissue</a></b></p>
+    <p><b><a href="/admin/annotations/tissue/add">Add tissue</a></b></p>
 
     {% comment %}
     <hr>

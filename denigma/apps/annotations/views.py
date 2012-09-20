@@ -1,3 +1,4 @@
+"""Annotation views."""
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -6,17 +7,75 @@ from django.utils.translation import ugettext
 from django.core.urlresolvers import reverse
 
 from blog.models import Post
-from models import Tissue
+
+from models import Classification, Tissue, Species, Taxonomy
 
 
 def index(request):
     annotations = Post.objects.get(title='Annotations') 
-    return render_to_response('annotations/index.html', {'annotations': annotations},
+    return render_to_response('annotations/index.html',
+                              {'annotations': annotations},
+                               context_instance=RequestContext(request))
+
+def classifications(request):
+    classifications = Classification.objects.all()
+    return render_to_response('annotations/classifications.html',
+                              {'classifications': classifications},
                               context_instance=RequestContext(request))
 
-#def bulk_upload(request):
-#   return render_to_response('annotations/bulk_upload.html',
-#                             context_instance=RequestContext(request))
+def classification(request, pk):
+    classification = Classification.objects.get(pk=pk)
+    return render_to_response('annotations/classification.html',
+                              {'classification': classification},
+                              context_instance=RequestContext(request))
+
+
+def species(request):
+    species = Species.objects.filter(main_model=True).order_by('complexity')
+    return render_to_response('annotations/species.html', {'species': species},
+                              context_instance=RequestContext(request))         
+
+def species_details(request, pk):
+    species = Species.objects.get(pk=pk)
+    ctx = {'species': species}
+    return render_to_response('annotations/species_details.html', ctx,
+                              context_instance=RequestContext(request))
+
+def species_archive(request):
+    species = Taxonomy.objects.all()[:100]
+    ctx = {'species': species}
+    return render_to_response('annotations/species_archive.html', ctx,
+                              context_instance=RequestContext(request))
+
+def species_detailed(request, pk):
+    species = Taxonomy.objects.get(pk=pk)
+    attributes = dict([(attr, value) for (attr, value) in vars(species).items()\
+                      if value and not attr.startswith('_')])
+    print attributes
+    ctx = {'species': species, 'attributes': attributes}
+    return render_to_response('annotations/species_detailed.html', ctx,
+                              context_instance=RequestContext(request))
+    pass
+
+def tissues(request):
+    """Lists all the tissues with pagination (Pagination is not yet implemented)."""
+    tissues = Tissue.objects.all()
+    return render_to_response('annotations/tissues.html', {'tissues': tissues},
+                              context_instance=RequestContext(request))
+
+def tissue(request, pk):
+    """Gives a the details of a specific tissue/cell type."""
+    tissue = Tissue.objects.get(pk=pk)
+    return render_to_response('annotations/tissue.html', {'tissue': tissue},
+                              context_instance=RequestContext(request))
+
+def tissue_archive(request):
+    """Generates a simple archive list of all the tissues
+    (with and without pagination on click)."""
+    tissues = Tissue.objects.all()
+    ctx = {'tissues': tissues}
+    return render_to_response('annotations/tissue_archive.html', ctx,
+                              context_instance=RequestContext(request))
 
 def bulk_upload(request):
     """Bulk upload function for annotation data."""
@@ -38,21 +97,13 @@ def bulk_upload(request):
           if index in header:
               setattr(model, header[index], column)
        model.save()
-    msg = "Received %s lines of data on %s for model %s" % (len(data)-1, header.values(), model_name)
+    msg = "Received %s lines of data on %s for model %s"\
+           % (len(data)-1, header.values(), model_name)
     messages.add_message(request, messages.SUCCESS, ugettext(msg))
     return HttpResponseRedirect('/annotations/')
 
+#def bulk_upload(request):
+#   return render_to_response('annotations/bulk_upload.html',
+#                             context_instance=RequestContext(request))
 
-def species(request):
-    return render_to_response('annotations/species.html',
-                              context_instance=RequestContext(request))         
-
-def tissues(request):
-    tissues = Tissue.objects.all()
-    return render_to_response('annotations/tissues.html', {'tissues': tissues},
-                              context_instance=RequestContext(request))
-
-def tissue(request, pk):
-    tissue = Tissue.objects.get(pk=pk)
-    return render_to_response('annotations/tissue.html', {'tissue': tissue},
-                              context_instance=RequestContext(request))
+#234567891123456789212345678931234567894123456789512345678961234567897123456789

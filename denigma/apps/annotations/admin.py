@@ -26,7 +26,7 @@ class SpeciesAdmin(reversion.VersionAdmin):
                     'short_name',
                     'common_name',
                     'latin_name',
-                    'latin_shortcut',
+                    'short_latin_name',
                     'number_genes',
                     'gendr_genes',
                     'gendr_orthologs',

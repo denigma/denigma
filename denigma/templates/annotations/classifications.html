@@ -1,0 +1,24 @@
+{% extends "annotations/base.html" %}
+
+{% block head_title %}Classification{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/annotations/">Annotations</a>
+    > Classifications
+{% endblock %}
+
+{% block subtitle %}Classifications{% endblock %}
+{% block content %}
+    <p>Dengima developed a sophistacted classification schema for biological entities.</p>
+    {% for classification in classifications %}
+        <a href="/annotations/classification/{{ classification.pk }}">{{ classification.title }}</a>
+        ({{ classification.abbreviation }})
+        {{ classifcation.description }}
+        <br>
+    {% endfor %}
+   <hr>
+   <b><a href="/annotations/classifications/">Add</a></b>
+
+{% endblock %}
+
+

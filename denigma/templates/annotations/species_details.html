@@ -1,0 +1,20 @@
+{% extends "annotations/base.html" %}
+
+{% block hierarchy %}
+     > <a href="/annotations/species/">Species</a>
+     > <i>{{ species.short_latin_name }}</i>
+{% endblock %}
+
+{% block subtitle %}{{ species.common_name }}{% endblock %}
+
+{% block content %}
+    <i>{{ species.latin_name }}</i> <br>
+    {{ species.short_name }} <br>
+    {{ species.description }} <br>
+    {% for image in species.images.all %}
+        <img src="{{ image.url }}" alt="{{ image.name }}">
+    {% endfor %}
+    <br>
+    <b><a href="/admin/annotation/species/{{ species.pk }}">Edit</a></b>
+{% endblock %}
+

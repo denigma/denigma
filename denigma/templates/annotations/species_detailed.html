@@ -1,0 +1,29 @@
+{% extends "annotations/base.html" %}
+
+{% block head_title %}{{ species.species }}{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/annotations/">Annotations</a>
+    > <a href="/annotations/species/">Species</a>
+    {#> <a href="/annotations/species/archive/">Archive</a>#}
+    > <i>{{ species.scientific_name }}</i>
+{% endblock %}
+
+{% block subtitle %}Species{% endblock %}
+
+{% block content %}
+    {% comment %}
+    {{ species.superkingdom }}
+    {{ species.tribe }}
+    {{ species.litter_rate }}
+    {{ species.subgenus }}
+    {{ species.acrynoms }}
+    {% endcomment %}
+    {% for attribute, value in attributes.items %}
+        <b>{{ attribute }}:</b> {{ value }} <br>
+
+    {% endfor %}
+    <br>
+    <b><a href="/admin/annotations/species/{{ species.pk }}">Edit</a></b>
+{% endblock %}
+

@@ -1,6 +1,8 @@
 """Annotation information majorly from external databases."""
 from django.db import models
 
+from gallery.models import PhotoUrl
+
 
 # Classifications Ontology:
 
@@ -24,6 +26,7 @@ class Tissue(models.Model):
     hierarchy = models.IntegerField(blank=True, null=True)
     identifier = models.IntegerField(blank=True, null=True) # DAA cross-reference.
     notes = models.TextField(blank=True, null=True)
+    images = models.ManyToManyField(PhotoUrl, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -105,6 +108,7 @@ class Taxonomy(models.Model):
     genus = models.CharField(max_length=147, blank=True)
     temperature = models.FloatField(null=True, blank=True)
     misspellings = models.TextField(blank=True)
+    images = models.ManyToManyField(PhotoUrl, blank=True)
 
     class Meta:
         db_table = u"taxonomy" # rename table to annotations_taxonomy.
@@ -126,20 +130,23 @@ class Species(models.Model):
     taxid = models.IntegerField(primary_key=True)
     short_name = models.CharField(max_length=7, blank=True)
     common_name = models.CharField(max_length=14, blank=True)
-    alternative_names = models.ManyToManyField(Animal)
+    alternative_names = models.ManyToManyField(Animal, blank=True)
     latin_name = models.CharField(max_length=25, blank=True)
-    latin_shortcut = models.CharField(max_length=15, blank=True)
+    short_latin_name = models.CharField(max_length=15, blank=True)
     number_genes = models.IntegerField(null=True, blank=True)
     gendr_genes = models.IntegerField(null=True, blank=True)
     gendr_orthologs = models.IntegerField(null=True, blank=True)
     gendr_paralogs = models.IntegerField(null=True, blank=True)
+    images = models.ManyToManyField(PhotoUrl, blank=True)
+    description = models.TextField(blank=True) 
+    complexity = models.IntegerField(blank=True, null=True)
+    main_model = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.common_name 
 
     def get_absolute_url(self):
         return "/admin/annotations/species/%i" % self.pk
-
 
     class Meta:
         verbose_name_plural = u"species"

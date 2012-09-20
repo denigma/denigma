@@ -1,0 +1,19 @@
+{% extends "annotations/base.html" %}
+
+{% block head_title %}{{ classification.title }}{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/annotations/">Annotations</a>
+    > <a href="/annotations/classifications">Classes</a>
+    > {{ classification.title }}
+{% endblock %}
+
+{% block subtitle %}Classification{% endblock %}
+
+{% block content %}
+   {{ classification.title }} ({{ classification.abbreviation }})<br>
+   {{ classifcation.description }}
+<br>
+<b><a href="/admin/annotations/classifcations/">Edit</b>
+{% endblock %}
+

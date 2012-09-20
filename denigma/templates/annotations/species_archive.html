@@ -1,0 +1,20 @@
+{% extends "annotations/base.html" %}
+
+{% block head_title %}Species Archive{% endblock %}
+
+{% block hierarchy %}
+     > <a href="/annotations/species/">Species</a>
+     > Archive
+{% endblock %}
+
+{% block subtitle %}Species Archive{% endblock %}
+
+{% block content %}
+   {% for aspecies in species %}
+      {{ aspecies.taxid }}
+      <a href="/annotations/species/archive/{{ aspecies.pk }}">{{ aspecies.scientific_name }}</a>
+      <br>
+   {% endfor %}
+   <hr>
+   <a href="/admin/annotations/species/">Add species</a>
+{% endblock %}

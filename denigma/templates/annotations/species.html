@@ -2,11 +2,31 @@
 
 {% block hierarchy %}
     > <a href="/annotations/">Annotations</a>
-    > <a href="/annotations/species/">Species</a>
+    > Species
 {% endblock hierarchy %}
 
 {% block subtitle %}The Species of Denigma{% endblock %}
 
 {% block content %}
     <p>Create and customize your creature from the five main species of Denigma: tiny yeast, elegant nematode, gracious fruit fly, ingenious mice, or the ferocious rats</p>
+    {% for aspecies in species %}
+        <hr>
+        <table>
+        <tr> 
+        <h4>{{ aspecies.common_name }}</h4>
+        <i>{{ aspecies.latin_name }}</i> (id = {{ aspecies.taxid }}) <br>
+        {{ aspecies.description }}
+        <a href="/annotations/species/{{ aspecies.pk }}">Read more</a><br>
+
+        <tr>
+        <tr/>
+        {% for image in aspecies.images.all %}
+           <img src={{ image.url }} width="150" height="150" alt={{ image.name }}>
+        {% endfor %}
+        <tr>
+        </table>
+        <br>
+    {% endfor %}
+    <hr>
+    <p>In <a href="/admin/">Denigma db</a> are many more species catographied. Check out the <a href="/annotations/species/archive/">archive</a>.
 {% endblock %}
