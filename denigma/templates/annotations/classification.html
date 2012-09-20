@@ -11,7 +11,8 @@
 {% block subtitle %}Classification{% endblock %}
 
 {% block content %}
-   {{ classification.title }} ({{ classification.abbreviation }})<br>
+   <br>
+   <h4>{{ classification.title }} ({{ classification.abbreviation }})</h4><br>
    {{ classification.description }}<br>
 <br>
 <b><a href="/admin/annotations/classification/{{ classification.pk }}">Edit class</b>
