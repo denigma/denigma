@@ -1,5 +1,9 @@
 {% extends "annotations/base.html" %}
 
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
 {% block head_title %}{{ classification.title }}{% endblock %}
 
 {% block hierarchy %}
@@ -12,8 +16,8 @@
 
 {% block content %}
    <br>
-   <h4>{{ classification.title }} ({{ classification.abbreviation }})</h4><br>
-   {{ classification.description }}<br>
+   <h4>{{ classification.title }} ({{ classification.abbreviation }})</h4>
+   <p>{{ classification.description|markdown|hyper|recross|safe }}</p><br>
 <br>
 <b><a href="/admin/annotations/classification/{{ classification.pk }}">Edit class</b>
 {% endblock %}
