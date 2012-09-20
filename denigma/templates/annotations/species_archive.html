@@ -10,11 +10,19 @@
 {% block subtitle %}Species Archive{% endblock %}
 
 {% block content %}
-   {% for aspecies in species %}
-      {{ aspecies.taxid }}
-      <a href="/annotations/species/archive/{{ aspecies.pk }}">{{ aspecies.scientific_name }}</a>
-      <br>
-   {% endfor %}
-   <hr>
-   <a href="/admin/annotations/species/">Add species</a>
+    {% for species in page.object_list %}
+        {{ species.taxid }}
+        <a href="/annotations/species/archive/{{ species.pk }}">{{ species.scientific_name }}</a>
+        <br>
+    {% endfor %}
+    <br>
+    {% if page.has_previous %}
+        <a href="?page={{  page.previous_page_number }}">prev</a>
+    {% endif %}
+    | {{  page.number }} |
+    {% if page.has_next %}
+        <a href="?page={{  page.next_page_number }}">next</a>
+    {% endif %}
+    <hr>
+    <a href="/admin/annotations/species/">Add species</a>
 {% endblock %}

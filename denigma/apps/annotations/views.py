@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from blog.models import Post
 
@@ -42,8 +43,16 @@ def species_details(request, pk):
                               context_instance=RequestContext(request))
 
 def species_archive(request):
-    species = Taxonomy.objects.all()[:100]
-    ctx = {'species': species}
+    species = Taxonomy.objects.all()
+    paginator = Paginator(species, 25)
+    page_num = request.GET.get('page', 1)
+    try:
+        page = paginator.page(page_num)
+    except EmptyPage:
+        page = pageinator.page(paginator.num_pages)
+    except PageNotAnInteger:
+        page = paginator.page(1)
+    ctx = {'page': page}
     return render_to_response('annotations/species_archive.html', ctx,
                               context_instance=RequestContext(request))
 
