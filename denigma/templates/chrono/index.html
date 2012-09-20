@@ -1,6 +1,6 @@
 {% extends "chrono/base.html" %}
 
-{%  load staticfiles %}
+{% load staticfiles %}
 
 {% block subtitle %}Index{% endblock %}
 
@@ -11,7 +11,7 @@
 
 {% block content %}
     <hr>
-    <h4>Denigma's Time via Unobtrusive ajax</h4>
+    <h4>Denigma's Time via Unobtrusive Ajax</h4>
     <br>
     <table>
     <tr>
@@ -21,7 +21,6 @@
     </form>
     </td>
     <td>
-
     </td>
     <td>
     <form action="/time/gettime" method="get" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#divTime">
