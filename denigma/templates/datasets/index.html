@@ -1,5 +1,9 @@
 {% extends "datasets/base.html" %}
 
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
 {% block hierarchy %}
     > <a href="/datasets/">Datasets</a>
     > Index
@@ -8,7 +12,9 @@
 {% block subtitle %}Index{% endblock %}
 
 {% block content %}
-<a href="/admin/datasets">Datasets tables</a>
-<center><img src="http://dgallery.s3.amazonaws.com/building.png" alt="building" width=200 height=200></center>
+    {{ datasets.text|markdown|hyper|recross|safe }}
+    {% for image in datasets.images.all %}
+        <img src={{ image.url }} alt="datasets">
+    {% endfor %}
 {% endblock %}
 

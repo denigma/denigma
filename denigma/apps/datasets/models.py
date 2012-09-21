@@ -143,7 +143,7 @@ class Reference(models.Model):
 
             # Transforming lists into strings:
             self.keywords = "; ".join(self.keywords)
-            selfauthors = "; ".join(self.authors)
+            self.authors = "; ".join(self.authors)
 
           try: self.date = datetime(*strptime(s, "%Y/%m/%d %H:%M")[0:5])
           except: self.date = datetime(*strptime(s, "%Y/%m/%d")[0:3])

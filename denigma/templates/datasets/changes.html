@@ -1,0 +1,26 @@
+{% extends "datasets/base.html" %}
+
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+{% endblock %}
+
+{% block head_title %}Changes{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/annotations/">Annotations</a>
+    > Changes
+{%  endblock %}
+
+{% block title %}Changes{% endblock %}
+
+{% block content %}
+    {{ changes_description.text|markdown|hyper|recross|safe }}
+    {% render_table changes %}<br>
+    <b><a href="/admin/annotations/change/add">Add change</a></b>
+{% endblock %}
