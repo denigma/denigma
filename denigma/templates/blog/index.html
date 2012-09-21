@@ -24,7 +24,9 @@
 
                 <div class="post_meta">
                    created on {{ post.created }}
-                   updated on {{ post.updated }}
+                   {% if post.created != post.updated %}
+                       updated on {{ post.updated }}
+                   {% endif %}
                 </div>
 
                 <div class="post_body">
@@ -41,7 +43,7 @@
 
                 <td>
                 {% for image in post.images.all %}
-                    <img src={{ image.url }} width="150" height="150" alt={{ image.name }} /></td>
+                    <img src={{ image.url }} width="150" height="150" alt={{ image.name }} />
                 {% endfor %}
                 </td>
             </tr>
