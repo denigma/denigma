@@ -14,27 +14,28 @@
 
 {% block content %}
 
-<div class="post_body">
-  {{ post.text|negle|restructuredtext|neglete|markdown|hyper|safe }}
-</div>
+    <div class="post_body">
+      {{ post.text|negle|restructuredtext|neglete|markdown|hyper|safe }}
+    </div>
 
-<div class="tags">
-  <b>Keywords:</b>
-  {% for tag in post.tags.all %}
-      <a href="/blog/tag/{{ tag }}">{{ tag }}</a>
-  {% if not forloop.last %}, {% endif %}
-  {% endfor %}
-</div>
+    <div class="tags">
+      <b>Keywords:</b>
+      {% for tag in post.tags.all %}
+          <a href="/blog/tag/{{ tag }}">{{ tag }}</a>
+      {% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    </div>
 
-<p> </p>
+    <br>
 
-<div class="images">
-   {% for image in post.images.all %}
-      <img src={{ image.url }} alt={{ image.name }}/>
+    <div class="images">
+       {% for image in post.images.all %}
+          <img src={{ image.url }} alt={{ image.name }}/>
 
-   {% endfor %}
-</div>
-<a href="/admin/blog/post/{{ post.id }}/">Edit</a>
+       {% endfor %}
+    </div>
+
+    <b><a href="/admin/blog/post/{{ post.id }}/">Edit article</a></b>
 
 {% endblock %}
 

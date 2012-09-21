@@ -14,11 +14,12 @@
 {% block title %}{{ tutorial.title }}{% endblock %}
 
 {% block content %}
-   {{ tutorial.text|markdown|hyper|safe }}
+   {{ tutorial.text|restructuredtext|hyper|safe }}
    {% for image in tutorial.images.all %}
-   <img src={{ image.url }} alt={{ image.name }}/>
+       <img src={{ image.url }} alt={{ image.name }}/>
    {% endfor %}
 
-{% comment %}<a href="/tutorials/{{tutorial.id }}/edit">Edit?</a>{% endcomment %}
-<a href="/admin/blog/post/{{ tutorial.id }}">Edit?</a>
+    {% comment %}<a href="/tutorials/{{tutorial.id }}/edit">Edit?</a>{% endcomment %}
+    <br>
+    <b><a href="/admin/blog/post/{{ tutorial.id }}">Edit tutorial</a></b>
 {% endblock %}
