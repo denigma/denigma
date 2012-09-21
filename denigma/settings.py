@@ -145,6 +145,8 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.transaction.TransactionMiddleware', # For ...
+    #'reversion.middleware.RevisionMiddleware',                     # reversions control.
     'django_openid.consumer.SessionConsumer',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
@@ -232,6 +234,7 @@ INSTALLED_APPS = [
     'taggit',  # "tagging",
     'reversion',# Revision-control for models.
     'haystack', # Searching
+    'django_tables2',
 #    'cms", # Content Management System.
 #    'mptt", # Utilties for implementing a modified pre-order traversal tree.
 #    'sekizai", # For javascipt and css management.
