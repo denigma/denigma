@@ -12,7 +12,9 @@
 
                 <div class="post_meta">
                     created on {{ post.created }}
-                    updated on {{ post.updated }}
+                    {% if post.created != post.updated %}
+                        updated on {{ post.updated }}
+                    {% endif %}
                 </div>
 
                 <div class="post_body">
