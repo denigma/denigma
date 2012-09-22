@@ -24,6 +24,7 @@
             modified on {{ post.updated }}
         {% endif %}
     </div>
+    <br>
 
     <div class="post_body">
       {{ post.text|markdown|hyper|recross|safe }}
@@ -37,12 +38,14 @@
       {% endfor %}
     </div>
 
+    <br>
+
     <div class="images">
        {% for image in post.images.all %}
           <img src={{ image.url }} alt={{ image.name }}/>
        {% endfor %}
     </div>
     <br>
-    <b><a href="/admin/blog/post/{{ post.pk }}">Edit post</a></b>
+    <b><a href="/blog/edit/{{ post.pk }}">Edit post</a></b> (<a href="/admin/blog/post/{{ post.pk }}">Admin</a>)
 
 {% endblock %}

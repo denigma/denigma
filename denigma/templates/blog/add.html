@@ -1,0 +1,43 @@
+{% extends "blog/base.html" %}
+
+
+{% block head_title %}Add Post{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/blog/">Blog</a>
+    > Post
+    > Add
+{% endblock %}
+
+{% block title %}Add Post{% endblock %}
+
+{% block content %}
+    {% if form.errors %}
+        <p style="color: red;">
+            Please correct the error{{ form.errors|pluralize }} below.
+        </p>
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button>Submit</button>
+    </form>
+
+<style type="text/css">
+    ul.errorlist{
+        margin: 0;
+        padding: 0;
+    }
+    .errorlist li {
+        background-color:red;
+        color: white;
+        display: block;
+        font-size: 10px;
+        margin:0 0 3px;
+        padding: 4px 5px;
+        font-weight: bold;
+    }
+</style>
+
+{% endblock %}
+
