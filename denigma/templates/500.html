@@ -1,9 +1,13 @@
 {% extends "site_base.html" %}
 
+{% block hierarchy %}
+    > 500
+{% endblock hierarchy %}
+
 {% block title %}Page unavailable{% endblock %}
 
 {% block content %}
+    <h4>Server severe damaged</h4>
     <p>Sorry, but the requested page is unavalable due to a server hiccup.</p>
-    
     <p>Denigma's core engineers have been notified, so check later.</p>
 {% endblock %}

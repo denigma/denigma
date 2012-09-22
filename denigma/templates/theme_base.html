@@ -80,51 +80,56 @@
                             <b>
 
                             {% block navigation %}
-                                  <div class="line">
+                                <div class="line">
 
-                                  <span class="left">
+                                <span class="left">
 
-                                  <b><a href="/admin">{{ SITE_NAME }} db</a>{% block hierarchy %}
+                                <b><a href="/admin">{{ SITE_NAME }} db</a>{% block hierarchy %}
 
-                                  {% comment %}
-                                  Site > App > Model > View > Filter
-                                  Denigma > Species > Mouse
-                                  Denigma > Datasets > GenAge > Worm
-                                  {% endcomment %}
+                                {% comment %}
+                                Site > App > Model > View > Filter
+                                Denigma > Species > Mouse
+                                Denigma > Datasets > GenAge > Worm
+                                {% endcomment %}
 
-                                  {% comment %} {% if {{ SITE_NAME }} != { CURRENT_SITE }} %} {% endif %} 
-                                  {% if {{ APP_NAME }} %}<a href="{{ APP_NAME }}">{{ APP_NAME }}</a><b>></b>{% endif %}
-                                  {% if {{ MODEL_NAME }} %}<a href="{{ MODEL_NAME }}">{{ MODEL_NAME }}</a>>{% endif %}
-                                  {% if {{ VIEW_NAME }} %}<a href="{{ VIEW_NAME }}">{{ VIEW_NAME }}</a>>{% endif %}
-                                  {% endcomment %}
+                                {% comment %} {% if {{ SITE_NAME }} != { CURRENT_SITE }} %} {% endif %}
+                                {% if {{ APP_NAME }} %}<a href="{{ APP_NAME }}">{{ APP_NAME }}</a><b>></b>{% endif %}
+                                {% if {{ MODEL_NAME }} %}<a href="{{ MODEL_NAME }}">{{ MODEL_NAME }}</a>>{% endif %}
+                                {% if {{ VIEW_NAME }} %}<a href="{{ VIEW_NAME }}">{{ VIEW_NAME }}</a>>{% endif %}
+                                {% endcomment %}
 
-                                  {% endblock hierarchy %}</b>
-                                  </span>
-    
-                                  <span class="centre">{% block options %}{% endblock options %}</span>
+                                {% endblock hierarchy %}</b>
+                                </span>
 
-                                  <span class="right">
-                                  {% block sections %}
+                                <span class="centre">{% block options %}{% endblock options %}</span>
+
+                                <span class="right">
+                                {% block sections %}
                                      <a href="/annotations/">Annotations</a> |
                                      <a href="/interactions/">Interactions</a> |
                                      <a href="/expressions/">Expressions</a> |
                                      <a href="/datasets/">Datasets</a> |
-                                     <a href="/lifespan/">Lifespan</a>
+                                     {# <a href="/lifespan/">Lifespan</a> #}
+                                     {# Clickable dropdown menu: #}
+                                     <span id="tab_third" class="dropdown">
+                                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                               Lifespan
+                                               <b class="caret"></b>
+                                          </a>
+                                          <ul class="dropdown-menu">
+                                               {# <li><a href="/species/">Species</a></li> #}
+                                               {# <li><a href="#">Another Link</a></li> #}
+                                               <li><a href="/lifespan/studies/">Studies</a></li>
+                                               <li><a href="/lifespan/experiments/">Experiments</a></li>
+                                               <li><a href="/lifespan/measurements/">Measurements</a></li>
+                                               <li><a href="/lifespan/comparisions/">Comparisions</a></li>
+                                               <li><a href="/lifespan/interventions/">Interventions</a></li>
+                                               <li><a href="/lifespan/factors/">Factors</a></li>
+
+                                          </ul>
+                                     </span>
 
 {% comment %} Experimental Implementation of Dropdown menu support:
-|
-{# Clickable dropdown menu: #}
-    <span id="tab_third" class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            Dropdown
-            <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu">
-            <li><a href="/species/">Species</a></li>
-            <li><a href="#">Another Link</a></li>
-        </ul>
-    </span>
-
 {# Hover dropdown menu button: #}
 <style>
 div.btn-group:hover ul.dropdown-menu{

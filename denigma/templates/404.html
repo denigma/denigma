@@ -1,9 +1,13 @@
 {% extends "site_base.html" %}
 
+{% block hierarchy %}
+    > 404
+{% endblock %}
+
 {% block title %}Page not found{% endblock %}
 
 {% block content %}
-    <h1>Page not found</h1>
-
+    <h4>Page identification failed</h4>
     <p>Sorry, but the requested page could not be found on Denigma.</p>
+    <p>Initializing link repair...</p>
 {% endblock %}
