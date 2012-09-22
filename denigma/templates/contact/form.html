@@ -14,9 +14,9 @@
 <body>
     <h1>Contact us</h1>
     <p>You can directly contact the creators of Denigma with any inquiry you may have.
-    {% if forms.errors %}
+    {% if form.errors %}
     <p style="color: red;">
-        Please correct the error{{ from.errors|pluralize }} below.
+        Please correct the error{{ form.errors|pluralize }} below.
     </p>
     {% endif %}
     
