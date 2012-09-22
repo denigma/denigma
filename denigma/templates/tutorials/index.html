@@ -2,6 +2,7 @@
 
 {% load markup %}
 {% load hyperlink %}
+{% load crosslink %}
 
 {% block hierarchy %}
     > <a href="/tutorials">Tutorials</a> >
@@ -9,30 +10,35 @@
 {% endblock %}
 
 {% block content %}
-<p>Everything you need to know about Denigma. Explanations on how Denigma can be effectively altered will be
-given in a series of tutorials. Each tutorial should be modular like an app. Tutorials can be edited and added by everyone.</p>
-{% if tutorials %}
-    {% for tutorial in tutorials %}
-
-        <li><a href="/tutorials/{{ tutorial.id }}/view/">{{ tutorial.title }}</a></li>
-    {% endfor %}
-    <p></p>
-    <a href="/admin/blog/post/add/">Add another one</a>
-    <hr>
-    {% for tutorial in tutorials %}
-        <table><tr><td>
-        <h3><a href="/tutorials/{{ tutorial.id }}/view">{{ tutorial.title }}</a></h3>
-        {{ tutorial.text|markdown|hyper|safe }}
-        </dt><td>
-        {% for image in tutorial.images.all %}
-           <img src={{ image.url }} width="100" height="100" alt={{ image.name }}/>
+    <p>{{ tutorials_entry.text|markdown|hyper|recross }}</p>
+    {% if tutorials %}
+        {% for tutorial in tutorials %}
+            <li><a href="/tutorials/{{ tutorial.id }}/view/">{{ tutorial.title }}</a></li>
         {% endfor %}
-        </td></tr></table>
-    {% endfor %}
-    <p></p>
+        <p></p>
+        <a href="/admin/blog/post/add/">Add another one</a>
+        <hr>
+        Note: <a href="/tutorials/development/">Operation system-specific consideration for Development</a>
+        <hr>
+        {% for tutorial in tutorials %}
+            <table>
+                <tr>
+                    <td>
+                        <h3><a href="/tutorials/{{ tutorial.id }}/view">{{ tutorial.title }}</a></h3>
+                        {{ tutorial.text|markdown|hyper|safe }}
+                    </td>
+                    <td>
+                        {% for image in tutorial.images.all %}
+                           <img src={{ image.url }} width="100" height="100" alt={{ image.name }}/>
+                        {% endfor %}
+                    </td>
+                </tr>
+            </table>
+        {% endfor %}
+        <br>
 
-
-{% else %}<p>There are currently no tutorials.</p>
-{% endif %}
+    {% else %}
+        <p>There are currently no tutorials.</p>
+    {% endif %}
 
 {% endblock %}

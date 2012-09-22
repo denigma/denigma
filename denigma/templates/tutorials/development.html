@@ -1,0 +1,43 @@
+{% extends "tutorials/base.html" %}
+
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}Development{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/tutorials/">Tutorials</a>
+    > Development
+{%  endblock %}
+
+{% block title %}Development{% endblock %}
+
+{% block content %}
+    <h2>Operating Specific-Considerations</h2>
+    <br>
+    <div class="row">
+        <div class="span4">
+            {% block column-1 %}
+                <h3>{{ windows.title }}</h3>
+                <p>{{ windows.text|markdown|hyper|recross|safe }}</p>
+                <p><a class="btn" href="http://www.ubuntu.com/download/desktop/windows-installer/">More on Wubi &raquo;</a></p>
+            {% endblock %}
+        </div>
+        <div class="span4">
+            {% block column-2 %}
+                <h3>{{ mac.title }}</h3>
+                <p>{{ mac.text|markdown|hyper|recross|safe }}<p>
+                <p><a class="btn" href="http://www.unix.org/">More on Unix &raquo;</a></p>
+            {% endblock %}
+        </div>
+        <div class="span4">
+            {% block column-3 %}
+                <h3>{{ linux.title }}</h3>
+                <p>{{ linux.text|markdown|hyper|recross|safe }}</p>
+                <p><a class="btn" href="http://www.ubuntu.com/">More on Ubuntu &raquo;</a></p>
+            {% endblock %}
+        </div>
+    </div>
+    </div>
+{% endblock %}
