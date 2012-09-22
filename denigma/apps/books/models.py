@@ -1,4 +1,12 @@
 from django.db import models #(the database tables)
+from django import forms
+
+TITLE_CHOICES = (
+    ('MR', 'Mr.'),
+    ('MRS', 'MRs.'),
+    ('MS', 'Ms.'),
+)
+
 
 
 class Publisher(models.Model):
@@ -17,15 +25,37 @@ class Publisher(models.Model):
 
 
 class Author(models.Model):
+    name = models.CharField(max_length=100)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=40)
+    title = models.CharField(max_length=3, choices=TITLE_CHOICES)
     email = models.EmailField('e-mail', blank=True)
     last_accessed = models.DateField(blank=True)
+    birth_date = models.DateField(blank=True, null=True)
     
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)
 
+class AuthorForm(forms.ModelForm):
+    class Meta:
+        model = Author
+        fields = ('name', 'title', 'birth_date')
+        widgets = {
+            'name': forms.Textarea(attrs={'cols':80, 'rows': 20}),
+        }
 
+class PartialAuthorFormFields(forms.ModelForm):
+    class Meta:
+        model = Author
+        fields = ('name', 'birth_date')
+
+
+class PartialAuthorFormExclude(forms.ModelForm):
+    class Meta:
+        model = Author
+        exclude = ('title',)
+
+# Books
 class BookManager(models.Manager):
     def title_count(self, keyword):
         return self.filter(title__icontains=keyword).count()
@@ -34,7 +64,6 @@ class BookManager(models.Manager):
 class DanielBookManager(models.Manager):
     def get_query_set(self):
         return super(DanielBookManager, self).get_query_set().filter(author='Daniel Wuttke')
-
 
 class Book(models.Model):
     title = models.CharField(max_length=100)
@@ -53,6 +82,11 @@ class Book(models.Model):
     
     def __unicode__(self):
         return self.title
+
+
+class BookForm(forms.ModelForm):
+    class Meta:
+        model = Book
 
 
 class PersonManager(models.Manager):
