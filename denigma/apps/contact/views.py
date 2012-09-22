@@ -23,7 +23,7 @@ def contact(request):
 
 ##            )
 ##            return HttpResponseRedirect('/contact/thanks/')
-        form = ContactForm(request.POST)        
+        form = ContactForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
             try:
