@@ -1,11 +1,12 @@
 {% extends "annotations/base.html" %}
 
 {% block hierarchy %}
+     > <a href="/annotations/">Annotations</a>
      > <a href="/annotations/species/">Species</a>
      > <i>{{ species.short_latin_name }}</i>
 {% endblock %}
 
-{% block subtitle %}{{ species.common_name }}{% endblock %}
+{% block title %}{{ species.common_name }}{% endblock %}
 
 {% block content %}
     <b>Scientific name:</b> <i>{{ species.latin_name }}</i> <br>
