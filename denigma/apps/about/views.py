@@ -11,8 +11,6 @@ def matrix(request, number):
           path = Post.objects.get(title="Paths of Truth")
     except:
        path = Post.objects.get(title__startswith="Path of Truth %s:" % number)
-       print "Path of Truth %s:" % number
-       print path
     return render_to_response('about/matrix.html', {'path': path, 'number': number},
                              context_instance=RequestContext(request))
 
