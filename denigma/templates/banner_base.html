@@ -2,44 +2,53 @@
 
 {% load url from future %}
 {% load i18n %}
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
 
 {% block body_base %}
     <div class="container">
         {% include "_messages.html" %}
         <div class="hero-unit well">
-        {% block banner %}
-            <h1>Hello, world!</h1>
-            <p>Vestibulum id ligula porta felis euismod semper. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
-            <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>
-        {% endblock %}
+            {% block banner %}
+                <h1>Denigma</h1>
+                <p>The Digital Denigma to decipher life.</p>
+                <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+            {% endblock %}
         </div>
 
-	{% include "blog/news.html" %}
-        <br>
+	    {% include "blog/news.html" %}
         <h4><a href="{% url 'news' %}">All News</a></h4>
         <hr>
-        <h2>Operating System-Specific Considerations</h2> 
+
+        <div class="hero-unit well">
+             <h2>{{ dashboard.title }}</2>
+            <p>{{ dashboard.text|markdown|hyper|recross|safe }}</p>
+        </div>
+        <hr>
+
+        <h2>The Three Aspects of Denigma</h2>
+        <br>
         <div class="row">
             <div class="span4">
             {% block column-1 %}
-                <h3>Windows</h3>
-                <p>If you current operating system is Windows it is recommend to either extend the console with Cywing or better get <a href="http://www.ubuntu.com/download/desktop/windows-installer">Wubi</a> (Windows Ubuntu Installer) as a dual boot system which the latter one is very straight forward.</p>
-                <p><a class="btn" href="http://www.ubuntu.com/download/desktop/windows-installer">View details &raquo;</a></p>
+                <h3>{{ research.title }}</h3>
+                <p>{{ research.text|markdown|hyper|recross|safe }}</p>
+                <p><a class="btn" href="/about/matrix/I/">Become a Scientist &raquo;</a></p>
             {% endblock %}
             </div>
             <div class="span4">
             {% block column-2 %}
-                <h3>Mac</h3>
-                <p>If you are on Mac OX this is fine as it is <a href="http://www.unix.org/">UNIX</a>-based system also the instructions will be majorly for Linux.<p>
-                <p><a class="btn" href="http://www.unix.org/">View details &raquo;</a></p>
+                <h3>{{ programming.title }}</h3>
+                <p>{{ programming.text|markdown|hyper|recross|safe }}<p>
+                <p><a class="btn" href="/about/matrix/II/">Become a Developer &raquo;</a></p>
             {% endblock %}
             </div>
             <div class="span4">
             {% block column-3 %}
-                <h3>Linux</h3>
-                <p>Linux is the most prefered system in which Denigma and the interation with it can run. Denigma itself is currently in an
-                <a href="http://www.ubuntu.com/">Ubuntu</a> environment implemented.</p>
-                <p><a class="btn" href="http://www.ubuntu.com/">View details &raquo;</a></p>
+                <h3>{{ design.title }}</h3>
+                <p>{{ design.text|markdown|hyper|recross|safe }}</p>
+                <p><a class="btn" href="/about/matrix/III/">Become an Artist &raquo;</a></p>
             {% endblock %}
             </div>
         </div>

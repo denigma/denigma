@@ -2,6 +2,9 @@
 
 {% load i18n %}
 {% load ifsetting_tag %}
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
 
 {% block head_title %}{% trans "The Digital Enigma" %}{% endblock %}
 
@@ -9,32 +12,16 @@
 
 {% block banner %}
 {# <img src="http://dgallery.s3.amazonaws.com/denigma_pos.png" alt="Denigma"></td> #}
-    <table><tr><td>
-    <p>
-        {% blocktrans %}
-        <b>Denigma</b> is a <a href="http://djangoproject.com/">Django</a>
-        project intended to provide a starting point for deciphering life.
-        By integrating all the heterogenous types of biological data and 
-        applying a robust unification schema as well as utilizing the 
-        increasingly computational power, it will be possible to solve 
-        biological problems such as aging, diseases and suffering due to 
-        other reasons.
-        {% endblocktrans %}
-    </p>
-    <p>
-        {% blocktrans %}
-        This is an open source project providing a platform for both life and computer scientists
-        as well as artists in order to address the fundamental questions of life and to systematically
-        reveal its secrets. Denigma particulary encourages data evolution.
-        Nothing is perfect from the beginning, besides the concept of Denigma.
-        Denigma is as strong as diamond and as flexible as carbon-fiber, 
-        but in its very heart its all silicon.
-        {% endblocktrans %}
-    </p>
-    </td>
-    <td><center><h1><img src="http://dgallery.s3.amazonaws.com/denigma_pos.png" alt="Denigma - The Digital Enigma" height="500" width="500"></h1></td>
+    <table>
+        <tr>
+            <td>
+                <p>{{ denigma_description.text|markdown|hyper|recross|safe }}</p> {# {% blocktrans %}{% endblocktrans %} #}
+                <p>{{ denigma_rationality.text|markdown|hyper|recross|safe }}</p> {#  {% blocktrans %}{% endblocktrans %} #}
+            </td>
+            <td><centre><h1><img src="http://dgallery.s3.amazonaws.com/denigma_pos.png" alt="Denigma - The Digital Enigma" height="500" width="500"></h1></td>
     
-    </tr></table>
+        </tr>
+    </table>
     {% if user.is_authenticated %}
         {% url what_next as what_next_url %}
         <p class="what_next">{% blocktrans %}Wondering <a href="{{ what_next_url }}" class="btn primary large">What Next</a>?{% endblocktrans %}</p>
@@ -47,7 +34,6 @@
             <p>{% blocktrans %}You can <a href="{{ login_url }}" class="btn btn-primary btn-large">Log In</a> to try out the site.{% endblocktrans %}</p>
         {% endifsetting %}
     {% endif %}
-
 {% endblock %}
 
 
