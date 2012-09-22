@@ -12,12 +12,24 @@
 {% block subtitle %}{{ path.title }}{% endblock %} 
 
 {% block content %}
-    {{ path.text|markdown|hyper|safe }}
-    {% if number != "0" %}
-        <center>
-        <a href="choice/red">Truth</a>
-        <img src="http://3.bp.blogspot.com/_ahOToy1EVkE/S1ssdEoVTSI/AAAAAAAAAtM/_xb1-kNwtIM/s400/Matrix.jpg" alt="chose a pill">
-        <a href="choice/blue">Lie</a> 
-        </center>
-    {% endif %}
+    <table width="100%">
+        <tr>
+            <td>
+
+                {{ path.text|markdown|hyper|safe }}
+                {% if number != "0" %}
+                    <center>
+                    <a href="choice/red">Truth</a>
+                    <img src="http://3.bp.blogspot.com/_ahOToy1EVkE/S1ssdEoVTSI/AAAAAAAAAtM/_xb1-kNwtIM/s400/Matrix.jpg" alt="chose a pill">
+                    <a href="choice/blue">Lie</a>
+                    </center>
+                {% endif %}
+            </td>
+            <td>
+                {% for image in path.images.all %}
+                    <img src="{{ image.url }}" alt="{{ image.name }}" width=200 height=200 />
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
 {% endblock %}
