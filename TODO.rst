@@ -130,12 +130,89 @@ $ ./manage.py createinitialrevisions
 
 This command triggers the population of the version database with an inital set of model data.
 
+Low-level API
+~~~~~~~~~~~~~
+It is possible to use the version-control outsite the admin.
+If a model need to be version-controled without admin integration it has to be extra
+registered: ::
+
+$ nano models.py
+$ import reversion
+$ reversion.register(ModelName)
+
 Another alternative is django-cutemodel [https://github.com/foxx/django-cutemodel].
 
 Signing up is made simple. All what is required for now is just a user name and 
 a password for identifying an individual.
 
+There are three possibilities for creating reversions. It is recommanded to choose one
+and to stick consistently to it.
 
+RevisionMiddleware
+^^^^^^^^^^^^^^^^^^
+Adding the `RevisonMiddleware` is the simples way as it automatically warsp every request in a revision and ensueres that all changes will be added to the version history.
+It should be preferbale used in conjuction and right after `TransactionMiddleware`: ::
+
+    nano settings.py
+    ...
+    MIDDLEWARE_CLASSES = (
+        'django.contrib.sessions.middleware.SessionMiddleware'
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.middleware.transaction.TransactionMiddleware',
+        'reversion.middleware.RevisionMiddleware'
+        # Other middlewares...
+     )
+
+reversion decorator
+^^^^^^^^^^^^^^^^^^^
+To enable more control over reversion management decorate the ficntion with the `reversion.create_reversion() decorator which groups any change occuring in this function
+together into a revision.
+
+    nano views.py
+    ...
+    import reversion
+    ...
+    @reversion.create_revision()
+    def viewFunction(request):
+        model.save()
+
+reversion context manager
+^^^^^^^^^^^^^^^^^^^^^^^^^
+With the reversion context manager a block of code can be marked for version-control.
+After the block terminates the changes made to models will be grouped together into a 
+revision: ::
+
+    with reversion.create_reversion():
+        model.save()
+
+Version meta data
+~~~~~~~~~~~~~~~~~
+With the following method it is possible to attach a comment and user reference to an active revision: ::
+
+    with reversion.create_revision():
+         model.save()
+         reversion.set_user(user)
+         reversion.set_comment("Commentary...")
+
+The RevisionMiddleware automatically addes the user to the revision.
+
+
+Custom meta data
+^^^^^^^^^^^^^^^^
+Custom meta data can be attached toa revision by creation a seperate model to hold the 
+additional fields. For instance: ::
+    nano models.py
+    from django.db import models
+    from reversion.models import Reversion
+
+
+    class VersionRating(models.Model):
+        revision = models.OneToOneFiel(Revision)  # Required
+        rating = models.PositiveIntegerField()
+
+This meta class can be attched to a revision by: ::
+
+    reversion.add_meta(VersionRating, rating=5)
 
 Tracking User Changes
 ---------------------
@@ -403,6 +480,13 @@ Individual cross-linking algorithms might be utilized in the views of for instan
 the tutorials. It is also considered to establish a dictionary of important sections in Dengima and use the for
 mapping to cross-link also sites which are not direct derivates of the blog posts.
 Also explicit cross-links shoul be supported too in order to avoid wrong auto-directing.
+
+
+Media App
+---------
+The media app will accomodate images, sounds, musics, and videos. It will functional replace the gallery app
+and the gallery app itself will be a seperate app which uses the media app as data driven backend.
+
 
 The Future of Denigma
 ---------------------
