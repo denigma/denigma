@@ -16,7 +16,7 @@ class Classification(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return "/admin/annotations/classification/%i" % self.pk
+        return "/annotations/classification/%i" % self.pk
 
 
 class Tissue(models.Model):
@@ -32,7 +32,7 @@ class Tissue(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return "/annotations/tissues/%i" % self.pk
+        return "/annotations/tissue/%i" % self.pk
 
 # Species annotations:
 
@@ -146,7 +146,7 @@ class Species(models.Model):
         return self.common_name 
 
     def get_absolute_url(self):
-        return "/admin/annotations/species/%i" % self.pk
+        return "/annotations/species/%i" % self.pk
 
     class Meta:
         verbose_name_plural = u"species"
