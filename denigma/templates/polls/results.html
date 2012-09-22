@@ -7,7 +7,7 @@
     > Results
 {% endblock %}
 
-{% block subtitle %}{{ poll.question }}{% endblock %}
+{% block title %}{{ poll.question }}{% endblock %}
 
 {% block content %}
 <ul>
@@ -16,5 +16,5 @@
 	{% endfor %}
 </ul>
 
-<a href="/polls/{{ poll.id }}/">Vote again?</a>
+<b><a href="/polls/{{ poll.id }}/">Vote again?</a></b>
 {% endblock %}

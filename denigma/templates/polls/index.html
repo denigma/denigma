@@ -5,18 +5,18 @@
 {% endblock %}
 
 {% block content %}
-<p>This is the legendary classic Polls app with some enhancements. Here it functions to get a common sense on fundemental questions as well as to vote about the fate of Denigma.</p>  
-{% if latest_poll_list %}
-    <ul>
-    {% for poll in latest_poll_list %}
-        <li><a href="/polls/{{ poll.id }}/">{{ poll.question }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No polls are available.</p>
-{% endif %}
-<a href="/polls/create/">Create a new poll</a>
-<p></p>
+    <p>This is the legendary classic Polls app with some enhancements. Here it functions to get a common sense on fundemental questions as well as to vote about the fate of Denigma.</p>
+    {% if latest_poll_list %}
+        <ul>
+        {% for poll in latest_poll_list %}
+            <li><a href="/polls/{{ poll.id }}/">{{ poll.question }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No polls are available.</p>
+    {% endif %}
+    <b><a href="/polls/create/">Create a new poll</a></b>
+
 
 {% comment %}
 <h3>Add a poll:</h2>

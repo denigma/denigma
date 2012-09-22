@@ -3,27 +3,28 @@
 {% load crosslink %}
 
 <h2 xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">News</h2>
-
+<hr>
 {% for post in posts %}
     <table border="0" color="white">
         <tr>
+
             <td>
-                <h3><a href="/blog/{{ post.id }}">{{ post.title }}</a></h3>
+                <h3>{{ post.title }}</h3>
 
                 <div class="post_meta">
-                    created on {{ post.created }}
-                    {% if post.created != post.updated %}
-                        updated on {{ post.updated }}
-                    {% endif %}
+                    <centre>{{ post.created|date:"d | M"}}</centre>
+                    {#{% if post.created != post.updated %}({{ post.updated|date:"d | M" }}){% endif %}#}
                 </div>
 
                 <div class="post_body">
-                    {{ post.brief|markdown|hyper|recross|safe }}<b><a href="/blog/{{ post.id }}">Read More</a></b>
+                    {{ post.brief|markdown|hyper|recross|safe }}<b><a href="/blog/{{ post.id }}">Read more</a></b>
                 </div>
 
                 <div class="tags">
                     {% for tag in post.tags.all %}
-                        <a href="/blog/tag/{{ tag }}">{{ tag }}</a>
+                        {% if tag != "news" %}
+                            <a href="/blog/tag/{{ tag }}">{{ tag }}</a>
+                        {% endif %}
                     {% if not forloop.last %}, {% endif %}
                     {% endfor %}
                 </div>
@@ -35,7 +36,7 @@
            </td>
         </tr>
     </table>
-    <br>
+    <hr>
 {% endfor %}
 
 
