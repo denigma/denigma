@@ -1,0 +1,89 @@
+{% extends "lifespan/base.html" %}
+
+{% block head_title %}Studies{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/">Lifespan</a>
+    > Studies
+{% endblock %}
+
+{% block options %}
+    <a href="/lifespan/studies/archive/">Archive</a>
+
+{% endblock %}
+
+{% block title %}Studies{% endblock %}
+
+{% block content %}
+    <hr>
+    <h3>Statistics:</h3>
+    <li>Number of lifespan studies known by Denigma: {{ count }}</li>
+    <li>Number of lifespan studies integrated: {{ integrated }}</li>
+    <hr>
+    <h3>Recently added:</h3>
+    {% comment %} A simple list provides to less information
+    {% for study in page.object_list %}
+        <li><a href="/lifespan/study/{{ study.pk }}">{{ study.title }}</a>(#experiments = {{ study.experiment_set.all|length }} | integrated = {{ study.integrated }})</li>
+    {% endfor %}
+    {% endcomment %}
+    <table border="0">
+        <tr><td><b>PMID</b></td><td><b>Title</b></td><td><b>Experiments</b></td><td><b>Integrated</b></td></tr>
+        {% for study in page.object_list %}
+            <tr>
+                <td>{{ study.pmid }}</td>
+                <td><a href="/lifespan/study/{{ study.pk }}">{{ study.title }}</a></td>
+                <td><center>{{ study.experiment_set.all|length }}</center></td>
+                <td><center>{{ study.integrated }}</center><td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% if page.has_previous %}
+        <a href="?page={{ page.previous_page_number }}">prev</a>
+    {%  endif %}
+    | {{ page.number }} |
+    {% if page.has_next %}
+        <a href="?page={{ page.next_page_number }}">next</a>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        {% comment %} Redundant as the "Add studies" form can also accept a single study.
+        <hr>
+        <h4>Add a study:</h4>
+        <form action="add_study" method="POST">{% csrf_token %}
+            <b>Title: </b>  <input type="text" name="title"><br>
+            or<br>
+            <b>PMID:</b> <input type="integer" name="pmid"><br>
+        <input type="submit" value="Add"><br>
+        </form>
+        {% endcomment %}
+        <hr>
+        <h4>Add studies:</h4>
+        <p>You can add either a single or multiple studies. Each study per line.</p>
+        <form action="add" method="POST">{% csrf_token %}
+            <b>Titles: </b>  <textarea name="titles"></textarea><br>
+            and/or<br>
+            <b>PMIDs:</b> <textarea name="pmids"></textarea><br>
+            <b>Species:</b> <select multiple="multiple" name="species">
+                {% for aspecies in species %}
+                    <option value="{{ aspecies.taxid }}">{{ aspecies }}</option>
+                {% endfor %}
+            </select>(optional)<br>
+
+            <b>Comment: <input type="text" name='comment'></b> (optional)<br>
+        <input type="submit" value="Add"><br>
+        </form>
+
+{% comment %} Did not worked well
+     <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+         <input type="submit" value="Add"><br>
+     </form>
+{% endcomment %}
+
+    {% endif %}
+
+    <b><a href="/admin/lifespan/study">Admin</a></b>
+
+{% endblock %}
