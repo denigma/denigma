@@ -26,7 +26,7 @@ def add(request):
     if request.POST and form.is_valid():
         with reversion.create_revision():
             post = form.save(commit=False)
-            post.save()
+            form.save()
             if isinstance(request.user, AnonymousUser):
                 request.user = User.objects.get(username="Anonymous")
             reversion.set_user(request.user)
