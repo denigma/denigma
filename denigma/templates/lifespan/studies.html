@@ -66,7 +66,14 @@
             <b>PMIDs:</b> <textarea name="pmids"></textarea><br>
             <b>Species:</b> <select multiple="multiple" name="species">
                 {% for aspecies in species %}
-                    <option value="{{ aspecies.taxid }}">{{ aspecies }}</option>
+                    {%  if aspecies.main_model %}
+                        <option value="{{ aspecies.taxid }}">{{ aspecies }}</option>
+                    {%  endif %}
+                {% endfor %}
+                {% for aspecies in species %}
+                    {%  if not aspecies.main_model %}
+                        <option value="{{ aspecies.taxid }}">{{ aspecies }}</option>
+                    {%  endif %}
                 {% endfor %}
             </select>(optional)<br>
 
