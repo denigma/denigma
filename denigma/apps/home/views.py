@@ -2,6 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
+from forms import DynamicForm
+
 
 def home(request):
     return HttpResponse("Home Page")
@@ -18,5 +20,23 @@ def base(request):
 def page(request):
    return render_to_response('home/page.html',
                              context_instance=RequestContext(request))
+
+def dynamic_view(request, val):
+    """Dynamically generate input data from formset."""
+    initial_data = []
+    initial_data.append({'fields_1': data.info})
+
+    # Inializing formset:
+    DynamicFormSet=formset_factory(DynamicForm, extra=0)
+    formset = DynamicFormSet(initial=initial_data)
+    context = {'formset': formset}
+    if request.method == 'POST':
+        formset = DynamicFormSet
+        if formset.is_valie():
+            # You can work with the formset dictionary elements in the views function (or) pass it to
+            #forms.py script through an instance of MyForm
+            return HttpResponse(formset.cleaned_data)
+    return render_to_response('test.html', context,
+        context_instance=RequestContext(request))
 
 
