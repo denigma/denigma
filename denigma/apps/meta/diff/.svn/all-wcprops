@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/103/trunk/python2
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/92/trunk/python2/__init__.py
+END
+diff_match_patch_test.py
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/100/trunk/python2/diff_match_patch_test.py
+END
+diff_match_patch.py
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/103/trunk/python2/diff_match_patch.py
+END

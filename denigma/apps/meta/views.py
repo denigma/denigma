@@ -42,3 +42,38 @@ def display(request):
         html.append('<tr><td>%s</td><td>%s</td></tr>' % (k, v))
     return HttpResponse('<table>%s</table>' % '\n'.join(html))
 
+
+#from reversion.helpers import generate_patch, generate_patch_html
+from helpers import generate_patch, generate_patch_html
+from reversion.admin import Version
+from blog.models import Post
+
+
+def diff(request, pk):
+    print pk
+    post = Post.objects.all()[int(pk)]
+    available_versions = Version.objects.get_for_object(post)
+    revisions = []
+    for i in xrange(len(available_versions)-1):
+        old_version = available_versions[i]
+        print vars(old_version)
+        new_version = available_versions[i+1]
+        #patch = generate_patch(old_version, new_version, "text")
+        patch_html = generate_patch_html(old_version, new_version, "text")
+        revisions.append(patch_html)
+    return HttpResponse("<hr>".join(revisions))
+
+def difference(request):
+    post = Post.objects.all()[50]
+    available_versions = Version.objects.get_for_object(post)
+    old_version = available_versions[0]
+    new_version = available_versions[1]
+    patch = generate_patch(old_version, new_version, "text")
+    patch_html = generate_patch_html(old_version, new_version, "text")
+    return HttpResponse(patch_html)
+
+
+
+
+
+
