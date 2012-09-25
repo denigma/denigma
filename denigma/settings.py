@@ -235,6 +235,7 @@ INSTALLED_APPS = [
     'reversion',# Revision-control for models.
     'haystack', # Searching
     'django_tables2',
+    'crispy_forms',
 #    'cms", # Content Management System.
 #    'mptt", # Utilties for implementing a modified pre-order traversal tree.
 #    'sekizai", # For javascipt and css management.
