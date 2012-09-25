@@ -6,8 +6,28 @@ from django.db import models
 
 from Bio import Entrez, Medline
 
+from library import Bibliography
 
 Entrez.email = "hevok@denigma.de"
+
+
+# Helper function
+def normalize_time(date):
+    """Normalizes time attributes for storing into DateTimeField."""
+    try:
+        time = datetime(*strptime(date, "%Y/%m/%d %H:%M")[0:5])
+    except:
+        try:
+            time = datetime(*strptime(date, "%Y/%m/%d")[0:3])
+        except:
+            time = datetime(*strptime(date, "%Y-%m-%d")[0:3])
+    return time
+
+def normalize_title(title):
+    title = title.lower()
+    if title.endswith('.'):
+        title = title[:-1]
+    return title
 
 
 class Reference(models.Model):
@@ -22,7 +42,7 @@ class Reference(models.Model):
     year = models.IntegerField(blank=True, null=True)
     volume = models.CharField(max_length=20, blank=True, null=True)
     issue = models.CharField(max_length=10, blank=True, null=True) # Was Integer, but encounterd "2-3" value!
-    pages = models.CharField(max_length=10, blank=True)
+    pages = models.CharField(max_length=23, blank=True)
     start_page = models.IntegerField(blank=True, null=True)
     epub_date = models.DateField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)
@@ -79,8 +99,8 @@ class Reference(models.Model):
             try:
                 Reference._for_write = True
                 if self.pmid or 'pmid' in kwargs:
-                    return Reference.objects.get(pmid=self.pmid) #, False
                     print "Did not failed"
+                    return Reference.objects.get(pmid=self.pmid) #, False
                 elif self.title or 'title' in kwargs:
                     print self.title
                     handle = Entrez.esearch(db='pubmed', term=self.title)
@@ -93,13 +113,52 @@ class Reference(models.Model):
                        self.pmid = record['IdList'][0]
                        print self.title, self.pmid
                        Reference.fetch_data(self)
+                       print("Saving")
                        super(Reference, self).save(*args, **kwargs)
+                       print("Saved")
                     else:
-                       super(Reference, self).save(*args, **kwargs) # Just save the given information.
+                        # Google:
+                       bib = Bibliography()
+                       r = bib.google(self.title)
+                       if r:
+                           r = r[0]
+                           self.pmid = r.pmid
+                           print self.pmid
+                       else:
+#                           r = bib.find(self.title)[0]
+#                           self.pmid = r.pmid
+#                           print self.pmid
+
+                           r = bib.find(self.title)
+                           if len(r) == 1:
+                               r = r[0]
+                               self.pmid = r.pmid
+                               print self.pmid
+                           elif len(r) > 1:
+                               title = normalize(self.title)
+                               for areference in r:
+                                   if normalize(areference.title) == title:
+                                       r = areference
+
+                       self.__dict__.update(r.__dict__)
+                       print r
+                       print vars(r)
+                       self.date = normalize_time(r.date)
+
+                       print "# Transforming lists into strings:"
+                       self.keywords = "; ".join(self.keywords)
+                       self.authors = "; ".join(self.authors)
+                       print "calling super"
+                       print self.pmid
+                       try: super(Reference, self).save(*args, **kwargs) # Just save the given information.
+                       except Exception as e:
+                           print e
+                       print "called super"
                        # Raise Exception and state the the given information yielded more than one reference.
                 else:
                     super(Reference, self).save(*args, **kwargs)
-            except Reference.DoesNotExist:
+            except Reference.DoesNotExist as e:
+                print "Error", e
                 Reference.fetch_data(self)
                 super(Reference, self).save(*args, **kwargs)
         else:
@@ -136,7 +195,6 @@ class Reference(models.Model):
                print "Failed fetching information"
                print e, self
           if not self.title:
-            from library import Bibliography
             bib = Bibliography()
             r = bib.efetch(id=self.pmid)
             self.__dict__.update(r.__dict__)
@@ -145,8 +203,7 @@ class Reference(models.Model):
             self.keywords = "; ".join(self.keywords)
             self.authors = "; ".join(self.authors)
 
-          try: self.date = datetime(*strptime(s, "%Y/%m/%d %H:%M")[0:5])
-          except: self.date = datetime(*strptime(s, "%Y/%m/%d")[0:3])
+          self.date = normalize_time(s)
 
     @property
     def info(self):
@@ -180,6 +237,25 @@ class Reference(models.Model):
                else:
                    pmids[reference.pmid] = reference
        return duplicates
+
+    @staticmethod
+    def remove_dotes():
+        """Removes the ending dots from all reference titles."""
+        references = Reference.objects.all()
+        for reference in references:
+            if reference.title.endswith('.'):
+                reference.title = reference.title[:-1]
+                reference.save()
+
+    @staticmethod
+    def add_dots():
+        """Appends dot to the title if not present."""
+        references = Reference.objects.all()
+        for reference in references:
+            if not reference.title.endswith('.'):
+                reference.title = reference.title + "."
+                reference.save()
+
 
 
 class Signature(models.Model):
