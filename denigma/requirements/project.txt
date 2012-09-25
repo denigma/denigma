@@ -34,3 +34,5 @@ python-amazon-product-api # For retrieving information on Books from Amazon.
 #django-tables2
 -e git://github.com/bradleyayers/django-tables2.git#egg=django-tables2
 
+# Forms:
+django-crispy-forms #==dev # Dev does not work.
