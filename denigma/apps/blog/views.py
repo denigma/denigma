@@ -77,7 +77,7 @@ def edit(request, pk):
                 with reversion.create_revision():
                     form.save()
                     reversion.set_user(request.user)
-                    comment =  'Changed %s.%s' % (' '+', '.join(changes),request.POST['comment'] or '')
+                    comment =  'Changed %s. %s' % (', '.join(changes), request.POST['comment'] or '')
                     reversion.set_comment(comment)
 
                 log(request, post, comment)
