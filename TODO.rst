@@ -214,6 +214,19 @@ This meta class can be attched to a revision by: ::
 
     reversion.add_meta(VersionRating, rating=5)
 
+
+Relationships changes
+^^^^^^^^^^^^^^^^^^^^^
+Deletion of a study together with a reference, allows to revert the reference but not the study.
+
+
+django-audit-log keeps track of who changed what model instance. The full model stucture is tracked and kepts in a
+seperate table similiar in structure to the original table. Reference to user and time of action as well as the
+action indicating it was an insert are also tracked. It actually bootstrap itself in each POST, PUT and DELETE 
+request in such it only can track changes that are made vie the web interface
+[https://github.com/Atomidata/django-audit-log].
+
+
 Tracking User Changes
 ---------------------
 
@@ -230,6 +243,24 @@ If more than one field together makes something unique the unique_togethr in the
 Meta inner class should be used
 [https://docs.djangoproject.com/en/dev/ref/models/options/#unique-together].
 
+`django-moderation` allows to moderate any model objects where when user create objects ormake changes a
+moderator must approve it to be visible on the site. It ships admin-integration where data-changes are seen.
+It also generates html difference of changes between versions of objects. It supports moderation queue in admin
+and configurable email notifications. It also provides custom lde form that allows to edit changed data of object.
+Auto approve/reject for selected user groups or user types can be configured. Are major issue is that m2m relations
+in models are not corrently supported.
+
+
+Generating Diffs
+----------------
+django-reversion can generating the differences between revision
+[https://github.com/etianen/django-reversion/wiki/Generating-Diffs]
+by the use of `google-diff-match-patch` which is
+a Diff, Match and Patch Library for plain text
+[http://code.google.com/p/google-diff-match-patch/].
+
+The whole diff history of a blog/data post/entry can be viewed by www.denigma.de/meta/diff/<pk>/.
+
 
 Checking if an Entry Already Exists
 -----------------------------------
@@ -242,6 +273,110 @@ To specify behaviour on the creation of a model, overwrite the save() method and
 check if self.pk is None, which is the case not yet created entries
 [http://stackoverflow.com/questions/2307943/django-overriding-the-model-create-method].
 
+
+Check if a Field has Changed
+----------------------------
+To manually check whether a model field has changed a function in the save me$
+be implemented: ::
+
+    def has_changed(instance, save):
+        if not instance.pk:
+            return False
+        old_value = instance.__class__.default_manager.\
+                     filter(pk=instance.pk).values(field).get()[field]
+        return not getattr(instance, field) == old value
+
+It can be used in the following: ::
+
+    class Entry(models.Model):
+        title = ...
+        text = ...
+        tags = ...
+        ...
+        def save(self, *args, **kwargs):
+            if has_changed(self, 'has_star'):
+                # Logi here
+            super(Entry, self).save(*args, **kwargs)
+
+An improvement to the above would be to handle files differently as changes in files can have the same
+name but different content and comparing different empty values for False: ::
+
+    def has_changed(instance, field):
+        if not instance.pk:
+            return False
+        old_value = instance.__class__._default_manager.\
+            filter(pk=instance.pk.values(field).get().get(field, None)
+        new_value = getattr(instance, field, None)
+
+        if hasattr(new_value, "file"):
+            # Handle FileFields as specieal cases, beacuse the uploaded filename could be
+            # the same as the filename that's already there even through there may be
+            # different file contents.
+            from django.core.fies.uploadfile import UploadedFile
+            return isinstance(new_value.file, UploadedFile)
+
+        if not (new_value or old_value):
+            # Avoid comparing different types of empty values (None, '', {}, [], (), False, etc.)
+            # results is False in any case
+            return False
+         else:
+            # in other cases return comparision result as usual
+            return not new_value == old_value
+
+So in principle the one way is to check if the value for a field has changed is to fetch the original data from
+the database before saving instance: ::
+
+    class Entry(models.Model):
+        title = models.CharField(max_length=255):
+        ...
+        def save(self, *args, **kw):
+            if self.pk is not None:
+                orig = Entr.objects.get(pk=self.pk)
+                if orig.title != self.title:
+                    print("Title changed")
+            super(Entry, self).save(*args, **kw)
+
+Another attractive alternative way is to override the `__init__` method of the `models.Model` so that it keeps
+a copy of the original value. This avoiss another DB lookup: ::
+
+    class Entry(models.Model):
+        title = models.CharField(max_length=255):
+        ...
+        __original_name = None
+
+        def __init__(self, *args, **kwargs):
+            super(Entry, self).__init__(*args, **kwargs)
+            self.__original_name = self.name
+
+        def save(self, force_insert=False, force_update=False):
+            if self.name != self.__original_name:
+               # name changed - do something here.
+
+        super(Entry, self).save(force_insert, force_update)
+        self.__oirignal_name = self.name
+
+The `post_init-signal` can also be used instead of overrding 
+[https://docs.djangoproject.com/en/dev/ref/signals/#post-init],
+but overriding methods is recommended by Django documentation
+[https://docs.djangoproject.com/en/dev/topics/db/models/#overriding-predefined-model-methods].
+
+An elegant further option is to use `pre_save` signal: ::
+
+    @reciever(pre_save, sender=Entry):
+    def do_something_if_changed(sender, instance, **kwargs):
+        try:
+            obj = Entry.objects.get(pk=instance.pk)
+        except Entry.DoesNotExist:
+            pass # Object is new, so field hasn't technically changed,
+                 # but maybe something else needs to be done here.
+        else:
+            if not obj.some_field == instance.some_field: # Field has changed.
+                # do something.
+
+The drawback of the latter is that it still involves an extra database hit, but signals are basically used for 
+exactly such situations and the method does not requiere lateration to the model.
+
+
 Simplifing Account Creation
 ---------------------------
 
@@ -252,6 +387,29 @@ User names actually need to be changeable too.
 For known experts the default user name will be assumed to be
 FirstName_LastName. Only the Email field is required and password will be
 send by email.
+
+Email as Username
+-----------------
+Emails can be used as user name. There are several options. An example script is provided 
+[http://www.f2finterview.com/web/Django/18/]. The three ways of acomplishing this is: ::
+
+There is an app `django-email-as-username` which allows to treat users as having only
+email addesses instead of usernames
+[https://github.com/dabapps/django-email-as-username] which is compatible with
+djanog-registration after them considerations [https://github.com/dabapps/django-email-as-username/issues/17].
+
+1.  ALTER statment in the database to make the username longer than 30 chars and design custom
+forms that enforce the new field length. Then provide those custom forms to the auth login
+views, etc.
+
+2. Fork Django (or at least django.contrib.auth) for the purposes of a local depolyment and
+modify the 30 cahracter constraint whereever it occurs.
+
+3. Employ Django 1.5 which will come with the possiblity to allow to install a custom User model
+that has whatever properties are desired (e.g. longer username, only an Email fields, twitter handle
+instead of username, etc.). The branch is developed here [https://github.com/freakboy3742/django/tree/t3011] 
+at will be incorportated in 1.5.
+
 
 
 Global Site-wide Search
@@ -486,6 +644,59 @@ Media App
 ---------
 The media app will accomodate images, sounds, musics, and videos. It will functional replace the gallery app
 and the gallery app itself will be a seperate app which uses the media app as data driven backend.
+
+
+Title too long
+--------------
+Increasing Saccharomyces cerevisiae stress resistance, through the overactivation of the heat shock response resulting from defects in the Hsp90 chaperone, does not extend replicative life span but can be associated with slower chronological ageing of nondividing cells. 
+
+A network biology approach to aging in yeast 
+However added Batch Effects and Noise in Microarray Experiments: Sources and Solutions (Wiley Series in Probability and Statistics) 
+
+
+Request Namespace
+-----------------
+The current URL name, app name or namespace (or any infromation gathered
+during URL resolution) should be availbale within views and templates, i.e.
+attached to a request.object.
+
+During URL resolution, responvers return a ResolveMatch object
+[https://github.com/django/django/blob/e72e22e518a730cd28cd68c9374fa79a45e27a9c/django/core/urlresolvers.py#L222;
+https://github.com/django/django/blob/e72e22e518a730cd28cd68c9374fa79a45e27a9c/django/core/urlresolvers.py#L331].
+ResolveMatch instancs have attributes such as app_Name, url_name.
+[https://github.com/django/django/blob/e72e22e518a730cd28cd68c9374fa79a45e27a9c/django/core/urlresolvers.py#L39]
+
+HTTP handleres manage both the URL resolution and the request object.
+They could assign url_name or app_name to request [https://github.com/django/django/blob/e72e22e518a730cd28cd68c9374fa79a45e27a9c/django/core/handlers/base.py#L104 
+].
+
+Changing in [https://github.com/django/django/blob/e72e22e518a730cd28cd68c9374fa79a45e27a9c/django/core/handlers/base.py#L104]
+
+    callback, callback_args, callback_kwargs = resolver.resolve(request.path_info)
+
+into: ::
+
+    request.resolver_match = resolver.resolve(request.path_info)
+    callback, callback_args, callback_kwargs = request.resolver_match
+
+Then in template it would be possible:
+
+    <a href="{% url foo %} {% if request.resolver_match.url_name == 'foo' %}calss="active"{% endif %}>Foo</a>
+
+In a nutshell ResolveMatch needs to be sved in HttpRequest:
+    https://code.djangoproject.com/ticket/15695
+
+A small test that illustrates what needed to accomplish this is available as
+django-locale-switcher [https://github.com/apollo13/django-locale-switcher].
+This app stuffes the resolver_math on the request.
+
+
+Filtering
+---------
+Tables in Denigma need to be filtered dynamically also in the public interface
+just as it is accomplished in the admin.
+`django-filters` allows user to filter queryset dynamically 
+[https://github.com/alex/django-filter].
 
 
 The Future of Denigma
