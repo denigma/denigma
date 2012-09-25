@@ -7,7 +7,7 @@ from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 from models import (Study, Experiment, Measurement, Comparision, Intervention, Factor,\
                    Strain, Epistasis, Regimen, Assay, Manipulation)
 
-from apps.annotations.models import Species
+from annotations.models import Species
 
 
 # Main:
