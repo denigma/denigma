@@ -1,0 +1,28 @@
+{% extends "lifespan/base.html" %}
+
+{% load markup %}
+{% load replacer %}
+
+{% block head_title %}Experiment{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/">Lifespan</a>
+    > <a href="/lifespan/experiments/">Experiments</a>
+    > Experiment
+    = {{ experiment.name }}
+{% endblock %}
+
+{% block title %}{{ experiment.name }}{% endblock %}
+
+{% block content %}
+    <b>Study:</b> <a href="/lifespan/study/{{ experiment.study.pk }}">{{ experiment.study.title }}</a></br>
+    <b>Species:</b> <a href="/annotation/species/{{ species.pk }}">{{ experiment.species.common_name }}</a></br>
+    <b>Data:</b> {{ experiment.data|replace|safe }}<br>
+    {% for measurement in experiment.measurement_set.all %}
+        {{ measurment }}
+    {% endfor %}
+    <hr>
+    <b><a href="/lifespan/experiment/edit/{{ experiment.pk }}">Edit experiment</b></a>
+    (<a href="/admin/lifespan/experiment/{{ experiment.pk }}">Admin</a>) |
+    <b><a href="/lifespan/experiment/delete/{{ experiment.pk }}">Delete experiment</a></b>
+{% endblock %}

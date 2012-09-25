@@ -1,13 +1,369 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render_to_response
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response,redirect
 from django.template import RequestContext
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib import messages
+from django.utils.translation import ugettext
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 
-from models import Factor, Intervention
+import reversion
+
+from models import Study, Experiment, Measurement, Comparision, Intervention, Factor
+from forms import StudyForm, EditStudyForm, DeleteStudyForm, ExperimentForm, DeleteExperimentForm
+
+from blog.models import Post
+from annotations.models import Species
+
+from meta.view import log
 
 
 def index(request):
-    return render_to_response('lifespan/index.html',
+    lifespan = Post.objects.get(title="Lifespan")
+    return render_to_response('lifespan/index.html', {'lifespan': lifespan},
                               context_instance=RequestContext(request))
+
+def studies(request):
+    studies = Study.objects.all().order_by('-created')
+    species = Species.objects.all().order_by('complexity')
+
+    count = studies.count()
+    integrated = studies.filter(integrated=True).count()
+
+    paginator = Paginator(studies, 5)
+    page_num = request.GET.get('page', 1)
+
+    try:
+        page = paginator.page(page_num)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
+    except PageNotAnInteger:
+        page = paginator.page(1)
+
+    ctx = {'page': page,
+           'count': count,
+           'integrated': integrated, 'request':request,
+           'species': species}
+    return render_to_response('lifespan/studies.html', ctx,
+                              context_instance=RequestContext(request))
+
+def study(request, pk):
+    study = Study.objects.get(pk=pk)
+    experiments = study.experiment_set.all()
+    ctx = {'study': study, 'experiments': experiments}
+    return render_to_response('lifespan/study.html', ctx,
+                              context_instance=RequestContext(request))
+#@reversion.create_revision()
+def add_studies(request):
+    titles = request.POST['titles'].replace('\r', '').split('\n')
+    pmids = request.POST['pmids'].replace('\r', '').split('\n')
+    taxid = request.POST.get('species', None)
+    if taxid:
+        species = Species.objects.get(taxid=taxid)
+
+    comment = request.POST['comment'] or "Adding studies"
+
+    succieded = []
+    warned = []
+    failed = []
+
+    with reversion.create_revision():
+        print "Titles", titles
+        print "pmids", pmids
+        for title in titles:
+            if not title: continue
+            print "Title:", title
+            #study, created = Study.objects.get_or_create(title=title)
+            study = Study(title=title)
+            study.save()
+            try:
+                print vars(study)
+            except UnicodeEncodeError as e:
+                print e
+            print study.reference_was_created
+            if not study.reference_was_created:#study.reference.authors:
+                warned.append(title)
+                messages.add_message(request, messages.WARNING, ugettext("Already in db: %s" % title))
+                created = False
+            else:
+                created = True
+            try:
+                study_confirm = Study.objects.get(title__icontains=title)
+                if study_confirm:
+                    succieded.append(title)
+                    print "Authors:", study.reference.authors
+                    messages.add_message(request, messages.SUCCESS, ugettext("Succeeded: %s" % title))
+                else:
+                    failed.append(title)
+                    messages.add_message(request, messages.ERROR, ugettext("Failed: %s" % title))
+
+                if taxid:
+                    study_confirm.species.add(species)
+                    print("Adding species")
+                    #study_confirm.save()
+
+            except Exception as e:
+                print e
+                failed.append(title)
+                messages.add_message(request, messages.ERROR, ugettext("Failed: %s" % title))
+                messages.add_message(request, messages.WARNING, ugettext("However added %s" % study.title))
+                if taxid:
+                    print("Adding species")
+                    try:
+                        study.species.add(species)
+                    except ValueError as e: #Exception Value: 'Study' instance needs to have a primary key value before a many-to-many relationship can be used.
+                        messages.add_message(request, messages.ERROR, ugettext("Error: %s" % e))
+            log(request, study, comment)
+
+
+        for pmid in pmids:
+            if not pmid: continue
+            print "PMID:", pmid
+            study = Study(pmid=pmid)
+            study.save()
+            print "views.add.studies for pmid in pmids:", vars(study)
+            if not study.reference_was_created:
+                warned.append(pmid)
+                messages.add_message(request, messages.WARNING, ugettext("Already in db: %s" % pmid))
+                created = False
+            else:
+                created = True
+            try:
+                study_confirm = Study.objects.get(pmid=pmid)
+                if study.confirm:
+                    succieded.append(pmid)
+                    messages.add_message(request, messages.SUCCESS, ugettext("Succeeded: %s" % pmid))
+                else:
+                    failed.append(pmid)
+                    messages.add_message(request, messages.ERROR, ugettext("Failed: %s" % pmid))
+
+                if taxid:
+                    print("Adding species")
+                    study_confirm.species.add(species)
+
+
+
+            except Exception as e:
+                print e
+                failed.append(pmid)
+                messages.add_message(request, messages.ERROR, ugettext("Failed: %s" % pmid))
+                messages.add_message(request, messages.WARNING, ugettext("However added %s" % study.title))
+                if taxid:
+                    print("Adding species")
+                    try:
+                        study.species.add(species)
+                    except ValueError as e:
+                        messages.add_message(request, messages.ERROR, ugettext("Error: %s" % e))
+
+            log(request, study, comment)
+
+        reversion.set_user(request.user)
+        reversion.set_comment(comment)
+
+    if succieded:
+        msg = "Successfully added the following %i studies: \n%s" % (len(succieded), "\n".join(succieded))
+        messages.add_message(request, messages.SUCCESS, ugettext(msg))
+    if warned:
+        msg = "Found already in db the following %i studies: \n%s" % (len(warned), "\n".join(warned))
+        messages.add_message(request, messages.WARNING, ugettext(msg))
+    if failed:
+        msg = "Failed to fetch information on the following %i studies: \n%s" % (len(failed), "\n".join(failed))
+        messages.add_message(request, messages.ERROR, ugettext(msg))
+
+    return HttpResponseRedirect('/lifespan/studies/')
+
+@login_required
+def edit_study(request, pk):
+    study = Study.objects.get(pk=pk)
+    if request.method == "GET":
+        form = EditStudyForm(instance=study)
+    elif request.method == "POST":
+        print request.POST
+        if "cancel" in request.POST:
+            return redirect('/lifespan/studies/')
+        with reversion.create_revision():
+            form = EditStudyForm(request.POST, instance=study)
+
+            if form.is_valid():
+                form.save()
+                reversion.set_user(request.user)
+                comment = request.POST['comment'] or "Changed study"
+                reversion.set_comment(comment)
+                log(request, study, comment)
+                return redirect('/lifespan/study/%s' % pk)
+
+    else:
+        form = EditStudyForm(instance=study)
+    ctx = {'form': form, 'study': study}
+    return render_to_response('lifespan/edit_study.html', ctx,
+        context_instance=RequestContext(request))
+
+@login_required
+def delete_study(request, pk):
+    """Depricated."""
+    with reversion.create_revision():
+        study = Study.objects.get(pk=pk)
+        study.delete()
+        reversion.set_user(request.user)
+        reversion.set_comment(request.POST['comment'] or "Deleted study")
+    return redirect('/lifespan/studies/')
+
+@login_required
+def delete_study(request, pk):
+    try:
+        study = Study.objects.get(pk=pk)
+    except ObjectDoesNotExist:
+        msg = "Error study matching query does not exist."
+        messages.add_message(request, messages.ERROR, ugettext(msg))
+        return redirect('/lifespan/studies/')
+    form = DeleteStudyForm(request.POST or None)
+    if request.method == "POST" and form.is_valid:
+        if 'cancel' in request.POST:
+            return redirect('/lifespan/study/%s' % pk)
+        else:
+            with reversion.create_revision():
+                try:
+                    if 'delete_study' in request.POST:
+                        study.delete()
+                    if 'delete_reference' in request.POST:
+                        study.delete()
+                        study.reference.delete()
+                except AttributeError:
+                    msg = "Error study did not have a reference associated."
+                    messages.add_message(request, messages.ERROR, ugettext(msg))
+                reversion.set_user(request.user)
+                comment = request.POST['comment'] or "Deleted study"
+                reversion.set_comment(comment)
+                log(request, study, comment)
+                return redirect('/lifespan/studies/')
+    ctx = {'study': study, 'form': form}
+    return render_to_response('lifespan/delete_study.html', ctx,
+                context_instance=RequestContext(request))
+
+def studies_archive(request):
+    studies = Study.objects.all().order_by('-created')
+    return render_to_response('lifespan/studies_archive.html', {'studies': studies},
+                              context_instance=RequestContext(request))
+
+def experiments(request):
+    experiments = Experiment.objects.all()
+    experiments_entry = Post.objects.get(title="Experiments")
+    ctx = {'experiments': experiments, 'experiments_entry': experiments_entry}
+    return render_to_response('lifespan/experiments.html',ctx,
+                              context_instance=RequestContext(request))
+
+def experiment(request, pk):
+    experiment = Experiment.objects.get(pk=pk)
+    ctx = {'experiment': experiment}
+    return render_to_response('lifespan/experiment.html', ctx,
+                              context_instance=RequestContext(request))
+
+def add_experiment(request, pk):
+    form = ExperimentForm(request.POST or None, pk=pk) # A form bound to the POST data
+    if request.method == 'POST' and form.is_valid(): # All validation rules pass
+        with reversion.create_revision():
+            experiment = form.save(commit=False)
+            form.save()
+            reversion.set_user(request.user)
+            comment = "Added experiment."
+            reversion.set_comment(comment)
+            log(request, experiment, comment)
+            msg = "Successfully added experiment"
+            messages.add_message(request, messages.SUCCESS, ugettext(msg))
+            return redirect('/lifespan/experiment/%s' % experiment.pk)
+    return render_to_response('lifespan/add_experiment.html', {'form': form},
+                              context_instance=RequestContext(request))
+
+@login_required
+def edit_experiment(request, pk):
+    experiment = Experiment.objects.get(pk=pk)
+    form = ExperimentForm(request.POST or None, instance=experiment)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('lifespan/experiment/%s' % pk)
+    ctx = {'experiment': experiment, 'form': form}
+    return render_to_response('lifespan/edit_experiment.html', ctx,
+        context_instance=RequestContext(request))
+
+@login_required
+def delete_experiment(request, pk):
+    experiment = Experiment.objects.get(pk=pk)
+    form = DeleteExperimentForm(request.POST or None)
+    if request.method == "POST" and form.is_valid:
+        if 'cancel' in request.POST:
+            return redirect('/lifespan/experiment/%s' % pk)
+        elif 'delete_experiment' in request.POST:
+            with reversion.create_revision():
+                experiment.delete()
+                reversion.set_user(request.user)
+                comment = request.POST['comment'] or "Deleted experiment"
+                reversion.set_comment(comment)
+                log(request, experiment, comment)
+                return redirect('/lifespan/experiments/')
+    ctx = {'experiment': experiment, 'form': form}
+    return render_to_response('lifespan/delete_experiment.html', ctx,
+        context_instance=RequestContext(request))
+
+def measurements(request):
+    measurements = Measurement.objects.all()
+    return render_to_response('lifespan/measurements.html', {'measurements': measurements},
+                            context_instance=RequestContext(request))
+
+def comparisions(request):
+    return HttpResponse("comparisions")
+
+def comparision(request, pk):
+    return HttpResponse('comparision %s' % pk)
+
+def add_comparision(request, pk):
+    return HttpResponse('Add comparision %s' % pk)
+
+def edit_comparision(request, pk):
+    return HttpResponse('Edit comparision %s' % pk)
+
+def interventions(request):
+    return HttpResponse("interventions")
+
+def intervention(request):
+    return HttpResponse("intervention")
+
+def add_intervention(request):
+    return HttpResponse('Add intervention')
+
+def edit_intervention(request):
+    return HttpResponse('Edit intervention')
+
+def factors(request):
+    HttpResponse("factors")
+
+def factor(request):
+    HttpResponse('factor')
+
+def add_factor(request):
+    HttpResponse("add factor")
+
+def edit_factor(request):
+    HttpResponse("edit factor")
+
+def epistasis(request):
+    HttpResponse("regimen")
+
+def regimen(request):
+    HttpResponse("regimen")
+
+def manipulation(request):
+    HttpResponse("manipulation")
+
+def assay(request):
+    HttpResponse("assay")
+
+def type(request):
+    HttpResponse("type")
+
+
+
+#234567891123456789212345678931234567894123456789512345678961234567897123456789
 
 def describe(request):
     """Annotates the AgeFactor table with description from various sources.

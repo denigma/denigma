@@ -1,0 +1,27 @@
+{% extends "lifespan/base.html" %}
+
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}Experiments{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/">Lifespan</a>
+    > Experiments
+{% endblock %}
+
+{% block title %}Experiments{% endblock %}
+
+{% block content %}
+    {{ experiments_entry.text|markdown|hyper|recross|safe }} (<b><a href="/admin/blog/post/{{ experiments_entry.pk }}">Edit entry</a></b>)
+    <hr>
+    {% for experiment in experiments %}
+        <h3><a href="/lifespan/experiment/{{ experiment.pk }}">{{ experiment.name }}</a></h3>
+        <b>Study:</b> <a href="/lifespan/study/{{ experiment.study.pk }}">{{ experiment.study.title }}</a><br>
+        <b>Species:</b> <a href="/annotations/species/{{ experiment.species.pk }}">{{ experiment.species.common_name }}</a><br>
+        <b>Data: </b>{{ experiment.data }}<br>
+        <hr>
+    {% endfor %}
+    <b><a href="/lifespan/experiment/add/">Add experiment</a></b>
+{% endblock %}

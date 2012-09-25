@@ -1,0 +1,37 @@
+{% extends "lifespan/base.html" %}
+
+{% block header_title %}Measurement{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/" xmlns="http://www.w3.org/1999/html">Lifespan</a>
+    > <a href="/lifespan/measurements">Measurements</a>
+    > Measurement
+{% endblock %}
+
+{% block title %}Measurement{% endblock %}
+
+{% block content %}
+    <b>Experiment:</b> <a href="/lifespan/experiment/{{ measurement.experiment.pk }}/">{{ measurement.experiment }}</a><br>
+
+    <b>Control:</b> {{ measurement.control }}<br>
+
+    <b>Strain:</b> <a href="/lifespan/strain/{{ measurement.strain.pk }}">{{ measurement.strain }}</a><br>
+    <b>Genotype:</b> {{ measurement.genotype }}<br>
+
+    <b>Diet:</b> {{ measurement.diet }}<br>
+    <b>Temperature:</b> {{ measurement.temperature }}<br>
+    <b>Start:</b> {{ measurement.start }}<br>
+
+    <b>Mean:</b> {{ measurement.mean }}<br>
+    <b>Median:</b> {{ measurement.median }}<br>
+    <b>Max:</b> {{ measurement.max }}<br>
+    <b>Num:</b> {{ measurement.num }}<br>
+
+    <b>Comparisions:</b>
+    {% for comparision in measurement.comparisions.all %}
+        {{ comparision }}<br>
+    {% endfor %}
+    <br>
+    <br>
+    <b><a href="/lifespan/measurement/edit/{{ measurement.pk }}">Edit measurement</a></b> (<a href="/admin/lifespan/measurement/{{ measurement.pk }}">Admin</a>)
+{% endblock %}

@@ -8,8 +8,8 @@
 {% endblock %}
 
 {% block options %}
+    <a href="/lifespan/studies/">Studies</a> |
     <a href="/lifespan/studies/archive/">Archive</a>
-
 {% endblock %}
 
 {% block title %}Studies{% endblock %}
@@ -27,13 +27,20 @@
     {% endfor %}
     {% endcomment %}
     <table border="0">
-        <tr><td><b>PMID</b></td><td><b>Title</b></td><td><b>Experiments</b></td><td><b>Integrated</b></td></tr>
+        <tr>
+            <td><b>PMID</b></td>
+            <td><b>Title</b></td>
+            <td><b>Experiments</b></td>
+            <td><b>Integrated</b></td>
+            <td><b>Delete</b></td>
+        </tr>
         {% for study in page.object_list %}
             <tr>
                 <td>{{ study.pmid }}</td>
                 <td><a href="/lifespan/study/{{ study.pk }}">{{ study.title }}</a></td>
                 <td><center>{{ study.experiment_set.all|length }}</center></td>
-                <td><center>{{ study.integrated }}</center><td>
+                <td><center>{{ study.integrated }}</center></td>
+                <td><center><a href="/lifespan/study/delete/{{ study.pk }}">X</a></center></td>
             </tr>
         {% endfor %}
     </table>

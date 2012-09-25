@@ -1,0 +1,51 @@
+{% extends "lifespan/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block extra_style %}
+    <!-- Note that there's is also blue.uni-form.css and dark.uni-form.css available if you want to try changing defaults up -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}uni-form/css/uni-form.css" type="text/css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}uni-form/css/default.uni-form.css" type="text/css" />
+{% endblock %}
+
+{% block extra_script %}
+    <!-- uni-form JS library, optional -->
+    <script src="{{ STATIC_URL }}uni-form/js/uni-form.jquery.js" type="text/javascript"></script>
+    <!-- activate uni-form.jquery -->
+    <script>
+    $(function(){
+        $('form.uniForm').uniform();
+    });
+    </script>
+{% endblock %}
+
+{% block header_title %}Edit Study{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/">Lifespan</a>
+    > <a href="/lifespan/studies/">Studies</a>
+    > Edit
+{% endblock %}
+
+{% block title %}Edit Study{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+
+    {% comment %}
+        <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button>Submit</button>
+    </form>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+    <button>Submit</button>
+    </form>
+
+    <hr>
+        {% crispy form %}
+    {% endcomment %}
+
+{% endblock %}

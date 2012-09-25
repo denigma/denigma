@@ -1,0 +1,27 @@
+{% extends "lifespan/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block head_title %}Delete Study{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/">Lifespan</a>
+    > <a href="/lifespan/studies/">Studies</a>
+    > <a href="/lifespan/study/{{ study.pk }}/">Study</a>
+    > Delete
+{% endblock %}
+
+{% block title %}Delete Study{% endblock %}
+
+{% block subtitle %}
+    {% if study.pmid %}
+        {{ study.pmid }}
+    {% endif %}
+    {% if study.title %}
+        {{ study.title }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

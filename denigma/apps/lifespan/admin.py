@@ -6,9 +6,8 @@ from models import Study, Experiment, Measurement, Comparision, Epistasis, Strai
 from models import Type, Factor, Manipulation, Intervention, Regimen, Assay
 
 
-
 class StudyAdmin(reversion.VersionAdmin):
-    fields = ['title', 'pmid', 'link', 'reference', 'notes', 'integrated']
+    fields = ['title', 'pmid', 'link', 'reference', 'species', 'notes', 'integrated']
     list_display = ('title', 'pmid', 'full_text', 'notes', 'created', 'updated', 'integrated')
     search_fields = ('title', 'pmid', 'notes')
 
@@ -55,7 +54,7 @@ class AdminFactor(reversion.VersionAdmin):
                     )
     list_filter = ['taxid',
                    'classifications',
-                   'mapping'] #'manipulation',   #'classification',
+                   'mapping', 'regimen'] #'manipulation',   #'classification',
 
     search_fields = ['symbol', 'name', 'observation', 'alias', 'entrez_gene_id', 'ensembl_gene_id',
                      'description', 'function', 'human_homologue', 'pubmed_id', 'reference']#'observation', 

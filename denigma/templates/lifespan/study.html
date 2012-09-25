@@ -1,0 +1,59 @@
+{% extends "lifespan/base.html" %}
+
+{% load counter %}
+{% load slicer %}
+
+{% block head_title %}Study{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/">Lifespan</a>
+    > <a href="/lifespan/studies/">Studies</a>
+    > Study
+    = {{ study.title|slice:"50" }}...
+{% endblock %}
+
+{% block title %}{{ study.title }}{% endblock %}
+
+{% block content %}
+    <b>Authors:</b> {{ study.reference.authors }}<br>
+    <b>Year:</b> {{ study.reference.year }}<br>
+    <b>Journal:</b> {{ study.reference.journal }}<br>
+    <b>Abstract:</b> {{ study.reference.abstract }}<br>
+    <br>
+    <h3>Integration:</h3>
+    Created on {{ study.created }} {% if study.created != study.updated %}
+    and lastly updated on {{ study.updated }}
+    {% endif %}<br>
+    {% if study.link %}
+         <b><a href="{{ study.link }}">Full text available</a><br>
+    {% else %}
+         <b>Not linked</b><br>
+    {% endif %}
+    <b>Integrated:</b> {{ study.integrated }}<br>
+    {% if study.notes %}
+        <b>Notes:</b> {{ study.notes }}<br>
+    {% else %}
+        <b>No notes</b><br>
+    {% endif %}
+    <b>Species:</b>
+    {% if study.species.all %}
+        {% for species in study.species.all %}
+            <a href="/annotations/species/{{ species.pk }}">{{ species.common_name }}</a>
+            {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    {% else %}?
+    {% endif %}<br>
+    <b>Experiments: </b>{{ experiments|count }}
+    {% if experiments %}
+        {% for experiment in experiments %}
+            <li><a href="/lifespan/experiment/{{ experiment.pk }}">{{ experiment.name }}</a></li>
+        {%  endfor %}
+    {% endif %}
+    <br>
+    <br>
+    <b><a href="/lifespan/study/edit/{{ study.pk }}">Edit study</a></b> (<a href="/admin/lifespan/study/{{ study.pk }}">Admin</a>)
+     |
+    <b><a href="/lifespan/experiment/add/{{ study.pk }}">Add experiment to study</a></b> (<a href="/admin/lifespan/experiment/add/">Admin</a>)
+     |
+    <b><a href="/lifespan/study/delete/{{ study.pk }}">Delete study</a></b>
+{% endblock %}

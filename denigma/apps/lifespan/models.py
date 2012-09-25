@@ -1,5 +1,6 @@
-from django.db import models
+from django.db import models, IntegrityError
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import MultipleObjectsReturned
 
 from datasets.models import Reference
 
@@ -7,13 +8,14 @@ from datasets.models import Reference
 class Study(models.Model):
     """A lifespan study."""
     pmid = models.IntegerField(blank=True, null=True, unique=True)
-    title = models.CharField(max_length=250, blank=True, null=True, unique=True)
+    title = models.CharField(max_length=255, blank=True, null=True, unique=True)
     link = models.URLField(blank=True, null=True)
     reference = models.ForeignKey(Reference, blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     integrated = models.BooleanField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    species = models.ManyToManyField('annotations.Species', blank=True)
     #experiments = models.OneToMany(Experiment) # ForeignKey?
     
     def __unicode__(self):
@@ -22,32 +24,73 @@ class Study(models.Model):
         else:
             return "{0} {1}".format(self.pmid, self.title)
 
+    def get_absolute_url(self):
+        return '/lifespan/study/%i' % self.pk
+
     class Meta():
         verbose_name_plural = "studies"
 
     def save(self, *args, **kwargs):
-        """Check whether study is already in references and fetches annotation."""
-        kwargs['title'] = self.title
-        kwargs['pmid'] = self.pmid
+        """Check whether study is already in references and fetches annotation.
+        1. Whether reference nor study exist.
+        2. reference exist but not study.
+        3. reference does not exit but study
+        4. Both reference and study exist."""
+        if self.title: kwargs['title'] = self.title
+        if self.pmid: kwargs['pmid'] = self.pmid
         if self.link:
            kwargs['link'] = self.link
         if self.pmid: 
            reference, created = Reference.objects.get_or_create(pmid=self.pmid, defaults=kwargs)
+           print "models.Study.save() if self.pmid:", reference, created
+           self.reference_was_created = created
         elif self.title:
-           reference, created = Reference.objects.get_or_create(title__contains=self.title, defaults=kwargs)
-        if not created:
-           reference.__dict__.update(**kwargs)
-           reference.save()
-           print reference
+           try:
+               print "TRRRRRRRRRRRRRRRYL reference, creating"
+               try:
+                   reference, created = Reference.objects.get_or_create(title__icontains=self.title, defaults=kwargs)
+               except MultipleObjectsReturned as e:
+                   references = Reference.objects.filter(title__icontains=self.title, defaults=kwargs)
+                   for reference in references:
+                       if reference.pmid:
+                           break
+                   created = False
+               except Exception as e:
+                   print e
+               print "TRRRRRRRRRRRRRRRYL reference, created", created
+               print reference, created
+               self.reference_was_created = created
+               #print "self.reference_was_created", self.reference_was_created
+               self.reference = reference
+
+               #print self.reference
+               #super(Study, self).save()
+               #print "Saved!"
+               #print "Post save: ", self.reference
+           except IntegrityError:
+               return None
+               #reference = Reference(**kwargs)
+               #created = False
+        else:
+            reference = Reference(**kwargs)
+            created = False
+
+        #if not created and self.title:
+           #reference.__dict__.update(#**kwargs)
+           #reference.save()
+           #print reference
+
         self.pmid = reference.pmid
         self.title = reference.title
         self.reference = reference
-        super(Study, self).save()
+        try: super(Study, self).save()
+        except IntegrityError as e:
+            print e
 
 
 class Experiment(models.Model):
     """A lifespan experiment."""
-    name = models.CharField(max_length=250, blank=True, null=True)
+    name = models.CharField(max_length=250, unique=True)
     data = models.TextField(blank=True, null=True)
     study = models.ForeignKey(Study)
     species = models.ForeignKey('annotations.Species')
