@@ -5,6 +5,11 @@ register = template.Library()
 
 
 @register.filter
-def replace(value, pre, post):
-     """Replaces any defined character."""
-     return value.replace(pre, post)
+def replace(value, args=None):
+    """Replaces any defined string by another string. Separate strings by ' | '
+    By default return is replaces by html break."""
+    if not args:
+        pre, post = '\r', '<br>'
+    else:
+        pre, post = args.split(' | ')
+    return value.replace(pre, post)
