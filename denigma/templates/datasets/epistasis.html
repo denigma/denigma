@@ -1,0 +1,17 @@
+{% extends "datasets/base.html" %}
+
+{% block header_title %}Epistatis{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/datasets">Datasets</a>
+    > Epistatis
+{% endblock %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <p>{{ description}}</p>
+    {% for pmid in pmids %}
+        <li><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ pmid }}">{{ pmid }}</a></li>
+    {% endfor %}
+{% endblock %}

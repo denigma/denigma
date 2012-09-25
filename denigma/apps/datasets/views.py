@@ -43,3 +43,12 @@ def changes(request):
     changes_description = Post.objects.get(title='Changes')
     ctx = {'changes': changes, 'changes_description': changes_description}
     return render(request, 'datasets/changes.html', ctx)
+
+def epistasis(request):
+    post = Post.objects.get(title='Epistasis of Longevity')
+    data = post.text.split('\n')
+    description = data[0]
+    pmids = [i for i in data[2:] if i]
+    ctx = {'post': post, 'description': description, 'pmids': pmids}
+    return render_to_response('datasets/epistasis.html', ctx,
+                context_instance=RequestContext(request))
