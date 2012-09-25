@@ -19,6 +19,9 @@ from Bio import Entrez
 from Bio import Medline
 Entrez.email = "hevok@denigma.de"
 
+from apps.articles.amazon import API
+from key import AWS_KEY, SECRET_KEY
+
 try:
     import denigma.apps.articles.google as google
 except Exception as e:
@@ -44,6 +47,7 @@ def q(s):
         records = Entrez.read(Entrez.esearch(db='pubmed', term=' '.join(terms)))
         counts = int(records['Count'])
         if not counts:
+            print " ".join(terms)
             terms = terms[1:]
         else: return records
 
@@ -91,6 +95,7 @@ class Bibliography(dict):
         self.findings = []
         
         if str(query) in self.memo:
+            print "memo"
             return [self.memo[str(query)]]
         
         if isinstance(query, int):
@@ -99,6 +104,7 @@ class Bibliography(dict):
             else:
                 result = self.fetch(query, printing=printing)
         else:
+            print "Decode"
             result = self.decode(query, printing=printing)
 
         # Dynammic programming:
@@ -106,13 +112,9 @@ class Bibliography(dict):
             self.memo[str(query)] = result[0]
         else:
             # Take the top google hit:
-            googled = False
-            for url in google.search(query, stop=20):
-                if url.startswith('http://www.ncbi.nlm.nih.gov/pubmed/'):
-                    result = [self.efetch(int(url.split('/')[-1]), printing=printing)]
-                    self.memo[str(query)] = result[0]
-                    googled =  True
-                    break
+            googled = self.google(query, printing=False)
+            if googled:
+                result = googled
 
             # Amazone book query:
             if not googled:
@@ -309,8 +311,6 @@ class Bibliography(dict):
 
     def amazone(self, query):
         print query
-        from amazone import API
-        from key import AWS_KEY, SECRET_KEY
         ASSOC_TAG = 'Hevok'
         api = API(AWS_KEY, SECRET_KEY, 'us', ASSOC_TAG)
         node = api.item_search('Books', Title=query)
@@ -321,6 +321,16 @@ class Bibliography(dict):
                 #print dir(book)
                 results.append(book.ASIN)
         return results
+
+    def google(self, query, stop=20, printing=False, memo=True):
+        """Performs a google search and returns an reference instance."""
+        if memo and str(query) in self.memo: return [self.memo[str(query)]]
+        for url in google.search(query, stop=stop):
+            if url.startswith('http://www.ncbi.nlm.nih.gov/pubmed/'):
+                result = [self.efetch(int(url.split('/')[-1]), printing=printing)]
+                self.memo[str(query)] = result[0]
+                return result
+        return []
 
                   
 class Reference():
