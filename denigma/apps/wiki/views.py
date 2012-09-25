@@ -93,7 +93,7 @@ def edit_page(request, page_name):
 def save_page(request, page_name):
     content = request.POST["content"]
     tag_list = []
-    if"tags" in request.POST:
+    if "tags" in request.POST:
         tags = request.POST["tags"]
         tag_list = [Tag.objects.get_or_create(name=tag)[0] for tag in tags.split()] # .get_or_create returns the object + Boolean whether it is already there or new.
     try:
