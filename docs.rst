@@ -574,4 +574,39 @@ the background color removed. The ong was scaled to 16x16 pixel (px) [6,7].
 [6] http://www.aha-soft.com/faq/make_website_icon.htm
 [7] http://tools.dynamicdrive.com/favicon/
 
+
+
+Forms
+-----
+
+Bootstrap forms
+~~~~~~~~~~~~~~~
+To inlcude a bootstrap form to the following [1]: ::
+   {% load bootrap_tags %}
+   ...
+   <form>
+      <legend>A Form</legend>
+      {% csrf_token %}
+      {{ form|as_boostrap }}
+      <div class="form-actions">
+        <a href="form-actions">
+        <button type="submit" class="btn btn-primary">Save changes</button>
+     </div>
+   </form>
+
+Dropdown should better be triggered by hover [2-4].
+
+[1] https://github.com/pinax/pinax-theme-bootstrap
+[2] https://github.com/chrisdev/pinax-theme-foundation/pull/19
+[3] http://stackoverflow.com/questions/8878033/how-to-make-twitter-bootstrap-menu-dropdown-on-hover-rather-than-click
+[4] http://jsfiddle.net/ekjxu/
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
+
+
+Crispy
+~~~~~~
+The best way to have DRY django form is `django-crispy` form which allow to define the form in python and provides tag
+and filter to quickly render forms in a div format while providing an eneromous amount of capability to configure and 
+control rendered HTML [https://github.com/maraujop/django-crispy-forms]. `crispy-forms` is very well documented:
+[http://django-crispy-forms.readthedocs.org/en/d-0/index.html].
+
