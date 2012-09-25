@@ -14,4 +14,6 @@
     {% for pmid in pmids %}
         <li><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ pmid }}">{{ pmid }}</a></li>
     {% endfor %}
+    <br>
+    <b><a href="/blog/edit/{{ post.pk }}">Edit list</a></b> (<a href="/admin/blog/post/{{ post.pk }}">Admin</a>)
 {% endblock %}
