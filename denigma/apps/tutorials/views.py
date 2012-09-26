@@ -7,7 +7,7 @@ from blog.models import Post
 def index(request):
     tutorials_entry = Post.objects.get(title="Tutorials")
     tutorials = Post.objects.filter(tags__name='tutorial').order_by('id')
-    ctx = {'tutorial_entry': tutorials_entry, 'tutorials': tutorials}
+    ctx = {'tutorials_entry': tutorials_entry, 'tutorials': tutorials}
     return render_to_response('tutorials/index.html', ctx,
                               context_instance=RequestContext(request))
 
