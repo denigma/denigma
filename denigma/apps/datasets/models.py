@@ -6,7 +6,7 @@ from django.db import models
 
 from Bio import Entrez, Medline
 
-from library import Bibliography
+
 
 Entrez.email = "hevok@denigma.de"
 
@@ -117,6 +117,9 @@ class Reference(models.Model):
                        super(Reference, self).save(*args, **kwargs)
                        print("Saved")
                     else:
+
+                        from library import Bibliography # This statement at the top breaks Denigma for unknown reason.
+
                         # Google:
                        bib = Bibliography()
                        r = bib.google(self.title)
