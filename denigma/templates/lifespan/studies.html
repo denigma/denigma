@@ -95,7 +95,10 @@
          <input type="submit" value="Add"><br>
      </form>
 {% endcomment %}
-
+    {% else %}
+        <hr>
+        </p>You need to be logged in to be able to adde studies.
+        <b><a href="/account/login/">Log in</a></b> | <b><a href="/account/signup/">Sign up</a></p>
     {% endif %}
 
     <b><a href="/admin/lifespan/study">Admin</a></b>
