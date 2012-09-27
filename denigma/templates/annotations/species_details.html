@@ -1,7 +1,6 @@
 {% extends "annotations/base.html" %}
 
 {% block hierarchy %}
-     > <a href="/annotations/">Annotations</a>
      > <a href="/annotations/species/">Species</a>
      > <i>{{ species.short_latin_name }}</i>
 {% endblock %}
@@ -9,8 +8,8 @@
 {% block title %}{{ species.common_name }}{% endblock %}
 
 {% block content %}
-    <b>Scientific name:</b> <i>{{ species.latin_name }}</i> <br>
-    <b>Taxonomy ID:</b> {{ species.taxid }}</br>
+    <b>Scientific name:</b> <i>{{ species.latin_name }}</i><br>
+    <b>Taxonomy ID:</b> {{ species.taxid }}<br>
     <b>Common name:</b> {{ species.common_name }}<br>
     <b>Short name:</b> {{ species.short_name }}<br>
     <b>Number of genes:</b> {{ species.number_genes }}<br>
@@ -19,6 +18,7 @@
         <img src="{{ image.url }}" alt="{{ image.name }}">
     {% endfor %}
     <br>
-    <b><a href="/admin/annotations/species/{{ species.pk }}">Edit species</a></b>
+    <b><a href="/annotations/species/edit/{{ species.pk }}">Edit species</a></b>
+       (<a href="/admin/annotations/species/{{ species.pk }}">Admin</a>)
 {% endblock %}
 

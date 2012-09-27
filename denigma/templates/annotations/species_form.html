@@ -1,0 +1,16 @@
+{% extends "annotations/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ action }} Species{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/annotations/species/">Species</a>
+    > {{ action }}
+{% endblock %}
+
+{% block title %}{{ action }} Species{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

@@ -1,5 +1,5 @@
 """Annotation views."""
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib import messages
@@ -7,9 +7,12 @@ from django.utils.translation import ugettext
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from blog.models import Post
 
+from django.views.generic.edit import CreateView, UpdateView
+
+from blog.models import Post
 from models import Classification, Tissue, Species, Taxonomy
+from forms import SpeciesForm
 
 
 def index(request):
@@ -49,7 +52,7 @@ def species_archive(request):
     try:
         page = paginator.page(page_num)
     except EmptyPage:
-        page = pageinator.page(paginator.num_pages)
+        page = paginator.page(paginator.num_pages)
     except PageNotAnInteger:
         page = paginator.page(1)
     ctx = {'page': page}
@@ -64,7 +67,31 @@ def species_detailed(request, pk):
     ctx = {'species': species, 'attributes': attributes}
     return render_to_response('annotations/species_detailed.html', ctx,
                               context_instance=RequestContext(request))
-    pass
+
+class SpeciesView(object):
+    form_class = SpeciesForm
+    model = Species
+
+
+class SpeciesUpdate(SpeciesView, UpdateView):
+    def get_context_data(self, **kwargs):
+        context = super(SpeciesView, self).get_context_data(**kwargs)
+        context['action'] = 'Edit'
+        return context
+
+
+class SpeciesCreate(SpeciesView, CreateView):
+    def get_context_data(self, **kwargs):
+        context = super(SpeciesView, self).get_context_data(**kwargs)
+        context['action'] = 'Add'
+        return context
+
+
+def edit_species(request, pk):
+    species = Species.objects.get(pk=pk)
+    form
+    return HttpResponse("Editing species")
+
 
 def tissues(request):
     """Lists all the tissues with pagination (Pagination is not yet implemented)."""

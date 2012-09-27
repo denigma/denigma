@@ -142,8 +142,13 @@ class Species(models.Model):
     complexity = models.IntegerField(blank=True, null=True)
     main_model = models.BooleanField(default=False)
 
+    def save(self, *args, **kwargs):
+        prefix, postfix = self.latin_name.split(' ')
+        self.short_latin_name = "%s. %s" % (prefix[0], postfix)
+        super(Species, self).save(*args, **kwargs)
+
     def __unicode__(self):
-        return self.common_name 
+        return self.common_name or self.short_name or self.latin_name
 
     def get_absolute_url(self):
         return "/annotations/species/%i" % self.pk

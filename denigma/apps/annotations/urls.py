@@ -3,7 +3,7 @@ from django.conf.urls.defaults import patterns, url
 from django.views.generic import DetailView
 
 from models import Taxonomy
-
+from views import SpeciesCreate, SpeciesUpdate
 
 urlpatterns = patterns('annotations.views',
     url(r'^classifications/$', 'classifications', name="classification"), 
@@ -15,6 +15,8 @@ urlpatterns = patterns('annotations.views',
           # DetailView.as_view(
            #  model=Taxonomy,
             # template_name='annotations/species_detailed')
+    url(r'^species/edit/(?P<pk>\d+)/$', SpeciesUpdate.as_view()),
+    url(r'^species/add/$', SpeciesCreate.as_view()),
     url(r'^tissues/$', 'tissues', name="tissues"),
     url(r'^tissue/(?P<pk>\d+)/$', 'tissue'),
     url(r'^tissue/archive', 'tissue_archive', name="tissue_archive"),
