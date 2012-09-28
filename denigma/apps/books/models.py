@@ -1,12 +1,13 @@
 from django.db import models #(the database tables)
 from django import forms
+from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 
 TITLE_CHOICES = (
     ('MR', 'Mr.'),
     ('MRS', 'MRs.'),
     ('MS', 'Ms.'),
 )
-
 
 
 class Publisher(models.Model):
@@ -25,16 +26,21 @@ class Publisher(models.Model):
 
 
 class Author(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=200)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=40)
     title = models.CharField(max_length=3, choices=TITLE_CHOICES)
     email = models.EmailField('e-mail', blank=True)
     last_accessed = models.DateField(blank=True)
     birth_date = models.DateField(blank=True, null=True)
+    created_by = models.ForeignKey(User)
     
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)
+
+    def get_absolute_url(self):
+        return reverse('author-detail', kwargs={'pk': self.pk})
+
 
 class AuthorForm(forms.ModelForm):
     class Meta:
