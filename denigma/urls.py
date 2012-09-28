@@ -70,6 +70,7 @@ urlpatterns += patterns("",
        {'url': '/media/img/favicon.ico'}), # Site icon
     url(r'^time/', include('chrono.urls')),
     url(r'^meta/', include('meta.urls')),
+    url(r'^aspects/', include('aspects.urls'))
 )
 if settings.SERVE_MEDIA:
     urlpatterns += patterns("",
