@@ -2,7 +2,7 @@ from django.conf.urls.defaults import patterns, url
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 
-from models import Measurement, Intervention, Factor, Strain, Assay
+from models import Measurement, Intervention, Factor, Strain, Assay, Regimen, Epistasis, Manipulation
 from views import InterventionList, InterventionCreate, InterventionUpdate #, InterventionDelete
 from views import FactorList, FactorDetail#, FactorCreate, FactorUpdate, FactorDelete
 
@@ -10,6 +10,7 @@ from views import FactorList, FactorDetail#, FactorCreate, FactorUpdate, FactorD
 urlpatterns = patterns('lifespan.views',
     url(r'^$', 'index', name='lifespan'),
 
+    # Studies:
     url(r'^studies/$', 'studies', name='studies'),
     url(r'^study/(?P<pk>\d+)', 'study'),
     url(r'^studies/add', 'add_studies', name='add_studies'),
@@ -17,6 +18,7 @@ urlpatterns = patterns('lifespan.views',
     url(r'^study/delete/(?P<pk>\d+)', 'delete_study'),
     url(r'^studies/archive/$', 'studies_archive', name='studies_archive'),
 
+    # Experiments:
     url(r'^experiments/$', 'experiments', name='experiments'),
     url(r'^experiment/(?P<pk>\d+)', 'experiment',),
     url(r'^experiment/add/(?P<pk>\d*)', 'add_experiment', name='add_experiment'),
@@ -32,6 +34,7 @@ urlpatterns = patterns('lifespan.views',
         DetailView.as_view(model=Measurement,
             template_name='lifespan/measurement.html')),
 
+    # Comparisions:
     url(r'^comparisions/$', 'comparisions', name='comparisions'),
     url(r'^comparision/(?P<pk>\d+)', 'comparision'),
     url(r'^comparision/add', 'add_comparision', name='add_comparision'),
@@ -60,6 +63,7 @@ urlpatterns = patterns('lifespan.views',
 #         login_required(InterventionDelete.as_view())),
     url(r'^interventions/link/$', 'link_interventions', name='link_interventions'),
 
+    # Factors:
     url(r'^factors/$', FactorList.as_view(), name='factors'),
     url(r'^factors/archive/$', ListView.as_view(queryset=Factor.objects.all(),
         template_name='lifespan/factors_archive.html', context_object_name='factors'),
@@ -68,23 +72,34 @@ urlpatterns = patterns('lifespan.views',
     url(r'^factor/add/$', 'add_factor', name='add_factor'),
     url(r'^factor/edit/(?P<pk>\d+)/$', 'edit_factor'),
 
-    url(r'^epistasis/$', 'epistasis'),
-    url(r'^regimen/$', 'regimen'),
+    # Strains;
+    url(r'^strains/$', ListView.as_view(queryset=Strain.objects.all(),
+        template_name='lifespan/strains.html', context_object_name="strains" ),
+        name='strains'),
+    url(r'^strain/(?P<pk>\d+)', DetailView.as_view(model=Strain,
+        template_name='lifespan/strain.html')),
+
+    # Assays:
     url(r'^assays/$', ListView.as_view(queryset=Assay.objects.all(),
         template_name='lifespan/assays.html', context_object_name="assays"),
         name='assays'),
     url(r'^assay/(?P<pk>\d+)', DetailView.as_view(model=Assay,
         template_name='lifespan/assay.html')),
-    url(r'^manipulation/$', 'manipulation'),
+
+    # Others:
+    url(r'^epistases/$', ListView.as_view(queryset=Epistasis.objects.all(),
+        template_name='lifespan/epistases.html', context_object_name='epistases'),
+        name='epistases'),
+    url(r'^regimens/$', ListView.as_view(queryset=Regimen.objects.all(),
+        template_name='lifespan/regimens.html', context_object_name='regimens'),
+        name='regimen'),
+    url(r'^manipulations/$', ListView.as_view(queryset=Manipulation.objects.all(),
+        template_name='lifespan/manipulations.html',
+        context_object_name='manipulations'),
+        name='manipulations'),
     url(r'^type/$', 'type'),
 
-    url(r'^strains/$', ListView.as_view(queryset=Strain.objects.all(),
-        template_name='lifespan/strains.html', context_object_name="strains" ),
-        name='strains'),
-
-    url(r'^strain/(?P<pk>\d+)', DetailView.as_view(model=Strain,
-        template_name='lifespan/strain.html')),
-
+    # Depricated:
     url(r'^genage/describe', 'describe'),
     url(r'^genage/functional_description', 'functional_description'),
     url(r'^genage/integrity', 'integrity'),
