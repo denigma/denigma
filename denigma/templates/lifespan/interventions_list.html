@@ -1,0 +1,16 @@
+{% extends "lifespan/base.html" %}
+
+{% load render_table from django_tables2 %}
+
+{% block head_title %}Interventions List{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/interventions/">Interventions</a>
+    > List
+{% endblock %}
+
+{% block title %}Interventions List{% endblock %}
+
+{% block content %}
+    {% render_table table %}
+{% endblock %}

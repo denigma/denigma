@@ -1,0 +1,24 @@
+{% extends "lifespan/base.html" %}
+
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+
+{% block head_title %}Assays{% endblock %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+{% endblock %}
+
+{% block hierarchy %}
+    > Assays
+{% endblock %}
+
+{% block title %}Assays{% endblock %}
+
+{% block content %}
+    {% render_table assays %}
+    <hr>
+    {% for assay in assays %}
+        <a href="/lifespan/assay/{{ assay.pk }}">{{ assay.name }}</a><br>
+    {% endfor %}
+{% endblock %}

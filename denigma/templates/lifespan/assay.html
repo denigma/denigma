@@ -1,0 +1,14 @@
+{% extends "lifespan/base.html" %}
+
+{% block head_title %}{{ assay.name }}{% endblock %}
+
+{% block hierarchy %}
+    > Assay
+    = {{ assay.shortcut }}
+{% endblock %}
+
+{% block title %}{{ assay.name }}{% endblock %}
+
+{% block content %}
+    {{ assay }}
+{% endblock %}

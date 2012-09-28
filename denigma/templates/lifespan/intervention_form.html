@@ -1,0 +1,18 @@
+{% extends "lifespan/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ action }} Intervention{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/interventions/">Interventions</a>
+    > Intervention
+    {%  if intervention.name %}= {{ intervention.name }}{% endif %}
+    > {{ action }}
+{% endblock %}
+
+{% block title %}{{ action }} Intervention{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

@@ -6,7 +6,6 @@
 {% block head_title %}Experiment{% endblock %}
 
 {% block hierarchy %}
-    > <a href="/lifespan/">Lifespan</a>
     > <a href="/lifespan/experiments/">Experiments</a>
     > Experiment
     = {{ experiment.name }}
@@ -18,8 +17,10 @@
     <b>Study:</b> <a href="/lifespan/study/{{ experiment.study.pk }}">{{ experiment.study.title }}</a></br>
     <b>Species:</b> <a href="/annotation/species/{{ species.pk }}">{{ experiment.species.common_name }}</a></br>
     <b>Data:</b> {{ experiment.data|replace|safe }}<br>
+
     {% for measurement in experiment.measurement_set.all %}
-        {{ measurment }}
+        {{ measurement }}<br>
+        <a href="/lifespan/measurement/ {{ measurement.pk }}"
     {% endfor %}
     <hr>
     <b><a href="/lifespan/experiment/edit/{{ experiment.pk }}">Edit experiment</b></a>

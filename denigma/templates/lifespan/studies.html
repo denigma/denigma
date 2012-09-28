@@ -3,13 +3,13 @@
 {% block head_title %}Studies{% endblock %}
 
 {% block hierarchy %}
-    > <a href="/lifespan/">Lifespan</a>
     > Studies
 {% endblock %}
 
 {% block options %}
     <a href="/lifespan/studies/">Studies</a> |
-    <a href="/lifespan/studies/archive/">Archive</a>
+    <a href="/lifespan/studies/archive/">Archive</a> |
+    </b>(<a href="/admin/lifespan/study">Admin</a>)<b>
 {% endblock %}
 
 {% block title %}Studies{% endblock %}
@@ -100,7 +100,5 @@
         </p>You need to be logged in to be able to adde studies.
         <b><a href="/account/login/">Log in</a></b> | <b><a href="/account/signup/">Sign up</a></p>
     {% endif %}
-
-    <b><a href="/admin/lifespan/study">Admin</a></b>
 
 {% endblock %}

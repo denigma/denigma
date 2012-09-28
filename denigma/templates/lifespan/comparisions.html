@@ -1,8 +1,22 @@
 {% extends "lifespan/base.html" %}
 
-{% block head_title %}Comparision{% endblock %}
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
 
-{% block subtitle %}Comparision{% endblock %}
+{% block head_title %}Comparisions{% endblock %}
+
+{% block hierarchy %}
+    > Comparisions
+{% endblock %}
+
+{% block options %}
+    (<a href="/admin/lifespan/comparision/">Admin</a>)
+{% endblock %}
+
+{% block title %}Comparisions{% endblock %}
 
 {% block content %}
+    {% render_table comparisions %}
+    {% for comparision in comparisions %}
+    {% endfor %}
 {% endblock %}

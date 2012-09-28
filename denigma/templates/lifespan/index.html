@@ -5,19 +5,33 @@
 {% load crosslink %}
 
 {% block hierarchy %}
-    > <a href="/lifespan">Lifespan</a>
     > Index
 {% endblock hierarchy %}
+
+{% block options %}
+    (<a href="/admin/lifespan">Admin</a>)
+{% endblock %}
 
 {% block content %}
     {{ lifespan.text|hyper|recross|safe }}
     <hr>
-
+    <b>Main:</b><br>
     <a href="/lifespan/studies/">Studies</a><br>
     <a href="/lifespan/experiments/">Experiments</a><br>
     <a href="/lifespan/measurements/">Measurements</a><br>
+    <a href="/lifespan/comparisions/">Comparisions</a></br>
     <a href="/lifespan/interventions/">Interventions</a><br>
     <a href="/lifespan/factors/">Factors</a><br>
     <br>
-    <b><a href="/admin/lifespan">Admin</a></b>
+    <b>Accessory:</b><br>
+    <a href="/lifespan/assay">Assays</a><br>
+    <a href="/lifespan/strains/">Strains</a><br>
+    <a href="/lifespan/regimen/">Regimens</a><br>
+    <a href="/lifespan/mainpulations">Manipulations</a><br>
+    <a href="/lifespan/epistasis/">Epistases</a><br>
+
+    {% if user.is_superuser %}
+        <hr>
+        <a href="/lifespan/interventions/link">Link interventions</a>
+    {% endif %}
 {% endblock %}

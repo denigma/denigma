@@ -1,0 +1,73 @@
+{% extends "lifespan/base.html" %}
+
+{% load pubmed_linker %}
+
+{% block head_title %}Factor{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/factors/" xmlns="http://www.w3.org/1999/html">Factors</a>
+    > Factor
+    = {% if factor.symbol %}{{ factor.symbol }}{% else %}{{ factor.name }}{% endif %}
+{% endblock %}
+
+{% block title %}{{ factor.symbol }}{% endblock %}
+
+{% block content %}
+    <b>Symbol:</b> {{ factor.symbol }}<br>
+    <b>Name:</b> {{ factor.name }}<br>
+    {% if factor.alias %}<b>Alias:</b> {{ factor.alias }}<br>{% endif %}
+
+    <b>Entrez gene ID:</b> {{ factor.entrez_gene_id }}<br>
+    <b>Ensembl gene ID:</b> {{ factor.ensembl_gene_id }}<br>
+
+    <b>Species:</b> <a href="/annoations/species/{{ factor.species.pk }}">{{ factor.species.short_name }}</a> (Taxid:</b> {{ factor.taxid }})<br>
+
+
+    {% if factor.functional_description %}
+        <br><b>Functional description:</b><br>
+            {{ factor.functional_description }}
+    {% else %}
+        <br><b>Function: </b><br>
+        {{ factor.function }}
+    {% endif %}<br>
+
+    <br><b>Observation:</b><br>
+    {{ factor.observation|pubmed_links }}<br>
+
+    <br><b>Interventions:</b>
+    {% for intervention in factor.intervention.all %}
+        <li><a href="/lifespan/intervention/{{ intervention.pk }}/">{{ intervention.name }}</a></li>
+    {% endfor %}
+
+    <br><b>Assays:</b>
+    {% for assay in factor.assay.all %}
+        <a href="/lifespan/assay/{{ assay.pk }}">{{ assay.name }}</a>
+    {% endfor %}<br>
+
+    {% if factor.mean %}<b>Mean:</b> {{ factor.mean }}<br>{% endif %}
+    {% if factor.median %}<b>Median: </b> {{ factor.medium }}<br>{% endif %}
+    {% if factor.max %}<b>Maximum: </b> {{ factor.max }}<br>{% endif %}
+
+    <br><b>Classification:</b>
+    {% for classification in factor.classifications.all %}
+        <li><a href="/annotations/classification/{{ classification.pk }}/">{{ classification.title }}</a><br></li>
+    {% endfor %}<br>
+
+    {% if factor.references.all %}
+        <br><b>References:</b>
+        {% for reference in factor.references.all %}
+            {{ reference.title }}
+        {% endfor %}<br>
+    {% endif %}
+
+    {% if factor.human_homolog %}<b>Human homolog:</b> {{ factor.human_homolog }}{% endif %}<br>
+
+    {% if factor.note %}{{ factor.note }}{% endif %}<br>
+
+    <br><b><a href="/lifespan/factor/edit/{{ factor.pk }}">Edit</a></b> \
+    <b><a href="/lifespan/factor/update/{{ factor.pk }}">Update</a></b>
+        (<a href="/admin/lifespan/factor/{{ factor.pk }}">Admin</a>) |
+    <b><a href="/lifespan/factor/delete/">Delete</a></b></a>
+
+
+{% endblock %}

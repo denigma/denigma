@@ -1,0 +1,16 @@
+{% extends "lifespan/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ action }} Factor{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/factors/">Factors</a>
+    > {{ action }}
+{% endblock %}
+
+{% block title %}{{ action }} Factor{% endblock %}
+
+{% block content %}
+    {%  crispy form %}
+{% endblock %}

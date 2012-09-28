@@ -1,0 +1,17 @@
+{% extends "lifespan/base.html"  %}
+
+{% block head_title %}{{ strain.name }}{% endblock %}
+
+{% block hierarchy %}
+    > Strain
+    = {{ strain.name }}
+{% endblock %}
+
+{% block title %}{{ strain.name }}{% endblock %}
+
+{% block content %}
+    {{ strain }}
+    {% for measurement in strain.measurement.all %}
+        {{ measurement}}
+    {% endfor %}
+{% endblock %}

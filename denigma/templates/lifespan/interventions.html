@@ -1,8 +1,23 @@
 {% extends "lifespan/base.html" %}
 
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+
+{% block hierarchy %}
+    > Interventions
+{% endblock %}
+
+{% block options %}
+    <a href="/lifespan/interventions/">Interventions</a> |
+    <a href="/lifespan/intervention/add">Add</a> /
+    <a href="/lifespan/intervention/create/">Create</a> |
+    <a href="/lifespan/interventions/archive">Archive</a>
+{% endblock %}
+
 {% block head_title %}Interventions{% endblock %}
 
-{% block subtitle %}Interventions{% endblock %}
+{% block title %}Interventions{% endblock %}
 
 {% block content %}
+    {% render_table table %}
 {% endblock %}

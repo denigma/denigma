@@ -1,0 +1,18 @@
+{% extends 'lifespan/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block head_title %}Delete Intervention{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/interventions/">Intervention></a>
+    > <a href="/lifespan/intervention/{{ intervention.pk }}">{{ intervention.name }}</a>
+    > Delete
+{% endblock %}
+
+{% block title %}Delete Intervention{% endblock %}
+
+{% block subtitle %}{% endblock %}
+{% block content %}
+    {% crispy form %}
+{% endblock %}

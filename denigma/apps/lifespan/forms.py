@@ -1,5 +1,5 @@
-from django.forms import ModelForm, CharField, Textarea, BooleanField, ModelChoiceField, ModelMultipleChoiceField
-
+from django.forms import (ModelForm, CharField, Textarea, IntegerField, BooleanField,
+                          ModelChoiceField, ModelMultipleChoiceField)
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Div, HTML, Button, Row, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
@@ -80,6 +80,27 @@ class DeleteStudyForm(ModelForm):
         fields = ['comment']
 
 
+class DeleteInterventionForm(ModelForm):
+    comment = CharField(required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                'Please confirm deletion and comment on the reason why it is obsolete.',
+                'comment'),
+            Field('text_input', css_class='input-xlarge'),
+            FormActions(
+                Submit('delete', 'Delete'),
+                Submit('cancel', 'Cancel', css_class="btn-primary")
+                )
+        )
+        super(DeleteInterventionForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Intervention
+        fields = ['comment']
+
 class DeleteExperimentForm(ModelForm):
     comment = CharField(required=False)
     def __init__(self, *args, **kwargs):
@@ -106,6 +127,7 @@ class ExperimentForm(ModelForm):
     name = CharField(help_text="(Use the figure or table title as name for the experiment)")
     study = ModelChoiceField(queryset=Study.objects.all())
     species = ModelChoiceField(queryset=Species.objects.all().order_by('-main_model', 'complexity'))
+    comment = CharField(help_text="Optional, for version-control.")
     data = CharField(widget=Textarea(attrs={'cols': 160, 'rows': 20,
                                             'style': 'font-family: monospace'}),
         help_text="(space or tab-seperated header + blank line + series of measurements)",
@@ -145,19 +167,96 @@ class MeasurementForm(ModelForm):
 
 
 class ComparisionForm(ModelForm):
+    comment = CharField(required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'epistasis',
+                'comment'
+            ),
+            FormActions(
+                Submit('save', 'Save', css_class="btn-primary"),
+                Submit('cancel', 'Cancel')
+            )
+        )
+        super(ComparisionForm, self).__init__(*args, **kwargs)
     class Meta:
         model = Comparision
+        fields = ('epistasis',)
 
 
 class InterventionForm(ModelForm):
+    comment = CharField(required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'name',
+                'taxid',
+                'species',
+                'sex',
+                'background',
+                'effect',
+                'mean',
+                'median',
+                'maximum',
+                '_25',
+                '_75',
+                'manipulation',
+                'pmid',
+                'references',
+                'lifespans', #Depricated?
+                'comment',
+            ),
+            FormActions(
+                Submit('save', 'Save', css_class="btn-primary"),
+                Submit('cancel', 'Cancel')
+            )
+        )
+        super(InterventionForm, self).__init__(*args, **kwargs)
     class Meta:
         model = Intervention
 
 
 class FactorForm(ModelForm):
+    species = ModelChoiceField(queryset=Species.objects.all().order_by('-main_model', 'complexity'),
+        required=False)
+    comment = CharField(required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'symbol',
+                'name',
+                'entrez_gene_id',
+                'ensembl_gene_id',
+                'taxid',
+                'species',
+                'observation',
+                'assay',
+                'intervention',
+                'classifications',
+                'comment'
+            ),
+            FormActions(
+                Submit('save', 'Save', css_class="btn-primary"),
+                Submit('cancel', 'Cancel')
+            )
+        )
+        super(FactorForm, self).__init__(*args, **kwargs)
     class Meta:
         model = Factor
-
+        fields = ('symbol', 'name', 'entrez_gene_id', 'ensembl_gene_id',
+                  'taxid', 'species', 'observation', 'comment',
+                  'assay', 'classifications', 'intervention')
+#234567891123456789212345678931234567894123456789512345678961234567897123456789
 
 # Auxillary:
 class StrainForm(ModelForm):

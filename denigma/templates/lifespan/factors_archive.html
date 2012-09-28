@@ -1,0 +1,29 @@
+{% extends "lifespan/base.html" %}
+
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+
+{% block head_title %}Factors Archive{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/factors/">Factors</a>
+    > Archive
+{% endblock %}
+
+{% block title %}Factors Archive{% endblock %}
+
+{% block content %}
+    {#  {% render_table factors %} #}
+    <table>
+        <tr>
+            <td><b>Symbol</b></td>
+            <td><b>Name</b></td>
+        </tr>
+        {% for factor in factors %}
+            <tr>
+                <td><a href="/lifespan/factor/{{ factor.pk }}">{{ factor.symbol }}</a></td>
+                <td>{{ factor.name }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -6,10 +6,9 @@
 {% block head_title %}Study{% endblock %}
 
 {% block hierarchy %}
-    > <a href="/lifespan/">Lifespan</a>
     > <a href="/lifespan/studies/">Studies</a>
     > Study
-    = {{ study.title|slice:"50" }}...
+    = {{ study.reference.repr }}
 {% endblock %}
 
 {% block title %}{{ study.title }}{% endblock %}

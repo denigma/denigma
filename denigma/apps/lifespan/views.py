@@ -7,17 +7,28 @@ from django.contrib import messages
 from django.utils.translation import ugettext
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+#from django.core.urlresolvers import reverse # reverse_lazy (Django 1.4)
+from django.contrib.auth.models import AnonymousUser, User
+from django.views.generic.edit import CreateView, UpdateView # DeleteView
+from django.views.generic import ListView, DetailView
 
 import reversion
 
+from django_tables2 import SingleTableView
+
 from models import Study, Experiment, Measurement, Comparision, Intervention, Factor
-from forms import StudyForm, EditStudyForm, DeleteStudyForm, ExperimentForm, DeleteExperimentForm
+from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
+                   ExperimentForm, DeleteExperimentForm,
+                   ComparisionForm,
+                   InterventionForm, DeleteInterventionForm,
+                   FactorForm)
+from tables import InterventionTable, FactorTable
 
 from blog.models import Post
 from annotations.models import Species
 
 from meta.view import log
-
+from home.views import LoginRequiredMixin
 
 def index(request):
     lifespan = Post.objects.get(title="Lifespan")
@@ -142,8 +153,6 @@ def add_studies(request):
                     print("Adding species")
                     study_confirm.species.add(species)
 
-
-
             except Exception as e:
                 print e
                 failed.append(pmid)
@@ -157,7 +166,8 @@ def add_studies(request):
                         messages.add_message(request, messages.ERROR, ugettext("Error: %s" % e))
 
             log(request, study, comment)
-
+        if isinstance(request.user, AnonymousUser):
+            request.user = User.objects.get(username="Anonymous")
         reversion.set_user(request.user)
         reversion.set_comment(comment)
 
@@ -179,7 +189,6 @@ def edit_study(request, pk):
     if request.method == "GET":
         form = EditStudyForm(instance=study)
     elif request.method == "POST":
-        print request.POST
         if "cancel" in request.POST:
             return redirect('/lifespan/studies/')
         with reversion.create_revision():
@@ -197,6 +206,43 @@ def edit_study(request, pk):
         form = EditStudyForm(instance=study)
     ctx = {'form': form, 'study': study}
     return render_to_response('lifespan/edit_study.html', ctx,
+        context_instance=RequestContext(request))
+
+@login_required
+def edit_experiment(request, pk):
+    experiment = Experiment.objects.get(pk=pk)
+    form = ExperimentForm(request.POST or None, instance=experiment)
+    if request.method == "POST" and form.is_valid():
+        if "cancel" in request.POST:
+            return redirect('/lifespan/')
+        form.save()
+        return redirect('lifespan/experiment/%s' % pk)
+    ctx = {'experiment': experiment, 'form': form}
+    return render_to_response('lifespan/edit_experiment.html', ctx,
+        context_instance=RequestContext(request))
+
+@login_required
+def edit_experiment(request, pk):
+    experiment = Experiment.objects.get(pk=pk)
+    if request.method == "GET":
+        form = ExperimentForm(instance=experiment)
+    elif request.method == "POST":
+        if "cancel" in request.POST:
+            return redirect('/lifespan/experiments/')
+        with reversion.create_revision():
+            form = ExperimentForm(request.POST, instance=experiment)
+
+            if form.is_valid():
+                form.save()
+                reversion.set_user(request.user)
+                comment = request.POST['comment'] or "Changed experiment"
+                reversion.set_comment(comment)
+                log(request, experiment, comment)
+                return redirect('/lifespan/experiment/%s' % pk)
+    else:
+        form = ExperimentForm(instance=study)
+    ctx = {'experiment': experiment, 'form': form}
+    return render_to_response('lifespan/edit_experiment.html', ctx,
         context_instance=RequestContext(request))
 
 @login_required
@@ -248,7 +294,8 @@ def studies_archive(request):
 
 def experiments(request):
     experiments = Experiment.objects.all()
-    experiments_entry = Post.objects.get(title="Experiments")
+    try: experiments_entry = Post.objects.get(title="Experiments")
+    except: experiments_entry = {'text': "Lifespan experiments."}
     ctx = {'experiments': experiments, 'experiments_entry': experiments_entry}
     return render_to_response('lifespan/experiments.html',ctx,
                               context_instance=RequestContext(request))
@@ -261,30 +308,22 @@ def experiment(request, pk):
 
 def add_experiment(request, pk):
     form = ExperimentForm(request.POST or None, pk=pk) # A form bound to the POST data
-    if request.method == 'POST' and form.is_valid(): # All validation rules pass
+    if request.method == "POST" and form.is_valid(): # All validation rules pass
         with reversion.create_revision():
             experiment = form.save(commit=False)
             form.save()
+            if isinstance(request.user, AnonymousUser):
+                request.user = User.objects.get(username="Anonymous")
             reversion.set_user(request.user)
             comment = "Added experiment."
             reversion.set_comment(comment)
             log(request, experiment, comment)
-            msg = "Successfully added experiment"
+            msg = "Successfully added experiment."
             messages.add_message(request, messages.SUCCESS, ugettext(msg))
             return redirect('/lifespan/experiment/%s' % experiment.pk)
     return render_to_response('lifespan/add_experiment.html', {'form': form},
                               context_instance=RequestContext(request))
 
-@login_required
-def edit_experiment(request, pk):
-    experiment = Experiment.objects.get(pk=pk)
-    form = ExperimentForm(request.POST or None, instance=experiment)
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        return redirect('lifespan/experiment/%s' % pk)
-    ctx = {'experiment': experiment, 'form': form}
-    return render_to_response('lifespan/edit_experiment.html', ctx,
-        context_instance=RequestContext(request))
 
 @login_required
 def delete_experiment(request, pk):
@@ -305,16 +344,26 @@ def delete_experiment(request, pk):
     return render_to_response('lifespan/delete_experiment.html', ctx,
         context_instance=RequestContext(request))
 
+
 def measurements(request):
     measurements = Measurement.objects.all()
     return render_to_response('lifespan/measurements.html', {'measurements': measurements},
                             context_instance=RequestContext(request))
 
 def comparisions(request):
-    return HttpResponse("comparisions")
+    comparisions = Comparision.objects.all()
+    return render_to_response("lifespan/comparisions.html", {'comparisions': comparisions},
+        context_instance=RequestContext(request))
 
 def comparision(request, pk):
-    return HttpResponse('comparision %s' % pk)
+    comparision = Comparision.objects.get(pk=pk)
+    form = ComparisionForm(request.POST or None, instance=comparision)
+    if request.POST and form.is_valid():
+        form.save()
+        redirect('/comparision/%s' % pk)
+    ctx = {'comparision': comparision, 'form': form}
+    return render_to_response('lifespan/comparision.html', ctx,
+    context_instance=RequestContext(request))
 
 def add_comparision(request, pk):
     return HttpResponse('Add comparision %s' % pk)
@@ -322,29 +371,179 @@ def add_comparision(request, pk):
 def edit_comparision(request, pk):
     return HttpResponse('Edit comparision %s' % pk)
 
+"""Interventions"""
 def interventions(request):
-    return HttpResponse("interventions")
+    interventions = Intervention.objects.all()
+    ctx = {'interventions': interventions}
+    return render_to_response("lifespan/interventions_archive.html", ctx,
+        context_instance=RequestContext(request))
 
-def intervention(request):
+def intervention(request, pk):
     return HttpResponse("intervention")
 
 def add_intervention(request):
-    return HttpResponse('Add intervention')
+    form = InterventionForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        with reversion.create_revision():
+            intervention = form.save(commit=False)
+            form.save()
+            if isinstance(request.user, AnonymousUser):
+                request.user = User.objects.get(username="Anonymous")
+            reversion.set_user(request.user)
+            comment = "Added intervention. %s" % request.POST['comment'] or ''
+            reversion.set_comment(comment)
+            log(request, intervention, comment)
+            msg = "Successfully added intervention."
+            messages.add_message(request, messages.SUCCESS, ugettext(msg))
+            return redirect('/lifespan/intervention/%s' % intervention.pk)
+    ctx = {'form': form, 'action': 'Add'}
+    return render_to_response('lifespan/intervention_form.html', ctx,
+        context_instance=RequestContext(request))
 
-def edit_intervention(request):
-    return HttpResponse('Edit intervention')
+@login_required
+def edit_intervention(request, pk):
+    intervention = Intervention.objects.get(pk=pk)
+    form = InterventionForm(request.POST or None, instance=intervention)
+    if request.method == "POST" and form.is_valid():
+        if "cancel" in request.POST:
+            return redirect('/lifespan/intervention/%s' % pk)
+        with reversion.create_revision():
+            form.save()
+            reversion.set_user(request.user)
+            comment = request.POST['comment'] or "Changed intervention"
+            reversion.set_comment(comment)
+            log(request, intervention, comment)
+            return redirect('/lifespan/intervention/%s' % pk)
+    ctx = {'intervention': intervention, 'form': form, 'action': 'Edit'}
+    return render_to_response('lifespan/intervention_form.html', ctx,
+        context_instance=RequestContext(request))
 
-def factors(request):
-    HttpResponse("factors")
+@login_required
+def delete_intervention(request, pk):
+    intervention = Intervention.objects.get(pk=pk)
+    form = DeleteInterventionForm(request.POST or None)
+    if request.method == "POST" and form.is_valid:
+        if 'cancel' in request.POST:
+            return redirect('/lifespan/intervention/%s' % pk)
+        elif 'delete' in request.POST:
+            with reversion.create_revision():
+                intervention.delete()
+                comment = request.POST['comment'] or "Delete intervention"
+                reversion.set_comment(comment)
+                log(request, intervention, comment)
+                return redirect('/lifespan/interventions/')
+    ctx = {'intervention': intervention, 'form': form}
+    return render_to_response('lifespan/delete_intervention.html', ctx,
+        context_instance=RequestContext(request))
 
-def factor(request):
-    HttpResponse('factor')
+def link_interventions(request):
+    interventions = Intervention.objects.all()
+    for intervention in interventions:
+        if intervention.taxid and not intervention.species:
+            try: intervention.species = Species.objects.get(taxid=intervention.taxid)
+            except Species.DoesNotExist as e:
+                msg = "%s %s %s" % (intervention.name, intervention.taxid, e)
+                messages.add_message(request, messages.ERROR, ugettext(msg))
+        print intervention.taxid, intervention.species
+    return redirect('/lifespan/')
+
+
+class InterventionList(SingleTableView):
+    queryset = Intervention.objects.all().order_by('-pk')
+    template_name = 'lifespan/interventions.html' #_list
+    context_object_name = 'interventions'
+    table_class = InterventionTable
+    model = Intervention
+
+class InterventionView(object):
+    form_class = InterventionForm
+    model = Intervention
+
+class InterventionCreate(InterventionView, CreateView):
+    def get_context_data(self, **kwargs):
+        context = super(InterventionCreate, self).get_context_data(**kwargs)
+        context['action'] = 'Create'
+        return context
+
+
+class InterventionUpdate(InterventionView, UpdateView):
+    def get_context_data(self, **kwargs):
+        context = super(InterventionUpdate, self).get_context_data(**kwargs)
+        context['action'] = 'Update'
+        return context
+
+#
+#class InterventionDelete(InterventionView, DeleteView):
+#    success_url = reverse('lifespan/interventions') # reverse_lazy in Django 1.4
+
+"""Factors"""
+def factors(request, pk):
+    factor = Factor.objects.get(pk=pk)
+    return render_to_response('lifespan/factor.html', {'factor': factor},
+        context_instance=RequestContext(request))
+
+def factor(request, pk):
+    return HttpResponse('factor')
 
 def add_factor(request):
-    HttpResponse("add factor")
+    form = FactorForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        with reversion.create_revision():
+            factor = form.save(commit=False)
+            form.save()
+            if isinstance(request.user, AnonymousUser):
+                request.user = User.objects.get(username="Anonymous")
+            reversion.set_user(request.user)
+            comment = "Added factor. %s" % request.POST['comment'] or ''
+            reversion.set_comment(comment)
+            log(request, factor, comment)
+            msg = "Successfully added factor."
+            messages.add_message(request, messages.SUCCESS, ugettext(msg))
+            return redirect('/lifespan/factor/%s' % factor.pk)
+    ctx = {'form': form, 'action': 'Add'}
+    return render_to_response('lifespan/factor_form.html', ctx,
+        context_instance=RequestContext(request))
 
-def edit_factor(request):
-    HttpResponse("edit factor")
+@login_required
+def edit_factor(request, pk):
+    factor = Factor.objects.get(pk=pk)
+    form = FactorForm(request.POST or None, instance=factor)
+    if request.method == "POST" and form.is_valid():
+        if "cancel" in request.POST:
+            return redirect('/lifespan/factor/%s' % pk)
+        with reversion.create_revision():
+            form.save()
+            reversion.set_user(request.user)
+            comment = request.POST['comment'] or "Changed factor"
+            reversion.set_comment(comment)
+            log(request, factor, comment)
+            return redirect('/lifespan/factor/%s' % pk)
+    ctx = {'factor': factor, 'form': form, 'action': 'Edit'}
+    return render_to_response('lifespan/factor_form.html', ctx,
+        context_instance=RequestContext(request))
+
+
+@login_required
+def delete_factor(request, pk):
+    pass
+
+class FactorDetail(DetailView):
+    model = Factor
+    context_object_name = 'factor'
+    template_name = 'lifespan/factor.html'
+
+
+class FactorList(SingleTableView):
+    template_name = 'lifespan/factors.html'
+    context_object_name = 'factors'
+    table_class = FactorTable
+    model = Factor
+
+
+class FactorView(object):
+    form_class = FactorForm
+    model = Factor
+
 
 def epistasis(request):
     HttpResponse("regimen")
@@ -352,10 +551,16 @@ def epistasis(request):
 def regimen(request):
     HttpResponse("regimen")
 
-def manipulation(request):
+def manipulations(request):
+    HttpResponse("manipulations")
+
+def manipulation(request, pk):
     HttpResponse("manipulation")
 
-def assay(request):
+def assays(request):
+    HttpResponse("assays")
+
+def assay(request, pk):
     HttpResponse("assay")
 
 def type(request):
@@ -640,3 +845,17 @@ def dump(request):
 
 #dump()
 #stop
+
+# Kept for reference:
+#@login_required
+#def edit_experiment(request, pk):
+#    experiment = Experiment.objects.get(pk=pk)
+#    form = ExperimentForm(request.POST or None, instance=experiment)
+#    if request.method == "POST" and form.is_valid():
+#        form.save()
+#        return redirect('lifespan/experiment/%s' % pk)
+#    ctx = {'experiment': experiment, 'form': form}
+#    return render_to_response('lifespan/edit_experiment.html', ctx,
+#        context_instance=RequestContext(request))
+
+

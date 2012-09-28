@@ -1,0 +1,34 @@
+{% extends "lifespan/base.html" %}
+
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+
+{% block head_title %}Strains{% endblock %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css"
+          xmlns="http://www.w3.org/1999/html"/>
+{% endblock %}
+
+{% block hierarchy %}
+    > Studies
+{% endblock %}
+
+{% block title %}Strains{% endblock %}
+
+{% block content %}
+    {% render_table strains %}
+    <br>
+    <table>
+        <tr>
+            <td><b>Name</b></td>
+        </tr>
+
+        {% for strain in strains %}
+            <tr>
+                <td><a href="/lifespan/strain/{{ strain.pk }}">{{ strain }}</a></td><br>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

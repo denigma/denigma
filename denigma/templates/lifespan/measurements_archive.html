@@ -1,0 +1,35 @@
+{% extends "/lifespan/base.html" %}
+
+{% block content %}
+<br>
+<table>
+    <tr>
+        <td><b>ID</b></td>
+        <td><b>Background</b></td>
+        <td><b>Genotype</b></td>
+        <td><b>Diet</b></td>
+        <td><b>Temperature</b></td>
+        <td><b>Start</b></td>
+        <td><b>Mean</b></td>
+        <td><b>Median</b></td>
+        <td><b>Max</b></td>
+        <td><b>Num</b></td>
+    </tr>
+    {% for measurement in object_list %}
+        <tr>
+            {# <td><a href="/lifespan/measurement/{{ measurement.pk }}">{{ measurement.id }}</a></td> #}
+            {#  <td>{{ measurement.experiment }}</td>#}
+            {#  <td><b>Experiment</b></td> #}
+            <td>{{ measurement.background }}</td>
+            <td>{{ measurement.genotype }}</td>
+            <td>{{ measurement.diet }}</td>
+            <td>{{ measurement.temperature }}</td>
+            <td>{{ measurement.start }}</td>
+            <td>{{ measurement.mean }}</td>
+            <td>{{ measurement.median }}</td>
+            <td>{{ measurement.max }}</td>
+            <td>{{ measurement.num }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

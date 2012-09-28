@@ -1,0 +1,39 @@
+{% extends "lifespan/base.html" %}
+
+{% block head_title %}Interventions Archive{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/interventions">Interventions</a>
+    > Archive
+{% endblock %}
+
+{% block options %}
+    <a href="/lifespan/interventions/">Interventions</a> |
+    <a href="/lifespan/intervention/add">Add</a> /
+    <a href="/lifespan/intervention/create/">Create</a> |
+    <a href="/lifespan/interventions/archive">Archive</a>
+{% endblock %}
+
+{% block title %}Interventions Archive{% endblock %}
+
+{% block content %}
+    <table>
+        <tr>
+            <td><b>Name</b></td>
+            <td><b>Taxid</b></td>
+            <td><b>Species</b></td>
+            <td><b>Edit</b></td>
+            <td><b>Delete</b></td>
+        </tr>
+
+    {% for intervention in interventions %}
+        <tr>
+            <td><a href="/lifespan/intervention/{{ intervention.pk }}">{{ intervention.name }}</a></td>
+            <td><a href="/annotations/species/{{ intervention.taxid }}">{{ intervention.taxid }}</a></td>
+            <td><a href="/annotations/species/{{ intervention.species.pk }}">{{ intervention.species.short_name }}</a></td>
+            <td><center><a href="/lifespan/intervention/edit/{{ intervention.pk }}">o</a></center></td>
+            <td><center><a href="/lifespan/intervention/delete/{{ intervention.pk }}">x</a><center</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

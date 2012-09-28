@@ -2,6 +2,50 @@
 
 {% block head_title %}Lifespan{% endblock %}
 
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+{% endblock %}
+
+{% block base_hierarchy %}
+    > <a href="/lifespan/">Lifespan</a>
+{% endblock %}
+
+{% block options %}
+    {% comment %} Experimental Implementation of Dropdown menu support:
+    {# Hover dropdown menu button: #}
+    <style>
+        div.btn-group:hover ul.dropdown-menu{
+            display: block;
+        }
+
+        div.btn-group ul.dropdown-menu{
+            margin-top: 0px;
+        }
+    </style>
+    <center>
+    <div class="btn-group btn-hover">
+        <button class="btn dropdown-toggle" data-toggle="dropdown" href="/about/">
+            Hover
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="/lifespan/studies/">Studies</a></li>
+            <li><a href="/lifespan/experiments/">Experiments</a></li>
+            <li><a href="/lifespan/measurements/">Measurements</a></li>
+            <li><a href="/lifespan/strains/">Strains</a></li>
+            <li><a href="/lifespan/regimens/">Regimens</a></li>
+            <li><a href="/lifespan/assays/">Assays</a></li>
+            <li><a href="/lifespan/comparisions/">Comparisions</a></li>
+            <li><a href="/lifespan/interventions/">Interventions</a></li>
+            <li><a href="/lifespan/epistases/">Epistases</a></li>
+            <li><a href="/lifespan/manipulations/">Manipulations</a></li>
+            <li><a href="/lifespan/factors/">Factors</a></li>
+        </ul>
+    </div>
+    </center>
+    {% endcomment %}
+{% endblock %}
+
 {% block title %}Lifespan{% endblock %}
 
 {%  comment %} To many options. Options is replaced by dropdown menu.

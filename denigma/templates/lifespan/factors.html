@@ -1,7 +1,24 @@
-{% extends "lifespan/base.html" %}
+{%  extends "lifespan/base.html" %}
+
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
 
 {% block head_title %}Factors{% endblock %}
 
-{% block subtitle %}Factors{% endblock %}
+{% block hierarchy %}
+    > Factors
+{% endblock %}
+
+{% block options %}
+    <a href="/lifespan/factors/">Factors</a> |
+    <a href="/lifespan/factor/add">Add</a> /
+    <a href="/lifespan/factor/create">Create</a> |
+    </b>(<a href="admin/lifespan/factors/">Admin</a>)<b> |
+    <a href="/lifespan/factors/archive/">Archive</a>
+{% endblock %}
+
+{% block title %}Factors{% endblock %}
+
 {% block content %}
+    {% render_table table %}
 {% endblock %}

@@ -3,52 +3,24 @@
 {% load staticfiles %}
 {% load render_table from django_tables2 %}
 
+{% block head_title %}Measurments{% endblock %}
+
 {% block extra_style %}
     <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
     <link rel="{% static "django_tables2/themes/paleblue/css/screen.css" %}" rel="stylesheet">
 {% endblock %}
 
-{% block head_title %}Measurments{% endblock %}
-
 {% block hierarchy %}
-    > <a href="/lifespan/">Lifespan</a>
     > Measurements
+{% endblock %}
+
+{% block options %}
+    <a href="/admin/lifespan/measurement/add">Add</a> |
+    </b>(<a href="/admin/lifespan/measurment/">Admin</a>)<b>
 {% endblock %}
 
 {% block title %}Measurements{% endblock %}
 
 {% block content %}
     {% render_table object_list %}
-    <br>
-    <b><a href="/admin/lifespan/measurements/add">Add measurement</a></b>
-    <br>
-    <table>
-        <tr>
-            <td>ID</td>
-            <td>Experiment</td>
-            <td>Strain</td>
-            <td>Genotype</td>
-            <td>Diet</td>
-            <td>Temperature</td>
-            <td>Start</td>
-            <td>Mean</td>
-            <td>Median</td>
-            <td>Max</td>
-            <td>Num</td>
-        </tr>
-        {% for measurement in object_list %}
-            <td><a href="/lifespan/measurement/{{ measurement.pk }}">{{ measurement.id }}</a></td>
-            <td>{{ measurement.experiment }}</td>
-            <td>{{ measurement.strain }}</td>
-            <td>{{ measurement.genotype }}</td>
-            <td>{{ measurement.diet }}</td>
-            <td>{{ measurement.temperature }}</td>
-            <td>{{ measurement.start }}</td>
-            <td>{{ measurement.mean }}</td>
-            <td>{{ measurement.median }}</td>
-            <td>{{ measurement.max }}</td>
-            <td>{{ measurement.num }}</td>
-        {% endfor %}
-    </table>
-
 {% endblock %}

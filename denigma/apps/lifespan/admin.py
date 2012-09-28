@@ -83,9 +83,9 @@ class ManipulationTypeInline(admin.StackedInline): #http://charlesleifer.com/blo
 
 class InterventionAdmin(reversion.VersionAdmin):
     list_display = ('name', 'effect', 'mean', 'median', '_75', 'maximum','pmid')
-    fields = ('name', 'taxid', 'effect', 'mean', 'median', '_25', '_75', 'maximum','pmid', 'references', 'manipulation')
+    fields = ('name', 'taxid', 'species', 'effect', 'mean', 'median', '_25', '_75', 'maximum','pmid', 'references', 'manipulation')
     search_fields = ['name', 'pmid', 'effect']    
-    list_filter = ('taxid', 'manipulation')
+    list_filter = ('taxid', 'species', 'manipulation')
     #raw_id_fields = ('reference',)
     filter_horizontal = ('references','manipulation',)
 
