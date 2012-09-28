@@ -85,8 +85,11 @@
 
                                 <span class="left">
 
-                                <b><a href="/admin">{{ SITE_NAME }} db</a>{% block hierarchy %}
+                                <b><a href="/admin">{{ SITE_NAME }} db</a>
 
+                                {% block base_hierarchy %}
+                                {% endblock base_hierarchy %}
+                                {% block hierarchy %}
                                 {% comment %}
                                 Site > App > Model > View > Filter
                                 Denigma > Species > Mouse
@@ -98,8 +101,8 @@
                                 {% if {{ MODEL_NAME }} %}<a href="{{ MODEL_NAME }}">{{ MODEL_NAME }}</a>>{% endif %}
                                 {% if {{ VIEW_NAME }} %}<a href="{{ VIEW_NAME }}">{{ VIEW_NAME }}</a>>{% endif %}
                                 {% endcomment %}
-
-                                {% endblock hierarchy %}</b>
+                                {% endblock hierarchy %}
+                                </b>
                                 </span>
 
                                 <span class="centre">{% block options %}{% endblock options %}</span>
@@ -118,15 +121,21 @@
                                                <b class="caret"></b>
                                           </a>
                                           <ul class="dropdown-menu">
-                                               {# <li><a href="/species/">Species</a></li> #}
-                                               {# <li><a href="#">Another Link</a></li> #}
-                                               <li><a href="/lifespan/studies/">Studies</a></li>
-                                               <li><a href="/lifespan/experiments/">Experiments</a></li>
-                                               <li><a href="/lifespan/measurements/">Measurements</a></li>
-                                               <li><a href="/lifespan/comparisions/">Comparisions</a></li>
-                                               <li><a href="/lifespan/interventions/">Interventions</a></li>
-                                               <li><a href="/lifespan/factors/">Factors</a></li>
-
+                                              {# <li><a href="/species/">Species</a></li> #}
+                                              {# <li><a href="#">Another Link</a></li> #}
+                                              <b>Main:</b>
+                                              <li><a href="/lifespan/studies/">Studies</a></li>
+                                              <li><a href="/lifespan/experiments/">Experiments</a></li>
+                                              <li><a href="/lifespan/measurements/">Measurements</a></li>
+                                              <li><a href="/lifespan/comparisions/">Comparisions</a></li>
+                                              <li><a href="/lifespan/interventions/">Interventions</a></li>
+                                              <li><a href="/lifespan/factors/">Factors</a></li><br>
+                                              <b>Acccessory:</b>
+                                              <li><a href="/lifespan/assays/">Assays</a></li>
+                                              <li><a href="/lifespan/strains/">Strains</a></li>
+                                              <li><a href="/lifespan/regimens/">Regimens</a></li>
+                                              <li><a href="/lifespan/manipulations/">Manipulations</a></li>
+                                              <li><a href="/lifespan/epistases/">Epistases</a></li>
                                           </ul>
                                      </span>
 
@@ -153,8 +162,6 @@ div.btn-group ul.dropdown-menu{
   </ul>
 </div>
 {% endcomment %}
-
-
                                      {% endblock sections %}
                                   </span>
 
