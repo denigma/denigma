@@ -11,11 +11,17 @@
     <a href="/about/matrix/{{ number }}/choice/{{ color }}">{{ color }}
 {% endblock %}
 
-{% block subtitle %}{{ result.title }}{% endblock %} 
+{% block title %}{{ result.title }}{% endblock %}
 
 {% block content %}
     {{ result.text|markdown|hyper|safe }}
     <p>Or go back to the <a href="/about/matrix/0/">Paths of Truth</a></p>
+    {% if promoted %}
+        <p>You can see you promotion at your
+    {% else %}
+        <p>You already got this promotion. You can see this at your
+    {% endif %}
+    <a href="/profiles/profile/{{ user.username }}/">profile</a>.</p>
 {% endblock %}
 
 

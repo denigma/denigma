@@ -1,5 +1,8 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.contrib import messages
+from django.utils.translation import ugettext
+
 
 from blog.models import Post
 
@@ -23,11 +26,19 @@ def choice(request, number, color):
     print "Path of Truth %s %s" % (number, color)
     result = Post.objects.get(title="Path of Truth %s %s" % (number, color))
 
-   # if request['user'].is_authenticated:
-    #   user.profile.promote(aspect=number, level=0)
+    ASPECTS = {'I':'rank', 'II':'grade', 'III':'title', 'IV':'role'}
+    aspect = ASPECTS[number]
+
+    if request.user.is_authenticated:
+        promoted = request.user.profile_set.all()[0].promote(aspect=aspect, level=1)
+        if promoted:
+            messages.add_message(request, messages.SUCCESS, ugettext("You got promoted!"))
+        else:
+            messages.add_message(request, messages.WARNING, ugettext("You were not further promoted."))
 
     return render_to_response('about/choice.html', {'number': number,
                                                     'color': color,
-                                                    'result': result},
+                                                    'result': result,
+                                                    'promoted': promoted},
                               context_instance=RequestContext(request))
 #234567891123456789212345678931234567894123456789512345678961234567897123456789

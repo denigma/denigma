@@ -4,4 +4,29 @@
     {% if profile.about %}<p><b>{% trans "About" %}</b>: {{ profile.about }}</p>{% endif %}
     {% if profile.location %}<p><b>{% trans "Location" %}</b>: {{ profile.location }}</p>{% endif %}
     {% if profile.website %}<p><b>{% trans "Website" %}</b>: <a href="{{ profile.website }}">{{ profile.website }}</a></p>{% endif %}
+    <table>
+    <tr>
+    <td>
+    {% if profile.rank %}<p><b>{% trans "Rank" %}</b>: <a href="/aspects/research/rank/{{ profile.rank.name }}/">{{ profile.rank.name }}</a></p>
+        </td>
+        <td>
+        <img src={{ profile.rank.symbol.url }} alt={{ profile.rank.symbol }} width="50" height="50" />
+        </td>
+
+        </tr>
+    {% endif %}
+    </table>
+    {% if profile.grade %}<p><b>{% trans "Grade" %}</b>: <a href="/aspects/programming/grade/{{ profile.grade.name }}/">{{ profile.grade.name }}</a></p>
+       <img src="{{ profile.grade.symbol.url }}" alt={{ profile.grades.symbol}} width="50" height="50"/>
+    {% endif %}
+    {% if profile.grades.all %}<p><b>{% trans "Grades" %}</b>:
+        {% for grade in profile.grades.all %}
+            <a href="/aspects/grade/{{ grade.pk }}/">{{ grade.name }}</a></p>
+            {# {{ profile.grade.symbol }} #}
+        {% endfor %}
+    {% endif %}
+    {% if profile.title %}<p><b>{% trans "Title" %}</b>: <a href="/aspects/design/title{{ profile.title.name }}">{{ profile.title.name }}</a>
+       {# {{ profile.title.symbol }} #}
+    {% endif %}
+    </p>
 </div>
