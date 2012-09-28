@@ -1,0 +1,17 @@
+{% extends "lifespan/base.html" %}
+
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+
+{% block head_title %}Manipulations{% endblock %}
+
+{% block hierarchy %}
+    > Manipulations
+{% endblock hierarchy %}
+
+{% block title %}Manipulations{% endblock %}
+
+{% block content %}
+    {% render_table manipulations %}
+{% endblock %}
+
