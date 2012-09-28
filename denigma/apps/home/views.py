@@ -1,7 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import user_passes_test
 from forms import DynamicForm
 
 
@@ -39,4 +41,15 @@ def dynamic_view(request, val):
     return render_to_response('test.html', context,
         context_instance=RequestContext(request))
 
+
+def LoginRequiredMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+
+def SuperUserRequiredMixin(object):
+    @user_passes_test(lambda u: u.is_superuser)
+    def dispatch(self, request, *args, **kwargs):
+        return super(SuperUserRequiredMixin, self).dispatch(request, *args, **kwargs)
 
