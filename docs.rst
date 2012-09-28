@@ -154,7 +154,7 @@ Restoring a snapshotted database
 $ cd ..
 $ sudo su
 $ aptitude install git
-$ git https://github.com/hevok/denigma
+$ git clone https://github.com/hevok/denigma
 $ bash denigma/reconnect-ebs.sh
 $ bash denigma/open-port.sh
 $ sudo bash ./denigma/aws-django -n denigma -d https://github.com/hevok/denigma/raw/master/denigma.tgz -s "/s" -H <DNS> -D denigma -U denigma -P <PASSWORD>
@@ -610,3 +610,7 @@ and filter to quickly render forms in a div format while providing an eneromous 
 control rendered HTML [https://github.com/maraujop/django-crispy-forms]. `crispy-forms` is very well documented:
 [http://django-crispy-forms.readthedocs.org/en/d-0/index.html].
 
+
+Deployment
+----------
+The requirments are not installed on the local env.
