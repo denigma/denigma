@@ -233,7 +233,8 @@ Tracking User Changes
 The admin history is keept as logs which can be accessed as LogEntry.objects.log_action()
 [http://stackoverflow.com/questions/2684980/admin-panel-recent-actions] and enhanced
 [http://djangosnippets.org/snippets/1052/].
-The Pro Django Book explains an approach how to track changes made by user [http://prodjango.com/].
+The Pro Django Book explains an approach how to track changes made by user [http://prodjango.com/]
+which was packaged [https://bitbucket.org/q/django-current-user/src].
 
 A simple solution as it was applied in the reference model is to make the 
 discriminative fields (i.e. the poperties that determine whether an entry is the 
@@ -410,7 +411,41 @@ that has whatever properties are desired (e.g. longer username, only an Email fi
 instead of username, etc.). The branch is developed here [https://github.com/freakboy3742/django/tree/t3011] 
 at will be incorportated in 1.5.
 
+Customization method
+~~~~~~~~~~~~~~~~~~~~
+First create a backend inside an app called for instance 'accounts': ::
 
+    nano accounts/backends.py
+    from django.contrib.auth.backends import ModelBackend
+    from django.contrib.auth.models import User
+
+
+    class EmailBackend(ModelBackend):
+        """"A django.contrib.auth backend that authenticates the user
+        based on its email address instead of the username."""
+
+        def authenticate(self, email=None, password=None):
+            try:
+                user = User.objects.get(emai=email)
+                if user.check_password(password):
+                    return user
+                except User.DoesNotExist:
+                    return None
+
+
+Then set the new backend in the Config: ::
+
+    AUTHENTICATION_BACKENDS = (
+        'django.contrib.auth.backends.ModelBackend' # necessary for django.auth
+        'accounts.backends.EmailBackend' # Custom backend to authenticate using the email field.
+        )
+
+Subsquently modify the login view: ::
+
+    if request.method == 'POST' and unsername and password:
+        user = auth.authenticate(username=username, password=password)
+        if user is None:
+            user = auth.authenticate(email=email, password=password)
 
 Global Site-wide Search
 -----------------------
