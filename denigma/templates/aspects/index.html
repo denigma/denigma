@@ -1,0 +1,16 @@
+{% extends "aspects/base.html" %}
+
+{% block hierarchy %}
+    > Index
+{% endblock %}
+
+{% block title %}Hierarchies{% endblock %}
+
+{% block content %}
+    {% for hierarchy in hierarchytypes %}
+        <hr>
+        <h4>{{ hierarchy.name }}</h4>
+        {{ hierarchy.description }}
+    {% endfor %}
+    <hr>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "aspects/base.html" %}
+
+{% block head_title %}{{ hierarchy_name }}{% endblock %}
+
+{% block hierarchy %}
+    > {{ hierarchy_name }}
+{% endblock %}
+
+{% block title %}{{ hierarchy_name }}{% endblock %}
+
+{% block content %}
+    <table border="0">
+        <tr>
+            <td><b>Name</b></td>
+            <td><b>Description</b></td>
+            <td><b>Requirement</b></td>
+        </tr>
+        {% for level in hierarchy %}
+        <tr>
+            <td>{{ level.name }}</td>
+            <td>{{ level.description }}</td>
+            <td>{{ level.requirement }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

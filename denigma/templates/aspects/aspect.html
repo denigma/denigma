@@ -1,0 +1,17 @@
+{% extends "aspects/base.html" %}
+
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}{{ aspect.title }}{% endblock %}
+
+{% block hierarchy %}
+    > {{ aspect.title }}
+{% endblock %}
+
+{% block title %}{{ aspect.title }}{% endblock %}
+
+{% block content %}
+    {{ aspect.text|markdown|hyper|recross|safe }}
+{% endblock %}

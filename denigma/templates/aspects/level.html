@@ -1,0 +1,16 @@
+{% extends "aspects/base.html" %}
+
+{% block head_title %}{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/aspects/{{ aspect }}">{{ aspect }}</a>
+    {{ level }}
+{% endblock %}
+
+{% block title %}{{ level }}{% endblock %}
+
+{% block content %}
+    {{ level.description }}
+    {{ level.requriement }}
+    <img src="{{ level.symbol.url }}" alt=level.name />
+{% endblock %}
