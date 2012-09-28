@@ -1,7 +1,10 @@
 from django.contrib import admin
 
-from profiles.models import Profile, Rank, Grade, Title, Role
+from models import Profile, Rank, Grade, Title, Role
 
+
+class RoleAdmin(admin.ModelAdmin):
+    fields = ('name', 'description')
 
 admin.site.register(Profile)
 admin.site.register(Rank)
