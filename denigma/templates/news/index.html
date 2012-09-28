@@ -8,11 +8,8 @@
     > News
 {% endblock %}
 
-{% block options %}
-    <img src="http://dgallery.s3.amazonaws.com/blue_digital_news.jpg" alt="blue digital news" width="118" height="118" >
-{% endblock %}
-
 {% block content %}
+    <hr>
    {% for news in page.object_list %}
        <table>
        <tr>
