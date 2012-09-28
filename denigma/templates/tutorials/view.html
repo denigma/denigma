@@ -14,7 +14,7 @@
 {% block title %}{{ tutorial.title }}{% endblock %}
 
 {% block content %}
-   {{ tutorial.text|restructuredtext|hyper|safe }}
+   {{ tutorial.text|markdown|hyper|safe }} {# restructuredtext #}
    {% for image in tutorial.images.all %}
        <img src={{ image.url }} alt={{ image.name }}/>
    {% endfor %}
