@@ -21,11 +21,11 @@
     {% endif %}
     {% if profile.grades.all %}<p><b>{% trans "Grades" %}</b>:
         {% for grade in profile.grades.all %}
-            <a href="/aspects/grade/{{ grade.pk }}/">{{ grade.name }}</a></p>
+            <a href="/aspects/programming/grade/{{ grade.name }}/">{{ grade.name }}</a></p>
             {# {{ profile.grade.symbol }} #}
         {% endfor %}
     {% endif %}
-    {% if profile.title %}<p><b>{% trans "Title" %}</b>: <a href="/aspects/design/title{{ profile.title.name }}">{{ profile.title.name }}</a>
+    {% if profile.title %}<p><b>{% trans "Title" %}</b>: <a href="/aspects/design/title/{{ profile.title.name }}">{{ profile.title.name }}</a>
        {# {{ profile.title.symbol }} #}
     {% endif %}
     </p>

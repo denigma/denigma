@@ -9,7 +9,7 @@ urlpatterns = patterns('aspects.views',
     url(r'^research/rank/(?P<name>\w+)', 'rank'),
     url(r'^programming/$', 'programming', name='programming'),
     url(r'^programming/grades/$', 'grades', name='grades'),
-    url(r'^programming/grade/(?P<name>\w+)', 'grade'),
+    url(r'^programming/grade/(?P<name>[\w\s]+)', 'grade'),
     url(r'^design/$', 'design', name='design'),
     url(r'^design/titles/$', 'titles', name='titles'),
     url(r'^design/title/(?P<name>\w+)', 'title')
