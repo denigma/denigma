@@ -1,9 +1,11 @@
 # Create your views here.
-from django.shortcuts import render_to_response
 from django.http import HttpResponse
-from models import Book, Publisher, Author
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404
 from django.views.generic import list_detail
+from django.views.generic.edit import CreateView, UpdateView, DeletionView
+from django.core.urlresolvers import reverse_lazy
+
+from models import Book, Publisher, Author
 
 
 def latest_books(request):
@@ -71,3 +73,21 @@ def author_list_plaintext(request):
     )
     response["Content-Disposition"] = "attachment; filename=authors.txt"
     return response
+
+class AuthorCreate(CreateView):
+    form_class = AuthorForm
+    model = Author
+
+    def form_valid(self, form):
+        # Note decorate this view with `login_required()` or alternativley handle unautorised user here.
+        form.instance.created_by = self.request.user
+        return super(AuthorCreate, self).form_valid(form)
+
+
+class AuthorUpdate(UpdateView):
+    model = Author
+
+
+class AuthorDelete(DeleteView):
+    model = Author
+    success_url = reverse_lazy('author-list')
