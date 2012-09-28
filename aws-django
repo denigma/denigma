@@ -270,9 +270,7 @@ install_project() {
         LOCAL_DISTRIBUTION_PATH=$DISTRIBUTION
     fi
 
-    sudo cp -r ./$LOCAL_USER/$NAME/* $PROJECT_ROOT
     sudo pip -E /home/$LOCAL_USER/env install -r $PROJECT_ROOT/requirements/project.txt
-    sudo cp -rf /home/$LOCAL_USER/env/lib/python2.6/site-packages/pinax_theme_bootstrap/static/. /$PROJECT_ROOT/media
     sudo cp -rf /home/$LOCAL_USER/env/lib/python2.6/site-packages/pinax_theme_bootstrap/static/. /$PROJECT_ROOT/media
 }
 
