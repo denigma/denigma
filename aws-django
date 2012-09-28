@@ -187,6 +187,7 @@ configure_apache() {
 <VirtualHost *:80>
     ServerName $SITE_NAME
     ServerAdmin $ADMIN_EMAIL
+    ServerAlias www.$SITE_NAME
     LogLevel warn
     ErrorLog ${APACHE_LOG_DIR}/${SITE_NAME}_error.log
     CustomLog ${APACHE_LOG_DIR}/${SITE_NAME}_access.log combined
