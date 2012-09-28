@@ -14,6 +14,16 @@ class ContactForm(forms.Form):
         return message
 
 
+# Not yet Implemented:
+class NameContactForm(forms.Form):
+    name = forms.CharField()
+    message = forms.CharField(widget=forms.Textarea)
+
+    def send_email(self):
+        # send email using cleaned data dictionary.
+        pass
+
+
 if __name__ == '__main__':
     f = ContactForm({'subject':'Hello', 'email':'adrian@example.com', 'message':'Test'})
     print f.is_bound

@@ -1,11 +1,14 @@
 from django.core.mail import send_mail
-from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from contact.forms import ContactForm
 from django.contrib import messages
 from django.utils.translation import ugettext
+from django.views.generic.edit import FormView
+
+from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+
+from forms import ContactForm, NameContactForm
 
 
 def contact(request):
@@ -58,3 +61,15 @@ def contact(request):
 ##        'message':request.POST.get('message', ''),
 ##        'email':request.POST.get('email', ''),
 ##    })
+
+# Not yet implemented:
+class ContactView(FormView):
+    template_name = 'contact/html'
+    form_class = NameContactForm
+    success_url = '/thanks'
+
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        form.send_email()
+        return super(ContactView, self).form_valid(form)
