@@ -306,9 +306,9 @@ class Comparision(models.Model):
     @property
     def data(self):
         data = []
-        attributes = {self.exp.manipulation, self.ctr.manipulation,
+        attributes = [self.exp.manipulation, self.ctr.manipulation,
                       self.exp.background, self.ctr.background, self.exp.diet, self.ctr.diet,
-                      self.mean, self.median, self.max, self.epistasis}
+                      self.mean, self.median, self.max, self.epistasis]
         for attribute in attributes:
             if attribute:
                 data.append(attribute)
