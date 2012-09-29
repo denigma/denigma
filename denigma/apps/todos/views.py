@@ -1,11 +1,25 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, loader
-from models import Todo, importance_choices
+
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic.create_update import update_object, delete_object
 from django.template import RequestContext
+
+from django.views.generic.edit import CreateView, UpdateView
+
+from models import Todo, importance_choices
+
+from forms import TodoForm
+
+
+class TodoCreate(CreateView):
+    context_object_name = 'todo'
+    template_name= 'todos/create_todo.html'
+    form_class = TodoForm
+    model = Todo
+    success_url = '/todos/'
 
 
 def todo_index(request):

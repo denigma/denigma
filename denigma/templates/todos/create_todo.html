@@ -1,0 +1,9 @@
+{% extends "todos/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block base_header %}Create Todo{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}
