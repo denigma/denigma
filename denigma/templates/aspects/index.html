@@ -22,6 +22,7 @@
                 <td>
                     <h3>{{ aspect.title }}</h3>
                     {{ aspect.text|markdown|hyper|recross|safe }}
+                    <b><a href="/aspects/{{ aspect.title|lower }}">Read more</a></b>
                 </td>
                 <td>
                     {% for image in aspect.images.all %}
