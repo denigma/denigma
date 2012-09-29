@@ -7,15 +7,13 @@
 {% block head_title %}{{ classification.title }}{% endblock %}
 
 {% block hierarchy %}
-    > <a href="/annotations/classifications">Classes</a>
+    > <a href="/annotations/classifications">Classification</a>
     > {{ classification.title }}
 {% endblock %}
 
-{% block subtitle %}Classification{% endblock %}
+{% block title %}{{ classification.title }} ({{ classification.abbreviation }}){% endblock %}
 
 {% block content %}
-   <br>
-   <h4>{{ classification.title }} ({{ classification.abbreviation }})</h4>
    <p>{{ classification.description|markdown|hyper|recross|safe }}</p>
    <br>
    <b><a href="/admin/annotations/classification/{{ classification.pk }}">Edit class</b>

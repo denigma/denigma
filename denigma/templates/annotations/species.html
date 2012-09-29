@@ -4,7 +4,15 @@
     > Species
 {% endblock hierarchy %}
 
-{% block subtitle %}The Species of Denigma{% endblock %}
+{% block options %}
+    <a href="/annotations/species/">Species
+    <a href="/annotations/species/archive/">Archive</a>
+    </b>(<a href="/admin/annotations/species/">Admin</a>)<b> |
+    <a href="/annotations/species/add/">Add</a>
+    </b>(<a href="/admin/annotations/species/add">Admin</a>)<b>
+{% endblock %}
+
+{% block title %}The Species of Denigma{% endblock %}
 
 {% block content %}
     <p>Create and customize your creature from the five main species of Denigma: tiny yeast, elegant nematode, gracious fruit fly, ingenious mice, or the ferocious rats</p>

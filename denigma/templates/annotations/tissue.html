@@ -1,24 +1,31 @@
 {% extends "annotations/base.html" %}
 
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
 {% block head_title %}Tissue = {{ tissue.name }}{% endblock %}
 
 {% block hierarchy %}
-    > <a href="/annotations/">Annotations</a>
     > <a href="/annotations/tissues/">Tissues</a>
     > Tissue
     = {{ tissue.name }}
 {% endblock %}
 
-{% block subtitle %}
-    Tissue
+{% block options %}
+    <a href="/annotations/tissues/">Tissues</a>
+    <a href="/annotations/tissue/archive/">Archive</a> |
+    <a href="/annotations/tissue/edit/{{ tissue.pk }}">Edit</a>
+    </b>(<a href="/admin/annotations/tissue/{{ tissue.pk }}/">Admin</a>)<b> |
+    <a href="/annotations/tissue/delete/{{ tissue.pk }}/">Delete</a>
 {% endblock %}
 
+{% block title %}{{ tissue.name|title }}{% endblock %}
+
 {% block content %}
-        <p><b>Name:</b> {{ tissue.name }}</p>
-        <p><b>Descrption:</b> {{ tissue.description }}</p>
-        <p><b>Synonyms:</b> {{ tissue.synonyms }}</p>
-        <p><b>Hierarchy:</b> {{ tissue.hierarchy }}</p>
-        <p><b>Notes:</b> {{ tissue.notes }}</p>
-<p><b><a href="/admin/annotations/tissue/{{ tissue.id }}">Edit tissue</a></b></p>
+    {{ tissue.description|markdown|hyper|recross|safe }}
+    {% if tissue.synonyms %}<p><b>Synonyms:</b> {{ tissue.synonyms }}</p>{% endif %}
+    <p><b>Hierarchy:</b> {{ tissue.hierarchy }}</p>
+    {% if tissue.notes %}<p><b>Notes:</b> {{ tissue.notes }}</p>{% endif %}
 {% endblock %}
 

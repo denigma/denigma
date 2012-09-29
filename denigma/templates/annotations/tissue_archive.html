@@ -3,12 +3,19 @@
 {% block head_title %}Tissues{% endblock %}
 
 {% block hierarchy %}
-    > <a href="/annotations/">Annotations</a>
     > <a href="/annotations/tissues">Tissues</a>
     > Archive
 {% endblock %}
 
-{% block subtitle %}Tissue Archive{% endblock %}
+{% block options %}
+    <a href="/annotations/tissues/">Tissues</a>
+    <a href="/annotations/tissue/archive/">Archive</a>
+    </b>(<a href="/admin/annotations/tissue/">Admin</a>)<b></b> |
+    <a href="/annotations/tissue/add/">Add</a>
+    </b>(<a href="/admin/annotations/tissue/add">Admin</a>)<b>
+{% endblock %}
+
+{% block title %}Tissue Archive{% endblock %}
 
 {% block content %}
 <p>These is an extensive archive of all the major tissues and cell types present in animal organism:</p>

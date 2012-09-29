@@ -1,0 +1,18 @@
+{% extends "annotations/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block head_title %}Delete Tissue{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/annotations/tissues/">Tissues</a>
+    > Tissue
+    > {{ tissue.name }}
+    > Delete
+{% endblock %}
+
+{% block title %}Delete tissue{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

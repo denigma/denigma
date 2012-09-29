@@ -6,11 +6,17 @@
     > Index
 {% endblock hierarchy %}
 
-{% block subtitle %}Index{% endblock %}
+{% block options %}
+    <a href="/annotations/classifications/">Molecules</a> |
+    <a href="/annotations/tissues/">Tissues</a> |
+    <a href="/annotations/species/">Species</a>
+    {# <a href="/annotations/bulk_upload">Bulk Upload</a> #}
+{% endblock %}
+
+{# {% block subtitle %}Index{% endblock %} #}
 
 {% block content %}
-{{ annotations.text|markdown|safe }}
-
+    {{ annotations.text|markdown|safe }}
     {% if user.is_authenticated %}
         <hr>
         <p>It is possible to bulk upload annotations.
