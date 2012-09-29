@@ -14,4 +14,7 @@
 
 {% block content %}
     {{ aspect.text|markdown|hyper|recross|safe }}
+    {% for image in aspect.images.all %}
+        <img src={{ image.url }} alt={{ image.name }} />
+    {% endfor %}
 {% endblock %}

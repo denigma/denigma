@@ -1,0 +1,21 @@
+{% extends "aspects/base.html" %}
+
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}{{ profession.title }}{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/aspects/professions/">Professions</a>
+    > {{ profession.title }}
+{% endblock %}
+
+{% block title %}{{ profession.title }}{% endblock %}
+
+{% block content %}
+    {{ profession.text|markdown|hyper|recross|safe }}
+    {% for image in profession.images.all %}
+        <img src="{{ image.url }}", alt="{{ image.name }}" />
+    {% endfor %}
+{% endblock %}

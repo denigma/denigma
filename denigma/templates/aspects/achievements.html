@@ -1,0 +1,36 @@
+{% extends "aspects/base.html" %}
+
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink%}
+
+{% block head_title %}Achievements{% endblock %}
+
+{% block hierarchy %}
+    > Achievements
+{% endblock %}
+
+{% block title %}Achivements{% endblock %}
+
+{% block content %}
+    {{ entry.text|markdown|hyper|recross|safe }}
+    {% for achievement in achievements %}
+        <hr>
+        <table width="100%">
+            <tr>
+                <td>
+
+                    <h3>{{ achievement.name }}</h3>
+                    {{ achievement.description|markdown|hyper|recross|safe }}
+                    <b><a href="/aspects/{{ achievement.requirement }}/{{ achievement.name|lower }}s/">See all</a></b>
+                </td>
+                <td> <right>
+                    <img src="{{ achievement.symbol.url }}" alt="{{ achivement.symbol.name }}" width="250"  height="250" />
+                </right>
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+
+
+{% endblock %}

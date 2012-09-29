@@ -1,18 +1,36 @@
 {% extends "aspects/base.html" %}
 
-{% block head_title %}Hierarchies{% endblock %}
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}Aspects{% endblock %}
 
 {% block hierarchy %}
-    > Index
+    > Facets
 {% endblock %}
 
-{% block title %}Hierarchies{% endblock %}
+{% block title %}Aspects{% endblock %}
+
 
 {% block content %}
-    {% for hierarchy in hierarchytypes %}
+    {{ aspects_entry.text|markdown|hyper|recross|safe }}
+    {% for aspect in aspects %}
         <hr>
-        <h4>{{ hierarchy.name }}</h4>
-        {{ hierarchy.description }}
+        <table>
+            <tr>
+                <td>
+                    <h3>{{ aspect.title }}</h3>
+                    {{ aspect.text|markdown|hyper|recross|safe }}
+                </td>
+                <td>
+                    {% for image in aspect.images.all %}
+                        <img src={{ image.url }} alt={{ image.name }} width=250 height=250/>
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
     {% endfor %}
     <hr>
 {% endblock %}
+

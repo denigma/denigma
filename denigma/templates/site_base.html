@@ -4,7 +4,7 @@
 {% load i18n %}
 
 {% block nav %}
-	<ul class="nav">
+    <ul class="nav" xmlns="http://www.w3.org/1999/html">
 		{% comment %}<td class="tab rtba_pastbin"><div><a href="{% url pastebin_new %}">{% trans "PasteBin" %}</a></div></td> {% endcomment %}
 		<li id="tab_nav"> <a href="/polls">Polls</a> </li>
 		<li id="tab_nav"> <a href="/wiki/page/Start/">Wiki</a> </li>
@@ -12,27 +12,6 @@
                 <li id="tab_nav"> <a href="/shorty">URLs</a> </li>
 		<li id="tab_nav"> <a href="/gallery/">Gallery</a> </li>
                 <li id="tab nav"> <a href="/tutorials/">Tutorials</a> </li>
-
-{% comment %} {# Simple hover drowdown menu: #}
-<style>
-ul.nav li.dropdown:hover ul.dropdown-menu{
-    display: block;
-    margin: 0;
-}
-</style>
-
-    <li id="tab_third" class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            Dropdown
-            <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu">
-            <li><a href="#">Some Link</a></li>
-            <li><a href="#">Another Link</a></li>
-        </ul>
-    </li>
-{% endcomment %}
-
                 <li id="tab nav">
                 <form class="navbar_search" action="/search/"> {% comment %} Replace this with haystack/Whoosh {% endcomment %}
                      <input type="hidden" name="models" value="blog.post">
@@ -46,8 +25,64 @@ ul.nav li.dropdown:hover ul.dropdown-menu{
 			<li id="tab_todo"> <a href="/todos/">Todo</a> </li>
 		        <li id="tab_msg"> <a href="/pastebin/">Messaging</a> </li>
                         <li id="tab_msg"> <a href="/articles/">Articles</a> </li>
+
+             {# Simple hover drowdown menu: #}
+             <style>
+                 ul.nav li.dropdown:hover ul.dropdown-menu{
+                     display: block;
+                     margin: 0;
+                 }
+             </style>
+
+             <li id="tab_third" class="dropdown">
+                 <a href="/aspects/" class="dropdown-toggle" data-toggle="dropdown">
+                     Aspects
+                     <b class="caret"></b>
+                 </a>
+                 <ul class="dropdown-menu">
+                     <li><h3><a href="/aspects/"><i class="icon-align-center"></i> Facets</a></h3></li>
+                     <li><a href="/aspects/research/"><i class="icon-chevron-up"></i> Research</a></li>
+                     <li><a href="/aspects/programming/"><i class="icon-cog"></i> Programming</a></li>
+                     <li><a href="/aspects/design"><i class="icon-picture"></i> Design</a></li>
+                     <li class="divider"</li>
+                     <li><b><h3><a href="/aspects/professions/"><i class="icon-eye-close"></i> Professions</a></h3></b></li>
+                     <li><a href="/aspects/profession/scientist/"><i class="icon-star-empty"></i> Scientist</a></li>
+                     <li><a href="/aspects/profession/developer/"><i class="icon-download"></i> Developer</a></li>
+                     <li><a href="/aspects/profession/artist/"><i class="icon-camera"></i> Artist</a></li>
+                     <li class="divider"</li>
+                     <li><h3><a href=/aspects/achievements/"><i class="icon-signal"></i> Achievements</h3></li>
+                     <li><a href="/aspects/research/ranks/"><i class="icon-eject"></i> Ranks</a></li>
+                     <li><a href="/aspects/programming/grades/"><i class="icon-pencil"></i>Grades</a></li>
+                     <li><a href="/aspects/design/title/"><i class="icon-plus-sign"></i> Titles</a></li>
+                 </ul>
+             </li>
         		{% endspaceless %}</ul>
-		{% endif %}  
+		{% endif %}
+
+    {% comment %}
+
+                 <li id="tab_third" class="dropdown">
+                 <a href="/aspects/" class="dropdown-toggle" data-toggle="dropdown">
+                     Aspects
+                     <b class="caret"></b>
+                 </a>
+                 <ul class="dropdown-menu">
+                     <li><a href="/aspects/research/">Research</a></li>
+                     <li><a href="/aspects/programming/">Programming</a></li>
+                     <li><a href="/aspects/design">Design</a></li>
+                     <li class="divider"</li>
+                     <li><b><h3><a href="/aspects/professions/">Professions</a></h3></b></li>
+                     <li><a href="/aspects/profession/scientist/">Scientist</a></li>
+                     <li><a href="/aspects/profession/developer/">Developer</a></li>
+                     <li><a href="/aspects/profession/artist/">Artist</a></li>
+                 </ul>
+             </li>
+
+                     <li><a href="/aspects/research/">Research/Scientist</a></li>
+                     <li><a href="/aspects/programming/">Programming/Developer</a></li>
+                     <li><a href="/aspects/design">Design/Artist</a></li>
+                     {%  endcomment %}
+
 
 <style>body { overflow:scroll; }</style> {# This adds a scrollbar to all pages and prevents jumping of the header by switching #}
 

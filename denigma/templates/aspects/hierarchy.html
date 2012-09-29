@@ -1,5 +1,12 @@
 {% extends "aspects/base.html" %}
 
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+{% endblock %}
+
 {% block head_title %}{{ hierarchy_name }}{% endblock %}
 
 {% block hierarchy %}
@@ -9,6 +16,9 @@
 {% block title %}{{ hierarchy_name }}{% endblock %}
 
 {% block content %}
+    {% render_table hierarchy %}
+    {% comment %}
+    <hr>
     <table border="0">
         <tr>
             <td><b>Name</b></td>
@@ -23,4 +33,5 @@
         </tr>
         {% endfor %}
     </table>
+    {%  endcomment %}
 {% endblock %}
