@@ -50,7 +50,7 @@ def profession(request, name):
 def achievements(request):
     entry = Post.objects.get(title='Achievements')
     #achievements = Post.objects.filter(tags_name='achievement')
-    achievements = HierarchyType.objects.all()
+    achievements = HierarchyType.objects.all()[:3]
     ctx = {'entry': entry, 'achievements': achievements}
     return render_to_response('aspects/achievements.html', ctx, #achievements
         context_instance=RequestContext(request))
