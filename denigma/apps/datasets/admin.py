@@ -4,6 +4,10 @@ from django.contrib import admin
 import reversion
 
 
+
+admin.site.register(Signature)
+
+
 class GendrAdmin(admin.ModelAdmin):
     list_display = ('gene_symbol','gene_name', 'alias', 'taxid', 'observation', 'pubmed_id', 'reference', 'classification', 'ensembl_gene_id', 'entrez_gene_id', 'mapping')
     search_fields = ['gene_symbol','gene_name','alias', 'entrez_gene_id', 'pubmed_id', 'reference']
