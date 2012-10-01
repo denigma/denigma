@@ -218,12 +218,15 @@ def add_signature(request):
             exp = columns[header['exp']]
 
             # Calculating effect size:
-            for k,v  in header.items():
-                if k.startswith('ctr'):
-                    ctr_values.append(float(columns[v]))
-                elif k.startswith('exp'):
-                    exp_values.append(float(columns[v]))
-            es = effect_size(exp_values, ctr_values)
+            try:
+                for k,v  in header.items():
+                    if k.startswith('ctr'):
+                        ctr_values.append(float(columns[v]))
+                    elif k.startswith('exp'):
+                        exp_values.append(float(columns[v]))
+                es = effect_size(exp_values, ctr_values)
+            except ValueError:
+                break
 
             transcript = Transcript(seq_id=seq_id, symbol=symbol, ratio=fold_change, pvalue=pvalue, effect_size=es)
             try:
