@@ -1,9 +1,9 @@
-"""This is ane experimental module to modelling mutliple author blogging.
+"""This is ane experimental module to modelling multiple author blogging.
 
-The djangopject weblog is an inspiration of this:
+The django-project weblog is an inspiration of this:
 https://www.djangoproject.com/weblog/
 
-For exisitng approaches see:
+For existing approaches see:
 http://www.djangopackages.com/grids/g/blogs/"""
 
 
