@@ -15,10 +15,16 @@
     {% for image in entry.images.all %}
         <center><img src="{{ image.url }}" alt="{{ image.name }}"></center>
     {% endfor %}
-    <a href="/admin/expressions">Admin</a><br>
-    <a href="/expressions/profiles/delete">Delete profiles</a><br>
-    <a href="/expressions/replicates/delete/">Delete replicates</a><br>
-    <a href="/expressions/signatures/delete/">Delete signatures</a><br>
-    <a href="/expressions/transcripts/delete/">Delete transcripts</a><br>
+    {% if user.is_superuser %}
+        <a href="/admin/expressions">Admin</a><br>
+        <a href="/expressions/transcripts/">Transcripts</a><br>
+        <a href="/expressions/transcripts/list/">Transcripts list</a><br>
+        <hr>
+        <b>Clean-up</b>:<br>
+        <a href="/expressions/profiles/delete">Delete profiles</a><br>
+        <a href="/expressions/replicates/delete/">Delete replicates</a><br>
+        <a href="/expressions/signatures/delete/">Delete signatures</a><br>
+        <a href="/expressions/transcripts/delete/">Delete transcripts</a><br>
+    {% endif %}
 
 {% endblock %}
