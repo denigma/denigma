@@ -143,6 +143,7 @@ def add_signature(request):
             try:
                 tissue = Tissue.objects.get(pk=tissue) #if it is selcted from form
             except:
+                print "Did not found tissue by pk."
                 try:
                     tissue = Tissue.objects.get(name__iexact=tissue) # If it is inferred from file name.
                 except Tissue.DoesNotExist as e:
@@ -150,6 +151,7 @@ def add_signature(request):
                     return redirect('/expressions/signatures/')
 
             signature.tissues.add(tissue)
+        print "Tissues:", signature.tissues.all()
 
         header = {}
         for index, column in enumerate(data[0].split('\t')):
