@@ -734,6 +734,29 @@ just as it is accomplished in the admin.
 [https://github.com/alex/django-filter].
 
 
+Adding Many-To-Many Relationships in bulk
+-----------------------------------------
+To add a bulk of many-to-many relationships the `bulk_create` can be used. 
+For this a list o B objects is first created in bulk and then added them all at once to the
+ManyToMany relationship of A instance(s): ::
+
+    class A(models.Model):
+        b = models.ManyToManyField('B')
+
+    class B(models.Model):
+        # fields
+
+    entries = [
+        B(...),
+        B(...),
+        B(...),
+        ...
+    ]
+
+    B.objects.bulk_create(entries)
+    a.b.add(*o)
+
+
 The Future of Denigma
 ---------------------
 
