@@ -757,6 +757,19 @@ ManyToMany relationship of A instance(s): ::
     a.b.add(*o)
 
 
+Multiple File Upload
+--------------------
+It would be of interest to enable upload of multiple files simulatonously.
+`django-multiple-file-uploads` provides exactly this feature 
+[http://www.chicagodjango.com/blog/multiple-file-uploads-django/].
+
+
+Compound static-dynamic pages
+-----------------------------
+To reduce reptition of static componounds they need to be made dynamic.
+A solution would be the following: [http://dpaste.com/hold/806276/].
+
+
 The Future of Denigma
 ---------------------
 
