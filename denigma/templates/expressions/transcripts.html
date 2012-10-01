@@ -1,0 +1,10 @@
+{% extends "expressions/base.html" %}
+
+{% block content %}
+    <form action="" method="GET">
+        {{ filter.form.as_p }}
+    </form>
+    {% for obj in filter %}
+        {{ obj.symbol }} - $ {{ obj.pvalue }}<br />
+    {% endfor %}
+{% endblock %}
