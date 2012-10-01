@@ -1,0 +1,16 @@
+{% extends "aspects/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ hierarchy_name }}{{ action }}{% endblock %}
+
+{% block hierarchy %}
+    > {{ hierarchy_name }}
+    > {{ action }}
+{% endblock %}
+
+{% block title %}{{ action }} {{ hierarchy_name }}{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

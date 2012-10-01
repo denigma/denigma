@@ -11,6 +11,8 @@
 
 {% block hierarchy %}
     > {{ hierarchy_name }}
+    | <a href="/aspects/{{ hierarchy_name|lower }}/create/">Create</a>
+    </b>(<a href="/admin/aspects/hierarchy/">Admin</a>)<b>
 {% endblock %}
 
 {% block title %}{{ hierarchy_name }}{% endblock %}

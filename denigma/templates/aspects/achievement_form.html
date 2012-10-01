@@ -1,0 +1,17 @@
+{% extends "aspects/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ action }} Achievement{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/aspects/achievements">Achievements</a>
+    > Achievement
+    > {{ action }}
+{% endblock %}
+
+{% block title %}{{ action }} Achievement{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

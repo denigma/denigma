@@ -1,9 +1,71 @@
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.views.generic.edit import CreateView
 
 from models import Hierarchy, HierarchyType, Rank, Grade, Title
+from forms import AchievementForm, HierarchyForm, RankForm, GradeForm, TitleForm
+
 
 from blog.models import Post
+
+
+class AchievementCreate(CreateView):
+    template_name = 'aspects/achievement_form.html'
+    success_url = '/aspects/achievements/'
+    form_class = AchievementForm
+    model = HierarchyType
+
+#    def dispatch(self, *args, **kwargs):
+#        self.kwargs.update(kwargs)
+#        return super(AchievementCreate, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(AchievementCreate, self).get_context_data(**kwargs)
+        context['action'] = 'Create'
+#        context.update(kwargs)
+        return context
+
+
+class HierarchyCreate(CreateView):
+    form_class = HierarchyForm
+    model = Hierarchy
+    template_name = 'aspects/hierarchy_form.html'
+
+    def dispatch(self, *args, **kwargs):
+        self.name = kwargs['name']
+        return super(HierarchyCreate, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(HierarchyCreate, self).get_context_data(*args, **kwargs)
+        context['action'] = 'Create'
+        context['hierarchy_name'] = self.name[:-1].title()
+        HierarchyCreate.success_url = '/aspects/%s/' % self.name
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        print self.object
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class RankCreate(HierarchyCreate):
+    form_class = RankForm
+    model = Rank
+    success_url = '/aspects/research/ranks/'
+
+
+class GradeCreate(HierarchyCreate):
+    form_class = GradeForm
+    model = Grade
+    success_url = '/aspects/programming/grades/'
+
+
+class TitleCreate(HierarchyCreate):
+    form_class = TitleForm
+    model = Title
+    success_url = '/aspects/design/titles/'
 
 
 def index(request):
@@ -54,6 +116,9 @@ def achievements(request):
     ctx = {'entry': entry, 'achievements': achievements}
     return render_to_response('aspects/achievements.html', ctx, #achievements
         context_instance=RequestContext(request))
+
+def add_achievement(request):
+    return HttpResponse("Create Achievement: %s" % request)
 
 def ranks(request):
     hierarchy = Rank.objects.all()
