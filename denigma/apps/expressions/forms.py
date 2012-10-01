@@ -46,6 +46,8 @@ class SignatureForm(ModelForm):
             Fieldset(
                 "Please provide the data in tab-separated format. First column should be the header. "
                 "Provide a column with seq_id, symbol, exp, ctr, fold_change, and p_value. "
+                "Any column containing individual expression values from replicates should be prefixed "
+                "in the header with exp<nubmer> and ctr<number> corresponding to experimental and control group."
                 "Information can be inferred from the file name. "
                 "For this the file name should contain a mapping (attribute1=value1;attribute2=value2...). "
                 "Be patient as the upload can take some time.", #  Add a link which opens up a new window and refer to there for checking out progress.
