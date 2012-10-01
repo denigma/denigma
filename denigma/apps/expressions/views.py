@@ -5,7 +5,7 @@ from django.views.generic.edit import CreateView
 from django.contrib import messages
 from django.utils.translation import ugettext
 from django.contrib.auth.decorators import login_required, permission_required
-
+from django.db.models import Q
 from django_tables2 import RequestConfig
 
 from lifespan.models import Regimen
@@ -14,10 +14,22 @@ from annotations.models import Species, Tissue
 from models import Replicate, Profile, Transcript, Signature, Expression
 from forms import ProfileForm, SignatureForm
 from tables import TranscriptTable, ReplicateTable
+from filters import TranscriptFilterSet
 
 from blog.models import Post
 
 
+def transcripts(request):
+    filterset = TranscriptFilterSet(request.GET or None)
+    return render_to_response('expressions/transcripts.html',
+        {'filterset': filterset}, context_instance=RequestContext(request))
+
+def transcript_list(request):
+    f = TranscriptFilterSet(request.GET, queryset=Transcript.objects.all())
+    return render_to_response('expressions/transcripts.html', {'filter': f},
+        context_instance=RequestContext(request))
+
+#234567891123456789212345678931234567894123456789512345678961234567897123456789
 def data(title):
     """Fetches a database entry arcording to its title."""
     try:
@@ -46,17 +58,19 @@ def signatures(request):
     return render_to_response('expressions/signatures.html', ctx,
         context_instance=RequestContext(request))
 
-def signature(request, pk, ratio=2.):
+def signature(request, pk, ratio=2., pvalue=0.05):
     signature = Signature.objects.get(pk=pk)
     transcripts = signature.transcripts.all()
     table = TranscriptTable(transcripts)
     RequestConfig(request).configure(table)
-    transcripts_up = transcripts.filter(ratio__gt=ratio)
-    transcripts_down = transcripts.filter(ratio__lt=1/ratio)
+    transcripts_up = transcripts.filter(Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue))
+    transcripts_down = transcripts.filter(Q(ratio__lt=1/ratio) & Q(pvalue__lt=pvalue))
     ctx = {'signature': signature, 'transcripts': transcripts,
            'transcripts_up': transcripts_up,
            'transcripts_down': transcripts_down,
-           'table': table}
+           'table': table,
+           'ratio': ratio,
+           'pvalue': pvalue,}
     return render_to_response('expressions/signature.html', ctx,
         context_instance=RequestContext(request))
 
@@ -291,7 +305,7 @@ class SignatureCreate(CreateView):
     form_class = SignatureForm
     model = Signature
 
-#234567891123456789212345678931234567894123456789512345678961234567897123456789
+
 
 #    profiles = Profile.objects.all()
 #    for profile in profiles:
@@ -300,4 +314,3 @@ class SignatureCreate(CreateView):
 #    signature = Signature.object.get(tissue="malipihigian")
 #    for gene in signature.genes
 #    gene
-

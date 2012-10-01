@@ -50,6 +50,7 @@ class Expression(models.Model):
     ctr = models.FloatField()
     ratio = models.FloatField()
     pvalue = models.FloatField()
+    effect_size = models.FloatField()
 
     def __unicode__(self):
         return "%s %s" % (self.signature.name, self.transcript.seq_id)

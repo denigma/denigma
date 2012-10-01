@@ -26,12 +26,18 @@
     <b>Manipulation</b>: <a href="/lifespan/regimen/{{ signature.diet.pk }}/">{{ signature.diet }}</a> |
     <b>Transcripts</b>: {{ transcripts|count }} |
     <b>Up</b>: {{ transcripts_up|count }} |
-    <b>Down</b>: {{ transcripts_down|count }}
+    <b>Down</b>: {{ transcripts_down|count }} ...
+    (ratio-cutoff = {{ ratio }}; p-value < {{ pvalue }})
     <hr>
     {% render_table table %}
     <hr>
-    <h2>Upregulated:</h2>
+    <h3>Upregulated:</h3>
     {% for transcript in transcripts_up %}
         {{ transcript }}
     {% endfor %}
+    <hr>
+    <h3>Downregulated:</h3>
+    {% for transcript in transcripts_down %}
+        {{ transcript }}
+    {%  endfor %}
 {% endblock %}
