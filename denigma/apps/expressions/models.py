@@ -63,6 +63,7 @@ class Transcript(models.Model):
     #gene = models.ForeignKey('Gene')
     ratio = models.FloatField()
     pvalue = models.FloatField("p-value")
+    effect_size = models.FloatField()
 
     def __unicode__(self):
         return self.seq_id
