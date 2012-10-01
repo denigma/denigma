@@ -614,3 +614,9 @@ control rendered HTML [https://github.com/maraujop/django-crispy-forms]. `crispy
 Deployment
 ----------
 The requirments are not installed on the local env.
+
+
+Getting a querysets for template forms
+--------------------------------------
+In order to obtain a queryset from template forms for many-to-many relationships,
+the `.getlist('field') can be used on the request.POST method.
