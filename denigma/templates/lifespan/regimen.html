@@ -3,7 +3,7 @@
 {% load markup %}
 {% load hyperlink %}
 {% load crosslink %}
-{% load %}
+
 
 {% block head_title %}Regimen: {{ regimen }}{% endblock %}
 
@@ -18,6 +18,6 @@
     {% if regimen.description %}
         {{ regimen.description|markdown|hyper|recross|safe }}
     {% else %}
-        <p>No description yet available. <b><a href="/admin/lifespan/regimen/{{ regimen.pk }}/">Add description</p></b>
+        <p>No description yet available. <b><a href="/admin/lifespan/regimen/{{ regimen.pk }}/">Add description</a></b></p>
     {% endif %}
 {% endblock %}
