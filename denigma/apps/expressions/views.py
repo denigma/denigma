@@ -17,7 +17,7 @@ from tables import TranscriptTable, ReplicateTable
 from filters import TranscriptFilterSet
 
 from blog.models import Post
-from utils import stats
+from stats import effect_size
 
 def transcripts(request):
     filterset = TranscriptFilterSet(request.GET or None)
@@ -223,7 +223,7 @@ def add_signature(request):
                     ctr_values.append(float(columns[v]))
                 elif k.startswith('exp'):
                     exp_values.append(float(columns[v]))
-            es = stats.effect_size(exp_values, ctr_values)
+            es = effect_size(exp_values, ctr_values)
 
             transcript = Transcript(seq_id=seq_id, symbol=symbol, ratio=fold_change, pvalue=pvalue, effect_size=es)
             try:
