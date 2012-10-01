@@ -1,5 +1,8 @@
 {% extends "expressions/base.html" %}
 
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
 {% load counter %}
 
 {% block head_title %}Signatures{% endblock %}
@@ -11,6 +14,7 @@
 {% block title %}Signatures{% endblock %}
 
 {% block content %}
+    {{ entry.text|markdown|hyper|recross|safe }}
     {% if signatures %}
     {% for signature in signatures %}
         <hr>
@@ -26,6 +30,7 @@
         {% endif %}
     {% endfor %}
     {% else %}
+        <hr>
         <p>No signatures available yet.</p>
     {% endif %}
 {% endblock %}

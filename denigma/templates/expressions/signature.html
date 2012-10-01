@@ -4,7 +4,7 @@
 {% load staticfiles %}
 {% load render_table from django_tables2 %}
 
-{% block head_title %}Sginature: {{ signature.name }}{% endblock %}
+{% block head_title %}Signature: {{ signature.name }}{% endblock %}
 
 {% block extra_script %}
     <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
@@ -18,7 +18,7 @@
 {% block title %}Signature: {{ signature.name }}{% endblock %}
 
 {% block content %}
-    <b>Species: </b><a href="/annotations/species/{{ signature.species.pk }}">{{ signature.species }}</a> |
+    <b>Species</b>: <a href="/annotations/species/{{ signature.species.pk }}">{{ signature.species }}</a> |
     <b>Tissue</b>{% if signature.tissues.all|count > 1 %}s{% endif %}: {# Pluralize only if ore than one. #}
     {% for tissue in signature.tissues.all %}
         <a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue.name|title }}</a>{% if not forloop.last %}, {% endif %}

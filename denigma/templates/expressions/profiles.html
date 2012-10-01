@@ -1,5 +1,9 @@
 {% extends "expressions/base.html" %}
 
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
 {% block head_title %}Profiles{% endblock head_title %}
 
 {% block hierarchy %}
@@ -9,12 +13,17 @@
 {% block title %}Profiles{% endblock title %}
 
 {% block content %}
+    {{ entry.text|markdown|hyper|recross|safe }}
+    {% for image in entry.images.all %}
+        <center><img src="{{ image.url }}" alt="{{ image.name }}" /></center>
+    {% endfor %}
     {% if profiles %}
         {% for profile in profiles %}
             <hr>
             <a href="/expressions/profile/{{ profile.pk }}/">{{ profile.name }}</a>
         {% endfor %}
     {% else %}
+        <hr>
         <p>No profiles available yet.</p>
     {% endif %}
 {% endblock content %}
