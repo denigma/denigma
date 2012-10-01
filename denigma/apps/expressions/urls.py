@@ -11,7 +11,8 @@ urlpatterns = patterns('expressions.views',
     url('^$', 'index'),
 
     # Profiles:
-    url('^profiles/$',
+    url('^profiles/$', 'profiles', name='profiles'),
+    url('^profiles/$', # Depricated.
         ListView.as_view(
             queryset=Profile.objects.all(),
             context_object_name='profiles',
@@ -30,7 +31,8 @@ urlpatterns = patterns('expressions.views',
     url('^profiles/delete/$', 'delete_profiles', name='delete_profiles'),
 
     # Signatures:
-    url('^signatures/$',
+    url('^signatures/$', 'signatures', name='signatures'),
+    url('^signatures/$', # Depricated.
          ListView.as_view(
             queryset=Signature.objects.all(),
             context_object_name='signatures',

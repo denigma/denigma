@@ -18,6 +18,14 @@ from tables import TranscriptTable, ReplicateTable
 from blog.models import Post
 
 
+def data(title):
+    """Fetches a database entry arcording to its title."""
+    try:
+        entry = Post.objects.get(title=title)
+    except (Post.DoesNotExist, Post.MultipleObjectsReturned) as e:
+        entry = e
+    return entry
+
 def index(request):
     try:
         entry = Post.objects.get(title="Expressions")
@@ -25,6 +33,18 @@ def index(request):
         entry = e
     return render_to_response('expressions/index.html', {'entry': entry},
                              context_instance=RequestContext(request))
+
+def profiles(request):
+    profiles = Profile.objects.all()
+    ctx = {'entry': data("Profiles"), 'profiles': profiles}
+    return render_to_response('expressions/profiles.html', ctx,
+        context_instance=RequestContext(request))
+
+def signatures(request):
+    signatures = Signature.objects.all()
+    ctx = {'entry': data("Signatures"), 'signatures': signatures}
+    return render_to_response('expressions/signatures.html', ctx,
+        context_instance=RequestContext(request))
 
 def signature(request, pk, ratio=2.):
     signature = Signature.objects.get(pk=pk)
