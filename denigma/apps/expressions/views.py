@@ -110,8 +110,11 @@ def add_signature(request):
         if not "file" in request.POST:
             file = request.FILES['file']
             data = file.read().split('\n')
-        else:
-            redirect('/expression/signature/add/')
+        elif "profile" not in request:
+            msg = "No file or profiles selected. Please provide either a signature "\
+                  "file to upload or select profiles to derive a signature."
+            messages.add_message(request, messages.ERROR, ugettext(msg))
+            return redirect('/expressions/signature/add/')
 
         # Inferre descriptive informations from the filename:
         if file.name.startswith('name='):
@@ -119,12 +122,20 @@ def add_signature(request):
         if 'tissue' in info:
             tissues = info['tissue'].replace(', ', '@').replace(' and ', '@').split('@') # @ is unlikey to be used as filename.
         else:
-            request.POST.getlist('tissues')
+            tissues = request.POST.getlist('tissues')
         if "diet" in info:
             regimen = Regimen.objects.get(shortcut__exact=info['diet'])
 
+        # Species from form:
+        try:
+            species = Species.objects.get(pk=request.POST['species'])
+        except ValueError as e:
+            msg = "Species not found in Denigma db. %s. Please select a species." % e
+            messages.add_message(request, messages.ERROR, ugettext(msg))
+            return redirect('/expressions/signature/add/')
+
         # Create signature:
-        signature = Signature(name=request.POST['name'] or info['name'], diet=regimen)#,
+        signature = Signature(name=request.POST['name'] or info['name'], diet=regimen, species=species)#,
         signature.save()
 
         # Adding tissues:

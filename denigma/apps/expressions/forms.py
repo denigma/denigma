@@ -51,10 +51,10 @@ class SignatureForm(ModelForm):
                 "Be patient as the upload can take some time.", #  Add a link which opens up a new window and refer to there for checking out progress.
                 'name',
                 'file',
+                'profiles',
                 'species',
                 'tissues',
                 'diet',
-                'profiles',
             ),
             FormActions(
                 Submit('submit', 'Submit', css_class="btn-primary"),
