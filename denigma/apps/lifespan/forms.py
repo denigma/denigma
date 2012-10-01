@@ -127,7 +127,7 @@ class ExperimentForm(ModelForm):
     name = CharField(help_text="(Use the figure or table title as name for the experiment)")
     study = ModelChoiceField(queryset=Study.objects.all())
     species = ModelChoiceField(queryset=Species.objects.all().order_by('-main_model', 'complexity'))
-    comment = CharField(help_text="Optional, for version-control.")
+    comment = CharField(help_text="Optional, for version-control.", required=False)
     data = CharField(widget=Textarea(attrs={'cols': 160, 'rows': 20,
                                             'style': 'font-family: monospace'}),
         help_text="(space or tab-seperated header + blank line + series of measurements)",
