@@ -29,4 +29,9 @@
     <b>Down</b>: {{ transcripts_down|count }}
     <hr>
     {% render_table table %}
+    <hr>
+    <h2>Upregulated:</h2>
+    {% for transcript in transcripts_up %}
+        {{ transcript }}
+    {% endfor %}
 {% endblock %}
