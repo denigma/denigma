@@ -11,6 +11,7 @@
 {% block title %}Signatures{% endblock %}
 
 {% block content %}
+    {% if signatures %}
     {% for signature in signatures %}
         <hr>
         <b><a href="/expressions/signature/{{ signature.pk }}/">{{ signature.name }}</a></b>
@@ -25,4 +26,7 @@
             <a href="/expressions/signature/delete/{{ signature.pk }}/">Delete</a>
         {% endif %}
     {% endfor %}
+    {% else %}
+        <p>No signatures available yet.</p>
+    {% endif %}
 {% endblock %}
