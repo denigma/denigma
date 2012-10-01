@@ -200,12 +200,12 @@ def add_signature(request):
                                  .replace('gene_symbol', 'symbol')\
                                  .replace(' ', '_')] = index
 
-        # For effect size
-        ctr_values = []
-        exp_values = []
-
         #num_lines = len(data); counter = 0
         for line in data[1:]:
+        # For effect size
+            ctr_values = []
+            exp_values = []
+
             #counter += 1
             if not line: continue
             columns = line.split('\t')
