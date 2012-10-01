@@ -14,7 +14,19 @@
 {% block title %}Signatures{% endblock %}
 
 {% block content %}
-    {{ entry.text|markdown|hyper|recross|safe }}
+    <table>
+        <tr>
+            <td>
+                {{ entry.text|markdown|hyper|recross|safe }}
+            </td>
+            <td>
+                {% for image in entry.images.all %}
+                    <img src="{{ image.url }}" alt="{{ image.name }}" width="200" height="200" />
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+
     {% if signatures %}
     {% for signature in signatures %}
         <hr>
