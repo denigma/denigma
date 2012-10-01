@@ -148,7 +148,7 @@ def add_signature(request):
                     tissue = Tissue.objects.get(name__iexact=tissue) # If it is inferred from file name.
                 except Tissue.DoesNotExist as e:
                     messages.add_message(request, messages.ERROR, ugettext("%s: %s" % (str(e)[:-1], tissue)))
-                    return redirect('/expressions/signatures/')
+                    return redirect('/expressions/signature/add/')
 
             signature.tissues.add(tissue)
         print "Tissues:", signature.tissues.all()
