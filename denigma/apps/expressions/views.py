@@ -17,7 +17,7 @@ from tables import TranscriptTable, ReplicateTable
 from filters import TranscriptFilterSet
 
 from blog.models import Post
-
+from utils.stats import effect_size
 
 def transcripts(request):
     filterset = TranscriptFilterSet(request.GET or None)
@@ -61,6 +61,7 @@ def signatures(request):
 def signature(request, pk, ratio=2., pvalue=0.05):
     signature = Signature.objects.get(pk=pk)
     transcripts = signature.transcripts.all()
+    filter = TranscriptFilterSet(request.GET, transcripts)
     table = TranscriptTable(transcripts)
     RequestConfig(request).configure(table)
     transcripts_up = transcripts.filter(Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue))
@@ -70,9 +71,11 @@ def signature(request, pk, ratio=2., pvalue=0.05):
            'transcripts_down': transcripts_down,
            'table': table,
            'ratio': ratio,
-           'pvalue': pvalue,}
+           'pvalue': pvalue,
+           'filter': filter}
     return render_to_response('expressions/signature.html', ctx,
         context_instance=RequestContext(request))
+
 
 def profile(request, pk):
     profile = Profile.objects.get(pk=pk)
@@ -187,6 +190,8 @@ def add_signature(request):
             signature.tissues.add(tissue)
         print "Tissues:", signature.tissues.all()
 
+
+
         header = {}
         for index, column in enumerate(data[0].split('\t')):
             if "DR" in column: column = "exp"
@@ -194,6 +199,11 @@ def add_signature(request):
             header[column.lower().replace('gene symbol', 'symbol')\
                                  .replace('gene_symbol', 'symbol')\
                                  .replace(' ', '_')] = index
+
+        # For effect size
+        ctr_values = []
+        exp_values = []
+
         #num_lines = len(data); counter = 0
         for line in data[1:]:
             #counter += 1
@@ -206,14 +216,25 @@ def add_signature(request):
             fold_change = columns[header['fold_change']]
             ctr = columns[header['ctr']]
             exp = columns[header['exp']]
-            transcript = Transcript(seq_id=seq_id, symbol=symbol, ratio=fold_change, pvalue=pvalue)
+
+            # Calculating effect size:
+            for k,v  in header.items():
+                if k.startswith('ctr'):
+                    ctr_values.append(float(columns[v]))
+                elif k.startswith('exp'):
+                    exp_values.append(float(columns[v]))
+            es = effect_size(exp_values, ctr_values)
+
+            transcript = Transcript(seq_id=seq_id, symbol=symbol, ratio=fold_change, pvalue=pvalue, effect_size=es)
             try:
                 transcript.save()
                 expression = Expression.objects.create(
                     signature=signature,
                     transcript=transcript,
                     exp=exp, ctr=ctr,
-                    ratio=fold_change, pvalue=pvalue)
+                    ratio=fold_change,
+                    pvalue=pvalue,
+                    effect_size=es)
             except ValueError as e:
                 print e, symbol, seq_id, fold_change, pvalue, ctr, exp
 

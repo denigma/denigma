@@ -29,6 +29,10 @@
     <b>Down</b>: {{ transcripts_down|count }} ...
     (ratio-cutoff = {{ ratio }}; p-value < {{ pvalue }})
     <hr>
+    <form action="" method="GET">
+        {{ filter.form.as_p }}
+    </form>
+    <hr>
     {% render_table table %}
     <hr>
     <h3>Upregulated:</h3>
