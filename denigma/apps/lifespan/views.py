@@ -16,7 +16,7 @@ import reversion
 
 from django_tables2 import SingleTableView
 
-from models import Study, Experiment, Measurement, Comparision, Intervention, Factor
+from models import Study, Experiment, Measurement, Comparision, Intervention, Factor, Regimen
 from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
                    ExperimentForm, DeleteExperimentForm,
                    ComparisionForm,
@@ -29,6 +29,7 @@ from annotations.models import Species
 
 from meta.view import log
 from home.views import LoginRequiredMixin
+
 
 def index(request):
     lifespan = Post.objects.get(title="Lifespan")
@@ -208,42 +209,7 @@ def edit_study(request, pk):
     return render_to_response('lifespan/edit_study.html', ctx,
         context_instance=RequestContext(request))
 
-@login_required
-def edit_experiment(request, pk):
-    experiment = Experiment.objects.get(pk=pk)
-    form = ExperimentForm(request.POST or None, instance=experiment)
-    if request.method == "POST" and form.is_valid():
-        if "cancel" in request.POST:
-            return redirect('/lifespan/')
-        form.save()
-        return redirect('lifespan/experiment/%s' % pk)
-    ctx = {'experiment': experiment, 'form': form}
-    return render_to_response('lifespan/edit_experiment.html', ctx,
-        context_instance=RequestContext(request))
 
-@login_required
-def edit_experiment(request, pk):
-    experiment = Experiment.objects.get(pk=pk)
-    if request.method == "GET":
-        form = ExperimentForm(instance=experiment)
-    elif request.method == "POST":
-        if "cancel" in request.POST:
-            return redirect('/lifespan/experiments/')
-        with reversion.create_revision():
-            form = ExperimentForm(request.POST, instance=experiment)
-
-            if form.is_valid():
-                form.save()
-                reversion.set_user(request.user)
-                comment = request.POST['comment'] or "Changed experiment"
-                reversion.set_comment(comment)
-                log(request, experiment, comment)
-                return redirect('/lifespan/experiment/%s' % pk)
-    else:
-        form = ExperimentForm(instance=study)
-    ctx = {'experiment': experiment, 'form': form}
-    return render_to_response('lifespan/edit_experiment.html', ctx,
-        context_instance=RequestContext(request))
 
 @login_required
 def delete_study(request, pk):
@@ -324,12 +290,29 @@ def add_experiment(request, pk):
     return render_to_response('lifespan/add_experiment.html', {'form': form},
                               context_instance=RequestContext(request))
 
+@login_required
+def edit_experiment(request, pk):
+    experiment = Experiment.objects.get(pk=pk)
+    form = ExperimentForm(request.POST or None, instance=experiment)
+    if request.method == "POST" and form.is_valid():
+        if "cancel" in request.POST:
+            return redirect('/lifespan/experiments/')
+        with reversion.create_revision():
+            form.save()
+            reversion.set_user(request.user)
+            comment = request.POST['comment'] or "Changed experiment"
+            reversion.set_comment(comment)
+            log(request, experiment, comment)
+        return redirect('/lifespan/experiment/%s' % pk)
+    ctx = {'experiment': experiment, 'form': form}
+    return render_to_response('lifespan/edit_experiment.html', ctx,
+        context_instance=RequestContext(request))
 
 @login_required
 def delete_experiment(request, pk):
     experiment = Experiment.objects.get(pk=pk)
     form = DeleteExperimentForm(request.POST or None)
-    if request.method == "POST" and form.is_valid:
+    if request.method == "POST" and form.is_valid():
         if 'cancel' in request.POST:
             return redirect('/lifespan/experiment/%s' % pk)
         elif 'delete_experiment' in request.POST:
@@ -422,7 +405,7 @@ def edit_intervention(request, pk):
 def delete_intervention(request, pk):
     intervention = Intervention.objects.get(pk=pk)
     form = DeleteInterventionForm(request.POST or None)
-    if request.method == "POST" and form.is_valid:
+    if request.method == "POST" and form.is_valid():
         if 'cancel' in request.POST:
             return redirect('/lifespan/intervention/%s' % pk)
         elif 'delete' in request.POST:
@@ -548,23 +531,25 @@ class FactorView(object):
 def epistasis(request):
     HttpResponse("regimen")
 
-def regimen(request):
-    HttpResponse("regimen")
+def regimen(request, pk):
+    regimen = Regimen.objects.get(pk=pk)
+    return render_to_response('lifespan/regimen.html', {'regimen': regimen},
+        context_instance=RequestContext(request))
 
 def manipulations(request):
-    HttpResponse("manipulations")
+    return HttpResponse("manipulations")
 
 def manipulation(request, pk):
-    HttpResponse("manipulation")
+    return HttpResponse("manipulation")
 
 def assays(request):
-    HttpResponse("assays")
+    return HttpResponse("assays")
 
 def assay(request, pk):
-    HttpResponse("assay")
+    return HttpResponse("assay")
 
 def type(request):
-    HttpResponse("type")
+    return HttpResponse("type")
 
 
 
