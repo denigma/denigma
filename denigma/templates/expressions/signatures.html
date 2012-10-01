@@ -1,0 +1,28 @@
+{% extends "expressions/base.html" %}
+
+{% load counter %}
+
+{% block head_title %}Signatures{% endblock %}
+
+{% block hierarchy %}
+    > Signatures
+{% endblock %}
+
+{% block title %}Signatures{% endblock %}
+
+{% block content %}
+    {% for signature in signatures %}
+        <hr>
+        <b><a href="/expressions/signature/{{ signature.pk }}/">{{ signature.name }}</a></b>
+        (Species: <a href="/annotations/species/{{ signature.species.pk }}/">{{ signature.species }}</a>;
+        Tissue{% if signature.tissues.all|count > 1 %}s{% endif %}:
+        {% for tissue in signature.tissues.all %}
+            <a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue.name|title }}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %};
+        Manipulation:
+        <a href="/lifespan/regimen/{{ signature.diet.pk }}/">{{ signature.diet }}</a>)
+        {% if user.is_superuser %}
+            <a href="/expressions/signature/delete/{{ signature.pk }}/">Delete</a>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

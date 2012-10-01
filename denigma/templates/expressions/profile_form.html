@@ -1,0 +1,17 @@
+{% extends "expressions/base.html" %}
+
+{% load crispy_forms_tags  %}
+
+{% block head_title %}{{ action }} Profile{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/expressions/profiles/">Profiles</a>
+    > Profile
+    > {{ action }}
+{% endblock %}
+
+{% block title %}{{ action }}Profile{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

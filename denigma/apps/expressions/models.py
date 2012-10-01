@@ -1,31 +1,98 @@
 from django.db import models
 
 
-#class Profile(models.Model):
-#    title = models.CharField()
-#    species = models.ForeignKey('annotations.Species')
+class Replicate(models.Model):
+    probe_id = models.CharField(max_length=255)
+    intensity = models.FloatField()
+
+    def __unicode__(self):
+        return self.probe_id
 
 
-#class Transcript(models.Model):
-#    probe_id = models.CharField(max_length=255)
-#    profile = ForeignKey(Profile)
+class Gene(models.Model):
+    id = models.IntegerField(primary_key=True)
+    symbol = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    species = models.ForeignKey('annotations.Species')
+
+    def __unicode__(self):
+        return self.symbol
 
 
-#class Intensity(models.Model):
-#    value = models.FloatField()
-#    probe = models.ForeignKey('Transcript') 
+class Profile(models.Model):
+    name = models.CharField(max_length=255)
+    species = models.ForeignKey('annotations.Species')
+    tissue = models.ManyToManyField('annotations.Tissue')
+    diet = models.ForeignKey('lifespan.Regimen')
+    replicates = models.ManyToManyField('Replicate')
+
+    def __unicode__(self):
+        return self.name
 
 
-#class Contrast(models.Model):
-#    exp = models.ManyToManyField(Profile)
-#    ctr = models.ManyToManyField(Profile)
+class Signature(models.Model):
+    name = models.CharField(max_length=255)
+    profiles = models.ManyToManyField('Profile', blank=True, null=True)
+    transcripts = models.ManyToManyField('Transcript', blank=True, null=True, through='Expression')
+    genes = models.ManyToManyField('Gene', blank=True, null=True)
+    species = models.ForeignKey('annotations.Species')
+    tissues = models.ManyToManyField('annotations.Tissue', blank=True, null=True)
+    diet = models.ForeignKey('lifespan.Regimen', blank=True, null=True)
 
-#    ratio = models.FloatField()
-#    pvalue = models.FloatField()
+    def __unicode__(self):
+        return self.name
 
 
-#class Signature(models.Model):
-#    pass
+class Expression(models.Model):
+    signature = models.ForeignKey('Signature')
+    transcript = models.ForeignKey('Transcript')
+    exp = models.FloatField()
+    ctr = models.FloatField()
+    ratio = models.FloatField()
+    pvalue = models.FloatField()
+
+    def __unicode__(self):
+        return "%s %s" % (self.signature.name, self.transcript.seq_id)
+
+
+class Transcript(models.Model):
+    seq_id = models.CharField(max_length=255)
+    symbol = models.CharField(max_length=255, blank=True, null=True) # Should be replaced by a FK to Gene.
+    profile = models.ForeignKey('Profile', blank=True, null=True)
+    #gene = models.ForeignKey('Gene')
+    ratio = models.FloatField()
+    pvalue = models.FloatField("p-value")
+
+    def __unicode__(self):
+        return self.seq_id
+
+class Intensity(models.Model):
+    value = models.FloatField()
+    probe = models.ForeignKey('Transcript')
+
+    def __unicode__(self):
+        return self.probe.seq_id
+
+    class Meta:
+        verbose_name_plural = "Intensities"
+
+
+class Contrast(models.Model):
+    exp = models.ManyToManyField('Profile', related_name="experimental")
+    ctr = models.ManyToManyField('Profile', related_name="control")
+    ratio = models.FloatField()
+    pvalue = models.FloatField("p-value")
+
+    def __unicode__(self):
+        return "%s vs. %s" % (exp.name, ctr.name)
+
+
+class Array(models.Model):
+   intensities = models.ManyToManyField('Replicate')
+
+   def __unicode__(self):
+       return intensities.__unicode__()
+
 
 class YeastDR(models.Model):
     exp = models.FloatField()

@@ -1,0 +1,22 @@
+{% extends "expressions/base.html" %}
+
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+
+{% block extra_script %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+{% endblock %}
+
+{% block head_title %}Profile: {{ profile.name }}{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/expression/profiles/">Profiles</a>
+    > {{ profile.name }}
+{% endblock %}
+
+{% block title %}{{ profile.name }}{% endblock %}
+
+{% block content %}
+    <hr>
+    {% render_table replicates %}
+{% endblock %}

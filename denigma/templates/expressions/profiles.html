@@ -1,0 +1,20 @@
+{% extends "expressions/base.html" %}
+
+{% block head_title %}Profiles{% endblock head_title %}
+
+{% block hierarchy %}
+    > Profiles
+{% endblock hierarchy %}
+
+{% block title %}Profiles{% endblock title %}
+
+{% block content %}
+    {% if profiles %}
+        {% for profile in profiles %}
+            <hr>
+            <a href="/expressions/profile/{{ profile.pk }}/">{{ profile.name }}</a>
+        {% endfor %}
+    {% else %}
+        <p>No profiles available yet.</p>
+    {% endif %}
+{% endblock content %}
