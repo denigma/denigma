@@ -236,6 +236,7 @@ INSTALLED_APPS = [
     'haystack', # Searching
     'django_tables2',
     'crispy_forms',
+    'django_filters',
 #    'cms", # Content Management System.
 #    'mptt", # Utilties for implementing a modified pre-order traversal tree.
 #    'sekizai", # For javascipt and css management.
@@ -262,12 +263,10 @@ INSTALLED_APPS = [
     'home',
     'tutorials',
     'articles',
-
     'annotations',
     'expressions',
     'datasets',
     'interactions',
-
     'about',
     'profiles',
     'chrono',
