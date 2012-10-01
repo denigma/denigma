@@ -5,8 +5,6 @@ from templatetags.pubmed_linker import pubmed_links
 
 from models import Intervention, Factor
 
-#Helper function
-
 
 class InterventionTable(tables.Table):
 
