@@ -54,5 +54,7 @@ urlpatterns = patterns('expressions.views',
 
     # Others:
     url('^replicates/delete/$', 'delete_replicates', name='delete_replicates'),
+    url('^transcripts/$', 'transcripts', name='transcripts'),
+    url('^transcripts/list/$', 'transcript_list', name='transcript_list'),
     url('^transcripts/delete/$', 'delete_transcripts', name='delete_transcripts'),
 )
