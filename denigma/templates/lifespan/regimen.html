@@ -1,0 +1,23 @@
+{% extends "lifespan/base.html" %}
+
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+{% load %}
+
+{% block head_title %}Regimen: {{ regimen }}{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/regimens">Regimens</a>
+    > {{ regimen }}
+{% endblock %}
+
+{% block title %}{{ regimen.name }} ({{ regimen.shortcut }}){% endblock %}
+
+{% block content %}
+    {% if regimen.description %}
+        {{ regimen.description|markdown|hyper|recross|safe }}
+    {% else %}
+        <p>No description yet available. <b><a href="/admin/lifespan/regimen/{{ regimen.pk }}/">Add description</p></b>
+    {% endif %}
+{% endblock %}
