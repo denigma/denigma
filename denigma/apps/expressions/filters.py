@@ -7,7 +7,7 @@ class TranscriptFilterSet(django_filters.FilterSet):
     pvalue = django_filters.NumberFilter(lookup_type='lt') # Looks up transcripts with
     class Meta:
         model = Transcript
-        fields = ['symbol']#, 'ratio', 'pvalue']
+        fields = ['ratio']#, 'ratio', 'pvalue']
 
     def __init___(self, *args, **kwargs):
         super(TranscriptFilterSet, self).__init__(*args, **kwargs)
