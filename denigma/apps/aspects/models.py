@@ -8,6 +8,7 @@ class Abstract(models.Model):
     requirement = models.CharField(max_length=255, blank=True, null=True)
     class Meta:
         abstract = True
+
     def __unicode__(self):
         return self.name
 
@@ -18,27 +19,43 @@ class Hierarchy(Abstract):
     class Meta:
         verbose_name_plural = 'Hierarchies'
 
+    def get_absolute_url(self):
+        return u"/aspects/%s/%s" % (self.type.lower(), self.name.lower())
+
 
 class HierarchyType(Abstract):
     """Rank, Grade, Title, etc."""
-    pass
+    def get_absolute_url(self):
+        return u"/aspects/achievement/%s" % (self.name.lower())
 
 
 class Rank(Hierarchy):
     """A scientific research rank in military convention."""
+
+    def get_absolute_url(self):
+        return u"/aspects/research/rank/%s" % self.name.lower()
 
 
 class Grade(Hierarchy):
     """A developer programming grade in marshal arts convention."""
     language = models.ForeignKey('Language', blank=True, null=True)
 
+    def get_absolute_url(self):
+        return u"/aspects/research/grade/%s" % self.name.lower()
+
 
 class Title(Hierarchy): # Degree
     """An artistic designer title in spiritual christian schema."""
 
+    def get_absolute_url(self):
+        return u"/aspects/design/title/%s" % self.name.lower()
+
 
 class Role(Hierarchy):
     """A special appointed role."""
+
+    def get_absolute_url(self):
+        return u"/aspects/role/%s" % self.name.lower()
 
 
 class Language(Abstract):
