@@ -6,10 +6,15 @@ class SignatureAdmin(admin.ModelAdmin):
     # fields = ('name','profiles',  'transcripts', 'genes')
 
 
+class TranscriptAdmin(admin.ModelAdmin):
+    list_display = ('seq_id', 'symbol', 'ratio', 'pvalue', 'effect_size')
+    list_filter = ('signature',)
+    search_fields = ('seq_id', 'symbol')
+
 admin.site.register(Profile)
 admin.site.register(Signature, SignatureAdmin)
 admin.site.register(Gene)
-admin.site.register(Transcript)
+admin.site.register(Transcript, TranscriptAdmin)
 admin.site.register(Intensity)
 admin.site.register(Replicate)
 admin.site.register(Contrast)
