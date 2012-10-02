@@ -57,4 +57,6 @@ urlpatterns = patterns('expressions.views',
     url('^transcripts/$', 'transcripts', name='transcripts'),
     url('^transcripts/list/$', 'transcript_list', name='transcript_list'),
     url('^transcripts/delete/$', 'delete_transcripts', name='delete_transcripts'),
+    url('^intersections/$', 'intersections', name='intersections'),
+    url('^intersection/(?P<a>\d+)&(?P<another>\d+)', 'intersection', name='intersection')
 )

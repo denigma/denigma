@@ -65,7 +65,7 @@ def signature(request, pk, ratio=2., pvalue=0.05):
     table = TranscriptTable(transcripts)
     RequestConfig(request).configure(table)
     transcripts_up = transcripts.filter(Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue))
-    transcripts_down = transcripts.filter(Q(ratio__lt=1/ratio) & Q(pvalue__lt=pvalue))
+    transcripts_down = transcripts.filter(Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue))
     ctx = {'signature': signature, 'transcripts': transcripts,
            'transcripts_up': transcripts_up,
            'transcripts_down': transcripts_down,
@@ -76,6 +76,59 @@ def signature(request, pk, ratio=2., pvalue=0.05):
     return render_to_response('expressions/signature.html', ctx,
         context_instance=RequestContext(request))
 
+
+class Intersection(object):
+    def __init__(self, a_signature, another_signature):
+        self.a = a_signature
+        self.another = another_signature
+        self.name = "%s <-> %s" % (a_signature.link, another_signature.link)
+        self.up = a_signature.up & another_signature.up
+        self.down = a_signature.down & another_signature.down
+
+    def differential(self):
+        return "".join(self.up | self.down)
+
+    def upregulated(self):
+        return " ".join(self.up)
+
+    def downregulated(self):
+        return " ".join(self.down)
+
+
+
+def intersections(request, ratio=2., pvalue=0.05):
+    intersections = []
+    #signatures = Signature.objects.differential(ratio, pvalue)      #
+    signatures = Signature.objects.all()
+    for signature in signatures:              #
+        signature.differential(ratio, pvalue) # Might a good function for a custom manager.
+    for a_signature in signatures:
+        for another_signature in signatures[:len(signatures)/2]: # Prevents duplicated comparisions the other way around.
+            if a_signature != another_signature: # Prevent comparision of the same signatures and
+                intersection = Intersection(a_signature, another_signature)
+                print intersection.name, len(intersection.up), len(intersection.down)
+                intersections.append(intersection)
+    # Context:
+    ctx = {'title': 'Intersections',
+           'signatures': signatures,
+           'intersections': intersections
+    }
+    return render_to_response('expressions/intersections.html', ctx,
+        context_instance=RequestContext(request))
+
+def intersection(request, a, another):
+    a_signature = Signature.objects.get(pk=a)
+    a_signature.differential()
+    another_signature = Signature.objects.get(pk=another)
+    another_signature.differential()
+    intersection = Intersection(a_signature, another_signature)
+    ctx = {'title': '%s & %s' % (a_signature, another_signature),
+           'intersection': intersection,
+           'a_signature': a_signature,
+           'another_signature': another_signature
+    }
+    return render_to_response('expressions/intersection.html/', ctx,
+        context_instance=RequestContext(request))
 
 def profile(request, pk):
     profile = Profile.objects.get(pk=pk)
@@ -328,6 +381,8 @@ class ProfileCreate(CreateView):
 class SignatureCreate(CreateView):
     form_class = SignatureForm
     model = Signature
+
+
 
 
 

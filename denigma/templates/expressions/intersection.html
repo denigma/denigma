@@ -1,0 +1,58 @@
+{% extends "expressions/base.html" %}
+
+{% block head_title %}{{ title }}{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/expressions/intersections/" xmlns="http://www.w3.org/1999/html">Intersections</a>
+    > {{ title }}
+{% endblock %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div class="line">
+        <span class="left">
+            <b>Name:</b> <a href="/expressions/signature/{{ a_signature.pk }}/">{{ a_signature.name }}</a>
+        </span>
+        <span class="centre">
+            <b>Up | Diff | Down</b>
+        </span>
+        <span class="right">
+            <b>Name: </b><a href="/expressions/signature/{{ another_signature.pk }}/">{{ another_signature.name }}</a>
+        </span>
+    </div>
+    <div class="line">
+        <span class="left">
+            <b>Species</b>: <a href="/annotations/species/{{ a_signature.species.pk }}/">{{ a_signature.species }}</a>
+        </span>
+        <span class="centre">
+            {{ intersection.up|length }} |
+            {{ intersection.differential|length }} |
+            {{ intersection.down|length }}
+        </span>
+        <span class="right">
+            <b>Species</b>: <a href="/annotations/species/{{ another_signature.species.pk }}/">{{ another_signature.species }}</a>
+        </span>
+    </div>
+   <div class="line">
+        <span class="left">
+            <b>Tissue</b>{% if a_signature.tissue > 1 %}s{% endif %}:
+            {% for tissue in a_signature.tissues.all %}
+                <a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue.name }}</a>{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        </span>
+        <span class="right">
+            <b>Tissue</b>{% if another_signature.tissue > 1 %}s{% endif %}:
+            {% for tissue in another_signature.tissues.all %}
+                <a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue.name }}</a>{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        </span>
+   </div>
+
+    <hr>
+    <h3>Up</h3>
+    {{ intersection.upregulated }}
+    <hr>
+    <h3>Down</h3>
+    {{ intersection.downregulated }}
+{% endblock content %}

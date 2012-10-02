@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.db.models import Q
 
 class Replicate(models.Model):
     probe_id = models.CharField(max_length=255)
@@ -39,8 +39,27 @@ class Signature(models.Model):
     tissues = models.ManyToManyField('annotations.Tissue', blank=True, null=True)
     diet = models.ForeignKey('lifespan.Regimen', blank=True, null=True)
 
+    def differential(self, ratio=2., pvalue=.05):
+        self.upregulated(ratio, pvalue)
+        self.downregulated(ratio, pvalue)
+
+    def upregulated(self, ratio=2., pvalue=.05):
+        self.up = set([t.seq_id for t in self.transcripts.filter(
+            Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue))])
+
+    def downregulated(self, ratio=2., pvalue=.05):
+        self.down = set([t.seq_id for t in self.transcripts.filter(
+            Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue))])
+
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return u"/expressions/signature/%s" % self.pk
+
+    @property
+    def link(self):
+        return "<a href='%s'>%s</a>" % (self.get_absolute_url(), self.name)
 
 
 class Expression(models.Model):
@@ -67,6 +86,7 @@ class Transcript(models.Model):
 
     def __unicode__(self):
         return self.seq_id
+
 
 class Intensity(models.Model):
     value = models.FloatField()

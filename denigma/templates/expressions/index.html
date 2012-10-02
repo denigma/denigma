@@ -12,9 +12,13 @@
 
 {% block content %}
     {{ entry.text|markdown|hyper|recross|safe }}
+
     {% for image in entry.images.all %}
         <center><img src="{{ image.url }}" alt="{{ image.name }}"></center>
     {% endfor %}
+    <br>
+    <center><b><a href="/expressions/intersections/">Intersections</a></b></center>
+
     {% if user.is_superuser %}
         <a href="/admin/expressions">Admin</a><br>
         <a href="/expressions/transcripts/">Transcripts</a><br>
