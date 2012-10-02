@@ -55,7 +55,7 @@ class Signature(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return u"/expressions/signature/%s" % self.pk
+        return "/expressions/signature/%s" % self.pk
 
     @property
     def link(self):

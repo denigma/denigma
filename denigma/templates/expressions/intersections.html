@@ -20,13 +20,13 @@
      </tr>
      {% for intersection in intersections %}
          <tr>
-             <td><a href="/{{ intersection.a.get_absolute_url }}">{{ intersection.a }}</a>
+             <td><a href="{{ intersection.a.get_absolute_url }}">{{ intersection.a }}</a>
                  ({% for tissue in intersection.a.tissues.all %}<a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %})
               </td>
 
              <td><center><a href="/expressions/intersection/{{ intersection.a.pk }}&{{ intersection.another.pk }}/"><-></a></center></td>
 
-             <td><a href="{{ intersection.another.get_absolute.url }}">{{ intersection.another }}</a>
+             <td><a href="{{ intersection.another.get_absolute_url }}">{{ intersection.another }}</a>
                  ({% for tissue in intersection.another.tissues.all %}<a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %})
              </td>
 
