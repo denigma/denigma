@@ -13,8 +13,10 @@
 
 {% block content %}
     {{ datasets.text|markdown|hyper|recross|safe }}
+    <center>
     {% for image in datasets.images.all %}
-        <img src={{ image.url }} alt="datasets">
+        <img src={{ image.url }} alt="datasets" width="500" height="500"/>
     {% endfor %}
+    </center>
 {% endblock %}
 
