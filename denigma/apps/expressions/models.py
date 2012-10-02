@@ -38,10 +38,14 @@ class Signature(models.Model):
     species = models.ForeignKey('annotations.Species')
     tissues = models.ManyToManyField('annotations.Tissue', blank=True, null=True)
     diet = models.ForeignKey('lifespan.Regimen', blank=True, null=True)
+    up = []
+    diff = []
+    down = []
 
     def differential(self, ratio=2., pvalue=.05):
-        self.upregulated(ratio, pvalue)
-        self.downregulated(ratio, pvalue)
+        if not self.up: self.upregulated(ratio, pvalue)
+        if not self.down: self.downregulated(ratio, pvalue)
+        return set(self.up) | set(self.down)
 
     def upregulated(self, ratio=2., pvalue=.05):
         self.up = set([t.seq_id for t in self.transcripts.filter(
@@ -50,6 +54,10 @@ class Signature(models.Model):
     def downregulated(self, ratio=2., pvalue=.05):
         self.down = set([t.seq_id for t in self.transcripts.filter(
             Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue))])
+
+    def diff(self):
+        if self.diff: return self.diff
+        else: return self.differential()
 
     def __unicode__(self):
         return self.name

@@ -22,9 +22,9 @@
      <table>
      <tr>
          <td><center><b>A</b></center</td>
-         <td><center><b>Up</b></center></td>
-         <td><center><b>Delta</b></center></td>
-         <td><center><b>Down</b></center></td>
+         <td><center><b>A(Up|Diff|Down)</b></center></td>
+         <td><center><b>A&B(Up|Diff|Down)</b></center></td>
+         <td><center><b>A(Up|Diff|Down)</b></center></td>
          <td><center><b>B</b></center></td>
 
      </tr>
@@ -34,9 +34,26 @@
                  ({% for tissue in intersection.a.tissues.all %}<a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %})
              </center></td>
 
-             <td><center>{{ intersection.up|length }}</center></td>
-             <td><center><a href="/expressions/intersection/{{ intersection.a.pk }}&{{ intersection.another.pk }}/">{{ intersection.differential|length }}</a></center></td>
-             <td><center>{{ intersection.down|length }}</center></td>
+             <td>
+                 <center>
+                 <span style="color:red">{{ intersection.a.up|length }}</span> |
+                 <a href="{{ intersection.a.get_absolute_url }}">{{ intersection.a.differential|length }}</a> |
+                 <span style="color:green">{{ intersection.a.down|length }}</span></center>
+             </td>
+             <td>
+                 <center>
+                 <span style="color:red">{{ intersection.up|length }}</span> |
+                 <a href="/expressions/intersection/{{ intersection.a.pk }}&{{ intersection.another.pk }}/">{{ intersection.diff|length }}</a> |
+                 <span style="color:green">{{ intersection.down|length }}</span>
+                 </center>
+             </td>
+             <td>
+                 <center>
+                 <span style="color:red">{{ intersection.another.up|length }}</span> |
+                 <a href="{{ intersection.another.get_absolute_url }}">{{ intersection.another.differential|length }}</a> |
+                 <span style="color:green">{{ intersection.another.down|length }}</span>
+                 </center>
+             </td>
 
              <td><center><a href="{{ intersection.another.get_absolute_url }}">{{ intersection.another }}</a>
                  ({% for tissue in intersection.another.tissues.all %}<a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %})

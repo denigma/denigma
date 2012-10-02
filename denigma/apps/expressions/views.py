@@ -84,9 +84,10 @@ class Intersection(object):
         self.name = "%s <-> %s" % (a_signature.link, another_signature.link)
         self.up = a_signature.up & another_signature.up
         self.down = a_signature.down & another_signature.down
+        self.diff = (a_signature.up | a_signature.down) & (another_signature.up | another_signature.down)
 
     def differential(self):
-        return "".join(self.up | self.down)
+        return " ".join(self.diff)
 
     def upregulated(self):
         return " ".join(self.up)

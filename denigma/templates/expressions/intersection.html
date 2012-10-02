@@ -10,31 +10,48 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
+
     <div class="line">
         <span class="left">
             <b>Name:</b> <a href="/expressions/signature/{{ a_signature.pk }}/">{{ a_signature.name }}</a>
         </span>
         <span class="centre">
-            <b>Up | Diff | Down</b>
+            <b>
+            A(Up|Diff|Down)
+            A&B(Up|Diff|Down)
+            B(Up|Diff|Down)
+            </b>
         </span>
         <span class="right">
             <b>Name: </b><a href="/expressions/signature/{{ another_signature.pk }}/">{{ another_signature.name }}</a>
         </span>
     </div>
+
     <div class="line">
         <span class="left">
             <b>Species</b>: <a href="/annotations/species/{{ a_signature.species.pk }}/">{{ a_signature.species }}</a>
         </span>
         <span class="centre">
-            {{ intersection.up|length }} |
-            {{ intersection.differential|length }} |
-            {{ intersection.down|length }}
+            <span style="color:red">{{ a_signature.up|length }}</span> |
+            {{ a_signature.differential|length }} |
+            <span style="color:green">{{ a_signature.down|length }}</span>
+               <->
+            <span style="color:red">{{ intersection.up|length }}</span> |
+            {{ intersection.diff|length }} |
+            <span style="color:green">{{ intersection.down|length }}</span>
+               <->
+            <span style="color:red">{{ another_signature.up|length }}</span> |
+            {{ another_signature.differential|length }} |
+            <span style="color:green">{{ another_signature.down|length }}</span>
+
+
         </span>
         <span class="right">
             <b>Species</b>: <a href="/annotations/species/{{ another_signature.species.pk }}/">{{ another_signature.species }}</a>
         </span>
     </div>
-   <div class="line">
+
+    <div class="line">
         <span class="left">
             <b>Tissue</b>{% if a_signature.tissue > 1 %}s{% endif %}:
             {% for tissue in a_signature.tissues.all %}
@@ -47,12 +64,26 @@
                 <a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue.name }}</a>{% if not forloop.last %},{% endif %}
             {% endfor %}
         </span>
-   </div>
+    </div>
+
 
     <hr>
     <h3>Up</h3>
+    <span style="color:red">
     {{ intersection.upregulated }}
+    </span>
     <hr>
     <h3>Down</h3>
+    <span style="color:green">
     {{ intersection.downregulated }}
+    </span>
 {% endblock content %}
+
+{% comment %}
+    <div class="line">
+        <span class="left">
+            Up / Diff / Down:
+        </span>
+    </div>
+
+{% endcomment %}
