@@ -10,16 +10,33 @@
 {% endblock %}
 
 {% block content %}
-    <p>{{ tutorials_entry.text|markdown|hyper|recross|safe }}</p>
-    {% if tutorials %}
-        {% for tutorial in tutorials %}
-            <li><a href="/tutorials/{{ tutorial.id }}/view/">{{ tutorial.title }}</a></li>
-        {% endfor %}
-        <p></p>
-        <a href="/admin/blog/post/add/">Add another one</a>
+
+    <table>
+        <tr>
+            <td>
+                <p>{{ tutorials_entry.text|markdown|hyper|recross|safe }}</p>
+                {% if tutorials %}
+                    {% for tutorial in tutorials %}
+                        <li><a href="/tutorials/{{ tutorial.id }}/view/">{{ tutorial.title }}</a></li>
+                    {% endfor %}
+                    <p></p>
+                    <a href="/admin/blog/post/add/">Add another one</a>
+                {% else %}
+                    <p>There are currently no tutorials.</p>
+                {% endif %}
+            </td>
+            <td>
+                {% for image in tutorials_entry.images.all %}
+                    <img src="{{ image.url }}" alt="{{ image.name }}" />
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+
         <hr>
         Note: <a href="/tutorials/development/">Operation system-specific consideration for Development</a>
         <hr>
+
         {% for tutorial in tutorials %}
             <table>
                 <tr>
@@ -35,10 +52,5 @@
                 </tr>
             </table>
         {% endfor %}
-        <br>
-
-    {% else %}
-        <p>There are currently no tutorials.</p>
-    {% endif %}
 
 {% endblock %}
