@@ -25,7 +25,7 @@
                 <tr>
                     <td>
                         <h3><a href="/tutorials/{{ tutorial.id }}/view">{{ tutorial.title }}</a></h3>
-                        {{ tutorial.text|markdown|hyper|safe }}
+                        {{ tutorial.brief|markdown|hyper|safe }}
                     </td>
                     <td>
                         {% for image in tutorial.images.all %}
