@@ -17,6 +17,11 @@
 
 {% block content %}
     {{ annotations.text|markdown|safe }}
+    <center>
+    {% for image in annotations.images.all %}
+        <img src="{{ image.url }}" alt="{{ image.name }}" width="500" height="500" />
+    {% endfor %}
+    </center>
     {% if user.is_authenticated %}
         <hr>
         <p>It is possible to bulk upload annotations.
