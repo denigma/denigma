@@ -2,6 +2,7 @@
 
 {% load markup %}
 {% load hyperlink %}
+{% load crosslink %}
 {% load negletion %}
 
 {% block hierarchy %}
@@ -14,7 +15,7 @@
 {% block title %}{{ tutorial.title }}{% endblock %}
 
 {% block content %}
-   {{ tutorial.text|markdown|hyper|safe }} {# restructuredtext #}
+   {{ tutorial.text|markdown|hyper|recross|safe }} {# restructuredtext #}
    {% for image in tutorial.images.all %}
        <img src={{ image.url }} alt={{ image.name }}/>
    {% endfor %}
