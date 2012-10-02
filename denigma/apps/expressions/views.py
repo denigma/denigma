@@ -97,6 +97,7 @@ class Intersection(object):
 
 
 def intersections(request, ratio=2., pvalue=0.05):
+    entry = data("Intersections")
     intersections = []
     #signatures = Signature.objects.differential(ratio, pvalue)      #
     signatures = Signature.objects.all()
@@ -110,6 +111,7 @@ def intersections(request, ratio=2., pvalue=0.05):
                 intersections.append(intersection)
     # Context:
     ctx = {'title': 'Intersections',
+           'entry': entry,
            'signatures': signatures,
            'intersections': intersections
     }

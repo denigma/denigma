@@ -1,5 +1,9 @@
 {% extends "expressions/base.html" %}
 
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
 {% block head_title %}{{ title }}{% endblock %}
 
 {% block hierarchy %}
@@ -9,37 +13,46 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
+    {{ entry.text|markdown|hyper|recross|safe }}
+    <center>
+    {% for image in entry.images.all %}
+        <img src="{{ image.url }}" alt="{{ image.name }}" />
+    {% endfor %}
+
      <table>
      <tr>
          <td><center><b>A</b></center</td>
-         <td><center><b>A&B</b></center></td>
-         <td><center><b>B</b></center></td>
          <td><center><b>Up</b></center></td>
          <td><center><b>Delta</b></center></td>
          <td><center><b>Down</b></center></td>
+         <td><center><b>B</b></center></td>
+
      </tr>
      {% for intersection in intersections %}
          <tr>
-             <td><a href="{{ intersection.a.get_absolute_url }}">{{ intersection.a }}</a>
+             <td><center><a href="{{ intersection.a.get_absolute_url }}">{{ intersection.a }}</a>
                  ({% for tissue in intersection.a.tissues.all %}<a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %})
-              </td>
-
-             <td><center><a href="/expressions/intersection/{{ intersection.a.pk }}&{{ intersection.another.pk }}/"><-></a></center></td>
-
-             <td><a href="{{ intersection.another.get_absolute_url }}">{{ intersection.another }}</a>
-                 ({% for tissue in intersection.another.tissues.all %}<a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %})
-             </td>
+             </center></td>
 
              <td><center>{{ intersection.up|length }}</center></td>
-             <td><center>{{ intersection.differential|length }}</center></td>
+             <td><center><a href="/expressions/intersection/{{ intersection.a.pk }}&{{ intersection.another.pk }}/">{{ intersection.differential|length }}</a></center></td>
              <td><center>{{ intersection.down|length }}</center></td>
+
+             <td><center><a href="{{ intersection.another.get_absolute_url }}">{{ intersection.another }}</a>
+                 ({% for tissue in intersection.another.tissues.all %}<a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %})
+             </center></td>
          </tr>
+
      {% endfor %}
      </table>
+    </center>
 
 
 
     {% comment %}
+
+             <td><center><b>A&B</b></center></td>
+
     <hr>
     {% for a_signature in signatures %}
         {% for another_signature in signatures %}
