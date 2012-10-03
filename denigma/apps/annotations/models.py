@@ -34,6 +34,32 @@ class Tissue(models.Model):
     def get_absolute_url(self):
         return "/annotations/tissue/%i" % self.pk
 
+
+class Hormone(models.Model):
+    symbol = models.CharField(max_length=20)
+    name = models.CharField(max_length=100)
+    tissues = models.ManyToManyField('Tissue')
+    effects = models.TextField()
+
+    def __unicode__(self):
+        return self.symbol or self.name
+
+    def get_absolute_url(self):
+        return ('hormone',)
+
+
+class SecondMessanger(models.Model):
+    symbol = models.CharField(max_length=20)
+    name = models.CharField(max_length=100)
+    stimulator = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.symbol or self.name
+
+    def get_absolute_url(self):
+        return ('second_messager',)
+
+
 # Species annotations:
 
 class Taxonomy(models.Model):
