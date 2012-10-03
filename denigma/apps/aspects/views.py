@@ -6,7 +6,6 @@ from django.views.generic.edit import CreateView
 from models import Hierarchy, HierarchyType, Rank, Grade, Title
 from forms import AchievementForm, HierarchyForm, RankForm, GradeForm, TitleForm
 
-
 from blog.models import Post
 
 
@@ -46,7 +45,6 @@ class HierarchyCreate(CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.save()
-        print self.object
         return HttpResponseRedirect(self.get_success_url())
 
 
