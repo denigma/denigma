@@ -86,6 +86,9 @@ def signature(request, pk, ratio=1.5, pvalue=0.05):
         context_instance=RequestContext(request))
 
 
+class Intersections(list):
+    def func():
+
 class Intersection(object):
     def __init__(self, a_signature, another_signature):
         self.a = a_signature
@@ -107,7 +110,7 @@ class Intersection(object):
 
 def intersections(request, ratio=2., pvalue=0.05):
     entry = get("Intersections")
-    intersections = []
+    intersections = Intersections()
     #signatures = Signature.objects.differential(ratio, pvalue)      #
     signatures = Signature.objects.all()
     for signature in signatures:              #
@@ -266,36 +269,34 @@ def add_signature(request):
 
         #num_lines = len(data); counter = 0
         for line in data[1:]:
-        # For effect size
-            ctr_values = []
-            exp_values = []
-
-            #counter += 1
-            if not line: continue
-            columns = line.split('\t')
-            if len(columns) <= 5: break #continue
-            seq_id = columns[header['seq_id']]
-            pvalue = columns[header['p_value']]
-            symbol = columns[header['symbol']]
-
-            ctr = float(columns[header['ctr']])
-            exp = float(columns[header['exp']])
-            ratio = exp/ctr
-            fold_change = columns[header['fold_change']]
-
-            # Calculating effect size:
             try:
+                # For effect size
+                ctr_values = []
+                exp_values = []
+
+                #counter += 1
+                if not line: continue
+                columns = line.split('\t')
+                if len(columns) <= 5: break #continue
+                seq_id = columns[header['seq_id']]
+                pvalue = columns[header['p_value']]
+                symbol = columns[header['symbol']]
+
+                ctr = float(columns[header['ctr']])
+                exp = float(columns[header['exp']])
+                ratio = exp/ctr
+                fold_change = columns[header['fold_change']]
+
+                # Calculating effect size:
                 for k,v  in header.items():
                     if k.startswith('ctr'):
                         ctr_values.append(float(columns[v]))
                     elif k.startswith('exp'):
                         exp_values.append(float(columns[v]))
                 es = effect_size(exp_values, ctr_values)
-            except ValueError:
-                break
 
-            transcript = Transcript(seq_id=seq_id, symbol=symbol, ratio=ratio, fold_change=fold_change, pvalue=pvalue, effect_size=es)
-            try:
+                transcript = Transcript(seq_id=seq_id, symbol=symbol, ratio=ratio, fold_change=fold_change, pvalue=pvalue, effect_size=es)
+
                 transcript.save()
                 expression = Expression.objects.create(
                     signature=signature,
@@ -304,9 +305,10 @@ def add_signature(request):
                     ratio=ratio,
                     fold_change=fold_change,
                     pvalue=pvalue,
-                    effect_size=es)
+                effect_size=es)
             except ValueError as e:
                 print e, symbol, seq_id, fold_change, pvalue, ctr, exp
+                break
 
         #print "Counter=%s; Number of lines:%s" % (counter, num_lines)
         #if counter == num_lines:
