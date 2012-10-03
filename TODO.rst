@@ -770,6 +770,12 @@ To reduce reptition of static componounds they need to be made dynamic.
 A solution would be the following: [http://dpaste.com/hold/806276/].
 
 
+Dynamic Sections links
+----------------------
+The tutorials app should havea dynamic sections links navigation as it is
+implimented in the bootstrap getting started [http://twitter.github.com/bootstrap/getting-started.html].
+
+
 The Future of Denigma
 ---------------------
 
