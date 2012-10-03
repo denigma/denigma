@@ -1,22 +1,40 @@
 {% extends "polls/base.html" %} 
 
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
 {% block hierarchy %}
     > Polls
 {% endblock %}
 
 {% block content %}
-    <p>This is the legendary classic Polls app with some enhancements. Here it functions to get a common sense on fundemental questions as well as to vote about the fate of Denigma.</p>
-    {% if latest_poll_list %}
-        <ul>
-        {% for poll in latest_poll_list %}
-            <li><a href="/polls/{{ poll.id }}/">{{ poll.question }}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No polls are available.</p>
-    {% endif %}
-    <b><a href="/polls/create/">Create a new poll</a></b>
-
+    <table border="0">
+        <tr>
+            <td>
+                {% if entry %}
+                    {{ entry.text|markdown|hyper|recross|safe }}
+                {% else %}
+                    <p>This is the legendary classic Polls app with some enhancements. Here it functions to get a common sense on fundamental questions as well as to vote about the fate of Denigma.</p>
+                {% endif %}
+                {% if latest_poll_list %}
+                    <ul>
+                    {% for poll in latest_poll_list %}
+                        <li><a href="/polls/{{ poll.id }}/">{{ poll.question }}</a></li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No polls are available.</p>
+                {% endif %}
+                <b><a href="/polls/create/">Create a new poll</a></b>
+            </td>
+            <td>
+                {% for image in entry.images.all %}
+                    <img src="{{ image.url }}" alt="{{ image.name }}" width="150" height="150" />
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
 
 {% comment %}
 <h3>Add a poll:</h2>

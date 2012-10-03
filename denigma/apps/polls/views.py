@@ -5,7 +5,19 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.conf.urls.defaults import *
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
+from django.views.generic import ListView
+
 from polls.models import Choice, Poll
+
+from home.views import data
+
+
+class PollsList(ListView):
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context:
+        context = super(PollsList, self).get_context_data(**kwargs)
+        context['entry'] = data("Polls")
+        return context
 
 
 def vote(request, poll_id):

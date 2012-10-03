@@ -1,14 +1,20 @@
 from django.conf.urls.defaults import patterns, include, url
-from django.views.generic import DetailView, ListView, CreateView
-from polls.models import Poll
+from django.views.generic import DetailView, CreateView
+
+from models import Poll
+from views import PollsList
+
+
 
 
 urlpatterns = patterns('',
     (r'^$',
-        ListView.as_view(
+        PollsList.as_view(
             queryset=Poll.objects.order_by('-pub_date')[:5],
             context_object_name='latest_poll_list',
-            template_name='polls/index.html')),
+            template_name='polls/index.html',
+        )
+    ),
     (r'^(?P<pk>\d+)/$',
         DetailView.as_view(
             model=Poll,
