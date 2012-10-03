@@ -17,6 +17,7 @@ from tables import TranscriptTable, ReplicateTable
 from filters import TranscriptFilterSet
 
 from blog.models import Post
+from home.views import data
 from stats import effect_size
 
 def transcripts(request):
@@ -30,13 +31,7 @@ def transcript_list(request):
         context_instance=RequestContext(request))
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
-def data(title):
-    """Fetches a database entry arcording to its title."""
-    try:
-        entry = Post.objects.get(title=title)
-    except (Post.DoesNotExist, Post.MultipleObjectsReturned) as e:
-        entry = e
-    return entry
+
 
 def index(request):
     try:
@@ -94,7 +89,6 @@ class Intersection(object):
 
     def downregulated(self):
         return " ".join(self.down)
-
 
 
 def intersections(request, ratio=2., pvalue=0.05):

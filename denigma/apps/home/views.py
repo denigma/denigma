@@ -6,6 +6,17 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import user_passes_test
 from forms import DynamicForm
 
+from blog.models import Post
+
+
+def data(title):
+    """Fetches a database entry according to its title."""
+    try:
+        entry = Post.objects.get(title=title)
+    except (Post.DoesNotExist, Post.MultipleObjectsReturned) as e:
+        entry = e
+    return entry
+
 
 def home(request):
     return HttpResponse("Home Page")
@@ -52,4 +63,3 @@ def SuperUserRequiredMixin(object):
     @user_passes_test(lambda u: u.is_superuser)
     def dispatch(self, request, *args, **kwargs):
         return super(SuperUserRequiredMixin, self).dispatch(request, *args, **kwargs)
-
