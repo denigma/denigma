@@ -72,6 +72,7 @@ urlpatterns += patterns("",
     url(r'^meta/', include('meta.urls')),
     url(r'^aspects/', include('aspects.urls')),
     url(r'^data/', include('data.urls')),
+    url(r'^eva/', include('eva.urls')),
 )
 if settings.SERVE_MEDIA:
     urlpatterns += patterns("",

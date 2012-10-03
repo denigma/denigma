@@ -273,6 +273,7 @@ INSTALLED_APPS = [
     'meta',
     'aspects',
     'data',
+    'eva',
 ]
 
 FIXTURE_DIRS = [

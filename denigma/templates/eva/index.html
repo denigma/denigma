@@ -1,0 +1,15 @@
+{% extends "eva/base.html" %}
+
+{% block hierarchy %}
+    > Index
+{% endblock %}
+
+{% block options %}
+    <a href="/eva/tf_idf/the/">TF-IDF</a>
+{% endblock %}
+
+{% block content %}
+    Here is EVA.
+    {{ entry.text }}
+
+{% endblock %}

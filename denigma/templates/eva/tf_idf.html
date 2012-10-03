@@ -1,0 +1,30 @@
+{% extends "eva/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ title }}{% endblock %}
+
+{% block hierarchy %}
+    > {{ title }}
+{% endblock %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    Keyword: {{ keyword }}<br>
+    N: {{ N }}<br>
+    Nw: {{ Nw }}<br>
+    IDF: {{ IDF }}<br>
+    TF-IDF: {{ TF_IDF }}
+    Words:<br>
+    {% for word in words %}
+        {{ word.key }} - {{ word.TF_IDF }}<br>
+    {% endfor %}
+    {#{{ form.as_p }}#}
+    {#{% crispy form %}#}
+    <form method="POST">{% csrf_token %}
+        Keyword: <input type="text" name="keyword"><br>
+        Text: <textarea name="text"></textarea>
+        <input type="submit" value="Search">
+    </form>
+{% endblock %}
