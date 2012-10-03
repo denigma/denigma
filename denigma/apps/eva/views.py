@@ -6,12 +6,17 @@ try:
     from django.shortcuts import render_to_response
     from django.template import RequestContext
     from django import forms
+    from django.contrib import messages
+    from django.translation import ugettext
 
     from data import get
 except ImportError as e:
     print e
 
-from browser import br
+try:
+    from browser import br
+except ImportError:
+    pass
 
 
 class Input(forms.Form):
