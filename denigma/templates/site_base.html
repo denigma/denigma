@@ -154,9 +154,10 @@ ul.nav li.dropdown:hover ul.dropdown-menu{
 {% block footer %}
     {% include "_footer.html" %}
     <center>
-    <a href="/contact/">Contact</a> | <a href="/time/">Time</a> | <a href="/about/">About</a> | <a href="/sitemap.xml">Sitemap</a> | <a href="/eva/">EVA</a>
+    <a href="/contact/">Contact</a> | <a href="/time/">Time</a> | <a href="/about/">About</a> | <a href="/sitemap.xml">Sitemap</a>
     {% if user.is_superuser %}
         | <a href="/meta/">Meta</a>
+        | <a href="/eva/">EVA</a>
     </center>
     {% endif %}
 
