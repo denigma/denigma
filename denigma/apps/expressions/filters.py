@@ -5,10 +5,12 @@ from models import Transcript
 
 class TranscriptFilterSet(django_filters.FilterSet):
     pvalue = django_filters.NumberFilter(lookup_type='lt') # Looks up transcripts with
+    expression__exp = django_filters.NumberFilter(lookup_type='lt')
+    #ctr = django_filters.NumberFilter(lookup_type='lt')
     symbol = django_filters.CharFilter()
     class Meta:
         model = Transcript
-        fields = ['symbol', 'ratio', 'fold_change']#, 'pvalue']
+        fields = ['symbol', 'expression__exp', 'ratio', 'fold_change']#, 'pvalue']#'ctr',
 
     def __init___(self, *args, **kwargs):
         super(TranscriptFilterSet, self).__init__(*args, **kwargs)

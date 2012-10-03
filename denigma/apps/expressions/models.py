@@ -42,26 +42,39 @@ class Signature(models.Model):
     diff = []
     down = []
 
-    def differential(self, ratio=2., pvalue=.05, fold_change=None):
-        if not self.up: self.upregulated(ratio, pvalue, fold_change)
-        if not self.down: self.downregulated(ratio, pvalue, fold_change)
+    def differential(self, ratio=2., pvalue=.05, fold_change=None, exp=None):
+        if not self.up: self.upregulated(ratio, pvalue, fold_change, exp=exp)
+        if not self.down: self.downregulated(ratio, pvalue, fold_change, exp=exp)
         return set(self.up) | set(self.down)
 
-    def upregulated(self, ratio=2., pvalue=.05, fold_change=None):
+    def upregulated(self, ratio=2., pvalue=.05, fold_change=None, exp=None):
         if not fold_change:
-            self.up = set([t.seq_id for t in self.transcripts.filter(
-                Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue))])
+            transcripts = self.transcripts.filter(
+                Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue))
+            if exp:
+                transcripts = transcripts.filter(expression__exp__gt=exp, expression__ctr__gt=exp)
+            self.up = set([t.seq_id for t in transcripts])
         else:
-            self.up = set([t.seq_id for t in self.transcripts.filter(
-                Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue) & Q(fold_change__gt=fold_change))])
+            transcripts = self.transcripts.filter(
+                Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue) & Q(fold_change__gt=fold_change))
+            if exp:
+                transcripts = transcripts.filter(expression__exp__gt=exp, expression__ctr__gt=exp)
+            self.up = set([t.seq_id for t in transcripts])
 
-    def downregulated(self, ratio=2., pvalue=.05, fold_change=None):
+    def downregulated(self, ratio=2., pvalue=.05, fold_change=None, exp=None):
         if not fold_change:
-            self.down = set([t.seq_id for t in self.transcripts.filter(
-                Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue))])
+            transcripts = self.transcripts.filter(
+                Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue))
+            if exp:
+                transcripts = transcripts.filter(expression__exp__gt=exp, expression__ctr__gt=exp)
+            self.down = set([t.seq_id for t in transcripts])
         else:
-            self.down = set([t.seq_id for t in self.transcripts.filter(
-                Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue) & Q(fold_change__lt=1./fold_change))])
+            transcripts = self.transcripts.filter(
+                Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue) & Q(fold_change__lt=1./fold_change))
+            if exp:
+                transcripts = transcripts.filter(expression__exp__gt=exp, expression__ctr__gt=exp)
+            self.down = set([t.seq_id for t in transcripts])
+
     @property
     def difference(self):
         if self.diff: return self.diff

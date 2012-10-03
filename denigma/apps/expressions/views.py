@@ -50,16 +50,27 @@ def signatures(request):
     return render_to_response('expressions/signatures.html', ctx,
         context_instance=RequestContext(request))
 
-def signature(request, pk, ratio=1.5, pvalue=0.05, fold_change=None):
+def signature(request, pk, ratio=1.5, pvalue=0.05, fold_change=None, exp=None):
     if request.GET:
         if 'ratio' in request.GET and request.GET['ratio']:
             ratio = float(request.GET['ratio'])
         if 'pvalue' in request.GET and request.GET['pvalue']:
             pvalue = float(request.GET['pvalue'])
+        if 'expression__exp' in request.GET and request.GET['expression__exp']:
+            exp = float(request.GET['expression__exp'])
+
     signature = Signature.objects.get(pk=pk)
-    transcripts = signature.transcripts.filter((Q(ratio__gt=ratio) | Q(ratio__lt=1./ratio))
-                                               & Q(pvalue__lt=pvalue)
-    )
+
+    if not exp:
+        transcripts = signature.transcripts.filter((Q(ratio__gt=ratio) | Q(ratio__lt=1./ratio))
+                                                   & Q(pvalue__lt=pvalue))
+    else: # What is about a gene that is only low expressed in one condition?
+        print "Filtering on expression:"
+        transcripts = signature.transcripts.filter((Q(ratio__gt=ratio) | Q(ratio__lt=1./ratio))
+                                                   & Q(pvalue__lt=pvalue
+                                                   #& Q(expression__exp__gt=exp) & Q(expression__ctr__gt=exp)
+                                                    ))
+        transcripts = transcripts.filter(expression__exp__gt=exp, expression__ctr__gt=exp)
     if request.GET:
         if 'symbol' in request.GET and request.GET['symbol']:
             symbol = request.GET['symbol']
@@ -84,29 +95,6 @@ def signature(request, pk, ratio=1.5, pvalue=0.05, fold_change=None):
            'pvalue': pvalue,
            'filter': filter}
     return render_to_response('expressions/signature.html', ctx,
-        context_instance=RequestContext(request))
-
-def meta(request, ratio=1.1, pvalue=0.05, fold_change=None):
-    """Common to all signature in a category."""
-    if request.GET:
-        if 'ratio' in request.GET and request.GET['ratio']:
-            ratio = float(request.GET['ratio'])
-        if 'pvalue' in request.GET and request.GET['pvalue']:
-            pvalue = float(request.GET['pvalue'])
-        if 'fold_change' in request.GET and request.GET['fold_change']:
-            fold_change = float(request.GET['fold_change'])
-    entry = get("Meta-Analysis")
-    signatures = Signature.objects.all()
-    for signature in signatures:
-        signature.differential(ratio=ratio, pvalue=pvalue, fold_change=fold_change)
-    signatures = Signatures(signatures)
-    filter = TranscriptFilterSet(request.GET, transcripts)
-
-    ctx = {'title': 'Meta-Analysis',
-           'entry': entry,
-           'signatures': signatures,
-           'filter': filter}
-    return render_to_response('expressions/meta.html', ctx,
         context_instance=RequestContext(request))
 
 class Signatures(list):
@@ -147,7 +135,7 @@ class Intersection(object):
         return " ".join(self.down)
 
 
-def intersections(request, ratio=1.1, pvalue=0.05, fold_change=None):
+def intersections(request, ratio=1.1, pvalue=0.05, fold_change=None, exp=None):
     entry = get("Intersections")
 
     if request.GET:
@@ -157,13 +145,16 @@ def intersections(request, ratio=1.1, pvalue=0.05, fold_change=None):
             pvalue = float(request.GET['pvalue'])
         if 'fold_change' in request.GET and request.GET['fold_change']:
             fold_change = float(request.GET['fold_change'])
+        if 'expression__exp' in request.GET and request.GET['expression__exp']:
+            exp = request.GET['expression__exp']
+            print "Expression exp"
     filter = TranscriptFilterSet(request.GET, transcripts)
 
     intersections = []
     #signatures = Signature.objects.differential(ratio, pvalue)      #
     signatures = Signature.objects.all()
     for signature in signatures:              #
-        signature.differential(ratio, pvalue, fold_change) # Might a good function for a custom manager.
+        signature.differential(ratio, pvalue, fold_change, exp) # Might a good function for a custom manager.
     for a_signature in signatures:
         for another_signature in signatures[:len(signatures)/2]: # Prevents duplicated comparisions the other way around.
             if a_signature != another_signature: # Prevent comparision of the same signatures and
@@ -179,12 +170,13 @@ def intersections(request, ratio=1.1, pvalue=0.05, fold_change=None):
            'ratio': ratio,
            'pvalue': pvalue,
            'fold_change': fold_change,
+           'exp': exp,
            'filter': filter,
     }
     return render_to_response('expressions/intersections.html', ctx,
         context_instance=RequestContext(request))
 
-def intersection(request, a, another, ratio=1.2, pvalue=0.05, fold_change=None):
+def intersection(request, a, another, ratio=1.2, pvalue=0.05, fold_change=None, exp=None):
     a_signature = Signature.objects.get(pk=a)
 
     another_signature = Signature.objects.get(pk=another)
@@ -197,14 +189,16 @@ def intersection(request, a, another, ratio=1.2, pvalue=0.05, fold_change=None):
         if 'fold_change' in request.GET and request.GET['fold_change']:
             fold_change = request.GET['fold_change']
             print "get fold_change", fold_change
+        if 'expression__exp' in request.GET and request.GET['expression__exp']:
+            exp = float(request.GET['expression__exp'])
     filter = TranscriptFilterSet(request.GET, transcripts)
 
     if fold_change == 'None':
         fold_change = None
     print fold_change
 
-    a_signature.differential(float(ratio), float(pvalue), float(fold_change or 0))
-    another_signature.differential(float(ratio), float(pvalue), float(fold_change or 0))
+    a_signature.differential(float(ratio), float(pvalue), float(fold_change or 0), exp)
+    another_signature.differential(float(ratio), float(pvalue), float(fold_change or 0), exp)
     intersection = Intersection(a_signature, another_signature)
     ctx = {'title': '%s & %s' % (a_signature, another_signature),
            'intersection': intersection,
@@ -213,6 +207,30 @@ def intersection(request, a, another, ratio=1.2, pvalue=0.05, fold_change=None):
            'filer': filter,
     }
     return render_to_response('expressions/intersection.html/', ctx,
+        context_instance=RequestContext(request))
+
+def meta(request, ratio=1.1, pvalue=0.05, fold_change=None, exp=None):
+    """Common to all signature in a category."""
+    if request.GET:
+        if 'ratio' in request.GET and request.GET['ratio']:
+            ratio = float(request.GET['ratio'])
+        if 'pvalue' in request.GET and request.GET['pvalue']:
+            pvalue = float(request.GET['pvalue'])
+        if 'fold_change' in request.GET and request.GET['fold_change']:
+            fold_change = float(request.GET['fold_change'])
+        if 'expression__exp' in request.GET and request.GET['expression__exp']:
+            exp = float(request.GET['expression__exp'])
+    entry = get("Meta-Analysis")
+    signatures = Signature.objects.all()
+    for signature in signatures:
+        signature.differential(ratio, pvalue, fold_change, exp)
+    signatures = Signatures(signatures)
+    filter = TranscriptFilterSet(request.GET, transcripts)
+    ctx = {'title': 'Meta-Analysis',
+           'entry': entry,
+           'signatures': signatures,
+           'filter': filter}
+    return render_to_response('expressions/meta.html', ctx,
         context_instance=RequestContext(request))
 
 def profile(request, pk):
