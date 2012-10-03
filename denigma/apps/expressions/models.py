@@ -42,20 +42,28 @@ class Signature(models.Model):
     diff = []
     down = []
 
-    def differential(self, ratio=2., pvalue=.05):
-        if not self.up: self.upregulated(ratio, pvalue)
-        if not self.down: self.downregulated(ratio, pvalue)
+    def differential(self, ratio=2., pvalue=.05, fold_change=None):
+        if not self.up: self.upregulated(ratio, pvalue, fold_change)
+        if not self.down: self.downregulated(ratio, pvalue, fold_change)
         return set(self.up) | set(self.down)
 
-    def upregulated(self, ratio=2., pvalue=.05):
-        self.up = set([t.seq_id for t in self.transcripts.filter(
-            Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue))])
+    def upregulated(self, ratio=2., pvalue=.05, fold_change=None):
+        if not fold_change:
+            self.up = set([t.seq_id for t in self.transcripts.filter(
+                Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue))])
+        else:
+            self.up = set([t.seq_id for t in self.transcripts.filter(
+                Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue) & Q(fold_change__gt=fold_change))])
 
-    def downregulated(self, ratio=2., pvalue=.05):
-        self.down = set([t.seq_id for t in self.transcripts.filter(
-            Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue))])
-
-    def diff(self):
+    def downregulated(self, ratio=2., pvalue=.05, fold_change=None):
+        if not fold_change:
+            self.down = set([t.seq_id for t in self.transcripts.filter(
+                Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue))])
+        else:
+            self.down = set([t.seq_id for t in self.transcripts.filter(
+                Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue) & Q(fold_change__lt=1./fold_change))])
+    @property
+    def difference(self):
         if self.diff: return self.diff
         else: return self.differential()
 

@@ -1,0 +1,56 @@
+{% extends "expressions/base.html" %}
+
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}{{ title }}{% endblock %}
+
+{% block hierarchy %}
+    > {{ title }}
+{% endblock %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <table>
+        <tr>
+            <td valign="top">
+                {{ entry.text|markdown|hyper|recross|safe }}
+            </td>
+            <td valign="top">
+                {% for image in entry.images.all %}
+                    <img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250" />
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+    <hr>
+
+    <form action="" method="GET">
+        {{ filter.form.as_p }}
+        <input type="submit" value="Apply" />
+    </form>
+
+    <h2>Commonly upregulated transcripts [{{ signatures.up|length }}]:</h2>
+    <span style="color:red">
+        {% for transcript in signatures.up %}
+            {{ transcript }}
+        {% endfor %}
+    </span>
+
+    <h2>Commonly downregulated transcripts [{{ signatures.down|length }}]:</h2>
+    <span style="color:green">
+        {% for transcript in signatures.down %}
+            {{ transcript }}
+        {% endfor %}
+    </span>
+
+    <h2>Commonly differential transcripts to all signatures [{{ signatures.diff|length }}]:</h2>
+    <span style="color:orange">
+    {% for transcript in signatures.diff %}
+        {{ transcript }}
+    {% endfor %}
+    </span>
+
+{% endblock %}
