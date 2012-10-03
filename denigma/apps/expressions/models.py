@@ -76,6 +76,7 @@ class Expression(models.Model):
     exp = models.FloatField()
     ctr = models.FloatField()
     ratio = models.FloatField()
+    fold_change = models.FloatField()
     pvalue = models.FloatField()
     effect_size = models.FloatField()
 
@@ -89,6 +90,7 @@ class Transcript(models.Model):
     profile = models.ForeignKey('Profile', blank=True, null=True)
     #gene = models.ForeignKey('Gene')
     ratio = models.FloatField()
+    fold_change = models.FloatField()
     pvalue = models.FloatField("p-value")
     effect_size = models.FloatField()
 

@@ -50,11 +50,28 @@ def signatures(request):
     return render_to_response('expressions/signatures.html', ctx,
         context_instance=RequestContext(request))
 
-def signature(request, pk, ratio=2., pvalue=0.05):
+def signature(request, pk, ratio=1.5, pvalue=0.05):
+    print request
+    if request.GET:
+        if 'ratio' in request.GET and request.GET['ratio']:
+            ratio = float(request.GET['ratio'])
+        if 'pvalue' in request.GET and request.GET['pvalue']:
+            pvalue = request.GET['pvalue']
     signature = Signature.objects.get(pk=pk)
-    transcripts = signature.transcripts.all()
+    transcripts = signature.transcripts.filter(  Q(ratio__gt=ratio)
+                                               | Q(ratio__lt=1./ratio)
+                                               & Q(pvalue__lt=pvalue)  )
+    if request.GET:
+        if 'symbol' in request.GET and request.GET['symbol']:
+            symbol = request.GET['symbol']
+            transcripts = transcripts.filter(symbol__icontains=symbol)
+        if 'fold_change' in request.GET and request.GET['fold_change']:
+            fold_change = float(request.GET['fold_change'])
+            transcripts = transcripts.filter(Q(fold_change__gt=fold_change) | Q(fold_change__lt=1./fold_change))
     filter = TranscriptFilterSet(request.GET, transcripts)
-    table = TranscriptTable(transcripts)
+    print type(filter), vars(filter)
+    print len(filter.queryset)
+    table = TranscriptTable(filter.queryset)
     RequestConfig(request).configure(table)
     transcripts_up = transcripts.filter(Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue))
     transcripts_down = transcripts.filter(Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue))
@@ -260,9 +277,11 @@ def add_signature(request):
             seq_id = columns[header['seq_id']]
             pvalue = columns[header['p_value']]
             symbol = columns[header['symbol']]
+
+            ctr = float(columns[header['ctr']])
+            exp = float(columns[header['exp']])
+            ratio = exp/ctr
             fold_change = columns[header['fold_change']]
-            ctr = columns[header['ctr']]
-            exp = columns[header['exp']]
 
             # Calculating effect size:
             try:
@@ -275,14 +294,15 @@ def add_signature(request):
             except ValueError:
                 break
 
-            transcript = Transcript(seq_id=seq_id, symbol=symbol, ratio=fold_change, pvalue=pvalue, effect_size=es)
+            transcript = Transcript(seq_id=seq_id, symbol=symbol, ratio=ratio, fold_change=fold_change, pvalue=pvalue, effect_size=es)
             try:
                 transcript.save()
                 expression = Expression.objects.create(
                     signature=signature,
                     transcript=transcript,
                     exp=exp, ctr=ctr,
-                    ratio=fold_change,
+                    ratio=ratio,
+                    fold_change=fold_change,
                     pvalue=pvalue,
                     effect_size=es)
             except ValueError as e:

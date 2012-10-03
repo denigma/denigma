@@ -7,7 +7,7 @@ class SignatureAdmin(admin.ModelAdmin):
 
 
 class TranscriptAdmin(admin.ModelAdmin):
-    list_display = ('seq_id', 'symbol', 'ratio', 'pvalue', 'effect_size')
+    list_display = ('seq_id', 'symbol', 'ratio', 'fold_change', 'pvalue', 'effect_size')
     list_filter = ('signature',)
     search_fields = ('seq_id', 'symbol')
 

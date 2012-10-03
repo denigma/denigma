@@ -3,6 +3,7 @@
 {% load counter %}
 {% load staticfiles %}
 {% load render_table from django_tables2 %}
+{% load crispy_forms_tags %}
 
 {% block head_title %}Signature: {{ signature.name }}{% endblock %}
 
@@ -29,19 +30,34 @@
     <b>Down</b>: {{ transcripts_down|count }} ...
     (ratio-cutoff = {{ ratio }}; p-value < {{ pvalue }})
     <hr>
-    <form action="" method="GET">
-        {{ filter.form.as_p }}
-    </form>
-    <hr>
-    {% render_table table %}
+    <table>
+        <tr>
+            <td valign="top">
+                {% comment %}{% crispy filter.form %}{% endcomment %}
+                <form action="" method="GET">
+                    {{ filter.form.as_p }}
+                    <input type="submit" value="Apply" />
+                </form>
+            </td>
+            <td valign="top">
+                {% render_table table %}
+            </td>
+        </tr>
+    </table>
+
     <hr>
     <h3>Upregulated:</h3>
-    {% for transcript in transcripts_up %}
-        {{ transcript }}
-    {% endfor %}
+    <span style="color:red">
+        {% for transcript in transcripts_up %}
+            {{ transcript }}
+
+        {% endfor %}
+    </span>
     <hr>
     <h3>Downregulated:</h3>
-    {% for transcript in transcripts_down %}
-        {{ transcript }}
-    {%  endfor %}
+    <span style="color:green">
+        {% for transcript in transcripts_down %}
+            {{ transcript }}
+        {%  endfor %}
+    </span>
 {% endblock %}
