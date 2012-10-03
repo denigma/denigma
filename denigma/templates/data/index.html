@@ -1,0 +1,22 @@
+{% extends "data/base.html" %}
+
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}Data Index{% endblock %}
+
+{% block hierarchy %}
+    > Index
+{% endblock %}
+
+{% block title %}Data{% endblock %}
+
+{% block conent %}
+    {{ entry|markdown|hyper|recross|safe }}
+    <center>
+    {% for image in entry.images.all %}
+        <img src="{{ image.url }}" alt="{{ image.name }}" />
+    {% endfor %}
+    </center>
+{% endblock %}

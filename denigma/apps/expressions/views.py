@@ -17,7 +17,7 @@ from tables import TranscriptTable, ReplicateTable
 from filters import TranscriptFilterSet
 
 from blog.models import Post
-from home.views import data
+from data import get
 from stats import effect_size
 
 def transcripts(request):
@@ -34,22 +34,19 @@ def transcript_list(request):
 
 
 def index(request):
-    try:
-        entry = Post.objects.get(title="Expressions")
-    except Post.DoesNotExist as e:
-        entry = e
+    entry = get("Expressions")
     return render_to_response('expressions/index.html', {'entry': entry},
                              context_instance=RequestContext(request))
 
 def profiles(request):
     profiles = Profile.objects.all()
-    ctx = {'entry': data("Profiles"), 'profiles': profiles}
+    ctx = {'entry': get("Profiles"), 'profiles': profiles}
     return render_to_response('expressions/profiles.html', ctx,
         context_instance=RequestContext(request))
 
 def signatures(request):
     signatures = Signature.objects.all()
-    ctx = {'entry': data("Signatures"), 'signatures': signatures}
+    ctx = {'entry': get("Signatures"), 'signatures': signatures}
     return render_to_response('expressions/signatures.html', ctx,
         context_instance=RequestContext(request))
 
@@ -92,7 +89,7 @@ class Intersection(object):
 
 
 def intersections(request, ratio=2., pvalue=0.05):
-    entry = data("Intersections")
+    entry = get("Intersections")
     intersections = []
     #signatures = Signature.objects.differential(ratio, pvalue)      #
     signatures = Signature.objects.all()

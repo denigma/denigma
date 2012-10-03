@@ -272,6 +272,7 @@ INSTALLED_APPS = [
     'chrono',
     'meta',
     'aspects',
+    'data',
 ]
 
 FIXTURE_DIRS = [

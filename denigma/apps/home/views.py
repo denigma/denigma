@@ -9,13 +9,6 @@ from forms import DynamicForm
 from blog.models import Post
 
 
-def data(title):
-    """Fetches a database entry according to its title."""
-    try:
-        entry = Post.objects.get(title=title)
-    except (Post.DoesNotExist, Post.MultipleObjectsReturned) as e:
-        entry = e
-    return entry
 
 
 def home(request):

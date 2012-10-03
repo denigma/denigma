@@ -9,14 +9,14 @@ from django.views.generic import ListView
 
 from polls.models import Choice, Poll
 
-from home.views import data
+from data import get
 
 
 class PollsList(ListView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context:
         context = super(PollsList, self).get_context_data(**kwargs)
-        context['entry'] = data("Polls")
+        context['entry'] = get("Polls")
         return context
 
 
