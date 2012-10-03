@@ -29,6 +29,8 @@ whoosh
 BeautifulSoup
 bottlenose # Wrapper for Amazon product advertising API.
 python-amazon-product-api # For retrieving information on Books from Amazon.
+mechanize
+
 
 # Tables:
 #django-tables2
