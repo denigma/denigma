@@ -88,6 +88,7 @@ def signature(request, pk, ratio=1.5, pvalue=0.05):
 
 class Intersections(list):
     def func():
+        pass
 
 class Intersection(object):
     def __init__(self, a_signature, another_signature):
