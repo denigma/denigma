@@ -8,6 +8,6 @@ virtualenv env
 . env/bin/activate
 pip install -r denigma/requirements/project.txt
 
-denigma/manage.py syncdb --all
-denigma/manage.py migrate --fake
-denigma/manage.py runserver
+./manage.py syncdb --all
+./manage.py migrate --fake
+./manage.py runserver
