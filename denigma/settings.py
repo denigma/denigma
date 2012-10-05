@@ -52,7 +52,7 @@ if BACKEND == 'sqlite3':
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'mysql',
+            'ENGINE': 'django.db.backends.mysql',
             'NAME': 'denigma', #test',
             'USER': 'root',
             'PASWORD': '',
@@ -135,9 +135,9 @@ SECRET_KEY = '$&li378l3_8wform1%!hphxb3_#bqomk!302kplo)16j1tp)z#'
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = [ # Redundant?
     'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader', # Depriciated in Django-1.4 and replaced by "django.template.loaders.app_directories.Loader".
-    'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source',
+    'django.template.loaders.app_directories.Loader',
+    #'django.template.loaders.filesystem.load_template_source',       # Depricated in
+    #'django.template.loaders.app_directories.load_template_source',  # Django-1.4.
 ]
 
 MIDDLEWARE_CLASSES = [
