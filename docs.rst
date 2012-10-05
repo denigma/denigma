@@ -563,7 +563,7 @@ There are eat least three different ways to implement it [2].
 
 All three were implemented but only third approach seems to work.
 The respective icon was generate with GIMP by using a png to start with
-If transparency is desired an alpha layer (if not alrady there) and
+If transparency is desired an alpha layer (if not allready there) and
 the background color removed. The ong was scaled to 16x16 pixel (px) [6,7].
 
 [1] http://en.wikipedia.org/wiki/Favicon
@@ -574,6 +574,11 @@ the background color removed. The ong was scaled to 16x16 pixel (px) [6,7].
 [6] http://www.aha-soft.com/faq/make_website_icon.htm
 [7] http://tools.dynamicdrive.com/favicon/
 
+Admin Favicon
+-------------
+In Django-1.4 the Favicon did not appear in the admin for unknown
+reason as it worked well in Django-1.3. Several ways allow to put
+an favicon into the admin [http://jaredforsyth.com/blog/2010/apr/6/giving-django-admin-favicon/].
 
 
 Forms
@@ -613,10 +618,63 @@ control rendered HTML [https://github.com/maraujop/django-crispy-forms]. `crispy
 
 Deployment
 ----------
-The requirments are not installed on the local env.
+The requirements are not installed on the local env.
+On installing the requirements locally, it was found that MySQL-python-1.2.4b3 could not be installed
+because distribute was only version 0.6.24, but version 0.6.28 is required. The same version is
+installed on the global pip on deployment. It was also noted that MySQL-python had to be installed
+extra during deployment. Therefore, the most rational explaination might be that pip failed during
+deployment. virtualenv & distribute shall be always kept up-to-date: ::
+
+    . env/bin/activate
+    pip install --upgrade distribute
+
+Need ot figure out how to update virtualenv.
 
 
 Getting a querysets for template forms
 --------------------------------------
 In order to obtain a queryset from template forms for many-to-many relationships,
 the `.getlist('field') can be used on the request.POST method.
+
+
+Notifications
+-------------
+[https://github.com/yourcelf/btb/issues/3]
+
+
+Customizing Styles
+-----------------
+The bootstrap hero-unit was modified to have less margin: ::
+
+}
+.hero-unit {
+  padding: 6px; /* 60 */
+  margin-bottom: 30px; /* 3 */
+  background-color: #f5f5f5; /* f5f5f5; 993399 FF99CC */ FFEEEE ffeeff
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+}
+
+Citations
+---------
+If you want to build a ship, do not drum up the men to gather the wood, divide the work and give orders.
+Instead teach them to yearn for the vast and endless sea. - Antoine de Saint-Exupery
+
+If you want to construct an Enigma do not drum up the mean to gather the pieces, divide the work and give orders.
+Instead teach them to yearn the vast and endless possibilities of Denigma. - Hevok
+
+
+Scalability
+-----------
+A scalable system doesn't need to change when the size of the problem changes.
+* Accommodate increased usage
+* Accommodate increased data
+* Maintainable.
+
+There are two kinds of scalabality:
+* Vertical scalability: buying more powerful hardware, replacing what you already own.
+* Horizontal scalability: buying additional hardware, supplementing what you already own.
+
+Horizontal scalability is the ability ro increase a system's capacity by adding more
+processing units (services)
