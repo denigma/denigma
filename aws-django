@@ -283,7 +283,7 @@ SERVE_MEDIA = False
 
 DATABASES = {
     "default": {
-       "ENGINE": "mysql",
+       "ENGINE": "django.db.backends.mysql",
        "NAME": "$DATABASE_NAME",
        "USER": "$DATABASE_USER",
        "PASSWORD": "$DATABASE_PASSWORD",
