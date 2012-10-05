@@ -776,6 +776,18 @@ The tutorials app should havea dynamic sections links navigation as it is
 implimented in the bootstrap getting started [http://twitter.github.com/bootstrap/getting-started.html].
 
 
+Notifications
+-------------
+django-notifications-hq provides GitHub notifications alike app for Django: [http://pypi.python.org/pypi/django-notifications-hq]
+
+Speeding up Django
+------------------
+Django performance in web framwork and template enigine can be drastically improved by employing Pypy 1.9
+(vs. CPython 2.7):
+http://mindref.blogspot.de/2012/09/python-fastest-web-framework.html
+http://mindref.blogspot.de/2012/07/python-fastest-template.html
+
+
 The Future of Denigma
 ---------------------
 
