@@ -780,12 +780,18 @@ Notifications
 -------------
 django-notifications-hq provides GitHub notifications alike app for Django: [http://pypi.python.org/pypi/django-notifications-hq]
 
-Speeding up Django
+
+Speeding upDjango
 ------------------
 Django performance in web framwork and template enigine can be drastically improved by employing Pypy 1.9
 (vs. CPython 2.7):
 http://mindref.blogspot.de/2012/09/python-fastest-web-framework.html
 http://mindref.blogspot.de/2012/07/python-fastest-template.html
+
+
+URL import from future
+----------------------
+Need to prepare the URLs to make them compatible with Django-1.5.
 
 
 The Future of Denigma
