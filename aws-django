@@ -272,6 +272,7 @@ install_project() {
     fi
     sudo pip -E /home/$LOCAL_USER/env install distribute
     sudo pip -E /home/$LOCAL_USER/env install -r $PROJECT_ROOT/requirements/project.txt
+    cp -rf /home/denigma/env/lib/python2.6/site-packages/pinax_theme_bootstrap/static/pinax /home/denigma/denigma/media/pinax
 }
 
 configure_local_settings() {
