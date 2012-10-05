@@ -18,21 +18,30 @@
         <p>There are currently {{ references|count }} references in <a href="/admin/">Denigma db</a>:</p>
         <table>
             <tr>
-               <td><b>PMID</b></td>
+               <td><b>Author(s), Year</b></td>
                <td><b>Title</b></td>
-               <td><b>Year</b></td>
+               <td><b>PMID</b></td>
             </tr>
         {% for reference in references %}
             <tr>
-            <td>{{ reference.pmid }}</td>
-            <td>{{ reference.title }}</td>
-            <td>{{ reference.year }}</td>
+            <td>{{ reference.repr }}</td>
+            <td><a href="/admin/datasets/reference/{{ reference.pk }}/">{{ reference.title }}</a></td>
+            <td>
+                {% if reference.pmid %}
+                    <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ reference.pmid }}">{{ reference.pmid }}</a>
+                {% else %}
+                    {{ reference.pmid }}
+                {% endif %}
+            </td>
             </tr>
         {% endfor %}
         </table>
 
+        <hr>
+            <b><a href="/admin/datasets/reference/add">Add reference</a></b>
+        <br>
         {% if user.is_authenticated %}
-            <a href="/datasets/references/update">Update the references information with Entrez EUtils</a>
+            <br><a href="/datasets/references/update">Update the references information with Entrez EUtils</a>
     {% endif %}
 
 {% else %}
