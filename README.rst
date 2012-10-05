@@ -42,9 +42,9 @@ In order to set up Denigma locally just do the following
 
     $ apt-get install python-dev libmysqlclient16-dev # Database-backend.
     $ pip install -r denigma/requirements/project.txt
-    $ denigma/manage.py syncdb --all
-    $ denigma/manage.py migrate --fake
-    $ denigma/manage.py runserver
+    $ ./manage.py syncdb --all
+    $ ./manage.py migrate --fake
+    $ ./manage.py runserver
 
 5. Change Denigma: ::
 
