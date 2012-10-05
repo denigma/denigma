@@ -179,7 +179,7 @@ install_nginx() {
 install_apache() {
     apt-get install -y apache2 libapache2-mod-wsgi
     pip install virtualenv
-    pip install upgrade distribute
+    pip install --upgrade distribute
 }
 
 
