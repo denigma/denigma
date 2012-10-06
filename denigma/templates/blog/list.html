@@ -10,6 +10,6 @@
     {% for obj in filter %}
         <a href="/blog/{{ obj.pk }}">{{ obj.title }}</a>:
         {% for tag in obj.tags.all %}
-            <a href="/blog/tag/{{ tag.slug }}"/>{{ tag }}</a>{% if not forloop.last %},{% endif %}{% endfor %}
+            <a href="/blog/tag/{{ tag.slug }}"/>{{ tag }}</a>{% if not forloop.last %},{% endif %}{% endfor %}<br>
     {% endfor %}<br />
 {% endblock %}
