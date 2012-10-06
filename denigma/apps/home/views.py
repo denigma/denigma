@@ -9,8 +9,6 @@ from forms import DynamicForm
 from blog.models import Post
 
 
-
-
 def home(request):
     return HttpResponse("Home Page")
 
