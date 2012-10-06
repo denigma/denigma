@@ -7,23 +7,23 @@ Denigma Enhancement
 ===================
 
 These are Denigma Enhancement Proposals (DEPs). 
-They are more detailed implementation dietails of the Denigma's Todo list and 
+They are more detailed implementation details of the Denigma's Todo list and
 should be written in restructured text. The individual proposal if fully 
 applied will become part of the Denigma's documentation. The documentation 
 with/and the DEPs (detailed Todos) should should become an app and all the 
-follwing entries stored in Denigma db.
+follwoing entries stored in Denigma db.
 
 
 Modularity
 ----------
 
 Small pieces advance quicker. Each app in Denigma is modular and a full 
-functional application which can be pluged in into any other project. It can 
-have dendencies to other apps, but this need to be programmed in a defense way 
+functional application which can be plugged in into any other project. It can
+have dependencies to other apps, but this need to be programmed in a defense way
 in such that the app is also minimal functional in isolation. The modularity 
-of each indiviudal app needs to be guaranted and fully tested.
+of each individual app needs to be guaranteed and fully tested.
 
-Modularity should also be applied to every documentation piece asscoiated with 
+Modularity should also be applied to every documentation piece associated with
 Denigma, including this document here.
 
 
@@ -91,7 +91,7 @@ changes.
 While south tracks all changes in database schema, The backup app (code name 
 north) save/tracks all changes to the content of an app. If a entry gets 
 deleted it will be backed up. If the title or content of an entry is changed the 
-changes will be saved with associated meta data such as modifing user and time 
+changes will be saved with associated meta data such as modifying user and time
 of modification. The changes must be able to be visualised so that it is 
 possible revisit the history of an entry. 
 
@@ -447,6 +447,14 @@ Subsquently modify the login view: ::
         if user is None:
             user = auth.authenticate(email=email, password=password)
 
+Default User
+------------
+The automatic admin interface of the Django read metadata of models and provides a pwoerful and production-ready
+interface that can be utilized by users to add contentn order to provide the admin interface to the public,
+a user account with default password can be created whe the
+change password is locked and the credentials are either available publicly or assign to annoymous user automatically.
+
+
 Global Site-wide Search
 -----------------------
 
@@ -787,6 +795,9 @@ Django performance in web framwork and template enigine can be drastically impro
 (vs. CPython 2.7):
 http://mindref.blogspot.de/2012/09/python-fastest-web-framework.html
 http://mindref.blogspot.de/2012/07/python-fastest-template.html
+
+The source code of the benchmarking hello world app is available
+[https://bitbucket.org/akorn/helloworld/src].
 
 
 URL import from future
