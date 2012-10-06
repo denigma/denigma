@@ -2,11 +2,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.generic.edit import CreateView
+from django_tables2 import RequestConfig, SingleTableView
 
 from models import Hierarchy, HierarchyType, Rank, Grade, Title
 from forms import AchievementForm, HierarchyForm, RankForm, GradeForm, TitleForm
 
 from blog.models import Post
+from tables import RankTable, GradeTable, TitleTable
 
 
 class AchievementCreate(CreateView):
@@ -66,6 +68,11 @@ class TitleCreate(HierarchyCreate):
     success_url = '/aspects/design/titles/'
 
 
+class RankList(SingleTableView): # Not used yet.
+    queryset = Rank.objects.all().order_by('-pk') # Need a hierachary level number field.
+    template_name = 'aspects/hierarchy.html'
+
+
 def index(request):
     aspects = Post.objects.filter(tags__name="aspect")
     aspects_entry = Post.objects.get(title="Aspects")
@@ -119,8 +126,9 @@ def add_achievement(request):
     return HttpResponse("Create Achievement: %s" % request)
 
 def ranks(request):
-    hierarchy = Rank.objects.all()
-    ctx = {'hierarchy_name': 'Ranks', 'hierarchy': hierarchy}
+    table = RankTable(Rank.objects.all())
+    RequestConfig(request).configure(table)
+    ctx = {'hierarchy_name': 'Ranks', 'hierarchy': table}
     return render_to_response('aspects/hierarchy.html', ctx,
         context_instance=RequestContext(request))
 
@@ -130,8 +138,9 @@ def rank(request, name):
         context_instance=RequestContext(request))
 
 def grades(request):
-    hierarchy = Grade.objects.all()
-    ctx = {'hierarchy_name': 'Grades', 'hierarchy': hierarchy}
+    table = GradeTable(Grade.objects.all())
+    RequestConfig(request).configure(table)
+    ctx = {'hierarchy_name': 'Grades', 'hierarchy': table}
     return render_to_response('aspects/hierarchy.html', ctx,
         context_instance=RequestContext(request))
 
@@ -141,8 +150,9 @@ def grade(request, name):
         context_instance=RequestContext(request))
 
 def titles(request):
-    hierarchy = Title.objects.all()
-    ctx = {'hierarchy_name': 'Titles', 'hierarchy': hierarchy}
+    table = TitleTable(Title.objects.all())
+    RequestConfig(request).configure(table)
+    ctx = {'hierarchy_name': 'Titles', 'hierarchy': table}
     return render_to_response('aspects/hierarchy.html', ctx,
         context_instance=RequestContext(request))
 
