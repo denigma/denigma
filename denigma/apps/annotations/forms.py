@@ -40,8 +40,9 @@ class SpeciesForm(ModelForm):
                     'short_latin_name')
 
 class TissueForm(ModelForm):
-    comment = CharField(required=False)
+    comment = CharField(required=False, help_text="... on the reason for editing.")
     synonyms = CharField(required=False)
+    notes = CharField(required=False)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
@@ -53,6 +54,7 @@ class TissueForm(ModelForm):
                 'description',
                 'hierarchy',
                 'images',
+                'notes',
                 'comment'
 
             ),
@@ -64,7 +66,7 @@ class TissueForm(ModelForm):
         super(TissueForm, self).__init__(*args, **kwargs)
     class Meta:
         model = Tissue
-        exclude = ('identifier', 'notes',)
+        exclude = ('identifier',)
 
 class DeleteTissueForm(ModelForm):
     comment = CharField(required=False)
