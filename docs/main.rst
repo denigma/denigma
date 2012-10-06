@@ -678,3 +678,8 @@ There are two kinds of scalabality:
 
 Horizontal scalability is the ability ro increase a system's capacity by adding more
 processing units (services)
+
+Debug Toolbar
+-------------
+Since Django-1.4 the developmental status side bar does not react to hide any more.
+Upgrading to djang-toolbar-0.9.4 solved this issue.
