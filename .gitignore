@@ -16,6 +16,7 @@ ami.sh
 ev/
 env/
 envs/
+virtualenv.py
 
 # Machine-Specific Settings:
 local_settings.py

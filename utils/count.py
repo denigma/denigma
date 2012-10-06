@@ -16,7 +16,7 @@ class Counter:
         self.n += 1
         self.pa = 100*self.n/self.length # percentage after
         if self.pb != self.pa:
-            print self.pb,
+            print self.pb
             self.pb = self.pa
 
 def count(instance):
