@@ -1,0 +1,15 @@
+{% extends "blog/base.html" %}
+
+{% block head_title %}Posts List{% endblock %}
+
+{% block content %}
+    <form action="" method="get">
+        {{ filter.form.as_p }}
+       <input type="submit" />
+    </form>
+    {% for obj in filter %}
+        <a href="/blog/{{ obj.pk }}">{{ obj.title }}</a>:
+        {% for tag in obj.tags.all %}
+            <a href="/blog/tag/{{ tag.slug }}"/>{{ tag }}</a>{% if not forloop.last %},{% endif %}{% endfor %}
+    {% endfor %}<br />
+{% endblock %}

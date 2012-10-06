@@ -10,6 +10,7 @@ import reversion
 
 from models import Post
 from forms import PostForm
+from filters import PostFilter
 
 from meta.view import log
 
@@ -96,6 +97,10 @@ def tagpage(request, tag):
     return render_to_response("blog/tagpage.html", {"posts": posts, "tag":tag},
         context_instance=RequestContext(request))
 
+def list(request):
+    f = PostFilter(request.GET, queryset=Post.objects.all())
+    return render_to_response('blog/list.html', {'filter': f},
+    context_instance=RequestContext(request))
 
 
 # Custom admin:

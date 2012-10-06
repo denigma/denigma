@@ -25,5 +25,6 @@ urlpatterns = patterns('blog.views',
     url(r'^articles/$', ListView.as_view(
                               queryset=Post.objects.filter(published=False).order_by("-created", "-id"),
                               template_name="blog/articles.html"), name='articles'),
-    url(r'^admin/$', 'custom_admin_view'), 
+    url(r'^list/$', 'list', name='post-list'), # Uses django-filter.
+    url(r'^admin/$', 'custom_admin_view'),
 )
