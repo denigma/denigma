@@ -110,7 +110,7 @@ LATIN = ['cis-', 'trans-', 'omics', 'in vivo', 'in vitro', 'in silico', 'in situ
 
 def show_exception_and_exit(exec_type, exc_value, tb):
     import traceback
-    traceback.print_exception(exc_type, exc_value, tb)
+    traceback.print_exception(exec_type, exc_value, tb)
     raw_input("Press key to exit.")
     sys.exit(-1)
 sys.excepthook = show_exception_and_exit
