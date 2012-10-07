@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 from django.contrib import messages
 from django.utils.translation import ugettext
@@ -710,16 +711,37 @@ def delete_transcripts(request):
 def output_signature(request, pk):
     signature = Signature.objects.get(pk=pk)
     signature.output()
-    msg = "Successfully outputted signature."
+    msg = "Successfully outputted signature: %s" % signature.name
     messages.add_message(request, messages.SUCCESS, _(msg))
     return redirect('/expressions/signatures')
 
+
+class SetList(ListView): # Not used actually.
+    queryset = Set.objects.all,
+    context_object_name = 'sets',
+    template_name = 'expressions/sets.html'
+    extra_context = {}
+
+    def get_context_data(self, **kwargs):
+        context = super(SetList, self).get_context_data(**kwargs)
+        if hasattr(self, 'extra_context'):
+            context.update(self.extra_context)
+        context['entry'] = get('Sets')
+        return context
+
+
 class SetCreate(CreateView):
-    #sets = Sets.objects.all()
-    #context_object_name = 'set'
     form_class = SetForm
     model = Set
     template_name = 'expressions/set.html'
+    extra_context = {'action': 'Create'}
+
+    def get_context_data(self, **kwargs):
+        context = super(SetCreate, self).get_context_data(**kwargs)
+        if hasattr(self, 'extra_context'):
+            context.update(self.extra_context)
+        return context
+
 
 class ProfileCreate(CreateView):
     context_object_name='profile'

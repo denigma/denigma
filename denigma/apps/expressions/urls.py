@@ -4,7 +4,9 @@ from django.contrib.auth.decorators import login_required
 
 from models import Profile, Signature, Replicate, Set
 
-from views import ProfileCreate, SignatureCreate, SetCreate
+from views import ProfileCreate, SignatureCreate, SetCreate, SetList
+
+from data import get
 
 
 urlpatterns = patterns('expressions.views',
@@ -67,9 +69,10 @@ urlpatterns = patterns('expressions.views',
     url('^probes/$', 'probes', name='probes'),
     url('^delete_probes/$', 'delete_probes', name='probes'),
     url('^create_signatures/$', 'create_signatures', name='create_signatures'),
-    url('^sets/$', ListView.as_view(
+    url('^signatures/sets/$', SetList.as_view(
         queryset=Set.objects.all,
         context_object_name='sets',
-        template_name='expressions/sets.html')),
-    url('^set/create$', SetCreate.as_view(), name='create-set'),
+        template_name='expressions/sets.html',
+        extra_context={'entry': get('sets')})),
+    url('^signatures/set/create$', login_required(SetCreate.as_view()), name='create-set'),
 )

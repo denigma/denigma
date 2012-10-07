@@ -5,8 +5,11 @@
 {% block head_title %}{{ action }} Set{% endblock %}
 
 {% block hierarchy %}
+    > <a href="/expressions/signatures/">Signatures</a>
     > Set
+    {% if action %}
     > {{ action }}
+    {% endif %}
 {% endblock %}
 
 {% block title %}{{ action }} Set{% endblock %}

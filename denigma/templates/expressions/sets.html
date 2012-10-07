@@ -1,5 +1,8 @@
 {% extends "expressions/base.html" %}
 
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
 
 {% block extra_style %}
     <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
@@ -10,14 +13,35 @@
 {% block head_title %}Sets{% endblock %}
 
 {% block hierarchy %}
+    > <a href="/expressions/signatures/">Signatures</a>
     > Sets
 {% endblock %}
 
 {% block title %}Sets{% endblock %}
 
 {% block content %}
+    {% if entry %}
+        {{ entry.text|markdown|hyper|recross|safe }}
+    {% endif %}
+    <table width="100%">
+        <tr>
+            <td valign="top">
+                {% if sets %}
+                    {% render_table sets %}
+                {% else %}
+                <p>No sets defined yet.</p>
+                {% endif %}
+            </td>
+            <td valign="top">
+                {% for image in entry.images.all %}
+                    <img src="{{ image.url }}" alt="{{ image.name }}" width="250" heigth="250" />
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+
+
     {% if sets %}
-        {% render_table sets %}
         <hr>
         {% for set in sets %}
             <b>{{ set }}</b> ({{ set.signatures.all|length }} signatures)<br>
@@ -26,9 +50,8 @@
             {% endfor %}
         <hr>
         {% endfor %}
-    {% else %}
-        <p>No sets defined yet.</p>
+
     {% endif %}
     <hr>
-    <b><a href="/expressions/set/create">Create set</a></b>
+    <b><a href="/expressions/signatures/set/create">Create set</a></b>
 {% endblock %}
