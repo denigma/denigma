@@ -34,6 +34,8 @@ def sd_pooled(exp, ctr):
 
 def effect_size(exp, ctr):
     """Effect size is the standardised mean difference between 2 experimental groups."""
+    #if len(exp) == 1 or len(ctr) == 1: return None
+    #else:
     return ( sum(exp)/len(exp) - sum(ctr)/len(ctr) ) / sd_pooled(exp, ctr)
 
 def main():
