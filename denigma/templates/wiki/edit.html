@@ -1,15 +1,14 @@
 {% extends "wiki/base.html" %}
 
 {% block hierarchy %}
-    > <a href="/wiki">Wiki</a> >
-    Page =
-    {{ page_name }} >
-    Edit
+    > Page =
+    = {{ page_name }}
+    > Edit
 {% endblock hierarchy %}
 
 {% block subtitle %}{{ page_name }} - Editing{% endblock %}
 
-{% block content %}
+{% block actual_content %}
     <form method="post" action="/wiki/page/{{page_name}}/save/">
         {% csrf_token %}
         <textarea name="content" rows="20" cols="60">{{ content }}</textarea><br/>

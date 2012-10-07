@@ -2,6 +2,10 @@
 
 {% block head_title %}Wiki{% endblock %}
 
+{% block base_hierarchy %}
+    > <a href="/wiki">Wiki</a>
+{% endblock %}
+
 {% block title %}Wiki{% endblock %}
 
 {% block subtitle %}{% endblock %}
@@ -13,4 +17,15 @@
 {% endblock options %}
 
 {% block content %}
+    <table width="100%">
+        <tr>
+            <td valign="top" align="left">
+            {% block actual_content %}
+             {% endblock %}
+            </td>
+            <td valign="top" align="right">
+                <right><img src="http://blogs.voanews.com/digital-frontiers/files/2011/01/Creative-Commons-wiki-logo.png" alt="Wiki-logo" width="250" height="250" /></right>
+            </td>
+        </tr>
+    </table>
 {% endblock %}

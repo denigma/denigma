@@ -1,15 +1,13 @@
 {% extends "wiki/base.html" %}
 
 {% block hierarchy %}
-    > <a href="/wiki">Wiki</a> >
-    Page >
-    {{ page_name }} >
-    Create
+    > Page
+    > {{ page_name }}
+    > Create
 {% endblock hierarchy %}
 
 {% block subtitle %}{{ page_name }} - Create{% endblock %}
 
-{% block content %}
-
+{% block actual_content %}
     This page does not exist. <a href="/wiki/page/{{ page_name }}/edit/">Create?</a>
 {% endblock %}

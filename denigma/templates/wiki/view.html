@@ -4,29 +4,17 @@
 {% load markup %}
 
 {% block hierarchy %}
-    > <a href="/wiki">Wiki</a> >
-    Page =
-    {{ page_name }} >
-    View
+    > Page
+    = {{ page_name }}
+    > View
 {% endblock hierarchy %} 
 
 {% block subtitle %}{{ page_name }}{% endblock %}
 
-{% block content %}
-    <table>
-    <tr>
-        <td>
-            {% comment %}<h1>{{ page_name }}</h1>{% endcomment %}
-            {{ content|wikify|markdown|safe }}
-            <hr/>
-            <p>Tags: {% for tag in tags %}<a href="/wiki/tag/{{ tag.name }}/">{{ tag.name }}</a> {% endfor %}</p>
-            <b><a href="/wiki/page/{{ page_name }}/edit/">Edit this page</a></b>
-        </td>
-        <td valign="top">
-            <right><img src="http://blogs.voanews.com/digital-frontiers/files/2011/01/Creative-Commons-wiki-logo.png" alt="Wiki-logo" width="250" height="250" /></right>
-        </td>
-    </tr>
-    </table>
-
-
+{% block actual_content %}
+    {% comment %}<h1>{{ page_name }}</h1>{% endcomment %}
+    {{ content|wikify|markdown|safe }}
+    <hr/>
+    <p>Tags: {% for tag in tags %}<a href="/wiki/tag/{{ tag.name }}/">{{ tag.name }}</a> {% endfor %}</p>
+    <b><a href="/wiki/page/{{ page_name }}/edit/">Edit this page</a></b>
 {% endblock %}

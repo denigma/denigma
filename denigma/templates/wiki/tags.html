@@ -1,27 +1,16 @@
 {% extends "wiki/base.html" %}
 
 {% block hierarchy %}
-<div class="line">
-<span class="left">
-    <a href="/admin">{{ SITE_NAME }} db</a> >
-    <a href="/wiki">Wiki</a> >
-    Tag =
-    {{ tag_name }}
-</span>
-<span class="centre">
-    Menu:   <a href="/wiki/page/Start">Start</a> |
-            <a href="/wiki/page/SearchPage">Search</a> |
-            <a href="/wiki/page/IndexPage">Index</a>
-</span>
-</div>
+    > Tag
+    = {{ tag_name }}
 {% endblock %} 
 
 {% block subtitle %}Pages tagged with {{ tag_name }}{% endblock %}
 
-{% block content %}
-<ul>
-{% for page in pages %}
-    <li><a href="/wiki/page/{{ page.name }}/">{{ page.name }}</a></li>
-{% endfor %}
-</ul>
+{% block actual_content %}
+    <ul>
+    {% for page in pages %}
+        <li><a href="/wiki/page/{{ page.name }}/">{{ page.name }}</a></li>
+    {% endfor %}
+    </ul>
 {% endblock %}
