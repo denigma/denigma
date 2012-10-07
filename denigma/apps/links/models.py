@@ -10,6 +10,7 @@ from django.conf import settings
 #from tagging.fields import TagField
 #from tagging.models import Tag
 
+
 class LinkPublishedManager(models.Manager):
     """Link published manager."""
     def get_query_set(self):
@@ -17,6 +18,7 @@ class LinkPublishedManager(models.Manager):
         return super(LinkPublishedManager, self).get_query_set().filter(
             publication_start__lte=now, publication_end__gt=now,
             site=Site.objects.get_current(), visibility=True).order_by('ordering', '-creation')
+
 
 class Category(models.Model):
     """Category Model."""
@@ -31,6 +33,7 @@ class Category(models.Model):
         verbose_name = _('category')
         verbose_name_plural = _('categories')
         ordering = ('title',)
+
 
 class Link(models.Model):
     """Link Model."""
