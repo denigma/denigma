@@ -53,7 +53,7 @@ def signatures(request):
     return render_to_response('expressions/signatures.html', ctx,
         context_instance=RequestContext(request))
 
-def signature(request, pk, ratio=1.5, pvalue=0.05, fold_change=None, exp=None):
+def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None):
     if request.GET:
         if 'ratio' in request.GET and request.GET['ratio']:
             ratio = float(request.GET['ratio'])
