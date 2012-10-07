@@ -271,9 +271,13 @@ install_project() {
         LOCAL_DISTRIBUTION_PATH=$DISTRIBUTION
     fi
     sudo pip -E /home/$LOCAL_USER/env install distribute
+    sudo pip -E /home/$LOCAL_USER/env install -r $PROJECT_ROOT/requirements/pre.txt
     sudo pip -E /home/$LOCAL_USER/env install -r $PROJECT_ROOT/requirements/project.txt
-    cp -rf /home/denigma/env/lib/python2.6/site-packages/pinax_theme_bootstrap/static/pinax /home/denigma/denigma/media/pinax
-    cp -rf /home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/static/admin /home/denigma/denigma/media/admin
+}
+
+setup_statics() {
+    cp -rf /home/$LOCAL_USER/env/lib/python2.6/site-packages/pinax_theme_bootstrap/static/pinax $PROJECT_ROOT/media/pinax
+    cp -rf /home/$LOCAL_USER/env/lib/python2.6/site-packages/django/contrib/admin/static/admin $PROJECT_ROOT/media/admin
 }
 
 configure_local_settings() {
@@ -350,6 +354,7 @@ install_webserver
 
 bootstrap_project
 install_project
+setup_statics
 configure_local_settings
 activate_webserver
 
