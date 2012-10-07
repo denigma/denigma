@@ -7,6 +7,7 @@ denigma.sql*
 whoosh_index
 memo
 output*
+name=*
 
 # Access Keys:
 ami.sh
@@ -21,3 +22,4 @@ virtualenv.py
 # Machine-Specific Settings:
 local_settings.py
 configuration
+
