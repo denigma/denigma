@@ -241,6 +241,10 @@ Renaming to: ::
     <Directory "/home/$LOCAL_USER/env/lib/python2.6/site-packages/django/contrib/admin/static/admin">
 
 
+Copying the admin statics into the project directory works. This can be accomplished in the aws-django setup script: ::
+
+    cp -rf /home/$LOCAL_USER/env/lib/python2.6/site-packages/django/contrib/admin/static/admin $PROJECT_ROOT/media/admin
+
 Check out apache2 logs
 ----------------------
 [http://www.cyberciti.biz/faq/apache-logs/]
