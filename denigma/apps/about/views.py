@@ -2,11 +2,13 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext
+from django.contrib.auth.decorators import login_required
 
 
 from blog.models import Post
 
 
+@login_required
 def matrix(request, number):
     """Welcome in the matrix!"""
     try: 
