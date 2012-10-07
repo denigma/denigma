@@ -17,6 +17,7 @@ class PollsList(ListView):
         # Call the base implementation first to get a context:
         context = super(PollsList, self).get_context_data(**kwargs)
         context['entry'] = get("Polls")
+        context['matrix'] = get("Paths of Truth")
         return context
 
 

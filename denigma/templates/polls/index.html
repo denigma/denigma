@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-    <table border="0">
+    <table border="0" xmlns="http://www.w3.org/1999/html">
         <tr>
             <td>
                 {% if entry %}
@@ -35,6 +35,14 @@
             </td>
         </tr>
     </table>
+    <hr>
+    <center>
+    <h3><a href="/about/matrix/0/">Enter the Matrix</a></h3>
+    {% for image in matrix.images.all %}
+        <a href="/about/matrix/0/"><img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250" /></a>
+    {% endfor %}
+    </center>
+
 
 {% comment %}
 <h3>Add a poll:</h2>
