@@ -19,7 +19,7 @@
     {% endif %}
     <hr>
     {% if profiles %}
-        <h3>{{ level.type.profession|title }}s with {{ level.type }} {{ level|lower }}:</h3>
+        <h3>{{ level.type.profession|title }}s with {{ level.type|lower }} {{ level }}:</h3>
         {% for profile in profiles %}
             <a href="/profiles/profile/{{ profile.name }}/">{{ profile.name }}</a>
         {% endfor %}
