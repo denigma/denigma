@@ -1,5 +1,11 @@
-from expressions.models import *#wtcrvsyepd1, Lin2002, sip2delta_aging, sip2delta_wt, snf4delta_aging, snf4delta_wt, wt_aging
 from django.contrib import admin
+
+from models import *#wtcrvsyepd1, Lin2002, sip2delta_aging, sip2delta_wt, snf4delta_aging, snf4delta_wt, wt_aging
+
+
+class ProfileAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
+
 
 class SignatureAdmin(admin.ModelAdmin):
     pass #
@@ -11,7 +17,8 @@ class TranscriptAdmin(admin.ModelAdmin):
     list_filter = ('signature',)
     search_fields = ('seq_id', 'symbol')
 
-admin.site.register(Profile)
+
+admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Signature, SignatureAdmin)
 admin.site.register(Gene)
 admin.site.register(Transcript, TranscriptAdmin)
@@ -19,6 +26,7 @@ admin.site.register(Intensity)
 admin.site.register(Replicate)
 admin.site.register(Contrast)
 admin.site.register(Array)
+admin.site.register(Probe)
 
 ##class ChoiceInline(admin.TabularInline): #StackedInline
 ##    model = Choice

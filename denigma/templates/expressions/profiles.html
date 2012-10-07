@@ -18,9 +18,20 @@
         <center><img src="{{ image.url }}" alt="{{ image.name }}" /></center>
     {% endfor %}
     {% if profiles %}
+        {% if user.is_superuser %}
+        <b><a href="/expressions/probes/">Calculate average probe expression</a></b><br>
+        <b><a href="/expressions/delete_probes/">Delete all probes</a></b><br>
+        <b><a href="/expressions/create_signatures/">Create signatures</a></b>
+        <hr>
+        {% endif %}
         {% for profile in profiles %}
-            <hr>
             <a href="/expressions/profile/{{ profile.pk }}/">{{ profile.name }}</a>
+            {# <a href="/annotations/species/{{ profile.species.pk }}/">{{ profile.species }}</a> #}
+            <a href="/lifespan/regimen/{{ profile.pk }}/">{{ profile.diet }}</a>
+            {% for tissue in profile.tissue.all %}
+                <a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue }}</a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}<br>
+
         {% endfor %}
     {% else %}
         <hr>

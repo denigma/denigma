@@ -38,7 +38,8 @@
         Manipulation:
         <a href="/lifespan/regimen/{{ signature.diet.pk }}/">{{ signature.diet }}</a>)
         {% if user.is_superuser %}
-            <a href="/expressions/signature/delete/{{ signature.pk }}/">Delete</a>
+            <a href="/expressions/signature/delete/{{ signature.pk }}/">Delete</a> |
+            <a href="/expressions/signature/output/{{ signature.pk }}/">Output</a>
         {% endif %}
     {% endfor %}
     {% else %}

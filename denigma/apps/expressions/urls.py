@@ -45,9 +45,11 @@ urlpatterns = patterns('expressions.views',
             context_object_name='signature',
             template_name='expressions/signature.html'),
         name='signature'),
+    url('^signature/output/(?P<pk>\d+)', 'output_signature', name='signature-output'),
     url('^signature/create/$', login_required(SignatureCreate.as_view()),
         name='create-signature'),
     url('^signature/add/$','add_signature', name='add_signature'),
+
     url(r'^signature/delete/(?P<pk>\d+)', 'delete_signature', name='delete_signature'),
 
     url('^signatures/delete/$', 'delete_signatures', name='delete_signatures'),
@@ -60,4 +62,9 @@ urlpatterns = patterns('expressions.views',
     url('^intersections/$', 'intersections', name='intersections'),
     url('^intersection/(?P<a>\d+)&(?P<another>\d+)/(?P<ratio>[\d\.]+)/(?P<pvalue>[\d\.]+)', 'intersection', name='intersection'),
     url('^meta/', 'meta', name='meta-analysis'),
+
+    # Analysis
+    url('^probes/$', 'probes', name='probes'),
+    url('^delete_probes/$', 'delete_probes', name='probes'),
+    url('^create_signatures/$', 'create_signatures', name='create_signatures'),
 )

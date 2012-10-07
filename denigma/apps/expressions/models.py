@@ -2,11 +2,20 @@ from django.db import models
 from django.db.models import Q
 
 class Replicate(models.Model):
+    #probe = models.ForeignKey('Probe')
     probe_id = models.CharField(max_length=255)
     intensity = models.FloatField()
+    profile = models.ForeignKey('Profile')
 
     def __unicode__(self):
         return self.probe_id
+
+
+class Probe(models.Model):
+    name = models.CharField(max_length=50)
+    expression = models.FloatField()
+    profile = models.ForeignKey('Profile')
+
 
 
 class Gene(models.Model):
@@ -24,7 +33,6 @@ class Profile(models.Model):
     species = models.ForeignKey('annotations.Species')
     tissue = models.ManyToManyField('annotations.Tissue')
     diet = models.ForeignKey('lifespan.Regimen')
-    replicates = models.ManyToManyField('Replicate')
 
     def __unicode__(self):
         return self.name
@@ -90,6 +98,39 @@ class Signature(models.Model):
     def link(self):
         return "<a href='%s'>%s</a>" % (self.get_absolute_url(), self.name)
 
+    def output(self):
+        name = self.name.replace(' ', '_')
+        tissues = ", ".join([tissue.name for tissue in self.tissues.all()])
+        if self.diet:
+            factor = 'diet'
+            diet = self.diet.shortcut
+        else:
+            factor = 'unknown'
+        method = 'DNA-microarray' # Currently the only one.
+        type = 'profile'
+        output = open("name=%s;tissue=%s;factor=%s;diet=%s;type=%s;method=%s.txt" %
+                      (name, tissues, factor, diet, type, method) , 'w')
+        output.write("\t".join(['seq_id', 'symbol', 'exp', 'ctr', 'fold_change', 'p_value'])+'\n')
+
+        for expression in self.expression_set.all(): # self.transcripts.all()
+            #expression = Expression.objects.get(signature=self, transcript=transcript)
+            output.write("\t".join(map(str, [expression.transcript.seq_id,
+                                            expression.transcript.symbol,
+                                            expression.exp,
+                                            expression.ctr,
+                                            expression.ratio,
+                                            expression.pvalue]
+                                     )
+                                    ) + "\n"
+                        )
+        output.close()
+
+
+class Set(models.Model):
+    """A set of signatures."""
+    name = models.CharField(max_length=255)
+    signatures = models.ManyToManyField('Signature')
+
 
 class Expression(models.Model):
     signature = models.ForeignKey('Signature')
@@ -98,8 +139,8 @@ class Expression(models.Model):
     ctr = models.FloatField()
     ratio = models.FloatField()
     fold_change = models.FloatField()
-    pvalue = models.FloatField()
-    effect_size = models.FloatField()
+    pvalue = models.FloatField(blank=True, null=True)
+    effect_size = models.FloatField(blank=True, null=True)
 
     def __unicode__(self):
         return "%s %s" % (self.signature.name, self.transcript.seq_id)
@@ -112,8 +153,8 @@ class Transcript(models.Model):
     #gene = models.ForeignKey('Gene')
     ratio = models.FloatField()
     fold_change = models.FloatField()
-    pvalue = models.FloatField("p-value")
-    effect_size = models.FloatField()
+    pvalue = models.FloatField("p-value", blank=True, null=True)
+    effect_size = models.FloatField(blank=True, null=True)
 
     def __unicode__(self):
         return self.seq_id

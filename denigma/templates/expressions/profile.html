@@ -7,16 +7,17 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
 {% endblock %}
 
-{% block head_title %}Profile: {{ profile.name }}{% endblock %}
+{% block head_title %}Profile = {{ profile.name }}{% endblock %}
 
 {% block hierarchy %}
     > <a href="/expression/profiles/">Profiles</a>
     > {{ profile.name }}
 {% endblock %}
 
-{% block title %}{{ profile.name }}{% endblock %}
+{% block title %}Profile: {{ profile.name }}{% endblock %}
 
 {% block content %}
     <hr>
     {% render_table replicates %}
+    <hr>
 {% endblock %}

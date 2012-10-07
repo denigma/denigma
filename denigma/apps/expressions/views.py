@@ -4,21 +4,27 @@ from django.template import RequestContext
 from django.views.generic.edit import CreateView
 from django.contrib import messages
 from django.utils.translation import ugettext
+from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import login_required, permission_required
+from django.db import connection
 from django.db.models import Q
 from django_tables2 import RequestConfig
 
 from lifespan.models import Regimen
 from annotations.models import Species, Tissue
 
-from models import Replicate, Profile, Transcript, Signature, Expression
+from models import Replicate, Profile, Transcript, Signature, Expression, Probe
 from forms import ProfileForm, SignatureForm
 from tables import TranscriptTable, ReplicateTable
 from filters import TranscriptFilterSet
 
 from blog.models import Post
 from data import get
-from stats import effect_size
+
+from stats.effective import effect_size
+from stats.pValue import t_two_sample
+from utils.count import Counter
+
 
 def transcripts(request):
     filterset = TranscriptFilterSet(request.GET or None)
@@ -29,9 +35,6 @@ def transcript_list(request):
     f = TranscriptFilterSet(request.GET, queryset=Transcript.objects.all())
     return render_to_response('expressions/transcripts.html', {'filter': f},
         context_instance=RequestContext(request))
-
-#234567891123456789212345678931234567894123456789512345678961234567897123456789
-
 
 def index(request):
     entry = get("Expressions")
@@ -62,15 +65,19 @@ def signature(request, pk, ratio=1.5, pvalue=0.05, fold_change=None, exp=None):
     signature = Signature.objects.get(pk=pk)
 
     if not exp:
-        transcripts = signature.transcripts.filter((Q(ratio__gt=ratio) | Q(ratio__lt=1./ratio))
-                                                   & Q(pvalue__lt=pvalue))
+        transcripts = signature.transcripts.filter((Q(ratio__gt=ratio)
+                                                    | Q(ratio__lt=1./ratio))
+                                                    & Q(pvalue__lt=pvalue))
     else: # What is about a gene that is only low expressed in one condition?
         print "Filtering on expression:"
-        transcripts = signature.transcripts.filter((Q(ratio__gt=ratio) | Q(ratio__lt=1./ratio))
-                                                   & Q(pvalue__lt=pvalue
-                                                   #& Q(expression__exp__gt=exp) & Q(expression__ctr__gt=exp)
+        transcripts = signature.transcripts.filter((Q(ratio__gt=ratio)
+                                                    | Q(ratio__lt=1./ratio))
+                                                    & Q(pvalue__lt=pvalue
+                                                    #& Q(expression__exp__gt=exp) & Q(expression__ctr__gt=exp)
                                                     ))
-        transcripts = transcripts.filter(expression__exp__gt=exp, expression__ctr__gt=exp)
+
+        transcripts = transcripts.filter(expression__exp__gt=exp,
+                                         expression__ctr__gt=exp)
     if request.GET:
         if 'symbol' in request.GET and request.GET['symbol']:
             symbol = request.GET['symbol']
@@ -78,15 +85,20 @@ def signature(request, pk, ratio=1.5, pvalue=0.05, fold_change=None, exp=None):
         if 'fold_change' in request.GET and request.GET['fold_change']:
             fold_change = float(request.GET['fold_change'])
             print len(transcripts)
-            transcripts = transcripts.filter(Q(fold_change__gt=fold_change) | Q(fold_change__lt=1./fold_change))
+
+            transcripts = transcripts.filter(Q(fold_change__gt=fold_change)
+                                           | Q(fold_change__lt=1./fold_change))
             print "filtered transcripts", len(transcripts)
     filter = TranscriptFilterSet(request.GET, transcripts)
     print type(filter), vars(filter)
     print len(filter.queryset)
     table = TranscriptTable(filter.queryset)
     RequestConfig(request).configure(table)
-    transcripts_up = transcripts.filter(Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue))
-    transcripts_down = transcripts.filter(Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue))
+    transcripts_up = transcripts.filter(Q(ratio__gt=ratio)
+                                        & Q(pvalue__lt=pvalue))
+
+    transcripts_down = transcripts.filter(Q(ratio__lt=1./ratio)
+                                          & Q(pvalue__lt=pvalue))
     ctx = {'signature': signature, 'transcripts': transcripts,
            'transcripts_up': transcripts_up,
            'transcripts_down': transcripts_down,
@@ -96,6 +108,7 @@ def signature(request, pk, ratio=1.5, pvalue=0.05, fold_change=None, exp=None):
            'filter': filter}
     return render_to_response('expressions/signature.html', ctx,
         context_instance=RequestContext(request))
+
 
 class Signatures(list):
     def __init__(self, signatures):
@@ -123,7 +136,8 @@ class Intersection(object):
         self.name = "%s <-> %s" % (a_signature.link, another_signature.link)
         self.up = a_signature.up & another_signature.up
         self.down = a_signature.down & another_signature.down
-        self.diff = (a_signature.up | a_signature.down) & (another_signature.up | another_signature.down)
+        self.diff = (a_signature.up | a_signature.down) \
+                    & (another_signature.up | another_signature.down)
 
     def differential(self):
         return " ".join(self.diff)
@@ -176,7 +190,8 @@ def intersections(request, ratio=1.1, pvalue=0.05, fold_change=None, exp=None):
     return render_to_response('expressions/intersections.html', ctx,
         context_instance=RequestContext(request))
 
-def intersection(request, a, another, ratio=1.2, pvalue=0.05, fold_change=None, exp=None):
+def intersection(request, a, another, ratio=1.2, pvalue=0.05,
+                 fold_change=None, exp=None):
     a_signature = Signature.objects.get(pk=a)
 
     another_signature = Signature.objects.get(pk=another)
@@ -197,8 +212,10 @@ def intersection(request, a, another, ratio=1.2, pvalue=0.05, fold_change=None, 
         fold_change = None
     print fold_change
 
-    a_signature.differential(float(ratio), float(pvalue), float(fold_change or 0), exp)
-    another_signature.differential(float(ratio), float(pvalue), float(fold_change or 0), exp)
+    a_signature.differential(float(ratio), float(pvalue),
+                             float(fold_change or 0), exp)
+    another_signature.differential(float(ratio), float(pvalue),
+                                  float(fold_change or 0), exp)
     intersection = Intersection(a_signature, another_signature)
     ctx = {'title': '%s & %s' % (a_signature, another_signature),
            'intersection': intersection,
@@ -235,7 +252,7 @@ def meta(request, ratio=1.1, pvalue=0.05, fold_change=None, exp=None):
 
 def profile(request, pk):
     profile = Profile.objects.get(pk=pk)
-    replicates = profile.replicates.all()
+    replicates = Replicate.objects.filter(profile=profile) #profile.replicates.all()
     table = ReplicateTable(replicates)
     RequestConfig(request).configure(table)
     ctx = {'profile': profile, 'replicates': replicates}
@@ -257,41 +274,212 @@ def add_profile(request):
 
         # Create profiles:
         profiles = []
+        replicates = [] # Container for bulk creation.
 
-        for line in data:
+        # Header:
+        columns = data[0].split('\t')
+        for index, dataset in enumerate(columns[1:]):
+            tissue, diet, name = columns[index+1].split('_')
+            #print tissue, diet, name
+            profile = Profile(
+                name=name,
+                species=Species.objects.get(pk=request.POST['species']),
+                diet=Regimen.objects.get(shortcut__exact=diet)
+            )
+            profile.save()
+            tissues = Tissue.objects.filter(notes__icontains=tissue)
+            profile.tissue = tissues
+            profiles.append(profile)
+            #print index, tissue, diet, name
+
+        # Actually Data Parsing:
+        limit = 10
+        counter = 0
+        overall_count = 0
+        lines = data[1:]
+        line_number = len(lines)
+        c = Counter(lines)
+        print(line_number)
+        for line in lines:
+            #print(line)
+            counter += 1
+            c.count()
+            #if counter % 2: print counter
+#            if (100. * overall_count / line_number) < 40:
+#                overall_count += counter
+#                continue
             columns = line.split('\t')
             if not line: continue
-            if line == data[0]:
-                header = columns
-
-                for index, dataset in enumerate(header[1:]):
-                    tissue, diet, name = columns[index+1].split('_')
-                    print tissue, diet, name
-                    profile = Profile(
-                        name=name,
-                        species=Species.objects.get(pk=request.POST['species']),
-                        diet=Regimen.objects.get(shortcut__exact=diet)
-                    )
-                    profile.save()
-                    tissues = Tissue.objects.filter(notes__icontains=tissue)
-                    profile.tissue = tissues
-                    profiles.append(profile)
-                continue
-
-            # Iterate over columns and save the replicates:
+            #print("Iterate over columns and save the replicates:")
             probe_id = columns[0]
             for index, column in enumerate(columns[1:]):
+                #print index, column
                 intensity = columns[index+1]
-                replicate = Replicate(probe_id=probe_id, intensity=intensity)
-                replicate.save()
-                profiles[index].replicates.add(replicate)
+                replicate = Replicate(probe_id=probe_id, intensity=intensity,
+                                      profile=profiles[index])
+                #replicate.save()
+                replicates.append(replicate)
+
+
+            if counter >= limit:
+                current = 100. * overall_count / line_number
+                #print(current)
+                #if current > 47 and not current > 48:
+                    #print " ".join(replicate.intensity for replicate in replicates)
+                    #
+                #else:
+                try: Replicate.objects.bulk_create(replicates)
+                except Exception as e:
+                    print(e)
+                    messages.add_message(request, messages.ERROR, ugettext("1. Try: "+str(e)))
+                    try:
+                        [replicate.save() for replicate in replicates]
+                    except Exception as es:
+                        print(e)
+                        messages.add_message(request, messages.ERROR, ugettext("2. Try: "+str(e)))
+                replicates = []
+                overall_count += counter
+                counter = 0
+                #print(current)
+        if replicates:
+            #Replicate.objects.bulk_create(replicates)
+            replicates = []
+            overall_count += counter
+
+        # Adding replicates:
+#        for profile in profiles:
+#            replicates = Replicate.objects.filter(profile_id=profile.pk)
+#            for replicate in replicates:
+#                profile.replicates.add(replicate)
+            #profiles[index].replicates.add(replicate)
+
         msg = "Successfully integrated profiles."
+        print(msg)
         messages.add_message(request, messages.SUCCESS, ugettext(msg))
-        redirect('/expressions/profile/')
+
+        # Cleaning up:
+        request.POST['file'] = ''
+        data = ''
+        import gc
+        gc.collect()
+        redirect('/expressions/profiles/')
 
     ctx = {'form': form, 'action': 'Add'}
     return render_to_response('expressions/profile_form.html',ctx,
         context_instance=RequestContext(request))
+
+#def process_profile(request):
+#    for profile in profiles:
+#        replicates = profiles.replicates.all()
+#        for replicate in replicates
+#        profiles.transcripts.replicates
+#
+#        for transcript in profiles.transcripts.all()
+#            replicates = transcript.replicates.all()
+
+@permission_required('is_superuser')
+def probes(request):
+    profiles = Profile.objects.all()
+    for profile in profiles:
+        probes = {}
+        replicates = Replicate.objects.filter(profile=profile)
+        for replicate in replicates:
+            if replicate.probe_id not in probes:
+                probes[replicate.probe_id] = [replicate.intensity]
+            else:
+                probes[replicate.probe_id].append(replicate.intensity)
+        for id, intensities in probes.items():
+            probe = Probe(name=id, expression=sum(intensities)/len(intensities), profile=profile)
+            probes[id] = probe
+        try:
+            Probe.objects.bulk_create(probes.values())
+        except Exception as e:
+            print(str(e))
+            try:
+                for probe in probes:
+                    probe.save()
+            except Exception as e:
+                print(str(e))
+    print('Done!')
+    #return redirect('/expressions/profiles/')
+    return HttpResponse("Done")
+
+@permission_required('is_superuser')
+def delete_probes(request):
+    statement = 'TRUNCATE TABLE expressions_probe'
+    cursor = connection.cursor()
+    cursor.execute(statement)
+    msg = "Successfully deleted %s probes" % " ".join(cursor.fetchall())
+    messages.add_message(request, messages.SUCCESS, _(msg))
+    return redirect('/expressions/profiles/')
+
+@permission_required('is_superuser')
+def create_signatures(request):
+    """Generates signatures from profiles."""
+    # Sort profiles according to tissues
+    # compare DR vs. AL.
+    profiles = Profile.objects.all()
+    #print len(profiles)
+    signatures = {}
+    for profile in profiles:
+        tissues = ' '.join([tissue.name for tissue in profile.tissue.all()])
+        print tissues, profile.diet.shortcut
+        if tissues not in signatures:
+            signatures[tissues] = [None, None]
+        if profile.diet.shortcut == 'DR':
+            signatures[tissues][0]= profile
+        else:
+            signatures[tissues][1] = profile
+    print signatures
+
+    for tissues, profiles in signatures.items():
+        print tissues, profiles
+        signature = Signature(name=tissues, species=profiles[0].species, diet=profiles[0].diet)
+        signature.save()
+        for tissue in profiles[0].tissue.all():
+            signature.tissues.add(tissue)
+        for profile in profiles:
+            #background = []
+            profile.transcripts = {}
+            probes = Probe.objects.filter(profile=profile)
+            for probe in probes:
+                if not probe.name.startswith('RANDOM'):
+                    transcript_name = probe.name.split('P')[0]
+                    if transcript_name not in profile.transcripts:
+                        profile.transcripts[transcript_name] = [probe.expression]
+                    else:
+                        profile.transcripts[transcript_name].append(probe.expression)
+                #else: # For background subtraction.
+                    #background.append(probe.expression)
+
+        for transcript_name, exp_expression in profiles[0].transcripts.items():
+            # If expression too low of e.g. 1/3 of probes, exclude probe.
+            # RMA (background subtraction, quantile normalization, and median polishing)
+            # Benjamini p-value
+
+            exp = sum(exp_expression)/len(exp_expression)
+            ctr_expression = profiles[1].transcripts[transcript_name]
+            ctr = sum(ctr_expression)/len(ctr_expression)
+            ratio = exp/ctr
+            if ratio < 1: fold_change = -(1/ratio)
+            else: fold_change = ratio
+            if len(exp_expression) == 1 or len(ctr_expression) == 1:
+                es = pvalue = None
+            else:
+                es = effect_size(exp_expression, ctr_expression)
+                pvalue = t_two_sample(exp_expression, ctr_expression)[1] # Calculate p-value.
+
+            transcript = Transcript(seq_id=transcript_name,
+                                    ratio=ratio,
+                                    fold_change=fold_change,
+                                    effect_size=es,
+                                    pvalue=pvalue)
+            transcript.save()
+            expression = Expression.objects.create(signature=signature, transcript=transcript,
+                                           exp=exp, ctr=ctr, ratio=ratio, fold_change=fold_change,
+                                            effect_size=es, pvalue=pvalue)
+    print('Done')
+    return redirect('/expressions/signatures/')
 
 @login_required
 def add_signature(request):
@@ -368,21 +556,34 @@ def add_signature(request):
                 columns = line.split('\t')
                 if len(columns) <= 5: break #continue
                 seq_id = columns[header['seq_id']]
-                pvalue = columns[header['p_value']]
                 symbol = columns[header['symbol']]
-
+                if symbol == "None": symbol = None
                 ctr = float(columns[header['ctr']])
                 exp = float(columns[header['exp']])
-                ratio = exp/ctr
-                fold_change = columns[header['fold_change']]
-
+                if "ratio" in header:
+                    ratio = float(columns[header['ratio']])
+                    if ratio < 1:
+                        fold_change = -(1/ratio)
+                    else:
+                        fold_change = ratio
+                else:
+                    ratio = float(columns[header['fold_change']]) # 2**exp/2**ctr
+                if ratio < 1:
+                    fold_change = -(1/ratio)
+                else:
+                    fold_change = ratio
                 # Calculating effect size:
                 for k,v  in header.items():
-                    if k.startswith('ctr'):
+                    if k.startswith('ctr') and k != 'ctr':
                         ctr_values.append(float(columns[v]))
-                    elif k.startswith('exp'):
+                    elif k.startswith('exp') and k != 'exp':
                         exp_values.append(float(columns[v]))
-                es = effect_size(exp_values, ctr_values)
+                if exp_values:
+                    print exp_values
+                    es = effect_size(exp_values, ctr_values)
+                else:
+                    es = None
+                pvalue = columns[header['p_value']]
 
                 transcript = Transcript(seq_id=seq_id, symbol=symbol, ratio=ratio, fold_change=fold_change, pvalue=pvalue, effect_size=es)
 
@@ -415,10 +616,14 @@ def add_signature(request):
 
 @permission_required('is_superuser')
 def delete_profiles(request):
-    profiles = Profile.objects.all()
-    num_profiles = len(profiles)
-    if profiles:
-        profiles.delete()
+    num_profiles = Profile.objects.all().count()
+    #num_profiles = len(profiles)
+    if num_profiles:
+        #profiles.delete()
+        statement = 'TRUNCATE TABLE expressions_profile'
+        cursor = connection.cursor()
+        cursor.execute(statement)
+
         message_type = messages.SUCCESS
     else:
         message_type = messages.WARNING
@@ -427,10 +632,22 @@ def delete_profiles(request):
     return redirect('/expressions/')
 
 @permission_required('is_superuser')
+def delete_probes(request):
+    statement = 'TRUNCATE TABLE expressions_probe'
+    cursor = connection.cursor()
+    cursor.execute(statement)
+    msg = "Successfully deleted %s probes" % " ".join(cursor.fetchall())
+    messages.add_message(request, messages.SUCCESS, _(msg))
+    return redirect('/expressions/profiles/')
+
+@permission_required('is_superuser')
 def delete_replicates(request):
-    replicates = Replicate.objects.all()
-    num_replicates = len(replicates)
-    replicates.delete()
+    num_replicates = Replicate.objects.all().count()
+    #num_replicates = len(replicates)
+    #replicates.delete()
+    statement = 'TRUNCATE TABLE expressions_replicate'
+    cursor = connection.cursor()
+    cursor.execute(statement)
     if num_replicates:
         message_type = messages.SUCCESS
     else:
@@ -477,6 +694,14 @@ def delete_transcripts(request):
     messages.add_message(request, message_type, ugettext(msg))
     return redirect('/expressions/')
 
+@permission_required('is_superuser')
+def output_signature(request, pk):
+    signature = Signature.objects.get(pk=pk)
+    signature.output()
+    msg = "Successfully outputted signature."
+    messages.add_message(request, messages.SUCCESS, _(msg))
+    return redirect('/expressions/signatures')
+
 class ProfileCreate(CreateView):
     context_object_name='profile'
     form_class = ProfileForm
@@ -487,14 +712,4 @@ class SignatureCreate(CreateView):
     form_class = SignatureForm
     model = Signature
 
-
-
-
-
-#    profiles = Profile.objects.all()
-#    for profile in profiles:
-#        for replicate in
-#
-#    signature = Signature.object.get(tissue="malipihigian")
-#    for gene in signature.genes
-#    gene
+#234567891123456789212345678931234567894123456789512345678961234567897123456789
