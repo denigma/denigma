@@ -277,7 +277,7 @@ check if self.pk is None, which is the case not yet created entries
 
 Check if a Field has Changed
 ----------------------------
-To manually check whether a model field has changed a function in the save me$
+To manually check whether a model field has changed a function in the save method can
 be implemented: ::
 
     def has_changed(instance, save):
@@ -313,7 +313,7 @@ name but different content and comparing different empty values for False: ::
             # Handle FileFields as specieal cases, beacuse the uploaded filename could be
             # the same as the filename that's already there even through there may be
             # different file contents.
-            from django.core.fies.uploadfile import UploadedFile
+            from django.core.files.uploadfile import UploadedFile
             return isinstance(new_value.file, UploadedFile)
 
         if not (new_value or old_value):
