@@ -716,7 +716,7 @@ def output_signature(request, pk):
     return redirect('/expressions/signatures')
 
 
-class SetList(ListView): # Not used actually.
+class SetList(ListView):
     queryset = Set.objects.all,
     context_object_name = 'sets',
     template_name = 'expressions/sets.html'
