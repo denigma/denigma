@@ -18,8 +18,10 @@ django-taggit   # Provides tagging functionality.
 django-grappelli==2.3.8 # Alternative admin design with additional functionality.
 django-reversion==1.6.3 # Model version control system. #==1.5.3 # Worked for Django-1.3.2 #==1.6.3 works for Django-1.4.1
 docutils # Documentation utilities.
-numpy # Required for BioPython
+
+#scipy # Required for parts of the stats app. However, scipy can cause issues on deployment (see docs).
 biopython # For EUtils
+cogent # For t-test
 
 # Searching:
 whoosh
