@@ -706,3 +706,5 @@ the order (e.g. install numpy before Biopython).
 
 [1] http://stackoverflow.com/questions/10937735/installing-three-packages-at-once-fails-pip-install-numpy-pil-aptus-but-indiv
 [2] http://stackoverflow.com/questions/5394356/how-to-specify-install-order-for-python-pip
+
+MySQL-python was not installed after deployment.
