@@ -34,7 +34,6 @@ def todo_index(request):
         return HttpResponseRedirect(reverse(todo_login))
     profile = Profile.objects.get(user__username__exact=request.user.username)
     profile.last_list_check = datetime.datetime.today()
-    print "Profile last_list checked:", profile.last_list_check
     profile.save()
     todos = Todo.objects.filter(owner=request.user).order_by('importance', '-created', 'title')
     return render_to_response('todos/index.html',
