@@ -274,6 +274,7 @@ INSTALLED_APPS = [
     'aspects',
     'data',
     'eva',
+    'stats',
 ]
 
 FIXTURE_DIRS = [
