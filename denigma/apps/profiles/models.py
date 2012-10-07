@@ -19,6 +19,8 @@ class Profile(ProfileBase):
     title = models.ForeignKey('aspects.Title', blank=True, null=True)
     role = models.ManyToManyField('aspects.Role', blank=True, null=True)
 
+    last_list_check = models.DateTimeField(blank=True, null=True)
+
     def promote(self, aspect, level):
         """Executes a promotion."""
         promoted = False

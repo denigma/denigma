@@ -6,11 +6,15 @@
         {% else %}
             <a href="{% url profile_detail profile.user.username %}">{% user_display profile.user %}</a>
         {% endif %}
+        {% if user.is_superuser %}
+            (Last list check:</b> {{ profile.last_list_check }})
+        {% endif %}
     </div>
     <div class="details">
         {% if profile.location %}{{ profile.location }}{% endif %}
         {% if profile.location and profile.website %}&bull;{% endif %}
         {% if profile.website %}<a href="{{ profile.website }}">{{ profile.website }}</a>{% endif %}
+
     </div>
     <div class="clear"></div>
    <p></p>

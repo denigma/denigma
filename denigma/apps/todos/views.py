@@ -1,3 +1,4 @@
+import datetime
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, loader
 
@@ -12,6 +13,8 @@ from django.views.generic.edit import CreateView, UpdateView
 from models import Todo, importance_choices
 
 from forms import TodoForm
+
+from profiles.models import Profile
 
 
 class TodoCreate(CreateView):
@@ -29,6 +32,10 @@ def todo_index(request):
 ##    return HttpResponse(t.render(c))
     if request.user.id is None: # Catch people who haven't logged in.
         return HttpResponseRedirect(reverse(todo_login))
+    profile = Profile.objects.get(user__username__exact=request.user.username)
+    profile.last_list_check = datetime.datetime.today()
+    print "Profile last_list checked:", profile.last_list_check
+    profile.save()
     todos = Todo.objects.filter(owner=request.user).order_by('importance', '-created', 'title')
     return render_to_response('todos/index.html',
                               {'todos': todos,

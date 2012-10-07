@@ -28,5 +28,10 @@
     {% if profile.title %}<p><b>{% trans "Title" %}</b>: <a href="/aspects/design/title/{{ profile.title.name }}">{{ profile.title.name }}</a>
        {# {{ profile.title.symbol }} #}
     {% endif %}
+
+    {% if user.is_superuser %}
+        <br>
+        <p><b>Last list check</b>: {{ profile.last_list_check }}</p>
+    {% endif %}
     </p>
 </div>
