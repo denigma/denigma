@@ -679,7 +679,30 @@ There are two kinds of scalabality:
 Horizontal scalability is the ability ro increase a system's capacity by adding more
 processing units (services)
 
+
 Debug Toolbar
 -------------
 Since Django-1.4 the developmental status side bar does not react to hide any more.
 Upgrading to djang-toolbar-0.9.4 solved this issue.
+
+
+Scipy on Django
+---------------
+Scipy installation conflicts with Django which can be resolved by putting the following
+into the httpd.conf which does something about sub interpreters [1]: ::
+
+    <Directory /usr/local/www/wsgi-scripts>
+        WSGIApplicationGroup %{GLOBAL}
+           Order allow,deny
+           Allow form all
+    </Directory>
+
+[1] http://stackoverflow.com/questions/7819588/using-scipy-stats-stats-in-django-after-deployment
+
+Requirements Install Order
+--------------------------
+pip does not install the packages in a requirements file in order [1-2]. Install separate requirements file enables to control
+the order (e.g. install numpy before Biopython).
+
+[1] http://stackoverflow.com/questions/10937735/installing-three-packages-at-once-fails-pip-install-numpy-pil-aptus-but-indiv
+[2] http://stackoverflow.com/questions/5394356/how-to-specify-install-order-for-python-pip
