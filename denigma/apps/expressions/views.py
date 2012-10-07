@@ -149,7 +149,7 @@ class Intersection(object):
         return " ".join(self.down)
 
 
-def intersections(request, ratio=1.1, pvalue=0.05, fold_change=None, exp=None):
+def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None):
     entry = get("Intersections")
 
     if request.GET:
@@ -190,7 +190,7 @@ def intersections(request, ratio=1.1, pvalue=0.05, fold_change=None, exp=None):
     return render_to_response('expressions/intersections.html', ctx,
         context_instance=RequestContext(request))
 
-def intersection(request, a, another, ratio=1.2, pvalue=0.05,
+def intersection(request, a, another, ratio=2., pvalue=0.05,
                  fold_change=None, exp=None):
     a_signature = Signature.objects.get(pk=a)
 
@@ -226,7 +226,7 @@ def intersection(request, a, another, ratio=1.2, pvalue=0.05,
     return render_to_response('expressions/intersection.html/', ctx,
         context_instance=RequestContext(request))
 
-def meta(request, ratio=1.1, pvalue=0.05, fold_change=None, exp=None):
+def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None):
     """Common to all signature in a category."""
     if request.GET:
         if 'ratio' in request.GET and request.GET['ratio']:
