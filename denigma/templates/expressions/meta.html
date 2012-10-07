@@ -28,6 +28,11 @@
     <hr>
 
     <form action="" method="GET">
+        Set: <select name="set" id="set"  />
+        {% for set in sets %}
+            <option value={{ set.pk }}>{{ set }}</option>
+        {% endfor %}
+        </select>
         {{ filter.form.as_p }}
         <input type="submit" value="Apply" />
     </form>

@@ -131,6 +131,12 @@ class Set(models.Model):
     name = models.CharField(max_length=255)
     signatures = models.ManyToManyField('Signature')
 
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return "/expressions/sets/"
+
 
 class Expression(models.Model):
     signature = models.ForeignKey('Signature')

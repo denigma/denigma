@@ -2,9 +2,9 @@ from django.conf.urls.defaults import patterns, url
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 
-from models import Profile, Signature, Replicate
+from models import Profile, Signature, Replicate, Set
 
-from views import ProfileCreate, SignatureCreate
+from views import ProfileCreate, SignatureCreate, SetCreate
 
 
 urlpatterns = patterns('expressions.views',
@@ -67,4 +67,9 @@ urlpatterns = patterns('expressions.views',
     url('^probes/$', 'probes', name='probes'),
     url('^delete_probes/$', 'delete_probes', name='probes'),
     url('^create_signatures/$', 'create_signatures', name='create_signatures'),
+    url('^sets/$', ListView.as_view(
+        queryset=Set.objects.all,
+        context_object_name='sets',
+        template_name='expressions/sets.html')),
+    url('^set/create$', SetCreate.as_view(), name='create-set'),
 )

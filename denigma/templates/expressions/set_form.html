@@ -1,0 +1,16 @@
+{% extends "expressions/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ action }} Set{% endblock %}
+
+{% block hierarchy %}
+    > Set
+    > {{ action }}
+{% endblock %}
+
+{% block title %}{{ action }} Set{% endblock %}
+
+{% block content %}
+    {%  crispy form %}
+{% endblock %}

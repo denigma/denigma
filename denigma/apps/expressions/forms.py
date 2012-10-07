@@ -4,7 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit
 from crispy_forms.bootstrap import FormActions
 
-from models import Profile, Signature
+from models import Profile, Signature, Set
 
 
 class ProfileForm(ModelForm):
@@ -68,3 +68,20 @@ class SignatureForm(ModelForm):
     class Meta:
         model = Signature
         exclude = ('transcripts', 'genes')
+
+
+class SetForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset("", 'name', 'signatures'),
+            FormActions(
+                Submit('submit', 'Submit', css_class="btn-primary"),
+                Submit('cancel', 'Cancel')
+            )
+        )
+        super(SetForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Set

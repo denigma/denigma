@@ -13,8 +13,8 @@ from django_tables2 import RequestConfig
 from lifespan.models import Regimen
 from annotations.models import Species, Tissue
 
-from models import Replicate, Profile, Transcript, Signature, Expression, Probe
-from forms import ProfileForm, SignatureForm
+from models import Replicate, Profile, Transcript, Signature, Expression, Probe, Set
+from forms import ProfileForm, SignatureForm, SetForm
 from tables import TranscriptTable, ReplicateTable
 from filters import TranscriptFilterSet
 
@@ -149,7 +149,7 @@ class Intersection(object):
         return " ".join(self.down)
 
 
-def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None):
+def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None):
     entry = get("Intersections")
 
     if request.GET:
@@ -162,11 +162,18 @@ def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None):
         if 'expression__exp' in request.GET and request.GET['expression__exp']:
             exp = request.GET['expression__exp']
             print "Expression exp"
+        if 'set' in request.GET and request.GET['set']:
+            set = request.GET['set']
     filter = TranscriptFilterSet(request.GET, transcripts)
 
     intersections = []
     #signatures = Signature.objects.differential(ratio, pvalue)      #
-    signatures = Signature.objects.all()
+    if set:
+        set = Set.objects.get(pk=set)
+        signatures = set.signatures.all()
+    else:
+        set = Set.objects.get(pk=1)
+        signatures = set.signatures.all()
     for signature in signatures:              #
         signature.differential(ratio, pvalue, fold_change, exp) # Might a good function for a custom manager.
     for a_signature in signatures:
@@ -186,6 +193,7 @@ def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None):
            'fold_change': fold_change,
            'exp': exp,
            'filter': filter,
+           'sets': Set.objects.all()
     }
     return render_to_response('expressions/intersections.html', ctx,
         context_instance=RequestContext(request))
@@ -226,7 +234,7 @@ def intersection(request, a, another, ratio=2., pvalue=0.05,
     return render_to_response('expressions/intersection.html/', ctx,
         context_instance=RequestContext(request))
 
-def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None):
+def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None):
     """Common to all signature in a category."""
     if request.GET:
         if 'ratio' in request.GET and request.GET['ratio']:
@@ -237,8 +245,11 @@ def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None):
             fold_change = float(request.GET['fold_change'])
         if 'expression__exp' in request.GET and request.GET['expression__exp']:
             exp = float(request.GET['expression__exp'])
+        if 'set' in request.GET and request.GET['set']:
+            set = request.GET['set']
     entry = get("Meta-Analysis")
-    signatures = Signature.objects.all()
+    set = Set.objects.get(pk = set or 1)
+    signatures = set.signatures.all()
     for signature in signatures:
         signature.differential(ratio, pvalue, fold_change, exp)
     signatures = Signatures(signatures)
@@ -246,7 +257,8 @@ def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None):
     ctx = {'title': 'Meta-Analysis',
            'entry': entry,
            'signatures': signatures,
-           'filter': filter}
+           'filter': filter,
+           'sets': Set.objects.all()}
     return render_to_response('expressions/meta.html', ctx,
         context_instance=RequestContext(request))
 
@@ -702,6 +714,13 @@ def output_signature(request, pk):
     messages.add_message(request, messages.SUCCESS, _(msg))
     return redirect('/expressions/signatures')
 
+class SetCreate(CreateView):
+    #sets = Sets.objects.all()
+    #context_object_name = 'set'
+    form_class = SetForm
+    model = Set
+    template_name = 'expressions/set.html'
+
 class ProfileCreate(CreateView):
     context_object_name='profile'
     form_class = ProfileForm
@@ -711,5 +730,6 @@ class ProfileCreate(CreateView):
 class SignatureCreate(CreateView):
     form_class = SignatureForm
     model = Signature
+
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789

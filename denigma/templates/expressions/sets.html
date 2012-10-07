@@ -1,0 +1,34 @@
+{% extends "expressions/base.html" %}
+
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+{% endblock %}
+
+{% load render_table from django_tables2 %}
+
+{% block head_title %}Sets{% endblock %}
+
+{% block hierarchy %}
+    > Sets
+{% endblock %}
+
+{% block title %}Sets{% endblock %}
+
+{% block content %}
+    {% if sets %}
+        {% render_table sets %}
+        <hr>
+        {% for set in sets %}
+            <b>{{ set }}</b> ({{ set.signatures.all|length }} signatures)<br>
+            {% for signature in set.signatures.all %}
+                <a href="/expressions/signature/{{ signature.pk }}">{{ signature }}</a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        <hr>
+        {% endfor %}
+    {% else %}
+        <p>No sets defined yet.</p>
+    {% endif %}
+    <hr>
+    <b><a href="/expressions/set/create">Create set</a></b>
+{% endblock %}
