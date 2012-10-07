@@ -6,6 +6,7 @@ class Abstract(models.Model):
     description = models.TextField(blank=True, null=True)
     symbol = models.ForeignKey('gallery.PhotoUrl', blank=True, null=True)
     requirement = models.CharField(max_length=255, blank=True, null=True)
+    level = models.IntegerField(blank=True, null=True)
     class Meta:
         abstract = True
 
@@ -25,6 +26,8 @@ class Hierarchy(Abstract):
 
 class HierarchyType(Abstract):
     """Rank, Grade, Title, etc."""
+    profession = models.CharField(max_length=25, blank=True, null=True)
+    aspect = models.CharField(max_length=25, blank=True, null=True)
     def get_absolute_url(self):
         return u"/aspects/achievement/%s" % (self.name.lower())
 

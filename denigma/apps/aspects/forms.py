@@ -42,6 +42,7 @@ class HierarchyForm(ModelForm):
                 'description',
                 'symbol',
                 'requirement',
+                'level',
                 'type',
             ),
             FormActions(

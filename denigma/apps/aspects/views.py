@@ -10,6 +10,8 @@ from forms import AchievementForm, HierarchyForm, RankForm, GradeForm, TitleForm
 from blog.models import Post
 from tables import RankTable, GradeTable, TitleTable
 
+from profiles.models import Profile
+
 
 class AchievementCreate(CreateView):
     template_name = 'aspects/achievement_form.html'
@@ -69,7 +71,7 @@ class TitleCreate(HierarchyCreate):
 
 
 class RankList(SingleTableView): # Not used yet.
-    queryset = Rank.objects.all().order_by('-pk') # Need a hierachary level number field.
+    queryset = Rank.objects.all().order_by('level') # Need a hierachary level number field.
     template_name = 'aspects/hierarchy.html'
 
 
@@ -126,7 +128,7 @@ def add_achievement(request):
     return HttpResponse("Create Achievement: %s" % request)
 
 def ranks(request):
-    table = RankTable(Rank.objects.all())
+    table = RankTable(Rank.objects.all().order_by('level'))
     RequestConfig(request).configure(table)
     ctx = {'hierarchy_name': 'Ranks', 'hierarchy': table}
     return render_to_response('aspects/hierarchy.html', ctx,
@@ -134,11 +136,13 @@ def ranks(request):
 
 def rank(request, name):
     level = Rank.objects.get(name=name)
-    return render_to_response('aspects/level.html', {'level': level},
+    profiles = Profile.objects.filter(rank__name=name.title())
+    ctx = {'level': level, 'profiles': profiles}
+    return render_to_response('aspects/level.html', ctx,
         context_instance=RequestContext(request))
 
 def grades(request):
-    table = GradeTable(Grade.objects.all())
+    table = GradeTable(Grade.objects.all().order_by('level'))
     RequestConfig(request).configure(table)
     ctx = {'hierarchy_name': 'Grades', 'hierarchy': table}
     return render_to_response('aspects/hierarchy.html', ctx,
@@ -146,11 +150,14 @@ def grades(request):
 
 def grade(request, name):
     level = Grade.objects.get(name=name)
-    return render_to_response('aspects/level.html', {'level': level},
+    profiles = Profile.objects.filter(grades__name=name.title())
+    ctx = {'level': level, 'profiles': profiles}
+    return render_to_response('aspects/level.html', ctx,
         context_instance=RequestContext(request))
 
 def titles(request):
-    table = TitleTable(Title.objects.all())
+    table = TitleTable(Title.objects.all().order_by('level'))
+
     RequestConfig(request).configure(table)
     ctx = {'hierarchy_name': 'Titles', 'hierarchy': table}
     return render_to_response('aspects/hierarchy.html', ctx,
@@ -158,7 +165,9 @@ def titles(request):
 
 def title(request, name):
     level = Title.objects.get(name=name)
-    return render_to_response('aspects/level.html', {'level': level},
+    profiles = Profile.objects.filter(title__name=name.title())
+    ctx =  {'level': level, 'profiles': profiles}
+    return render_to_response('aspects/level.html', ctx,
         context_instance=RequestContext(request))
 
 

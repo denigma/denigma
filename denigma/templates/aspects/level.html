@@ -3,7 +3,9 @@
 {% block head_title %}{% endblock %}
 
 {% block hierarchy %}
-    > <a href="/aspects/{{ aspect }}">{{ aspect }}</a>
+    > <a href="/aspects/{{ level.type.aspect }}/">{{ level.type.aspect }}</a>
+    > <a href="/aspects/{{ level.type }}s/">{{ level.type }}s</a>
+    > <a href="/aspects/{{ aspect }}/">{{ aspect }}</a>
     {{ level }}
 {% endblock %}
 
@@ -14,5 +16,12 @@
     {{ level.requriement }}
     {% if level.symbol %}
         <img src="{{ level.symbol.url }}" alt={{ level.symbol.name }} />
+    {% endif %}
+    <hr>
+    {% if profiles %}
+        <h3>{{ level.type.profession|title }}s with {{ level.type }} {{ level|lower }}:</h3>
+        {% for profile in profiles %}
+            <a href="/profiles/profile/{{ profile.name }}/">{{ profile.name }}</a>
+        {% endfor %}
     {% endif %}
 {% endblock %}
