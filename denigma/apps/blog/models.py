@@ -54,8 +54,9 @@ class Post(models.Model):
         if self.text.startswith("reStructured referenced") and self.pk and\
            "article" in [tag.name for tag in self.tags.all()]:
             referencing(self)
-        if self.url.startswith('/'):
-            self.url = settings.BASE_URL + self.url
+        if hasattr(self, 'url'):
+            if self.url.startswith('/'):
+                self.url = settings.BASE_URL + self.url
         super(Post, self).save(*args, **kwargs)
 
     class Meta:
