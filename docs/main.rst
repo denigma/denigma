@@ -298,8 +298,8 @@ elastic IP address inserted into the configuration.
 UNIX
 ----
 
-Take the opportinuty to venture in to the wonderful land of UNIX. It will make 
-your life much, much easier. If you havve the option, install Linux beside your 
+Take the opportunity to venture in to the wonderful land of UNIX. It will make
+your life much, much easier. If you have the option, install Linux beside your
 Windows in a dual boot setting and after that, Django and ALL Django app 
 godness is just one command away.
 
