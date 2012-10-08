@@ -60,7 +60,7 @@ class Post(models.Model):
         super(Post, self).save(*args, **kwargs)
 
     class Meta:
-        verbose_name = _('Entry')
-        verbose_name_plural = _('Entries')
+        verbose_name = _('Post')
+        verbose_name_plural = _('Posts')
 
 #23456789112345678921234567893123456789412346789512345678961234567897123456789   
