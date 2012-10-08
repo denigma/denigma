@@ -209,8 +209,6 @@ def edit_study(request, pk):
     return render_to_response('lifespan/edit_study.html', ctx,
         context_instance=RequestContext(request))
 
-
-
 @login_required
 def delete_study(request, pk):
     """Depricated."""
@@ -326,7 +324,6 @@ def delete_experiment(request, pk):
     ctx = {'experiment': experiment, 'form': form}
     return render_to_response('lifespan/delete_experiment.html', ctx,
         context_instance=RequestContext(request))
-
 
 def measurements(request):
     measurements = Measurement.objects.all()
