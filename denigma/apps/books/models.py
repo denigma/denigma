@@ -33,7 +33,7 @@ class Author(models.Model):
     email = models.EmailField('e-mail', blank=True)
     last_accessed = models.DateField(blank=True)
     birth_date = models.DateField(blank=True, null=True)
-    created_by = models.ForeignKey(User)
+    #created_by = models.ForeignKey(User)
     
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)
