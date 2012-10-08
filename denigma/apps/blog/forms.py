@@ -13,5 +13,5 @@ class PostForm(ModelForm):
     comment = CharField(help_text='Optional, used for revision control.', required=False)
 
     class Meta:
-        fields = ('title','text', 'tags', 'images', 'published', 'comment')
+        fields = ('title','text', 'tags', 'url', 'images', 'published', 'comment')
         model = Post

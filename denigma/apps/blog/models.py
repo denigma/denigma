@@ -15,15 +15,15 @@ except ImportError:
 
 
 class Post(models.Model):
-    """The fundamental textual datastructure of Denigma."""
+    """The fundamental textual data-structure of Denigma."""
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
     published = models.BooleanField(_('published'), db_index=True, default=True)
     title = models.CharField(_('title'), max_length=250)
     text = models.TextField(_('text'))
     tags = TaggableManager(_('tags'))
-    #url = models.CharField(_('URL'), max_length=100, db_index=True, blank=True, null=True,
-    #    help_text="Example: '/future/projects/'. Make sure to have leading and trailing slashes.")
+    url = models.CharField(_('URL'), max_length=100, blank=True, null=True,
+        help_text="Example: '/future/projects/'. Make sure to have leading and trailing slashes.")
     images = models.ManyToManyField('gallery.PhotoUrl', blank=True)
 
     def __unicode__(self):
@@ -49,7 +49,7 @@ class Post(models.Model):
             return '/blog/%i' % self.id
 
     def save(self, *args, **kwargs):
-        """Triggers the generation of referened document if article is marked
+        """Triggers the generation of referenced document if article is marked
         with reStructured referenced."""
         if self.text.startswith("reStructured referenced") and self.pk and\
            "article" in [tag.name for tag in self.tags.all()]:

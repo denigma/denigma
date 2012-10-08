@@ -18,7 +18,7 @@ class PostAdminForm(forms.ModelForm):
 class PostAdmin(reversion.VersionAdmin):
     list_display = ('title', 'brief', 'tagged', 'created', 'updated', 'published')
     list_filter = ['created', 'updated', 'published', 'tags__name']
-    fields = ('title', 'text', 'tags', 'images', 'published')
+    fields = ('title', 'text', 'tags', 'url', 'images', 'published')
     search_fields = ('title', 'text')#, 'tagged_items')
 
     form = PostAdminForm  
