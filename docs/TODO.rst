@@ -310,7 +310,7 @@ name but different content and comparing different empty values for False: ::
         new_value = getattr(instance, field, None)
 
         if hasattr(new_value, "file"):
-            # Handle FileFields as specieal cases, beacuse the uploaded filename could be
+            # Handle FileFields as special cases, beacause the uploaded filename could be
             # the same as the filename that's already there even through there may be
             # different file contents.
             from django.core.files.uploadfile import UploadedFile
@@ -332,13 +332,13 @@ the database before saving instance: ::
         ...
         def save(self, *args, **kw):
             if self.pk is not None:
-                orig = Entr.objects.get(pk=self.pk)
+                orig = Entry.objects.get(pk=self.pk)
                 if orig.title != self.title:
                     print("Title changed")
             super(Entry, self).save(*args, **kw)
 
 Another attractive alternative way is to override the `__init__` method of the `models.Model` so that it keeps
-a copy of the original value. This avoiss another DB lookup: ::
+a copy of the original value. This avoids another DB lookup: ::
 
     class Entry(models.Model):
         title = models.CharField(max_length=255):
