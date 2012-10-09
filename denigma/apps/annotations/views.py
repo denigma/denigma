@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.contrib import messages
-from django.utils.translation import ugettext
+from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, AnonymousUser
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -12,15 +12,17 @@ from django.views.generic.edit import CreateView, UpdateView
 
 import reversion
 
-from blog.models import Post
 from models import Classification, Tissue, Species, Taxonomy
-from forms import SpeciesForm, TissueForm, DeleteTissueForm
+from forms import (ClassificationForm, DeleteClassificationForm,
+                   TissueForm, DeleteTissueForm,
+                   SpeciesForm)
 
 from meta.view import log
+from data import get
 
 
 def index(request):
-    annotations = Post.objects.get(title='Annotations') 
+    annotations = get("Annotations")
     return render_to_response('annotations/index.html',
                               {'annotations': annotations},
                                context_instance=RequestContext(request))
@@ -58,7 +60,7 @@ def bulk_upload(request):
 def classifications(request):
     classifications = Classification.objects.all()
     return render_to_response('annotations/classifications.html',
-                              {'classifications': classifications},
+                              {'nodes': classifications},
                               context_instance=RequestContext(request))
 
 def classification(request, pk):
@@ -67,6 +69,63 @@ def classification(request, pk):
                               {'classification': classification},
                               context_instance=RequestContext(request))
 
+@login_required
+def edit_classification(request, pk):
+    classification = Classification.objects.get(pk=pk)
+    form = ClassificationForm(request.POST or None, instance=classification)
+    if request.method == "POST" and form.is_valid():
+        if "cancel" in request.POST:
+            return redirect('/annotations/classifications/')
+        with reversion.create_revision():
+            form.save()
+            reversion.set_user(request.user)
+            comment = request.POST['comment'] or "Changed classification"
+            reversion.set_comment(comment)
+            log(request, classification, comment)
+        return redirect('/annotations/classification/%s' % pk)
+    ctx = {'classification': classification,
+           'form': form,
+           'action': 'Edit'}
+    return render_to_response('annotations/classification_form.html', ctx,
+        context_instance=RequestContext(request))
+
+def add_classification(request, pk):
+    form = ClassificationForm(request.POST or None, pk=pk)
+    if request.method == "POST" and form.is_valid():
+        with reversion.create_revision():
+            classification = form.save(commit=False)
+            form.save()
+            if isinstance(request.user, AnonymousUser):
+                request.user = User.objects.get(username="Anonymous")
+            reversion.set_user(request.user)
+            comment = request.method['comment'] or "Added classification"
+            reversion.set_comment(comment)
+            log(request, classification, comment)
+            msg = "Successfully added classification."
+            messages.add_message(request, messages.SUCCESS, _(msg))
+            return redirect('annotations/classification/%s' % classification.pk)
+    return render_to_response('annotations/classification_form.html', {'form': form},
+        context_instance=RequestContext(request))
+
+@login_required
+def delete_classification(request, pk):
+    classification = Classification.objects.get(pk=pk)
+    form = DeleteClassificationForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        if "cancel" in request.POST:
+            return redirect('/annotations/classification/%s' % pk)
+        elif "delete_classification" in request.POST:
+            with reversion.create_revision():
+                classification.delete()
+                reversion.set_user(request.user)
+                comment = request.POST['comment'] or "Delete classification"
+                log(request, classification, comment)
+                msg = "Successfully deleted classification %s." % classification.title
+                messages.add_message(request, messages.SUCCESS, _(msg))
+                return redirect('/annotations/classifications/')
+    ctx = {'classification': classification, 'form': form}
+    return render_to_response('annotations/delete_classification.html', ctx,
+        context_instance=RequestContext(request))
 
 def species(request):
     species = Species.objects.filter(main_model=True).order_by('complexity')

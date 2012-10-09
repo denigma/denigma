@@ -1,16 +1,19 @@
 """Annotation information majorly from external databases."""
 from django.db import models
 
+from mptt.models import MPTTModel, TreeForeignKey
+
 from gallery.models import PhotoUrl
 
 
 # Classifications Ontology:
 
-class Classification(models.Model):
+class Classification(MPTTModel):
     title = models.CharField(max_length=30)
     slug = models.CharField(max_length=30)
     abbreviation = models.CharField(max_length=5)
     description = models.TextField(blank=True)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
 
     def __unicode__(self):
         return self.title
@@ -18,8 +21,11 @@ class Classification(models.Model):
     def get_absolute_url(self):
         return "/annotations/classification/%i" % self.pk
 
+    class MPTTMeta:
+        order_insertion_by = ['title']
 
-class Tissue(models.Model):
+
+class Tissue(MPTTModel):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     synonyms = models.TextField(blank=True)
@@ -27,12 +33,16 @@ class Tissue(models.Model):
     identifier = models.IntegerField(blank=True, null=True) # DAA cross-reference.
     notes = models.TextField(blank=True, null=True)
     images = models.ManyToManyField(PhotoUrl, blank=True)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
 
     def __unicode__(self):
         return self.name
 
     def get_absolute_url(self):
         return "/annotations/tissue/%i" % self.pk
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
 
 
 class Hormone(models.Model):

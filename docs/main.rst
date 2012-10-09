@@ -699,6 +699,7 @@ into the httpd.conf which does something about sub interpreters [1]: ::
 
 [1] http://stackoverflow.com/questions/7819588/using-scipy-stats-stats-in-django-after-deployment
 
+
 Requirements Install Order
 --------------------------
 pip does not install the packages in a requirements file in order [1-2]. Install separate requirements file enables to control
@@ -708,3 +709,74 @@ the order (e.g. install numpy before Biopython).
 [2] http://stackoverflow.com/questions/5394356/how-to-specify-install-order-for-python-pip
 
 MySQL-python was not installed after deployment.
+
+
+Hierarchy
+=========
+django-mptt enables the construction of relational tree structures.
+To enable mptt needs added to the requirements, installed and added to the installed apps in Config: ::
+
+     nano requirements/project.txt
+     ...
+     -e git+https://github.com/django-mptt/django-mptt/#egg=django-mptt
+     ...
+
+     nano settings.py
+     ...
+     INSTALLED_APPS = (
+     ...
+     'mptt',
+     ...
+
+In order to add hierarchy to an model import `MPTTModel` and `TreeForeignKey`.
+Then lets the model inherit from MPTTModel instead of models.Model and add a parent field as well as
+a MPTTMeta class defining the name/title field: ::
+
+    nano models.py
+    ...
+    from mptt.models import MPTTModel, TreeForeignKey
+    ...
+    class Classification(MPTTModel):
+    ...
+        parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
+        ...
+        class MPTTMeta:
+           order_insertion_by = ['title'] # or name or something similar.
+        ...
+If it is added to an model with existing data it will ask for default values by doing a south data
+migration. Simply specify 0 for those, but make sure to run in the ./manage.py shell tree rebuild: ::
+
+    ./manage.py schemamigration annotations --auto
+    ./manage.py migrate annotations
+    ./manage.py dbshell
+    from annotations import Classification
+    Classification.objects.rebuild()
+
+That is it, the model should now support hierarchical structures.
+To display the hierarchy in the view/template load the `{% mptt_tags %}` template tag
+and iterate over the recursetree passed data objects: ::
+
+    nano views.py
+    ...
+    def classifcations(request):
+        return render_to_response("classifications.html",
+                            {'nodes': Classification.objects.all()},
+                            context_instance=RequestContext(request))
+    ...
+
+    nano classifcations.html
+    ...
+    {% load mptt_tags %}
+    <ul>
+        {% recursetree nodes %}
+            <li>
+                {{ node.name }}
+                {% if not node.is_leaf_node %}
+                    <ul class="childreen">
+                        {{ children }}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endrecursetree %}
+    </ul>
+    ...

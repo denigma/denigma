@@ -1,6 +1,8 @@
 {% extends "annotations/base.html" %}
 
-{% block head_title %}Classification{% endblock %}
+{% load mptt_tags %}
+
+{% block head_title %}Classifications{% endblock %}
 
 {% block hierarchy %}
     > Classifications
@@ -9,13 +11,19 @@
 {% block title %}Molecule Classifications{% endblock %}
 
 {% block content %}
-    <p>Dengima developed a sophistacted classification schema for biological entities.</p>
-    {% for classification in classifications %}
-        <a href="/annotations/classification/{{ classification.pk }}">{{ classification.title }}</a>
-        ({{ classification.abbreviation }})
-        {{ classifcation.description }}
-        <br>
-    {% endfor %}
+    <p>Dengima developed a sophisticated classification hierarchical schema for biological entities.</p>
+    <ul>
+        {% recursetree nodes %}
+            <li>
+                <a href="/annotations/classification/{{ node.pk }}/">{{ node }}</a>
+                {% if not node.is_leaf_node %}
+                    <ul class="children">
+                        <a href="/annotations/classification/{{ node.pk }}/">{{ children }}</a>
+                    </ul>
+                {% endif %}
+            </li>
+        {% endrecursetree %}
+    </ul>
    <hr>
    <b><a href="/admin/annotations/classification/add/">Add classification</a></b>
 

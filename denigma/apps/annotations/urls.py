@@ -14,6 +14,12 @@ urlpatterns = patterns('annotations.views',
     # Classifications:
     url(r'^classifications/$', 'classifications', name="classification"), 
     url(r'^classification/(?P<pk>\d+)/$', 'classification'),
+    url(r'^classification/add/', 'add_classification',
+        name='add_classification'),
+    url(r'^classification/edit/(?P<pk>\d+)/$', 'edit_classification',
+        name='edit_classification'),
+    url(r'^classification/delete/(?P<pk>\d+)/$', 'delete_classification',
+        name='delete_classification'),
 
     # Species:
     url(r'^species/$', 'species', name="species"),

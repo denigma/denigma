@@ -1,10 +1,98 @@
 from django.forms import ModelForm, CharField, Textarea
-
+from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit
 from crispy_forms.bootstrap import FormActions
 
-from models import Species, Tissue
+from models import Classification, Tissue, Species
+
+
+DELETE_INFO_TEXT = _('Please confirm deletion and comment on the reason why it is obsolete')
+
+
+class ClassificationForm(ModelForm):
+    comment = CharField(required=False, help_text="... on the reason for editing.")
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                '', 'title', 'slug', 'abbreviation', 'description', 'parent', 'comment'
+            ),
+            FormActions(
+                Submit('save', 'Save', css_class="btn-primary"),
+                Submit('cancel', 'Cancel')
+            )
+        )
+        super(ClassificationForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Classification
+
+
+class TissueForm(ModelForm):
+    comment = CharField(required=False, help_text="... on the reason for editing.")
+    synonyms = CharField(required=False)
+    notes = CharField(required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                '', 'name', 'synonyms', 'description', 'parent', 'hierarchy', 'images', 'notes',  'comment'
+
+            ),
+            FormActions(
+                Submit('save', 'Save', css_class="btn-primary"),
+                Submit('cancel', 'Cancel')
+            )
+        )
+        super(TissueForm, self).__init__(*args, **kwargs)
+    class Meta:
+        model = Tissue
+        exclude = ('identifier',)
+
+class DeleteTissueForm(ModelForm):
+    comment = CharField(required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                DELETE_INFO_TEXT, _('comment')
+            ),
+            FormActions(
+                Submit('delete', _('Delete')),
+                Submit('cancel', _('Cancel'), css_class="btn-primary")
+            )
+        )
+        super(DeleteTissueForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Tissue
+        fields = ('comment',)
+
+
+class DeleteClassificationForm(ModelForm):
+    comment = CharField(required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                DELETE_INFO_TEXT, _('comment')
+            ),
+            FormActions(
+                Submit('delete', _('Delete')),
+                Submit('cancel', _('Cancel'), css_class="btn-primary")
+            )
+        )
+
+        super(DeleteClassificationForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Classification
+        fields = ('comment',)
 
 
 class SpeciesForm(ModelForm):
@@ -39,52 +127,3 @@ class SpeciesForm(ModelForm):
         exclude = ('number_genes', 'gendr_genes', 'gendr_paralogs', 'gendr_orthologs',
                     'short_latin_name')
 
-class TissueForm(ModelForm):
-    comment = CharField(required=False, help_text="... on the reason for editing.")
-    synonyms = CharField(required=False)
-    notes = CharField(required=False)
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_class = 'form-horizontal'
-        self.helper.layout = Layout(
-            Fieldset(
-                '',
-                'name',
-                'synonyms',
-                'description',
-                'hierarchy',
-                'images',
-                'notes',
-                'comment'
-
-            ),
-            FormActions(
-                Submit('save', 'Save', css_class="btn-primary"),
-                Submit('cancel', 'Cancel')
-            )
-        )
-        super(TissueForm, self).__init__(*args, **kwargs)
-    class Meta:
-        model = Tissue
-        exclude = ('identifier',)
-
-class DeleteTissueForm(ModelForm):
-    comment = CharField(required=False)
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_class = 'form-horizontal'
-        self.helper.layout = Layout(
-            Fieldset(
-                'Please confirm deletion and comment on the reason why it is obsolete',
-                'comment'
-            ),
-            FormActions(
-                Submit('delete', 'Delete'),
-                Submit('cancel', 'Cancel', css_class="btn-primary")
-                )
-        )
-        super(DeleteTissueForm, self).__init__(*args, **kwargs)
-
-    class Meta:
-        model = Tissue
-        fields = ('comment',)

@@ -1,0 +1,16 @@
+{% extends "annotations/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ action }} Classification{% endblock %}
+
+{% block hierarchy %}
+    > Classification
+    > {{ action }}
+{% endblock %}
+
+{% block title %}{{ action }} Classifcation{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}
