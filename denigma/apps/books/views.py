@@ -1,16 +1,22 @@
-# Create your views here.
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.generic import list_detail
-from django.views.generic.edit import CreateView, UpdateView, DeletionView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
+from django.template import RequestContext
 
 from models import Book, Publisher, Author
+from forms import AuthorForm
 
+
+def index(request):
+    return render_to_response('books/index.html',
+        context_instance = RequestContext(request))
 
 def latest_books(request):
-    book_list = Book.objects.order_by('-pub_date')[:10]
-    return render_to_response('books/latest_books.html', {'book_list': book_list})
+    book_list = Book.objects.order_by('-publication_date')[:10]
+    return render_to_response('books/latest_books.html', {'book_list': book_list},
+        context_instance=RequestContext(request))
 
 def search_form(request):
     return render_to_response('search_form.html')

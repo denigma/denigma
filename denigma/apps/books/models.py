@@ -83,9 +83,15 @@ class Book(models.Model):
     objects = models.Manager()          # The default manager.
     count_objects = BookManager()       # A counter manager.
     daniel_objects = DanielBookManager()  # The Daniel-specific manager (allows .all(), .filter(), .count())
-    #name = models.CharField(max_length=50)
-    #pub_date = models.DateField()
-    
+
+    @property
+    def name(self):
+        return self.title
+
+    @property
+    def pub_date(self):
+        return self.publication_date
+
     def __unicode__(self):
         return self.title
 

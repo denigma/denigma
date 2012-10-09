@@ -52,7 +52,7 @@ urlpatterns += patterns("",
     url(r'^blog/', include('blog.urls')),
     url(r'^news/$', include('news.urls')), # Blogs is currently functioning as news medium.
     #url(r'^links/', include('links.urls')),
-    #url(r'^books/', inlcude('books.urls')),
+    url(r'^books/', include('books.urls')),
     url(r'^contact/$', 'contact.views.contact', name='contact'),
     url(r'^todos/', include('todos.urls')),
     url(r'^experts/', include('experts.urls')),

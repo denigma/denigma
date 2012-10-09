@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls.defaults import patterns, url, include
 from django.views.generic import list_detail
 
 
@@ -21,21 +21,22 @@ publisher_info = {
 }
 
 apress_books = {
-    'ueryset': Book.objects.filter(publisher__name='Apress Publishing'),
+    'queryset': Book.objects.filter(publisher__name='Apress Publishing'),
     'template_name': 'book/apress_list.html'
 }
 
 urlpatterns = patterns('books.views',
-    url(r'^about/(|w+)/$', 'about_pages'),
-    url(r'^publishers/$', list_detail.object_list, 'publisher_info'),
-    url(r'^books/$', list_detail.object_list, 'book_info)',
-    url(r'^books/apress/$', list_detail.object_list, 'apress_books'),
-    url(r'^books/(\w+)$', 'books_by_publisher'),
+    url(r'^$', 'index', name='books'),
+    #url(r'^about/(|w+)/$', 'about_pages'),
+    #url(r'^publishers/$', list_detail.object_list, 'publisher_info'),
+    #url(r'^books/$', list_detail.object_list, 'book_info'),
+    #url(r'^books/apress/$', list_detail.object_list, 'apress_books'),
+    #url(r'^books/(\w+)$', 'books_by_publisher'),
 
-    url(r'^authors/(?P<author_id>d+)$', 'author_detail'),
-    url(r'^author/add/$', AuthorCreate.as_view(), name='author_add'),
-    url(r'^autor/(?P<pk>\d+)/$', AuthorUpdate.as_view(), name='author_update').
-    url(r'auhtor/(?P<pk>\d+)/$', AuthorDelete.as_view(), name='author_delete'),
+    url(r'^authors/(?P<author_id>\d+)$', 'author_detail'),
+    #url(r'^author/add/$', AuthorCreate.as_view(), name='author_add'),
+    #url(r'^author/(?P<pk>\d+)/$', AuthorUpdate.as_view(), name='author_update').
+    #url(r'^author/(?P<pk>\d+)/$', AuthorDelete.as_view(), name='author_delete'),
 )
 
 urlpatterns += patterns('books.views',                       

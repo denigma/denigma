@@ -1,9 +1,15 @@
-<html><head><title>Books</title></head>
-<body>
-<h1>Books</h1>
-<ul>
-{% for book in book_list %}
-<li>{{ book.name }}</li>
-{% endfor %}
-</ul>
-</body></html>
+{% extends "books/base.html" %}
+
+{% block head_title %}Latest Book List{% endblock %}
+
+{% block hierarchy %}
+    > Latest book list
+{% endblock %}
+
+{% block title %}Latest Book List{% endblock %}
+
+{% block content %}
+    {% for book in book_list %}
+        <li>{{ book.name }}</li>
+    {% endfor %}
+{% endblock %}
