@@ -5,7 +5,6 @@ from django.contrib.auth.models import AnonymousUser, User
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 
-
 import reversion
 
 from models import Post
