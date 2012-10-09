@@ -89,8 +89,8 @@ def edit_classification(request, pk):
     return render_to_response('annotations/classification_form.html', ctx,
         context_instance=RequestContext(request))
 
-def add_classification(request, pk):
-    form = ClassificationForm(request.POST or None, pk=pk)
+def add_classification(request):
+    form = ClassificationForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         with reversion.create_revision():
             classification = form.save(commit=False)
