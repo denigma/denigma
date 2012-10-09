@@ -115,7 +115,7 @@ As south was already installed, reversion needed to be migrated: ::
 $ ./manage.py migrate reversion
 
 Next revision was integrated with the admin for the respective models.
-The required models were simply register with a sublcass of reversion.VersionAdmin: ::
+The required models were simply register with a subclass of reversion.VersionAdmin: ::
 
 import reversion
 
@@ -128,7 +128,7 @@ Whenever a model was registered with VersionAdmin the following command needs to
 
 $ ./manage.py createinitialrevisions
 
-This command triggers the population of the version database with an inital set of model data.
+This command triggers the population of the version database with an initial set of model data.
 
 Low-level API
 ~~~~~~~~~~~~~
@@ -210,9 +210,19 @@ additional fields. For instance: ::
         revision = models.OneToOneFiel(Revision)  # Required
         rating = models.PositiveIntegerField()
 
-This meta class can be attched to a revision by: ::
+This meta class can be attached to a revision by: ::
 
     reversion.add_meta(VersionRating, rating=5)
+
+
+Management Commands
+^^^^^^^^^^^^^^^^^^^
+The createinitialrevisions commands can be used to create a single, base revision for all registered models,
+for all models within an app or for specified models: ::
+
+    django-admin.py createinitialrevisions
+    django-admin.py createinitialrevisions someapp
+    djanog-admin.py createinitialrevisions someapp.SomeModel
 
 
 Relationships changes
@@ -237,7 +247,7 @@ The Pro Django Book explains an approach how to track changes made by user [http
 which was packaged [https://bitbucket.org/q/django-current-user/src].
 
 A simple solution as it was applied in the reference model is to make the 
-discriminative fields (i.e. the poperties that determine whether an entry is the 
+discriminative fields (i.e. the properties that determine whether an entry is the
 same) unique (such as pmid and title) but also allow them to be 
 blank. A update view and duplicate view was created to manage this.
 If more than one field together makes something unique the unique_togethr in the
