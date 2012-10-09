@@ -228,7 +228,7 @@ INSTALLED_APPS = [
     'emailconfirmation',
     'announcements',
     'pagination',
-    'idios',
+    'idios', # UserProfiles
     'metron',
     'south',   # Intelligent schema and data migrations.
     'taggit',  # "tagging",
@@ -237,8 +237,8 @@ INSTALLED_APPS = [
     'django_tables2',
     'crispy_forms',
     'django_filters',
+    'mptt', # Hierarchy: Utilties for implementing a modified pre-order traversal tree.
 #    'cms", # Content Management System.
-#    'mptt", # Utilties for implementing a modified pre-order traversal tree.
 #    'sekizai", # For javascipt and css management.
     
     # Pinax
