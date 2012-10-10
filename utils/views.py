@@ -104,3 +104,5 @@ class LoggedInMixin(object):
         if not request.user.is_athenticated():
             raise Http404
         return super(LoggedInMixin, self).dispatch(request, *args, **kwargs)
+
+
