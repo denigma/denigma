@@ -71,8 +71,20 @@
                 <option value={{ set.pk }}>{{ set }}</option>
             {% endfor %}
         </select>
-        {{ filter.form.as_p }}
+        <p>
+            ID: <select name="id" id="id" />
+                <option selected="selected">
+                    {{ id }}
+                </option>
+                {% for ID in ids %}
+                    {% if ID != id %}
+                        <option value={{ ID }}>{{ ID }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </p>
 
+        {{ filter.form.as_p }}
         <input type="submit" value="Apply" />
     </form>
 

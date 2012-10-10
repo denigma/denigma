@@ -39,18 +39,20 @@
             <b>Species</b>: <a href="/annotations/species/{{ a_signature.species.pk }}/">{{ a_signature.species }}</a>
         </span>
         <span class="centre">
+
             <span style="color:red">{{ a_signature.up|length }}</span> |
             {{ a_signature.differential|length }} |
             <span style="color:green">{{ a_signature.down|length }}</span>
                <->
+              ({{ intersection.anti_a|length }})
             <span style="color:red">{{ intersection.up|length }}</span> |
             {{ intersection.diff|length }} |
             <span style="color:green">{{ intersection.down|length }}</span>
+               ({{ intersection.anti_b|length }})
                <->
             <span style="color:red">{{ another_signature.up|length }}</span> |
             {{ another_signature.differential|length }} |
             <span style="color:green">{{ another_signature.down|length }}</span>
-
 
         </span>
         <span class="right">
@@ -65,6 +67,13 @@
                 <a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue.name }}</a>{% if not forloop.last %},{% endif %}
             {% endfor %}
         </span>
+        <span class="centre">
+          ({{ intersection.anti_a_pvalue }})
+            {{ intersection.up_pvalue }} |
+            {{ intersection.diff_pvalue }} |
+            {{ intersection.down_pvalue }}
+           ({{ intersection.anti_b_pvalue }})
+        </span>
         <span class="right">
             <b>Tissue</b>{% if another_signature.tissue > 1 %}s{% endif %}:
             {% for tissue in another_signature.tissues.all %}
@@ -76,6 +85,14 @@
     {# {% if benjamini %} #}
     <form action="" method="GET">
         {{ filer.form.as_p }}
+        <p>
+            ID: <select name="id" id="id" />
+            <option selected="selected">{{ id }}</option>
+            {% for ID in ids %}
+                {% if ID != id %}<option {{ ID }}>{{ ID }}</option>{% endif %}
+            {% endfor %}
+            </select>
+        </p>
         <p>Terms: <input type="checkbox" name="terms" value="terms" /></p>
         <input type="submit" value="Apply" />
     </form>

@@ -36,6 +36,14 @@
                 {% comment %}{% crispy filter.form %}{% endcomment %}
                 <form action="" method="GET">
                     {{ filter.form.as_p }}
+                    <p>
+                        ID: <select name="id" id="id" ?>
+                        <option selected="selected">{{ id }}</option>
+                        {% for ID in ids %}
+                            {% if ID != id %}<option value={{ ID }}>{{ ID }}</option>{% endif %}
+                        {% endfor %}
+                        </select>
+                    </p>
                     <p>Terms: <input type="checkbox" name="terms" value="terms" /></p>
                     <input type="submit" value="Apply" />
                 </form>

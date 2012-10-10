@@ -14,7 +14,7 @@ from django_tables2 import RequestConfig
 from lifespan.models import Regimen
 from annotations.models import Species, Tissue
 
-from models import Replicate, Profile, Transcript, Signature, Expression, Probe, Set
+from models import Replicate, Profile, Transcript, Signature, Expression, Probe, Set, Gene
 from forms import ProfileForm, SignatureForm, SetForm
 from tables import TranscriptTable, ReplicateTable, AnnotationTable
 from filters import TranscriptFilterSet
@@ -23,13 +23,15 @@ from blog.models import Post
 from data import get
 
 from stats.effective import effect_size
-from stats.pValue import t_two_sample, calc_benjamini_hochberg_corrections
+from stats.pValue import t_two_sample, calc_benjamini_hochberg_corrections, hyperg
 from utils.count import Counter
 
 from annotations.david.report import enrich
 
 
-def functional_enrichment(terms, transcripts_up, transcripts_down):
+IDs = ['seq_id', 'entrez_gene_id']
+
+def functional_enrichment(terms, transcripts_up, transcripts_down, id='seq_id'):
     """Helper function to create annotation tables for functional enrichment."""
     if terms:
         # Functional Annotation:
@@ -44,12 +46,14 @@ def functional_enrichment(terms, transcripts_up, transcripts_down):
             entity_id = transcripts_up[0].seq_id
             up = [transcript.seq_id for transcript in transcripts_up if transcript.seq_id]
             down = [transcript.seq_id for transcript in transcripts_down if transcript.seq_id]
-
-        if entity_id.startswith('FBtr'):
-            idType = 'ENSEMBL_TRANSCRIPT_ID'
+        if id != 'seq_id':
+            idType = id.upper()
         else:
-            idType = 'ENSEMBL_GENE_ID'
-
+            if entity_id.startswith('FBtr'):
+                idType = 'ENSEMBL_TRANSCRIPT_ID'
+            else:
+                idType = 'ENSEMBL_GENE_ID'
+        print idType
         ## Create tables:
         if transcripts_up:
             terms_up = enrich(up, idType=idType)
@@ -94,6 +98,7 @@ def signatures(request):
 
 def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, benjamini=None):
     terms = False
+    id = 'seq_id'
     if request.GET:
         if 'ratio' in request.GET and request.GET['ratio']:
             ratio = float(request.GET['ratio'])
@@ -103,6 +108,8 @@ def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, be
             benjamini = float(request.GET and request.GET['benjamini'])
         if 'expression__exp' in request.GET and request.GET['expression__exp']:
             exp = float(request.GET['expression__exp'])
+        if 'id' in request.GET and request.GET['id']:
+            id = request.GET['id']
         if 'terms' in request.GET and request.GET['terms']:
             terms = True
         else:
@@ -149,11 +156,15 @@ def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, be
     transcripts_up = transcripts.filter(Q(ratio__gt=ratio)
                                         & Q(pvalue__lt=pvalue))
 
-
     transcripts_down = transcripts.filter(Q(ratio__lt=1./ratio)
                                           & Q(pvalue__lt=pvalue))
 
     table_up, table_down = functional_enrichment(terms, transcripts_up, transcripts_down)
+    print id
+    transcripts_up = set([getattr(transcript, id) for transcript in transcripts_up])
+    if None in transcripts_up: transcripts_up.remove(None)
+    transcripts_down = set([getattr(transcript, id) for transcript in transcripts_down])
+    if None in transcripts_down: transcripts_down.remove(None)
 
     ctx = {'signature': signature, 'transcripts': transcripts,
            'transcripts_up': transcripts_up,
@@ -165,7 +176,10 @@ def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, be
            'filter': filter,
            'terms': terms,
            'table_up': table_up,
-           'table_down': table_down}
+           'table_down': table_down,
+           'ids': IDs,
+           'id': id
+    }
     return render_to_response('expressions/signature.html', ctx,
         context_instance=RequestContext(request))
 
@@ -199,6 +213,16 @@ class Intersection(object):
         self.diff = (a_signature.up | a_signature.down) \
                     & (another_signature.up | another_signature.down)
 
+        self.diff_pvalue = hyperg(len(a_signature.diff), len(another_signature.diff), a_signature.transcripts.count(), len(self.diff))
+        self.down_pvalue = hyperg(len(a_signature.down), len(another_signature.down), a_signature.transcripts.count(), len(self.down))
+        self.up_pvalue = hyperg(len(a_signature.up), len(another_signature.up), a_signature.transcripts.count(), len(self.up))
+
+        self.anti_a = a_signature.up & another_signature.down
+        self.anti_b = a_signature.down & another_signature.up
+
+        self.anti_a_pvalue = hyperg(len(a_signature.up), len(another_signature.down), a_signature.transcripts.count(), len(self.anti_a))
+        self.anti_b_pvalue = hyperg(len(a_signature.down), len(another_signature.up), a_signature.transcripts.count(), len(self.anti_b))
+
     def differential(self):
         return self.diff #" ".join()
 
@@ -209,8 +233,10 @@ class Intersection(object):
         return self.down# " ".join()
 
 
+
 def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, benjamini=None):
     entry = get("Intersections")
+    id = 'seq_id'
     if request.GET:
         if 'ratio' in request.GET and request.GET['ratio']:
             ratio = float(request.GET['ratio'])
@@ -225,6 +251,8 @@ def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, se
             print "Expression exp"
         if 'set' in request.GET and request.GET['set']:
             set = request.GET['set']
+        if 'id' in request.GET and request.GET['id']:
+            id = request.GET['id']
 
     filter = TranscriptFilterSet(request.GET, transcripts)
 
@@ -257,6 +285,8 @@ def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, se
            'exp': exp,
            'filter': filter,
            'sets': Set.objects.all(),
+           'ids': IDs,
+           'id': id,
     }
     return render_to_response('expressions/intersections.html', ctx,
         context_instance=RequestContext(request))
@@ -264,6 +294,7 @@ def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, se
 def intersection(request, a, another, ratio=2., pvalue=0.05,
                  fold_change=None, exp=None, benjamini=None):
     terms = None
+    id ='seq_id'
     a_signature = Signature.objects.get(pk=a)
 
     another_signature = Signature.objects.get(pk=another)
@@ -280,6 +311,8 @@ def intersection(request, a, another, ratio=2., pvalue=0.05,
             print "get fold_change", fold_change
         if 'expression__exp' in request.GET and request.GET['expression__exp']:
             exp = float(request.GET['expression__exp'])
+        if 'id' in request.GET and request.GET['id']:
+            id = request.GET['id']
         if 'terms' in request.GET and request.GET['terms']:
             terms = True
         else:
@@ -289,15 +322,15 @@ def intersection(request, a, another, ratio=2., pvalue=0.05,
 
     if fold_change == 'None':
         fold_change = None
-    print fold_change
+    #print fold_change
 
     a_signature.differential(float(ratio), float(pvalue),
-                             float(fold_change or 0), exp, benjamini)
+                             float(fold_change or 0), exp, benjamini, id)
     another_signature.differential(float(ratio), float(pvalue),
-                                  float(fold_change or 0), exp, benjamini)
+                                  float(fold_change or 0), exp, benjamini, id)
     intersection = Intersection(a_signature, another_signature)
 
-    table_up, table_down = functional_enrichment(terms, intersection.upregulated(), intersection.downregulated())
+    table_up, table_down = functional_enrichment(terms, intersection.upregulated(), intersection.downregulated(), id)
 
     ctx = {'title': '%s & %s' % (a_signature, another_signature),
            'intersection': intersection,
@@ -307,6 +340,8 @@ def intersection(request, a, another, ratio=2., pvalue=0.05,
            'terms': terms,
            'table_up': table_up,
            'table_down': table_down,
+           'ids': IDs,
+           'id': id,
     }
     return render_to_response('expressions/intersection.html/', ctx,
         context_instance=RequestContext(request))
@@ -314,6 +349,7 @@ def intersection(request, a, another, ratio=2., pvalue=0.05,
 def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, benjamini=None):
     """Common to all signature in a category."""
     terms = False
+    id = 'seq_id'
     if request.GET:
         if 'ratio' in request.GET and request.GET['ratio']:
             ratio = float(request.GET['ratio'])
@@ -329,15 +365,17 @@ def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, b
             set = request.GET['set']
         if 'terms' in request.GET and request.GET['terms']:
             terms = True
+        if 'id' in request.GET['id'] and request.GET['id']:
+            id = request.GET['id']
 
     entry = get("Meta-Analysis")
     set = Set.objects.get(pk = set or 1)
     signatures = set.signatures.all()
     for signature in signatures:
-        signature.differential(ratio, pvalue, fold_change, exp, benjamini)
+        signature.differential(ratio, pvalue, fold_change, exp, benjamini, id)
     signatures = Signatures(signatures)
     filter = TranscriptFilterSet(request.GET, transcripts)
-    table_up, table_down = functional_enrichment(terms, signatures.up, signatures.down)
+    table_up, table_down = functional_enrichment(terms, signatures.up, signatures.down, id)
     ctx = {'title': 'Meta-Analysis',
            'entry': entry,
            'signatures': signatures,
@@ -346,6 +384,8 @@ def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, b
            'terms': terms,
            'table_up': table_up,
            'table_down': table_down,
+           'ids': IDs,
+           'id': id,
     }
     return render_to_response('expressions/meta.html', ctx,
         context_instance=RequestContext(request))
@@ -876,6 +916,130 @@ class ProfileCreate(CreateView):
 class SignatureCreate(CreateView):
     form_class = SignatureForm
     model = Signature
+
+
+# Helper Functions and Classes:
+def mean(values):
+    return sum(values)/len(values)
+
+
+class GeneExpressions(dict):
+
+    def recalculate(self):
+        for gene in self.values():
+            gene.recalculate()
+
+    def benjamini(self):
+        genes = self.values()
+        p = {}
+        for id, gene in genes:
+            p[id] = gene.pvalue
+        benjamini_pvalues = calc_benjamini_hochberg_corrections(p.values(), len(p))
+        for index, in enumerate(benjamini_pvalues):
+            gene = genes[index]
+            gene.benjamini = benjamini_pvalues[0]
+            self[gene.id] = gene
+
+
+class GeneExpression(object):
+    def __init__(self, id, transcript, signature): #exp, ctr, ratio, fold_change, effect_size, pvalue, benjamini):
+        expression = Expression.objects.get(transcript=transcript, signature=signature)
+        exp=expression.exp,
+        ctr=expression.ctr,
+        ratio=expression.ratio,
+        fold_change=expression.fold_change,
+        pvalue=expression.pvalue,
+        benjamini=expression.benjamini
+
+        self.id = id
+        self.exp = [exp]
+        self.ctr = [ctr]
+        self.ratio = [ratio]
+        self.fold_change = [fold_change]
+        self.effect_size = [effect_size]
+        self.pvalue = [pvalue]
+        self.benjamini = [benjamini]
+
+    def add(self, transcript, signature):
+        expression = Expression.objects.get(transcript=transcript, signature=signature)
+        exp=expression.exp,
+        ctr=expression.ctr,
+        ratio=expression.ratio,
+        fold_change=expression.fold_change,
+        pvalue=expression.pvalue,
+        benjamini=expression.benjamini
+
+        self.exp.append(exp)
+        self.ctr.append(ctr)
+        self.ratio.append(ratio)
+        self.fold_change.append(fold_change)
+        self.effect_size.append(effect_size)
+        self.pvalue.append(pvalue)
+        self.benjamini.append(benjamini)
+
+    def recalculate(self):
+        self.pvalue = t_two_sample(self.exp, self.ctr)
+        self.exp = mean(self.exp)
+        self.ctr = mean(self.ctr)
+        self.ratio = self.exp/self.ctr
+
+from annotations.mapping import map
+from utils.count import Counter
+
+
+def map_signatures(request):
+    print("Initializing mapping.")
+    signatures = Signature.objects.all()
+    mapped = 0
+    total = 0
+    for signature in signatures:
+        print("Signature: %s" % signature)
+        transcripts = signature.transcripts.all()
+        transcript_count = transcripts.count()
+        total += transcript_count
+        counter = Counter(transcript_count)
+        for transcript in transcripts:
+            counter.count()
+            transcript.entrez_gene_id = map(transcript.seq_id)
+            if transcript.entrez_gene_id:
+                mapped += 1
+            transcript.save()
+    msg = "Mapped %s%" % 100.*mapped/total
+    messages.add_message(request, messages.INFO, _(msg))
+    return redirect('/expressions/signatures/')
+
+
+def map_signature(request, pk):
+
+    signature = Signature.objects.get(pk=pk)
+    transcripts = signature.transcripts.all()
+    taxid = signature.species.taxid
+    mapped = 0
+    transcript_count = transcripts.count()
+    counter = Counter(transcript_count)
+
+    #geneExpressions = GeneExpressions()
+
+    for transcript in transcripts:
+        counter.count()
+        gene_id = map(transcript.seq_id)
+        transcript.entrez_gene_id = gene_id
+        transcript.save()
+#        if gene_id:
+#            gene, created = Gene.objects.get_or_create(id=gene_id, species_id=taxid)
+#            if gene_id not in geneExpressions:
+#                geneExpressions[gene_id] = GeneExpression(id, transcript, signature)
+#            else:
+#                geneExpressions[gene_id].add(transcript, signature)
+#            signature.genes.add(gene)
+#            mapped += 1
+
+    msg = 'Mapped %s' % (1.*mapped/transcript_count)
+    messages.add_message(request, messages.INFO, _(msg))
+    #genes = signatures.genes.all()
+
+    return redirect('/expressions/signatures/')
+
 
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789

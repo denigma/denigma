@@ -41,7 +41,8 @@
         {% if user.is_superuser %}
             <a href="/expressions/signature/delete/{{ signature.pk }}/">Delete</a> |
             <a href="/expressions/signature/output/{{ signature.pk }}/">Output</a> |
-            <a href={% url 'benjamini' signature.pk %}>Benjamini</a>
+            <a href={% url 'benjamini' signature.pk %}>Benjamini</a> |
+            <a href={% url 'map_signature' signature.pk %}>Map</a>
         {% endif %}
     {% endfor %}
     {% else %}
@@ -51,6 +52,7 @@
     <hr>
     <b><a href="/expressions/signature/add/">Add</a> / </a><a href="/expressions/signature/create/">Create</a></b>
     {% if user.is_superuser %}
-        / <b><a href={% url 'benjaminis' %}>Benjaminis</a></b>
+        | <b><a href={% url 'benjaminis' %}>Benjaminis</a></b>
+        | <b><a href={% url 'map_signatures' %}>Map</a></b>
     {% endif %}
 {% endblock %}

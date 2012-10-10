@@ -37,25 +37,33 @@
         {% endfor %}
         </select>
         {{ filter.form.as_p }}
+        <p>
+            ID: <select name="id" id="id" />
+            <option selected="selected">{{ id }}</option>
+            {% for ID in ids %}
+                {% if ID != id %}<option {{ ID }}>{{ ID }}</option>{% endif %}
+            {% endfor %}
+            </select>
+        </p>
         <p>Terms: <input type="checkbox" name="terms" value="terms" /></p>
         <input type="submit" value="Apply" />
     </form>
     <hr>
-    <h3>Commonly upregulated transcripts [{{ signatures.up|length }}]:</h2>
+    <h3>Commonly upregulated entities [{{ signatures.up|length }}]:</h2>
     <span style="color:red">
         {% for transcript in signatures.up %}
             {{ transcript }}
         {% endfor %}
     </span>
     <hr>
-    <h3>Commonly downregulated transcripts [{{ signatures.down|length }}]:</h2>
+    <h3>Commonly downregulated entities [{{ signatures.down|length }}]:</h2>
     <span style="color:green">
         {% for transcript in signatures.down %}
             {{ transcript }}
         {% endfor %}
     </span>
     <hr>
-    <h3>Commonly differential transcripts to all signatures [{{ signatures.diff|length }}]:</h2>
+    <h3>Commonly differential entities to all signatures [{{ signatures.diff|length }}]:</h2>
     <span style="color:orange">
     {% for transcript in signatures.diff %}
         {{ transcript }}
