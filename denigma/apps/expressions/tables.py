@@ -33,3 +33,20 @@ class ReplicateTable(tables.Table):
         model = Replicate
         attrs = {'class': 'paleblue'}
         exclude = ('id',)
+
+
+class AnnotationTable(tables.Table):
+    categoryName = tables.Column()
+    termName = tables.Column()
+    listHits = tables.Column()
+    percent = tables.Column()
+    ease = tables.Column()
+    #genes = tables.Column()
+    listTotals = tables.Column()
+    foldEnrichment = tables.Column()
+    bonferroni = tables.Column()
+    benjamini = tables.Column()
+    fdr = tables.Column()
+
+    class Meta:
+        attrs = {'class': 'paleblue'}
