@@ -338,7 +338,6 @@ def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, b
     signatures = Signatures(signatures)
     filter = TranscriptFilterSet(request.GET, transcripts)
     table_up, table_down = functional_enrichment(terms, signatures.up, signatures.down)
-    print terms, table_up, table_down
     ctx = {'title': 'Meta-Analysis',
            'entry': entry,
            'signatures': signatures,
