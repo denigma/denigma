@@ -3,12 +3,12 @@ Documentation
 =============
 
 Denigma is not just a Engima which starts with D, the Denigma project is a DDD 
-(Documentation-Drived Development). Its source code is documented from the 
+(Documentation-Driven Development). Its source code is documented from the
 very beginning. Every decision is documented as well as every issue 
 encountered including the corresponding found solution to it.
 
 In contrast to papers and reviews, in Denigma *the ink is never dry*.
-It changes continously until it gets it absolutly right.
+It changes continously until it gets it absolutely right.
 
 
 Deploying Denigma
