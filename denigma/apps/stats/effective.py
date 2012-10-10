@@ -3,12 +3,16 @@ import math
 
 
 def m(values):
-    """Calculates the mean of the values."""
+    """Calculates the arithmetic mean of the values."""
     size = len(values)
     sum = 0.0
     for n in xrange(0, size):
         sum += values[n]
     return sum/size
+
+def geomean(nums):
+    """Calculates the geometric mean of the passed numbers."""
+    return (reduce(lambda x, y: x*y, nums))**(1.0/len(nums))
 
 def sd(values, mean):
     """Calculates standard deviation."""
