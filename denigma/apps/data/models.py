@@ -62,19 +62,23 @@ class Content(Title):
     url = models.CharField(_('url'), max_length=255, blank=True, null=True) #,
     images = models.ManyToManyField('gallery.PhotoUrl', blank=True, verbose_name=_('images'))
 
+    def save(self, *args, **kwargs):
+        print("%s content model save() called" % self.__class__)
+        super(Title, self).save(*args, **kwargs)
+
     def __unicode__(self):
         return "{0} {1} {2} {3}".format(self.title, len(self.text),
             len(self.tags.all()), len(self.images.all()))
 
-    def save(self, *args, **kwargs):
-        print("%s content model save() called" % self.__class__)
-        super(Title, self).save(*args, **kwargs)
+    def brief(self, limit=150):
+        return self.text[:limit] + '...'
 
     class Meta:
         abstract = True
 
     class MPTTMeta:
         order_insertion_by = ['title']
+
 
 class Entry(Content):
     """A database entry containing the actual data content and meta data."""
@@ -92,12 +96,6 @@ class Entry(Content):
     tagged_changed = []
 
     objects = EntryManager()
-
-    def __unicode__(self):
-        return "{0} - {1} ({2})".format(self.title, self.created.date(), self.created.time())
-
-    def get_absolute_url(self):
-        return self.url or u"/blog/post/%s" % self.pk
 
     def __init__(self, *args, **kwargs):
         """Keeps a copy of its original state."""
@@ -147,12 +145,12 @@ class Entry(Content):
                     tags = post.tags.all()
                     if tags:
                         signals.tags_added.send("Post", tags=tags, instance=self)
-                    #tags = [Tag(name=tag.name) for tag in tags]
+                        #tags = [Tag(name=tag.name) for tag in tags]
                     for tag in tags:
                         tag, created = Tag.objects.get_or_create(name=tag.name)
                         #print tag
                         self.tagged.add(tag)
-                    #self.tagged =  Tag.objects.all()
+                        #self.tagged =  Tag.objects.all()
                     self.images = post.images.all()
 
                     #tags = self.post.tags.all()
@@ -189,6 +187,13 @@ class Entry(Content):
 
         super(Content, self).save(*args, **kwargs)
         self.tags_pre_clear = [tag.name for tag in self.tags.all()]
+
+    def __unicode__(self):
+        return "{0} - {1} ({2})".format(self.title, self.created.date(), self.created.time())
+
+    def get_absolute_url(self):
+        return self.url or u"/data/entry/%s" % self.pk
+
     class Meta:
         verbose_name_plural = "Entries"
 
@@ -199,13 +204,13 @@ class Change(Content):
     by = models.ForeignKey(User, related_name='user', verbose_name=_('by'))   # who #
     at = models.DateTimeField(_('at'), auto_now=True)    # when #
 
-    def __unicode__(self):
-        return '{0} changed "{1}" on {2} {3}'.format(self.by, self.of.title,
-            self.at.date(), self.at.time())
-
     def save(self, *args, **kwargs):
         #print("change model save() called.")
         super(Content, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return '{0} changed "{1}" on {2} {3}'.format(self.by, self.of.title,
+            self.at.date(), self.at.time())
 
     def diff(self):
         """returns any differences from the previous revision."""
@@ -305,6 +310,7 @@ class EntryDummy(object):
         self.tags = tags
         self.images = images
         self.urls = urls
+
 
 # Signals:
 #request_finished.connect(handlers.request_finished)
