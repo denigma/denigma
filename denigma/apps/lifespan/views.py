@@ -274,6 +274,8 @@ def add_experiment(request, pk):
     if request.method == "POST" and form.is_valid(): # All validation rules pass
         with reversion.create_revision():
             experiment = form.save(commit=False)
+            #print("Experiment id: %s" % experiment.id)
+            #print form
             form.save()
             if isinstance(request.user, AnonymousUser):
                 request.user = User.objects.get(username="Anonymous")
