@@ -15,7 +15,7 @@ def enrich(ids, idType=None, listName='test'):
     #print 'User Authentication:', \
     client.service.authenticate('age@liv.ac.uk')
     listF = listName
-    inputListIds = ",".join(ids)
+    inputListIds = ",".join(map(str, ids))
     listType = 0
     #print 'Percentage mapped(list):',
     client.service.addList(inputListIds, idType, listName, listType)
