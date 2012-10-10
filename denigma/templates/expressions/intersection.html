@@ -1,5 +1,12 @@
 {% extends "expressions/base.html" %}
 
+{% load render_table from django_tables2 %}
+
+{% block extra_script %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+{% endblock %}
+
+
 {% block head_title %}{{ title }}{% endblock %}
 
 {% block hierarchy %}
@@ -67,27 +74,24 @@
     </div>
     <hr>
     {# {% if benjamini %} #}
-    <form action="" method="GET>
+    <form action="" method="GET">
         {{ filer.form.as_p }}
+        <p>Terms: <input type="checkbox" name="terms" value="terms" /></p>
         <input type="submit" value="Apply" />
     </form>
     <hr>
-    <h3>Up</h3>
+    <h3>Upregulated entities</h3>
     <span style="color:red">
-    {{ intersection.upregulated }}
+        {% for transcript in intersection.upregulated  %}
+            {{ transcript }}
+        {% endfor %}
     </span>
     <hr>
-    <h3>Down</h3>
+    <h3>Downregulated entities</h3>
     <span style="color:green">
-    {{ intersection.downregulated }}
+        {% for transcript in intersection.downregulated %}
+            {{ transcript }}
+        {% endfor %}
     </span>
+    {% include "expressions/annotation.html" %}
 {% endblock content %}
-
-{% comment %}
-    <div class="line">
-        <span class="left">
-            Up / Diff / Down:
-        </span>
-    </div>
-
-{% endcomment %}
