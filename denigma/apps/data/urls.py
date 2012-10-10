@@ -86,6 +86,7 @@ urlpatterns = patterns('data.views',
     # Categories:
     url(r'^categories/list/$', ListView.as_view(queryset=Category.objects.all(),), name='list-categories'),
     url(r'^category/detail/(?P<pk>\d+)', DetailView.as_view(model=Category), name='detail-category'),
+    #url(r'^category/detail/(?P<slug>.+)', DetailView.as_view)
     url(r'^category/create', CategoryCreate.as_view(), name='create-category'),
 
 )#234567891123456789212345678931234567894123456789512345678961234567897123456789
