@@ -36,6 +36,7 @@
                 {% comment %}{% crispy filter.form %}{% endcomment %}
                 <form action="" method="GET">
                     {{ filter.form.as_p }}
+                    Terms: <input type="checkbox" name="terms", value="terms"><br><hr>
                     <input type="submit" value="Apply" />
                 </form>
             </td>
@@ -60,22 +61,24 @@
             {{ transcript }}
         {%  endfor %}
     </span>
-    <div class="annotation">
-        <hr>
-        <h3>Upregulated terms</h3>
-        <br>
-        {% if table_up %}
-            {% render_table table_up %}
-        {% else %}
-            None
-        {% endif %}
-        <hr>
-        <h3>Downregulated terms</h3>
-        <br>
-        {% if table_down %}
-            {% render_table table_down %}
-        {% else %}
-            None
-        {% endif %}
-    </div>
+    {% if terms %}
+        <div class="annotation">
+            <hr>
+            <h3>Upregulated terms</h3>
+            <br>
+            {% if table_up %}
+                {% render_table table_up %}
+            {% else %}
+                None
+            {% endif %}
+            <hr>
+            <h3>Downregulated terms</h3>
+            <br>
+            {% if table_down %}
+                {% render_table table_down %}
+            {% else %}
+                None
+            {% endif %}
+        </div>
+    {% endif %}
 {% endblock %}

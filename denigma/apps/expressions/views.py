@@ -57,6 +57,7 @@ def signatures(request):
         context_instance=RequestContext(request))
 
 def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, benjamini=None):
+    terms = False
     if request.GET:
         if 'ratio' in request.GET and request.GET['ratio']:
             ratio = float(request.GET['ratio'])
@@ -66,6 +67,10 @@ def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, be
             benjamini = float(request.GET and request.GET['benjamini'])
         if 'expression__exp' in request.GET and request.GET['expression__exp']:
             exp = float(request.GET['expression__exp'])
+        if 'terms' in request.GET and request.GET['terms']:
+            terms = True
+        else:
+            terms = False
 
     signature = Signature.objects.get(pk=pk)
 
@@ -112,25 +117,27 @@ def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, be
 
     transcripts_down = transcripts.filter(Q(ratio__lt=1./ratio)
                                           & Q(pvalue__lt=pvalue))
+    if terms:
+        # Functional Annotation:
+        ## Determine seq_id type:
+        if transcripts_up[0].seq_id.startswith('FBtr'):
+            idType = 'ENSEMBL_TRANSCRIPT_ID'
+        else:
+            idType = 'ENSEMBL_GENE_ID'
 
-    # Functional Annotation:
-    ## Determine seq_id type:
-    if transcripts_up[0].seq_id.startswith('FBtr'):
-        idType = 'ENSEMBL_TRANSCRIPT_ID'
+        ## Create tables:
+        if transcripts_up:
+            terms_up = enrich([transcript.seq_id for transcript in transcripts_up if transcript.seq_id], idType=idType)
+            table_up = AnnotationTable(terms_up.data())
+        else:
+            table_up = None
+        if transcripts_down:
+            terms_down = enrich([transcript.seq_id for transcript in transcripts_down if transcript.seq_id], idType=idType )
+            table_down = AnnotationTable(terms_down.data())
+        else:
+            table_down = None
     else:
-        idType = 'ENSEMBL_GENE_ID'
-
-    ## Create tables:
-    if transcripts_up:
-        terms_up = enrich([transcript.seq_id for transcript in transcripts_up if transcript.seq_id], idType=idType)
-        table_up = AnnotationTable(terms_up.data())
-    else:
-        table_up = None
-    if transcripts_down:
-        terms_down = enrich([transcript.seq_id for transcript in transcripts_down if transcript.seq_id], idType=idType )
-        table_down = AnnotationTable(terms_down.data())
-    else:
-        table_down = None
+        table_up = table_down = None
 
     ctx = {'signature': signature, 'transcripts': transcripts,
            'transcripts_up': transcripts_up,
@@ -140,6 +147,7 @@ def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, be
            'pvalue': pvalue,
            'benjamini': benjamini,
            'filter': filter,
+           'terms': terms,
            'table_up': table_up,
            'table_down': table_down}
     return render_to_response('expressions/signature.html', ctx,
