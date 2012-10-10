@@ -24,7 +24,7 @@ class Gene(models.Model):
     species = models.ForeignKey('annotations.Species')
 
     def __unicode__(self):
-        return self.symbol
+        return self.symbol or unicode(self.id)
 
 
 class Profile(models.Model):
@@ -53,12 +53,14 @@ class Signature(models.Model):
     diff = []
     down = []
 
-    def differential(self, ratio=2., pvalue=.05, fold_change=None, exp=None, benjamini=None):
-        if not self.up: self.upregulated(ratio, pvalue, fold_change, exp=exp, benjamini=benjamini)
-        if not self.down: self.downregulated(ratio, pvalue, fold_change, exp=exp, benjamini=benjamini)
+    filtered = False
+
+    def differential(self, ratio=2., pvalue=.05, fold_change=None, exp=None, benjamini=None, id='entrez_gene_id'):
+        if not self.up: self.upregulated(ratio, pvalue, fold_change, exp, benjamini, id)
+        if not self.down: self.downregulated(ratio, pvalue, fold_change, exp, benjamini, id)
         return set(self.up) | set(self.down)
 
-    def upregulated(self, ratio=2., pvalue=.05, fold_change=None, exp=None, benjamini=None):
+    def upregulated(self, ratio=2., pvalue=.05, fold_change=None, exp=None, benjamini=None, id='seq_id'):
         print("Benjamini: %s" % benjamini)
         if not benjamini:
             if not fold_change:
@@ -66,54 +68,90 @@ class Signature(models.Model):
                     Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue))
                 if exp:
                     transcripts = transcripts.filter(expression__exp__gt=exp, expression__ctr__gt=exp)
-                self.up = set([t.seq_id for t in transcripts])
+                self.up = set([getattr(t, id) for t in transcripts])
             else:
                 transcripts = self.transcripts.filter(
                     Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue) & Q(fold_change__gt=fold_change))
                 if exp:
                     transcripts = transcripts.filter(expression__exp__gt=exp, expression__ctr__gt=exp)
-                self.up = set([t.seq_id for t in transcripts])
+                self.up = set([getattr(t, id) for t in transcripts])
         else:
             if not fold_change:
                 transcripts = self.transcripts.filter(
                     Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue) & Q(benjamini__lt=benjamini))
                 if exp:
                     transcripts = transcripts.filter(expression__exp__gt=exp, expression__ctr__gt=exp)
-                self.up = set([t.seq_id for t in transcripts])
+                self.up = set([getattr(t, id) for t in transcripts])
             else:
                 transcripts = self.transcripts.filter(
                     Q(ratio__gt=ratio) & Q(pvalue__lt=pvalue) & Q(fold_change__gt=fold_change) & Q(benjamini__lt=benjamini))
                 if exp:
                     transcripts = transcripts.filter(expression__exp__gt=exp, expression__ctr__gt=exp)
-                self.up = set([t.seq_id for t in transcripts])
+                self.up = set([getattr(t, id) for t in transcripts])
+        if None in self.up: self.up.remove(None)
 
-    def downregulated(self, ratio=2., pvalue=.05, fold_change=None, exp=None, benjamini=None):
+    def downregulated(self, ratio=2., pvalue=.05, fold_change=None, exp=None, benjamini=None, id='seq_id'):
         if not benjamini:
             if not fold_change:
                 transcripts = self.transcripts.filter(
                     Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue))
                 if exp:
                     transcripts = transcripts.filter(expression__exp__gt=exp, expression__ctr__gt=exp)
-                self.down = set([t.seq_id for t in transcripts])
+                self.down = set([getattr(t, id) for t in transcripts])
             else:
                 transcripts = self.transcripts.filter(
                     Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue) & Q(fold_change__lt=1./fold_change))
                 if exp:
                     transcripts = transcripts.filter(expression__exp__gt=exp, expression__ctr__gt=exp)
-                self.down = set([t.seq_id for t in transcripts])
+                self.down = set([getattr(t, id) for t in transcripts])
         else:
             if not fold_change:
                 transcripts = self.transcripts.filter(
                     Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue) & Q(benjamini__lt=benjamini))
                 if exp:
                     transcripts = transcripts.filter(expression__exp__gt=exp, expression__ctr__gt=exp)
-                self.down = set([t.seq_id for t in transcripts])
+                self.down = set([getattr(t, id) for t in transcripts])
             else:
                 transcripts = self.transcripts.filter(
                     Q(ratio__lt=1./ratio) & Q(pvalue__lt=pvalue) & Q(fold_change__lt=1./fold_change) & Q(benjamini__lt=benjamini))
                 if exp:
                     transcripts = transcripts.filter(expression__exp__gt=exp, expression__ctr__gt=exp)
-                self.down = set([t.seq_id for t in transcripts])
+                self.down = set([getattr(t, id) for t in transcripts])
+        if None in self.down: self.down.remove(None)
+
+#    # Different approach vie Expressions:
+#    def differential(self, ratio=2., pvalue=.05, fold_change=None, exp=None, benjamini=None, id='seq_id'):
+#        if not self.filtered: self.filter(pvalue, exp, benjamini)
+#        if not self.up: self.upregulated(ratio, fold_change, id)
+#        if not self.down: self.downregulated(ratio, fold_change,  id)
+#        return set(self.up) | set(self.down)
+#
+#    def filter(self, pvalue, exp, benjamini):
+#        self.expressions = Expression.objects.filter(signature=self)
+#        if pvalue >= 1:
+#            self.expressions = self.expressions.filter(pvalue__lt=pvalue)
+#        if exp:
+#            self.expressions = self.expressions.filter(exp__gt=exp)
+#        if benjamini:
+#            self.expressions = self.expressions.filter(benjamini=benjamini)
+#        self.filtered = True
+#
+#    def upregulated(self, ratio=2., fold_change=None, id='seq_id'):
+#        expressions = self.expressions
+#        if ratio >= 1:
+#            expressions = expressions.filter(ratio__gt=ratio)
+#        if fold_change and fold_change >= 1:
+#            expressions = expressions.filter(fold_change__gt=fold_change)
+#        self.up = set(getattr(e.transcript, id) for e in expressions)
+#
+#    def downregulated(self, ratio=2., fold_change=None, id='seq_id'):
+#        expressions = self.expressions
+#        if ratio >= 1:
+#            expressions = expressions.filter(ratio__lt=ratio)
+#        if fold_change and fold_change >= 1:
+#            expressions = expressions.filter(fold_change__lt=fold_change)
+#        self.down = set(getattr(e.transcript, id)  for e in expressions)
+
 
     @property
     def difference(self):
@@ -167,12 +205,13 @@ class Set(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return "/expressions/sets/"
+        return "/expressions/signatures/sets/"
 
 
 class Expression(models.Model):
     signature = models.ForeignKey('Signature')
-    transcript = models.ForeignKey('Transcript')
+    transcript = models.ForeignKey('Transcript', blank=True, null=True)
+    #gene = models.ForeignKey('Gene', blank=True, null=True)
     exp = models.FloatField()
     ctr = models.FloatField()
     ratio = models.FloatField()
@@ -187,6 +226,7 @@ class Expression(models.Model):
 
 class Transcript(models.Model):
     seq_id = models.CharField(max_length=255)
+    entrez_gene_id = models.IntegerField(blank=True, null=True)
     symbol = models.CharField(max_length=255, blank=True, null=True) # Should be replaced by a FK to Gene.
     profile = models.ForeignKey('Profile', blank=True, null=True)
     #gene = models.ForeignKey('Gene')
