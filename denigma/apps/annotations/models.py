@@ -269,8 +269,8 @@ class gene2ensembl(models.Model):
                                                  self.ensembl_gene_id,
                                                  self.rna_nucleotide_accession,
                                                  self.ensembl_rna_id,
-                                                 self.protein_accession.
-                                                 self.protein_id)
+                                                 self.protein_accession,
+                                                 self.ensembl_protein_id)
 
     class Meta:
         verbose_name_plural = u"Gene2ensembl"
