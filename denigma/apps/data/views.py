@@ -226,6 +226,7 @@ class Delete(DeleteView):
 
     #def post
 
+
 class EntryView(DetailView):
     def dispatch(self, *args, **kwargs):
         if 'slug' in kwargs:
@@ -265,7 +266,6 @@ class EntryUpdate(Update):
         return objects
 
 class EntryDelete(Delete): pass
-
 
 
 class RelationCreate(Create):
