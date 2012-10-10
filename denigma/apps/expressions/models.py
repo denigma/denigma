@@ -17,7 +17,6 @@ class Probe(models.Model):
     profile = models.ForeignKey('Profile')
 
 
-
 class Gene(models.Model):
     id = models.IntegerField(primary_key=True)
     symbol = models.CharField(max_length=255)

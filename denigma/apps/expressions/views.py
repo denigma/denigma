@@ -29,6 +29,42 @@ from utils.count import Counter
 from annotations.david.report import enrich
 
 
+def functional_enrichment(terms, transcripts_up, transcripts_down):
+    """Helper function to create annotation tables for functional enrichment."""
+    if terms:
+        # Functional Annotation:
+        ## Determine seq_id type:
+        if isinstance(transcripts_up, (set, list)):
+            for e in transcripts_up:
+                up = transcripts_up
+                down = transcripts_down
+                break
+            entity_id = e
+        else:
+            entity_id = transcripts_up[0].seq_id
+            up = [transcript.seq_id for transcript in transcripts_up if transcript.seq_id]
+            down = [transcript.seq_id for transcript in transcripts_down if transcript.seq_id]
+
+        if entity_id.startswith('FBtr'):
+            idType = 'ENSEMBL_TRANSCRIPT_ID'
+        else:
+            idType = 'ENSEMBL_GENE_ID'
+
+        ## Create tables:
+        if transcripts_up:
+            terms_up = enrich(up, idType=idType)
+            table_up = AnnotationTable(terms_up.data())
+        else:
+            table_up = None
+        if transcripts_down:
+            terms_down = enrich(down, idType=idType )
+            table_down = AnnotationTable(terms_down.data())
+        else:
+            table_down = None
+    else:
+        table_up = table_down = None
+    return table_up, table_down
+
 def transcripts(request):
     filterset = TranscriptFilterSet(request.GET or None)
     return render_to_response('expressions/transcripts.html',
@@ -100,7 +136,6 @@ def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, be
                                            | Q(fold_change__lt=1./fold_change))
             #print "filtered transcripts", len(transcripts)
 
-
         if 'benjamini' in request.GET and request.GET['benjamini']:
             benjamini = float(request.GET['benjamini'])
             transcripts = transcripts.filter(benjamini__lt=benjamini)
@@ -117,27 +152,8 @@ def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, be
 
     transcripts_down = transcripts.filter(Q(ratio__lt=1./ratio)
                                           & Q(pvalue__lt=pvalue))
-    if terms:
-        # Functional Annotation:
-        ## Determine seq_id type:
-        if transcripts_up[0].seq_id.startswith('FBtr'):
-            idType = 'ENSEMBL_TRANSCRIPT_ID'
-        else:
-            idType = 'ENSEMBL_GENE_ID'
 
-        ## Create tables:
-        if transcripts_up:
-            terms_up = enrich([transcript.seq_id for transcript in transcripts_up if transcript.seq_id], idType=idType)
-            table_up = AnnotationTable(terms_up.data())
-        else:
-            table_up = None
-        if transcripts_down:
-            terms_down = enrich([transcript.seq_id for transcript in transcripts_down if transcript.seq_id], idType=idType )
-            table_down = AnnotationTable(terms_down.data())
-        else:
-            table_down = None
-    else:
-        table_up = table_down = None
+    table_up, table_down = functional_enrichment(terms, transcripts_up, transcripts_down)
 
     ctx = {'signature': signature, 'transcripts': transcripts,
            'transcripts_up': transcripts_up,
@@ -184,18 +200,17 @@ class Intersection(object):
                     & (another_signature.up | another_signature.down)
 
     def differential(self):
-        return " ".join(self.diff)
+        return self.diff #" ".join()
 
     def upregulated(self):
-        return " ".join(self.up)
+        return self.up #" ".join()
 
     def downregulated(self):
-        return " ".join(self.down)
+        return self.down# " ".join()
 
 
 def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, benjamini=None):
     entry = get("Intersections")
-
     if request.GET:
         if 'ratio' in request.GET and request.GET['ratio']:
             ratio = float(request.GET['ratio'])
@@ -210,6 +225,7 @@ def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, se
             print "Expression exp"
         if 'set' in request.GET and request.GET['set']:
             set = request.GET['set']
+
     filter = TranscriptFilterSet(request.GET, transcripts)
 
     intersections = []
@@ -240,13 +256,14 @@ def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, se
            'fold_change': fold_change,
            'exp': exp,
            'filter': filter,
-           'sets': Set.objects.all()
+           'sets': Set.objects.all(),
     }
     return render_to_response('expressions/intersections.html', ctx,
         context_instance=RequestContext(request))
 
 def intersection(request, a, another, ratio=2., pvalue=0.05,
                  fold_change=None, exp=None, benjamini=None):
+    terms = None
     a_signature = Signature.objects.get(pk=a)
 
     another_signature = Signature.objects.get(pk=another)
@@ -263,6 +280,11 @@ def intersection(request, a, another, ratio=2., pvalue=0.05,
             print "get fold_change", fold_change
         if 'expression__exp' in request.GET and request.GET['expression__exp']:
             exp = float(request.GET['expression__exp'])
+        if 'terms' in request.GET and request.GET['terms']:
+            terms = True
+        else:
+            terms = False
+
     filter = TranscriptFilterSet(request.GET, transcripts)
 
     if fold_change == 'None':
@@ -274,17 +296,24 @@ def intersection(request, a, another, ratio=2., pvalue=0.05,
     another_signature.differential(float(ratio), float(pvalue),
                                   float(fold_change or 0), exp, benjamini)
     intersection = Intersection(a_signature, another_signature)
+
+    table_up, table_down = functional_enrichment(terms, intersection.upregulated(), intersection.downregulated())
+
     ctx = {'title': '%s & %s' % (a_signature, another_signature),
            'intersection': intersection,
            'a_signature': a_signature,
            'another_signature': another_signature,
            'filer': filter,
+           'terms': terms,
+           'table_up': table_up,
+           'table_down': table_down,
     }
     return render_to_response('expressions/intersection.html/', ctx,
         context_instance=RequestContext(request))
 
 def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, benjamini=None):
     """Common to all signature in a category."""
+    terms = False
     if request.GET:
         if 'ratio' in request.GET and request.GET['ratio']:
             ratio = float(request.GET['ratio'])
@@ -298,6 +327,9 @@ def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, b
             exp = float(request.GET['expression__exp'])
         if 'set' in request.GET and request.GET['set']:
             set = request.GET['set']
+        if 'terms' in request.GET and request.GET['terms']:
+            terms = True
+
     entry = get("Meta-Analysis")
     set = Set.objects.get(pk = set or 1)
     signatures = set.signatures.all()
@@ -305,11 +337,17 @@ def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, b
         signature.differential(ratio, pvalue, fold_change, exp, benjamini)
     signatures = Signatures(signatures)
     filter = TranscriptFilterSet(request.GET, transcripts)
+    table_up, table_down = functional_enrichment(terms, signatures.up, signatures.down)
+    print terms, table_up, table_down
     ctx = {'title': 'Meta-Analysis',
            'entry': entry,
            'signatures': signatures,
            'filter': filter,
-           'sets': Set.objects.all()}
+           'sets': Set.objects.all(),
+           'terms': terms,
+           'table_up': table_up,
+           'table_down': table_down,
+    }
     return render_to_response('expressions/meta.html', ctx,
         context_instance=RequestContext(request))
 

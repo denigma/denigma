@@ -6,6 +6,10 @@
 
 {% block head_title %}{{ title }}{% endblock %}
 
+{% block extra_script %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+{% endblock %}
+
 {% block hierarchy %}
     > {{ title }}
 {% endblock %}
@@ -26,7 +30,6 @@
         </tr>
     </table>
     <hr>
-
     <form action="" method="GET">
         Set: <select name="set" id="set"  />
         {% for set in sets %}
@@ -34,28 +37,31 @@
         {% endfor %}
         </select>
         {{ filter.form.as_p }}
+        <p>Terms: <input type="checkbox" name="terms" value="terms" /></p>
         <input type="submit" value="Apply" />
     </form>
-
-    <h2>Commonly upregulated transcripts [{{ signatures.up|length }}]:</h2>
+    <hr>
+    <h3>Commonly upregulated transcripts [{{ signatures.up|length }}]:</h2>
     <span style="color:red">
         {% for transcript in signatures.up %}
             {{ transcript }}
         {% endfor %}
     </span>
-
-    <h2>Commonly downregulated transcripts [{{ signatures.down|length }}]:</h2>
+    <hr>
+    <h3>Commonly downregulated transcripts [{{ signatures.down|length }}]:</h2>
     <span style="color:green">
         {% for transcript in signatures.down %}
             {{ transcript }}
         {% endfor %}
     </span>
-
-    <h2>Commonly differential transcripts to all signatures [{{ signatures.diff|length }}]:</h2>
+    <hr>
+    <h3>Commonly differential transcripts to all signatures [{{ signatures.diff|length }}]:</h2>
     <span style="color:orange">
     {% for transcript in signatures.diff %}
         {{ transcript }}
     {% endfor %}
     </span>
+
+    {% include "expressions/annotation.html" %}
 
 {% endblock %}

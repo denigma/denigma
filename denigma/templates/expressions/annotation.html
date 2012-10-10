@@ -1,0 +1,22 @@
+{% load render_table from django_tables2 %}
+
+{% if terms %}
+    <div class="annotation">
+        <hr>
+        <h3>Upregulated terms</h3>
+        <br>
+        {% if table_up %}
+            {% render_table table_up %}
+        {% else %}
+            <p>None</p>
+        {% endif %}
+        <hr>
+        <h3>Downregulated terms</h3>
+        <br>
+        {% if table_down %}
+            {% render_table table_down %}
+        {% else %}
+            <p>None</p>
+        {% endif %}
+    </div>
+{% endif %}
