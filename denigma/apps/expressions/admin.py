@@ -17,10 +17,13 @@ class TranscriptAdmin(admin.ModelAdmin):
     list_filter = ('signature',)
     search_fields = ('seq_id', 'symbol')
 
+class GeneAdmin(admin.ModelAdmin):
+    list_filter = ('signature',)
+
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Signature, SignatureAdmin)
-admin.site.register(Gene)
+admin.site.register(Gene, GeneAdmin)
 admin.site.register(Transcript, TranscriptAdmin)
 admin.site.register(Intensity)
 admin.site.register(Replicate)
