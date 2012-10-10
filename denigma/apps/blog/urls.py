@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, url
 from django.views.generic import ListView, DetailView
 from django.contrib.syndication.views import Feed
 
