@@ -11,7 +11,6 @@ try:
     from scipy import special
 except ImportError as e:
     print("denigma.stats.pValue: Failed to import scipy. %s" % str(e))
-    import special
 
 import numpy
 
