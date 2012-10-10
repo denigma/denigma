@@ -46,7 +46,7 @@ class AnnotationTable(tables.Table):
     foldEnrichment = tables.Column()
     bonferroni = tables.Column()
     benjamini = tables.Column()
-    fdr = tables.Column()
+    FDR = tables.Column()
 
     class Meta:
         attrs = {'class': 'paleblue'}
