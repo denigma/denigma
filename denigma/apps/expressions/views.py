@@ -24,9 +24,9 @@ from data import get
 
 from stats.effective import effect_size
 from stats.pValue import t_two_sample, calc_benjamini_hochberg_corrections, hyperg
-from utils.count import Counter
-
 from annotations.david.report import enrich
+from annotations.mapping import map
+from utils.count import Counter
 
 
 IDs = ['seq_id', 'entrez_gene_id']
@@ -265,9 +265,9 @@ def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, se
         set = Set.objects.get(pk=1)
         signatures = set.signatures.all()
     for signature in signatures:              #
-        signature.differential(ratio, pvalue, fold_change, exp, benjamini) # Might a good function for a custom manager.
+        signature.differential(ratio, pvalue, fold_change, exp, benjamini, id) # Might a good function for a custom manager.
     for a_signature in signatures:
-        for another_signature in signatures[:len(signatures)/2]: # Prevents duplicated comparisions the other way around.
+        for another_signature in signatures[:len(signatures)]: # Prevents duplicated comparisions the other way around.
             if a_signature != another_signature: # Prevent comparision of the same signatures and
                 intersection = Intersection(a_signature, another_signature)
                 #print intersection.name, len(intersection.up), len(intersection.down)
@@ -983,10 +983,6 @@ class GeneExpression(object):
         self.ctr = mean(self.ctr)
         self.ratio = self.exp/self.ctr
 
-from annotations.mapping import map
-from utils.count import Counter
-
-
 def map_signatures(request):
     print("Initializing mapping.")
     signatures = Signature.objects.all()
@@ -1008,9 +1004,7 @@ def map_signatures(request):
     messages.add_message(request, messages.INFO, _(msg))
     return redirect('/expressions/signatures/')
 
-
 def map_signature(request, pk):
-
     signature = Signature.objects.get(pk=pk)
     transcripts = signature.transcripts.all()
     taxid = signature.species.taxid
