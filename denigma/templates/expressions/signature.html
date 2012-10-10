@@ -46,7 +46,7 @@
     </table>
 
     <hr>
-    <h3>Upregulated:</h3>
+    <h3>Upregulated entities</h3>
     <span style="color:red">
         {% for transcript in transcripts_up %}
             {{ transcript }}
@@ -54,10 +54,28 @@
         {% endfor %}
     </span>
     <hr>
-    <h3>Downregulated:</h3>
+    <h3>Downregulated entities</h3>
     <span style="color:green">
         {% for transcript in transcripts_down %}
             {{ transcript }}
         {%  endfor %}
     </span>
+    <div class="annotation">
+        <hr>
+        <h3>Upregulated terms</h3>
+        <br>
+        {% if table_up %}
+            {% render_table table_up %}
+        {% else %}
+            None
+        {% endif %}
+        <hr>
+        <h3>Downregulated terms</h3>
+        <br>
+        {% if table_down %}
+            {% render_table table_down %}
+        {% else %}
+            None
+        {% endif %}
+    </div>
 {% endblock %}

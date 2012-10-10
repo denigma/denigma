@@ -16,7 +16,7 @@ from annotations.models import Species, Tissue
 
 from models import Replicate, Profile, Transcript, Signature, Expression, Probe, Set
 from forms import ProfileForm, SignatureForm, SetForm
-from tables import TranscriptTable, ReplicateTable
+from tables import TranscriptTable, ReplicateTable, AnnotationTable
 from filters import TranscriptFilterSet
 
 from blog.models import Post
@@ -25,6 +25,8 @@ from data import get
 from stats.effective import effect_size
 from stats.pValue import t_two_sample, calc_benjamini_hochberg_corrections
 from utils.count import Counter
+
+from annotations.david.report import enrich
 
 
 def transcripts(request):
@@ -100,8 +102,8 @@ def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, be
 
 
     filter = TranscriptFilterSet(request.GET, transcripts)
-    print type(filter), vars(filter)
-    print len(filter.queryset)
+    #print type(filter), vars(filter)
+    #print len(filter.queryset)
     table = TranscriptTable(filter.queryset)
     RequestConfig(request).configure(table)
     transcripts_up = transcripts.filter(Q(ratio__gt=ratio)
@@ -111,6 +113,25 @@ def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, be
     transcripts_down = transcripts.filter(Q(ratio__lt=1./ratio)
                                           & Q(pvalue__lt=pvalue))
 
+    # Functional Annotation:
+    ## Determine seq_id type:
+    if transcripts_up[0].seq_id.startswith('FBtr'):
+        idType = 'ENSEMBL_TRANSCRIPT_ID'
+    else:
+        idType = 'ENSEMBL_GENE_ID'
+
+    ## Create tables:
+    if transcripts_up:
+        terms_up = enrich([transcript.seq_id for transcript in transcripts_up if transcript.seq_id], idType=idType)
+        table_up = AnnotationTable(terms_up.data())
+    else:
+        table_up = None
+    if transcripts_down:
+        terms_down = enrich([transcript.seq_id for transcript in transcripts_down if transcript.seq_id], idType=idType )
+        table_down = AnnotationTable(terms_down.data())
+    else:
+        table_down = None
+
     ctx = {'signature': signature, 'transcripts': transcripts,
            'transcripts_up': transcripts_up,
            'transcripts_down': transcripts_down,
@@ -118,7 +139,9 @@ def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, be
            'ratio': ratio,
            'pvalue': pvalue,
            'benjamini': benjamini,
-           'filter': filter,}
+           'filter': filter,
+           'table_up': table_up,
+           'table_down': table_down}
     return render_to_response('expressions/signature.html', ctx,
         context_instance=RequestContext(request))
 
