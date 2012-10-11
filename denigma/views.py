@@ -6,6 +6,8 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.template import RequestContext
 
+from data import get
+from data.models import Entry
 from blog.models import Post
 
 from django import forms
@@ -19,17 +21,20 @@ def home(request):
     """The root source of all Denigmas URLs.
     Renders a dynamic home site with altered content."""
     searchform = SearchForm() # Depricated?
-    denigma_description = Post.objects.get(title="Denigma Description")
-    denigma_rationality = Post.objects.get(title="Denigma Rationality")
-    news = Post.objects.filter(tags__name='news').order_by('-created', '-id')[:8] # Fetches all news.
-    research = Post.objects.get(title="Research")
-    programming = Post.objects.get(title="Programming")
-    design = Post.objects.get(title="Design")
-    dashboard = Post.objects.get(title="Dashboard")
+    denigma_description = get("Denigma Description")
+    denigma_rationality = get("Denigma Rationality")
+    try:
+        news = Entry.objects.filter(tags__name='news').order_by('-created', '-id')[:8] # Fetches all news.
+    except:
+        news = Post.objects.filter(tags__name='news').order_by('-created', '-id')[:8]
+    research = get("Research")
+    programming = get("Programming")
+    design = get("Design")
+    dashboard = get("Dashboard")
     ctx = {'searchform': searchform,
            'denigma_description': denigma_description,
            'denigma_rationality': denigma_rationality,
-           'posts': news,
+           'news': news,
            'dashboard':dashboard,
            'research': research,
            'programming': programming,
@@ -46,3 +51,7 @@ def search(request, term):
 def google(request, term):
     return render_to_response('google.html', term)
 
+def content(request):
+    contents = get('Content', "Data App", "Denigma Blog", 'Denigma Wiki')
+    return render_to_response('content.html', {'contents': contents},
+        context_instance=RequestContext(request))

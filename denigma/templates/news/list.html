@@ -4,24 +4,24 @@
 
 <h2 xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">News</h2>
 <hr>
-{% for post in posts %}
+{% for anews in news %}
     <table border="0" color="white">
         <tr>
 
             <td>
-                <h3>{{ post.title }}</h3>
+                <a href="{{ anews.get_absolute_url }}"><h3>{{ anews.title }}</h3></a>
 
-                <div class="post_meta">
-                    <centre>{{ post.created|date:"d | M"}}</centre>
+                <div class="news_meta">
+                    <centre>{{ anews.created|date:"d | M"}}</centre>
                     {#{% if post.created != post.updated %}({{ post.updated|date:"d | M" }}){% endif %}#}
                 </div>
 
-                <div class="post_body">
-                    {{ post.brief|markdown|hyper|recross|safe }}<b><a href="/blog/{{ post.id }}">Read more</a></b>
+                <div class="news_body">
+                    {{ anews.brief|markdown|hyper|recross|safe }}<b><a href="{{ anews.get_absolute_url }}">Read more</a></b>
                 </div>
 
                 <div class="tags">
-                    {% for tag in post.tags.all %}
+                    {% for tag in anews.tags.all %}
                         {% if tag != "news" %}
                             <a href="/blog/tag/{{ tag }}">{{ tag }}</a>{% endif %}{% if not forloop.last %},
                         {% endif %}
@@ -29,8 +29,8 @@
                 </div>
             </td>
             <td>
-                {% for image in post.images.all %}
-                    <img src={{ image.url }} width="100" height="100" alt={{ image.name }} />
+                {% for image in anews.images.all %}
+                    <img src="{{ image.url }}" alt="{{ image.name }}" width="100" height="100" />
                 {% endfor %}
            </td>
         </tr>
