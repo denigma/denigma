@@ -51,7 +51,7 @@
                 <a href={{ tags.get_absolute_url }}><h3>Tags</h3></a>
                 {{ tags.text|markdown|hyper|recross|safe }}
                 {% for image in tags.images.all %}
-                    <a href={{ tags.get_absolute_url }}<img src={{ image.url }} alt={{ image.name }} width="250" height="250"></a>
+                    <a href={{ image.get_absolute_url }}<img src={{ image.url }} alt={{ image.name }} width="250" height="250"></a>
                 {% endfor %}
             {% endblock %}
         </div>
