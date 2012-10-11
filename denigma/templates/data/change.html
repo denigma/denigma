@@ -1,0 +1,66 @@
+{% extends "data/base.html" %}
+
+{% load url from future %}
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}Change {{ change.title }}{% endblock %}
+
+{% block hierarchy %}
+    > <a href={% url 'changes' %}>Changes</a>
+    > {{ change.title }}
+{% endblock %}
+
+{% block title %}Change - {{ changes.title|safe }}{% endblock %}
+
+{% block content %}
+    <p>Created on {{ change.of.created }} by <a href={% url 'profile_detail' change.of.creator %}>{{ change.of.creator }}</a>
+    & updated on {{ change.at }} by <a href={%  url 'profile_detail' change.by %}>{{ change.by }}</a></p>
+    {{ changes.text|markdown|hyper|recross|safe }}
+    <b>Tags</b>:
+    {% if changes.tags %}
+        {% for tag in changes.tags %}
+            {% if tag %}
+                <a href={{ tag.get_absolute_url }}>{{ tag }}</a> {# {% url 'entry-tag' tag.slug %} #}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% if changes.tags_added %}
+        {% for tag in changes.tags_added %}
+            {% if tag %}
+                <ins style="background:#ffe6e6; "><a href={{ tag.get_absolute_url }}>{{ tag }}</a></ins> {# {% url 'entry-tag' tag.slug %} #}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% if changes.tags_removed %}
+        {% for tag in changes.tags_removed %}
+            {% if tag %}
+                <del style="background:#e6fe6; "><a href={{ tag.get_absolute_url }}>{{ tag }}</a></del> {# {% url 'entry-tag' tag.slug %} #}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% if changes.previous_parent %}
+        <del style="background:#e6f6; "><a href={% url changes.previous_parent.get_absolute_url %}>{{ changes.previous_parent }}</a>/del>
+        <ins style="background:#ffe6e6; "><a href={% url changes.current_parent.get_absolute_url %}>{{ changes.current_parent }}</a></ins>
+    {% endif %}
+    <br>
+    <b>Tags</b>:
+    <br>
+    <b>URL</b>:
+    <br>
+    <b>Images</b>:
+    <br>
+    <b></b>
+    <hr>
+    {% if change.comment %}
+        <div class="comment">
+            <b>Comment</b>: {{ change.comment }}
+        </div>
+    {% endif %}
+    {% if user.is_superuser %}
+        <br>
+        <b><a href={% url 'delete-change' change.pk %}>Delete</a></b> /
+        <b><a href={% url 'remove_change' change.slug %}>Remove</a></b> (i.e. accepting change)
+    {% endif %}
+{% endblock content %}

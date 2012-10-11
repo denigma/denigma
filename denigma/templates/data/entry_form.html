@@ -1,0 +1,20 @@
+{% extends "data/base.html" %}
+
+{% load url from future %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ action }} Entry{% endblock %}
+
+{% block hierarchy %}
+    > <a href={% url 'list-entries' %}>Entries</a>
+    {% if object.pk %}
+        > <a href={% url 'detail-entry' object.pk %}>{{ object.title }}</a>
+    {% endif %}
+    > {{ action }}
+{% endblock %}
+
+{% block title %}{{ action }} Entry{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

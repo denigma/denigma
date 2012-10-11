@@ -1,0 +1,39 @@
+{% extends "data/base.html" %}
+
+{% load url from future %}
+
+{% block head_title %}Change List{% endblock %}
+
+{% block hierarchy %}
+    > <a href={% url 'list-entries' %} xmlns="http://www.w3.org/1999/html">Entries</a>
+    > Change
+    > List
+{% endblock %}
+
+{% block title %}Change List {% if object %}for "<a href={{ object.get_absolute_url }}>{{ object.title }}</a>"{% endif %}{% endblock %}
+
+{% block content %}
+    {% for change in object_list %}
+        <a href={% url 'profile_detail' change.by %}>{{ change.by }}</a>
+        {% if change.initial %} initialized
+        {% else %} changed
+        {% endif %}
+        <a href={% url 'detail-change' pk=change.pk %}>"<b>{{ change.title }}</b>"</a>
+        on {{ change.at }}
+        {% if not change.initial %}<a href={% url 'change' slug=change.slug %}><b>Diffs</b></a> are on {{ change.diff }}
+        {% endif %}
+        {# <a href={{ change.get_absolute_url }}>{{ change }}</a> #}
+        {% if change.comment %}
+                <b>Comment</b>: {{ change.comment }}
+        {% endif %}
+        <br>
+    {% endfor %}
+    {% include "pagination.html" %}
+{% endblock content %}
+
+
+{% comment %}
+    {% for change in object.updates.all %}
+        {{ change }}
+    {% endfor %}
+    {% endcomment %}

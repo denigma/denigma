@@ -1,0 +1,115 @@
+{% extends "data/base.html" %}
+
+{% load url from future %}
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+{% load sets %}
+
+{% block head_title %}Relation Detail{% endblock %}
+
+{% block hierarchy %}
+    > <a href={% url 'list-relations' %}>Relations</a>
+    > Relation
+    > Detail
+    | <a href={% url 'update-relation' object.pk %}>Update</a>
+{% endblock %}
+
+{% block title %}{{ object }}{% endblock %}
+
+{% block content %}
+    <p>Created by <a href="{{ object.creator.get_absolute_url }}">{{ object.creator }}</a> on {{ object.created }}
+    {% if object.updates.all|unique|length > 1 %}
+        & updated by
+        {% for updater in object.updates.all|unique %}
+            {% if updater != object.creator %}
+                <a href={{ updater.get_absolute_url }}>{{ updater }}</a>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <hr>
+    <div class="row">
+        <div class="span4">
+            {% block column-1 %}
+                <a href={{ object.fr.get_absolute_url }}><h3>{{ object.fr.title }}</h3></a>
+                <p>{{ object.fr.text|markdown|hyper|recross|safe }}</p>
+                {% for image in object.fr.images.all %}
+                    <img src="{{ image.url }}" alt="{{ image.name }}" />
+                {% endfor %}
+                <br>
+                <b>Tags</b>:
+                {% for tag in object.fr.tags.all %}
+                    <a href={% url 'entry-tag' tag.slug %}>{{ tag }}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+                <div class="categories">
+                    <b>Categories</b>:
+                    {% for category in object.fr.categories.all %}
+                        <a href={{ category.get_absolute_url }}>{{ category }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+                {% if object.to.parent %}
+                    <p><b>Parent</b>:<a href="{{ object.to.parent.get_absolute_url }}">{{ object.to.parent }}</a></p>
+                {% endif %}
+                <br>
+                <p><b><a href={% url 'update-entry' object.fr.pk %}>Update entry</a></b>
+                (<a href="/admin/data/entry/{{ object.fr.pk }}/">Admin</a>)</p>
+            {% endblock %}
+            <hr>
+        </div>
+        <div class="span4">
+            {% block column-2 %}
+                <a href={{ object.be.get_absolute_url }}><h3>{{ object.be.title }}</h3></a>
+                <p>{{ object.be.text|markdown|hyper|recross|safe }}</p>
+                {% for image in object.be.images.all %}
+                    <img src="{{ image.url }}" alt="{{ image.name }}" />
+                {% endfor %}
+                <br>
+                <b>Tags</b>:
+                {% for tag in object.be.tags.all %}
+                    <a href={% url 'entry-tag' tag.slug %}>{{ tag }}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+                <div class="categories">
+                    <b>Categories</b>:
+                    {% for category in object.be.categories.all %}
+                        <a href={{ category.get_absolute_url }}>{{ category }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+                {% if object.be.parent %}
+                    <p><b>Parent</b>:<a href="{{ object.be.parent.get_absolute_url }}">{{ object.be.parent }}</a></p>
+                {% endif %}
+                <br>
+                <p><b><a href={% url 'update-entry' object.be.pk %}>Update entry</a></b>
+                (<a href="/admin/data/entry/{{ object.be.pk }}">Admin</a>)</p>
+            {% endblock %}
+            <hr>
+        </div>
+        <div class="span4">
+            {% block column-3 %}
+                <a href={{ object.to.get_absolute_url }}><h3>{{ object.to.title }}</h3></a>
+                <p>{{ object.to.text|markdown|hyper|recross|safe }}</p>
+                {% for image in object.to.images.all %}
+                    <img src="{{ image.url }}" alt=""{{ image.name }} />
+                {% endfor %}
+                <br>
+                <b>Tags</b>:
+                {% for tag in object.to.tags.all %}
+                    <a href={% url 'entry-tag' tag.slug %}>{{ tag }}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+                <div class="categories">
+                    <b>Categories</b>:
+                    {% for category in object.to.categories.all %}
+                        <a href={{ category }}>{{ category }}</a>{% if not forloop.last %}, {% endif %}
+                     {% endfor %}
+                </div>
+                {% if object.to.parent %}
+                    <p><b>Parent</b>:<a href>{{ obejct.to.parent.get_absolute_url }}">{{ object.to.parent }}</a></p>
+                {% endif %}
+                <br>
+                <p><b><a href={% url 'update-entry' object.to.pk %}>Update entry</a></b>
+                (<a href="/admin/data/entry/{{ object.to.pk }}">Admin</a>)</p>
+            {% endblock %}
+            <hr>
+        </div>
+    </div>
+{% endblock %}
+

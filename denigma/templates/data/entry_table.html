@@ -1,0 +1,21 @@
+{% extends "data/base.html" %}
+
+{% load url from future %}
+{% load render_table from django_tables2 %}
+
+{% block head_title %}Entry Table{% endblock %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+{% endblock %}
+
+{% block hierarchy %}
+    > <a href={% url 'list-entries' %}>Entries</a>
+    > Table
+{% endblock %}
+
+{% block title %}Entry Table{% endblock %}
+
+{% block content %}
+    {% render_table object_list %}
+{% endblock %}

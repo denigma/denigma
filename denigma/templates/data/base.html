@@ -1,9 +1,18 @@
 {% extends "site_base.html" %}
 
+{% load url from future %}
+
 {% block head_title %}Data{% endblock %}
 
 {% block base_hierarchy %}
-    > <a href="/data/">Data</a>
+    > <a href={% url 'data' %}>Data</a>
+{% endblock %}
+
+{% block options %}
+      <a href={% url 'list-entries' %}>Entries</a>
+    | <a href={% url 'list-changes' %}>Changes</a>
+    | <a href={% url 'list-relations' %}>Relations</a>
+    | <a href={% url 'list-alterations' %}>Alterations</a>
 {% endblock %}
 
 {% block title %}Data{% endblock %}

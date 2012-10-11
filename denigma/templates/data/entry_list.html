@@ -1,0 +1,59 @@
+{% extends "data/base.html" %}
+
+{% load url from future %}
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+{% load sets %}
+
+{% load render_table from django_tables2 %}
+
+
+{% block head_title %}Entry List{% endblock %}
+
+{% block hierarchy %}
+    > Entry
+    > List
+    | <a href={% url 'create-entry' %}>Create</a>
+{% endblock %}
+
+{% block title %}Entry List{% endblock %}
+
+{% block content %}
+    {% if object_list %}
+        {% for entry in object_list %}
+            <hr>
+            <table width="100%">
+                <tr>
+                    <td valign="top">
+                        <a href={% url 'detail-entry' pk=entry.pk %}><h2>{{ entry.title }}</h2></a>
+
+                        Created on {{ entry.created }} by <a href={%  url 'profile_detail' entry.creator.username %}> {{ entry.creator.username }}</a>
+                        {% if entry.updates.all|unique|length > 1 %}
+                            & updated by
+                            {% for updater in entry.updates.all|unique %}
+                                {% if updater != entry.creator %}<a href={{ updater.get_absolute_url }}>{{ updater }} </a>{% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {#  Published on {{ entry.pub_date }} by {{ entry.publisher }} #}
+
+                        {{ entry.brief|markdown|hyper|recross|safe }}
+
+                        <b>Categories:</b>
+                        {% for tag in entry.tags.all %}
+                            <a href={% url 'entry-tag' tag.slug %}>{{ tag.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td align="right">
+                        {% for image in entry.images.all %}
+                            <img src={{ image.url }} alt={{ image.name }} width=250 height=250 />
+                        {% endfor %}
+                    </td>
+                </tr>
+            </table>
+        {% endfor %}
+    {% endif %}
+    {% include "pagination.html" %}
+    <b><a href={% url 'create-entry' %}>Create entry</a></b> (<a href="/admin/data/entry/add/">Admin</a>)
+
+{% endblock %}

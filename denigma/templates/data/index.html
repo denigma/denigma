@@ -1,5 +1,6 @@
 {% extends "data/base.html" %}
 
+{% load url from future %}
 {% load markup %}
 {% load hyperlink %}
 {% load crosslink %}
@@ -12,11 +13,14 @@
 
 {% block title %}Data{% endblock %}
 
-{% block conent %}
+{% block content %}
     {{ entry|markdown|hyper|recross|safe }}
     <center>
     {% for image in entry.images.all %}
         <img src="{{ image.url }}" alt="{{ image.name }}" />
     {% endfor %}
     </center>
+    <a href={% url 'entry-table' %}>Entry Table</a>
+    <br>
+    <a href={% url 'hierarchy' %}>Hierarchy</a> <a href={% url 'list-hierarchy' %}>List</a>
 {% endblock %}

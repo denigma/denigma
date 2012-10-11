@@ -1,0 +1,28 @@
+{% extends "data/base.html" %}
+
+{% load url from future %}
+{% load mptt_tags %}
+
+{% block head_title %}Data Hierarchy{% endblock %}
+
+{% block hierarchy %}
+    > Hierarchy
+{% endblock %}
+
+{% block title %}Data Hierarchy{% endblock %}
+
+{% block content %}
+    <ul>
+        {% recursetree entries %}
+            <li>
+                <a href={% url 'detail-entry' pk=node.pk %}>{{ node.title }}</a>
+                 {% if node.url %}<b><a href={{ node.get_absolute_url }}>on site</a></b>{% endif %}
+                 {% if not node.is_leaf_node %}
+                    <ul class="children">
+                        {{ children }}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endrecursetree %}
+    </ul>
+{% endblock %}

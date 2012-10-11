@@ -1,0 +1,59 @@
+{% extends "data/base.html" %}
+
+{% load url from future %}
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+{% load sets %}
+
+{% block head_title %}{{ object.title }}{% endblock %}
+
+{% block hierarchy %}
+    > <a href={% url 'list-entries' %}>Entries</a>
+    > {{ object.title }}
+{% endblock %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block content %}
+    <p>
+        Created on {{ object.created }} by <a href={% url 'profile_detail' object.creator %}>{{ object.creator }}</a>
+        {% if object.updates.all %}
+            & updated by
+            {% for updater in object.updates.all|unique %}
+                {{ update.name }}
+                <a href={{ updater.get_absolute_url }}>{{ updater }}</a>
+            {% endfor %}
+        {% endif %}
+    </p>
+    {{ object.text|markdown|hyper|recross|safe }}
+    {% for image in object.images.all %}
+        <img src="{{ image.url }}" alt="{{ image.name }}" />
+    {% endfor %}
+    <br>
+    <b>Tags</b>:
+    {% for tag in object.tags.all %}
+        <a href={% url 'entry-tag' tag.slug %}>{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+    {% endfor %}<br>
+    <b>Categories</b>:
+    {% for category in object.categories.all %}
+        <a href={{ category.get_absolute_url }}>{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+    {% if object.parent %}
+        <p>
+            <b>Parent</b>:
+            <a href="{{ object.parent.get_absolute_url }}">{{ object.parent.title }}</a>
+        </p>
+    {% endif %}
+    {% if object.url %}
+        <p>
+            <b>URL</b>:
+            <a href>{{ object.url }}>{{ object.url }}</a>
+        </p>
+    {% endif %}
+    {% if object.url %}<a href={{ object.get_absolute_url }}>View on site</a>{% endif %}
+    <br>
+    <b><a href={% url 'update-entry' object.pk %}>Update entry</a></b>
+    (<a href="/admin/data/entry/{{ object.pk }}/">Admin</a>) |
+    <b><a href={% url 'changes' object.pk %}>See changes</a></b>
+{% endblock %}

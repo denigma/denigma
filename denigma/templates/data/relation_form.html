@@ -1,0 +1,17 @@
+{% extends "data/base.html" %}
+
+{% load url from future %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ action }} Relation{% endblock %}
+
+{% block hierarchy %}
+    > <a href={% url 'list-relations' %}>Relations</a>
+    > {{ action }} Relation
+{% endblock %}
+
+{% block title %}{{ action }} Relation{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

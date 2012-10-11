@@ -1,0 +1,32 @@
+{% extends "data/base.html" %}
+
+{% block head_title %}Alteration List{% endblock %}
+
+{% block hierarchy %}
+    > Alteration List
+{% endblock %}
+
+{% block title %}Alteration List{% endblock %}
+
+{% block content %}
+    {% for alteration in object_list %}
+        <div class="alteration">
+            <a href={{ alteration.by.get_absolute_url }}>{{ alteration.by }} </a>
+            {% if alteration.initial %}
+                initialized
+            {% else %}
+                altered
+            {% endif %}
+            <b><a href={{ alteration.of.get_absolute_url }}>{{ alteration.of}}</a></b>
+            at {{ alteration.at }}
+            from
+            <b><a href={{ alteration.previous.get_absolute_url }}>{{ alteration.previous.fr.title }} -{{ alteration.previous.be.title }}-> {{ alteration.previous.to.title }}</a></b>
+            to
+            <b><a href={{ alteration.get_absolute_url }}>{{ alteration.fr.title }} -{{ alteration.be.title }}-> {{ alteration.to.title }}</a></b>
+            {% if alteration.comment %}
+                <b>Comment</b>: {{ alteration.comment }}
+            {% endif %}
+        </div>
+
+    {% endfor %}
+{% endblock %}
