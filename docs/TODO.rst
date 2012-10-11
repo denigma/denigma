@@ -27,16 +27,16 @@ Modularity should also be applied to every documentation piece associated with
 Denigma, including this document here.
 
 
-Data app
+Data App
 --------
 
 The Blog and Wiki, Todo as well as associated News and Tutorials and DEPs, 
-Documentation app and several otherfollow the same pattern: 
+Documentation app and several others follow the same pattern:
 Each one contains an data entry which has a title, a text and tags associated.
 tags itself can be data entry or linked to be a data entry. There are further 
 meta data associated with each entry such as date of creation (created), 
-update (updated). Further images (mutliple) may be associated to an entry of 
-which the first one will be the main one. A thumbal view of images must be 
+update (updated). Further images (multiple) may be associated to an entry of
+which the first one will be the main one. A thumbinal view of images must be
 accessible.
 
 Another field might declare whether it is drafted or not, but this is not 
@@ -44,13 +44,28 @@ necessary. Each entry content (text) needs to be rendered in html and have
 automatically assigned hyperlinks and should allow to use markup languages. 
 
 It is therefore proposed to have a single data app which eliminates the 
-redundance between all this different apps. Either tags or another table maybe 
+redundancy between all this different apps. Either tags or another table maybe
 it can be called type or category declares what type of entry it is. The 
 simplest solution is that tags declare also the type of data entry, e.g. 
 whether it is a news or tutorial. An immediate implementation of this concept 
 was done by using the blog as the data-driving app. The tutorial should 
 actually be part of the docs.
 
+A data entry is the fundamental unit for data acquisition. The process of
+data acquisition is the assembly of signals/information that measure real world
+physical conditions and converts them into a digital data structure that
+can be used effectively and manipulated by Denigma.
+
+The Data/Entry shall be the most important data unit. The Blog Post will be
+a lightweight version of a data unit. While a data entry title has to be
+unique the blog posts allow to have multiple units with the same title.
+The Wiki/Pages will be kept and be editable even for unregistered users and be
+fully in the style of a traditional Wiki, but with many enhancements. The data
+app will control the information flow (management and access). Retrieving a data
+unit will first query the data entries, then the blog posts and finally the wiki pages.
+
+Any data entry can be associated with any kind of tag, with specified categories
+and only one parent entry, but it can have multiple relationships to any other entry.
 
 Tutorials
 ---------
@@ -799,7 +814,7 @@ Notifications
 django-notifications-hq provides GitHub notifications alike app for Django: [http://pypi.python.org/pypi/django-notifications-hq]
 
 
-Speeding upDjango
+Speeding up Django
 ------------------
 Django performance in web framwork and template enigine can be drastically improved by employing Pypy 1.9
 (vs. CPython 2.7):
@@ -810,10 +825,38 @@ The source code of the benchmarking hello world app is available
 [https://bitbucket.org/akorn/helloworld/src].
 
 
+Use Buildout to Deploy
+----------------------
+zc.buildout allows to perform more complex tasks than just installing applications
+in the virtualenv as pip does [http://jacobian.org/writing/django-apps-with-buildout/;
+[http://pypi.python.org/pypi/zc.buildout].
+
 URL import from future
 ----------------------
 Need to prepare the URLs to make them compatible with Django-1.5.
 
+
+Preview
+-------
+Enable a preview for all form submissions.
+
+
+Formatting Instruction
+----------------------
+Write formatting instruction for Data/Entry Blog/Post usage.
+Such as: ::
+
+    Format using Markdown/ReStructuredText (No HTML if possible)
+    * Code block: prefix each line by at least 4 spaces or 1 tab (and a blank line before and after)
+    * Code span: surround with backticks
+    * Blockquotes: prefix lines to be quoted with >
+    * Links: <URL>
+    * Links w/ descriptions: [description](URL)
+
+
+Code Highlighting
+-----------------
+Pygments can be implemented to colorful highlight code syntax.
 
 The Future of Denigma
 ---------------------
