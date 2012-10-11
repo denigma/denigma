@@ -3,14 +3,20 @@ print("Denigma's fundamental data structure here!")
 from copy import deepcopy
 
 from django.db import models, IntegrityError, transaction
+from django.db.models import Q
 from django.core.signals import request_finished
 from django.db.models.signals import pre_save, post_save, m2m_changed
 from managers import EntryManager
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
+from django.core.urlresolvers import reverse
+from django.utils.safestring import mark_safe
 
 from taggit.managers import TaggableManager
 from mptt.models import MPTTModel, TreeForeignKey
+
+from meta.diff.diff_match_patch import diff_match_patch
+dmp = diff_match_patch()
 
 import signals
 import handlers
@@ -43,7 +49,7 @@ class Title(MPTTModel):
                 transaction.savepoint_commit(savepoint)
                 return res
             except IntegrityError as e:
-                transaction.savepoint_rollback(savepoint)
+                #transaction.savepoint_rollback(savepoint)
                 i += 1
                 self.slug = '%s_%d' % (slug, i)
                 print e, self.slug
@@ -58,6 +64,8 @@ class Content(Title):
     text = models.TextField(_('text'))
     tags = TaggableManager(_('tags'))
     tagged = models.ManyToManyField('Tag', verbose_name=_('tagged'), blank=True, null=True) # M2M to Entry? #tags = TaggableManager() # #Categories?
+    categories = models.ManyToManyField('Category', blank=True, null=True)
+
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
     url = models.CharField(_('url'), max_length=255, blank=True, null=True) #,
     images = models.ManyToManyField('gallery.PhotoUrl', blank=True, verbose_name=_('images'))
@@ -85,7 +93,9 @@ class Entry(Content):
     # Meta data:
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
-    #pub_data = models.DateTimeField(_('publication date'), blank=True, null=True)
+    pub_date = models.DateTimeField(_('publication date'), blank=True, null=True)
+
+    #relations = models.ManyToManyField('self', through='Relation', symmetrical=False, related_name='relation')#, blank=True, null=True)
 
     # User track:
     creator = models.ForeignKey(User, related_name=_('creator'), blank=True, null=True, verbose_name=_('creator')) # M2M allow more than one creator? #_
@@ -94,6 +104,7 @@ class Entry(Content):
     published = models.BooleanField(_('published'), db_index=True, default=True) # DateTimeField()?
     original = None
     tagged_changed = []
+    comment = ''
 
     objects = EntryManager()
 
@@ -141,28 +152,33 @@ class Entry(Content):
                     self.published = post.published
                     self.title = post.title
                     self.text = post.text
-                    #self.tags = post.tags
                     tags = post.tags.all()
                     if tags:
                         signals.tags_added.send("Post", tags=tags, instance=self)
-                        #tags = [Tag(name=tag.name) for tag in tags]
+                    # Deactivate.
                     for tag in tags:
                         tag, created = Tag.objects.get_or_create(name=tag.name)
-                        #print tag
                         self.tagged.add(tag)
                         #self.tagged =  Tag.objects.all()
                     self.images = post.images.all()
 
-                    #tags = self.post.tags.all()
-                    #for tag in tags:
-                    #    self.tags.add(tag.name)
-                    #print("Init tag addition: %s" % self.tags.all())
-
                 except Exception as e:
                     print("data.models.Entry.save: %s (%s %s)" % (e, post.pk, post.title))
-            initial = Change(title=self.title, text=self.text, url=self.url, of=self, by=self.user)
+
+            parents = Change.objects.filter(of=self.parent)
+            if parents:
+                parent = parents[0]
+            else:
+                parent = None
+            #parent = next(iter(Change.objects.filter(of=self.parent), None)) # Alterative one-liner to fetch parent.
+            #parent, = Change.objects.filter(of=self.parent) or [None]
+            self.change = Change(title=self.title, text=self.text, url=self.url, of=self, by=self.user,
+                 comment=self.comment, parent=parent, initial=True)
             #initial.tags = self.tags.all()
+            self.change.save()
             self.tags_pre_clear = [tag.name for tag in self.tags.all()]
+            self.categories_pre_clear = [category.name for category in self.categories.all()]
+
         else:
             changes = []
             #print("Title %s vs. %s" % (self.title, self.original.title))
@@ -174,25 +190,38 @@ class Entry(Content):
                 changes.append('text')
             if self.url != self.original.url:
                 changes.append('urls')
+            if self.parent != self.original.parent:
+                changes.append('parent')
 
             if changes:
                 print(changes)
-                self.change = Change(title=self.title, slug=self.slug, text=self.text, url=self.url,#, tags=self.tags.all(), images=self.images.all(),
-                    of=self, by=self.user)
+                parents = Change.objects.filter(of=self.parent)
+                if parents:
+                    parent = parents[0]
+                else:
+                    parent = None
+                self.change = Change(title=self.title, slug=self.slug, text=self.text, url=self.url,
+                    of=self, by=self.user, comment=self.comment, parent=parent)
 
                 self.change.save()
                 self.change.images.add(*self.images.all())
                 self.change.tags.add(*self.tags.all())
-                self.change.tagged.add(*self.tagged.all())
+                #self.change.tagged.add(*self.tagged.all())
+                self.change.categories.add(*self.categories.all())
 
         super(Content, self).save(*args, **kwargs)
         self.tags_pre_clear = [tag.name for tag in self.tags.all()]
+        self.categories_pre_clear = [category.name for category in self.categories.all()]
 
     def __unicode__(self):
         return "{0} - {1} ({2})".format(self.title, self.created.date(), self.created.time())
 
     def get_absolute_url(self):
-        return self.url or u"/data/entry/%s" % self.pk
+        return self.url or reverse('detail-entry', args=[self.pk]) #return self.url or u"/data/entry/%s" % self.pk
+
+    def get_fields(self):
+        """Displays only model fields that are non-empty."""
+        return [(field.name, field.value_to_string(self)) for field in Entry._meta.fields if field.value_to_string(self) is not None]
 
     class Meta:
         verbose_name_plural = "Entries"
@@ -203,25 +232,139 @@ class Change(Content):
     of = models.ForeignKey(Entry, related_name='entry', verbose_name=_('of')) # what #
     by = models.ForeignKey(User, related_name='user', verbose_name=_('by'))   # who #
     at = models.DateTimeField(_('at'), auto_now=True)    # when #
+    initial = models.BooleanField(default=False)
+    comment = models.CharField(max_length=255, blank=True, null=True)
+
+    previous_version = None
 
     def save(self, *args, **kwargs):
         #print("change model save() called.")
         super(Content, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return '{0} changed "{1}" on {2} {3}'.format(self.by, self.of.title,
+        if self.initial:
+            action = 'initialized'
+        else:
+            action = 'changed'
+        return '{0} {1} "{2}" on {3} {4}'.format(self.by, action, self.of.title,
             self.at.date(), self.at.time())
+
+    def get_absolute_url(self):
+        return reverse('detail-change', args=[self.pk])
+
+    def previous(self):
+        if self.previous_version:
+            return self.previous_version
+        try:
+            self.previous_version = Change.objects.filter(Q(of=self.of) & Q(pk__lt=self.pk)).order_by('-pk')[0]
+            return  self.previous_version
+        except:
+            return ''
 
     def diff(self):
         """returns any differences from the previous revision."""
         # Query changes for the privious revision via the id time
         #SELECT * FROM changes WHERE of == self.of LIMIT self.id
-        #previous = Change.objects.filter(Q(of=self.of) & id<=self.id)[-1]
+        #print("data.models.change.diff %s" % self)
+        #from meta.helpers import generate_patch_html
+        if self.initial:
+            #print("initial")
+            return ''
+        #print("change")
+        previous = self.previous()
+        differences = []
+        if previous.title != self.title:
+            #diff = dmp.diff_main(previous.title, self.title)
+            #patch = dmp.patch_make(diff)
+            differences.append('Title') # (%s)' % dmp.patch_toText(patch)
+        if  previous.text != self.text:
+            #diff = dmp.diff_main(previous.text, self.text)
+            #patch = dmp.patch_make(diff)
+            differences.append('Text') # (%s)' % dmp.patch_toText(patch))
+        if [tag.name for tag in previous.tags.all()] != [tag.name for tag in self.tags.all()]:
+            differences.append('Tags')
+        previous_categories = [category.name for category in previous.categories.all()]
+        self_categories = [category.name for category in self.categories.all()]
+        if  previous_categories != self_categories:
+            differences.append('Categories')
+        if  previous.url != self.url:
+            differences.append('URL')
+        if [image.name for image in previous.images.all()] != [image.name for image in self.images.all()]:
+            differences.append('Images')
+        print previous.of.parent, self.of.parent
+        if previous.parent != self.parent:
+            differences.append('Parent')
+
+        return ", ".join(differences)
+
+    def difference(self, field='title'):
+        if self.initial: return ''
+        previous = self.previous()
+        differences = []
+        if self.title != previous.title:
+            diffs = dmp.diff_main(previous.title, self.title)
+            return mark_safe(dmp.diff_prettyHtml(diffs))
+        return ''
+
+    def differences(self):
+        if self.initial: return ''
+        previous = self.previous()
+        changes = EntryDummy()
+        differences = []
+        if previous.title != self.title:
+            diffs = dmp.diff_main(previous.title, self.title)
+            changes.title = mark_safe(dmp.diff_prettyHtml(diffs))
+        else:
+            changes.title = self.title
+        if previous.text != self.text:
+            diffs = dmp.diff_main(previous.text, self.text)
+            changes.text = mark_safe(dmp.diff_prettyHtml(diffs))
+        else:
+            changes.text = self.text
+        if previous.url != self.url:
+            diffs = dmp.diff_main(previous.title, self.title)
+            changes.url = mark_safe(dmp.diff_prettyHtml(diffs))
+        else:
+            changes.url = self.url
+
+        # Tags:
+        previous_tags= set([tag.name for tag in previous.tags.all()])
+        self_tags = set([tag.name for tag in self.tags.all()])
+        if previous_tags != self_tags:
+            changes.tags_added = list(self_tags - previous_tags)
+            changes.tags_removed = list(previous_tags - self_tags)
+            changes.tags = list(previous_tags & self_tags)
+        else:
+            changes.tags_added = changes.tags_removed = []
+            changes.tags = self_tags
+
+        # Categories:
+        previous_categories = set([category.name for category in previous.categories.all()])
+        self_categories = set([category.name for category in self.categories.all()])
+        if previous_categories != self_categories:
+            changes.added_categories = list(self_categories - previous_categories)
+            changes.removed_categories = list(previous_categories - self_categories)
+            changes.categories = previous_categories & self_categories
+        else:
+            changes.added_categories = changes.removed_categories = []
+            changes.categories = self.categories
+
+        # Parent:
+        if previous.parent != self.parent:
+            changes.previous_parent = previous.parent
+        else:
+            changes.previous_parent = None
+        changes.parent = changes.current_parent = self.parent
+
+#        if [tag.name for tag in previous.tagged.all()] != [tag.name for tag in self.tagged.all()]:
+#            differences.append('Tagged')
+        return changes
+
         #for
-        #return self.title - self.of.titl
-        for letter in previous.text:
-            if letter not in self.text:
-                print("-"+letter)
+#        #return self.title - self.of.title
+#        for letter in previous.text:
+#            if letter not in self.text:
+#                print("-"+letter)
 
 
 class Tag(models.Model):
@@ -232,12 +375,33 @@ class Tag(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('entry-tag', [self.name]) #u"/data/tag/%s" % self.pk
+
+class Category(models.Model):
+    name = models.CharField(_('name'), max_length=255, unique=True)
+    synonyms = models.ManyToManyField('self', blank=True, verbose_name=_('synonyms'))
+
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('category', [self.pk])
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+
+#class RelationshipType(models.Model):
+#    name = models.CharField(max_length=255, unique=True)
+#    description = models.TextField(blank=True, null=True)
 
 class Relationship(models.Model):
     """A relationship of an entry (source) to and entry (target) by and entry (type)."""
     fr = models.ForeignKey('Entry', related_name=_("source"), verbose_name=_('from'))
     be = models.ForeignKey('Entry', related_name=_("type"), verbose_name=_('be'))
     to = models.ForeignKey('Entry', related_name=_("target"), verbose_name=_('to'))
+
+    #type = models.ForeignKey('RelationshipType')
 
     def __unicode__(self):
         return "{0} -{1}-> {2}".format(self.fr.title, self.be.title, self.to.title)
@@ -257,6 +421,7 @@ class Relation(Relationship):
     updates = models.ManyToManyField(User, through='Alteration', verbose_name=_('updates')) # changed changes? #_('updates'),
 
     original = None
+    comment = ''
 
     def __init__(self, *args, **kwargs):
         super(Relation, self).__init__(*args, **kwargs)
@@ -266,7 +431,7 @@ class Relation(Relationship):
         if not self.pk:
             self.creator = self.creator or self.user
             super(Relationship, self).save(*args, **kwargs)
-            alteration = Alteration(fr=self.fr, be=self.be, to=self.to, of=self, by=self.user)
+            alteration = Alteration(fr=self.fr, be=self.be, to=self.to, of=self, by=self.creator, comment = self.comment, initial=True)
             alteration.save()
         else:
             alterations = []
@@ -283,10 +448,13 @@ class Relation(Relationship):
 
             if alterations:
                 print(alterations)
-                alteration = Alteration(fr=self.fr, be=self.be, to=self.to, of=self, by=self.user)
+                alteration = Alteration(fr=self.fr, be=self.be, to=self.to, of=self, by=self.user, comment=self.comment)
                 alteration.save()
 
             super(Relationship, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('relation', args=[self.pk])
 
 
 class Alteration(models.Model):
@@ -298,10 +466,30 @@ class Alteration(models.Model):
     of = models.ForeignKey(Relation, related_name='relationship', verbose_name=_('of')) # what
     by = models.ForeignKey(User, related_name='person', verbose_name=_('by'))   # who
     at = models.DateTimeField(_('at'), auto_now=True)    # when
+    initial = models.BooleanField(default=False)
+    comment = models.CharField(max_length=255, blank=True, null=True)
+
+    previous_version = None
 
     def __unicode__(self):
-        return "{0} {1} {2} by {3} at {4}".format(self.fr, self.be, self.to, self.of, self.by, self.at)
+        if self.initial:
+            action = 'initialized'
+        else:
+            action = 'altered'
+        return "{0} {1} {2} by {3} at {4} {5}".format(self.fr, self.be, self.to, self.of, self.by, self.at,
+                                                      action)
 
+    def get_absolute_url(self):
+        return reverse('detail-alteration', args=[self.pk])
+
+    def previous(self):
+        if self.previous_version:
+            return self.previous_version
+        try:
+            self.previous_version = Alteration.objects.filter(Q(of=self.of) & Q(pk__lt=self.pk)).order_by('-pk')[0]
+            return  self.previous_version
+        except:
+            return ''
 
 class EntryDummy(object):
     def __init__(self, title=None, text=None, tags=None, images=None, urls=None):
@@ -320,6 +508,7 @@ class EntryDummy(object):
 #reversion.post_revision_commit.connect(handlers.post_revision, sender=Entry)
 m2m_changed.connect(handlers.changed_tags, sender=Entry.tags.through)
 m2m_changed.connect(handlers.changed_tagged, sender=Entry.tagged.through)
+m2m_changed.connect(handlers.changed_categories, sender=Entry.images.through)
 m2m_changed.connect(handlers.changed_images, sender=Entry.images.through)
 message_sent.connect(handlers.message_sent)
 

@@ -9,19 +9,28 @@ except Exception as e:
 from models import Entry, EntryDummy
 
 
-def get(title, text=None, tags=None, images=None, urls=None):
+def get(*args, **kwargs): #title=None, text=None, tags=None, images=None, urls=None
     """Fetches an data entry according to its title."""
-    try:
-        entry = Entry.objects.get(title=title)
-        #print("Got entry: %s" % entry)
-    except (Entry.DoesNotExist):
+    data = []
+    #print len(args), args
+    for title in args:
         try:
-            entry = Post.objects.get(title=title)
-        except (Post.DoesNotExist, Post.MultipleObjectsReturned) as e:
-            entry = EntryDummy(e)
-        except (Entry.MultipleObjectsReturned) as e:
-            entry = Entry.objects.filter(title=title)[0]
-    return entry
+            entry = Entry.objects.get(title=title)
+            data.append(entry)
+            #print("Got entry: %s" % entry)
+        except (Entry.DoesNotExist):
+            try:
+                post = Post.objects.get(title=title)
+                data.append(post)
+            except (Post.DoesNotExist, Post.MultipleObjectsReturned) as e:
+                dummy = EntryDummy(title=title, text=e)
+                data.append(dummy)
+            except (Entry.MultipleObjectsReturned) as e:
+                entry = Entry.objects.filter(title=title)[0]
+                data.append(entry)
+    if len(args) == 1: return data[0]
+    elif len(args) > 1: return data
+
 
 def init(post=None):
     """Initialises a data entry from a blog post."""
@@ -37,3 +46,10 @@ def init(post=None):
         except Exception as e:
             print("data.models.init: %s (%s %s)" % (e, index, post.title))
 
+def execute():
+    from models import Change
+    from datetime import datetime
+    changes = Change.objects.filter(at__lt=datetime(2012,10,10))
+    changes.update(initial=True)
+    print len(changes)
+    return changes

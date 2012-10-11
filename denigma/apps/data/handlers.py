@@ -1,5 +1,6 @@
 """Handles many-to-many field changes."""""
 
+
 def changed_tags(sender, instance, action, reverse, model, pk_set, **kwargs):
     print "CHANGED tags"
     print
@@ -15,7 +16,7 @@ def adding_tags(**kwargs):
     #print "instance.tags:", instance.tags
     if not hasattr(instance, 'change'):
         instance.change = instance.Change(title=instance.title, slug=instance.slug, text=instance.text, url=instance.url,
-            of=instance, by=instance.user)
+            of=instance, by=instance.user, comment=instance.comment, parent=instance.Change.objects.filter(of=instance.parent)[0])
         instance.change.save()
         #instance.change.tags = tags
         instance.change.tags.add(*[tag.name for tag in tags.all()])
@@ -23,13 +24,18 @@ def adding_tags(**kwargs):
 
 def changed_tagged(sender, instance, action, reverse, model, pk_set, **kwargs):
     #print("CHANGED TAGGED %s" % action)
-    # Tagged changes:
+    # TAGGED changes:
     if action == "pre_clear":
-        instance.tagged_pre_clear = instance.tagged
+        instance.tagged_pre_clear = instance.categories
     elif action in ["post_add", "post_remove"] or (action == "post_clear" and instance.tagged_pre_clear):
         if not hasattr(instance, 'change'):
+            parents = instance.Change.objects.filter(of=instance.parent)
+            if parents:
+                parent = parents[0]
+            else:
+                parent = None
             instance.change = instance.Change(title=instance.title, slug=instance.slug, text=instance.text, url=instance.url,
-                of=instance, by=instance.user)
+                of=instance, by=instance.user, comment=instance.comment, parent=parent )
             instance.change.save()
         instance.change.tagged = instance.tagged.all()
         #instance.tags.add(*[tag.name for tag in instance.change.tags.all()])
@@ -40,9 +46,15 @@ def changed_tagged(sender, instance, action, reverse, model, pk_set, **kwargs):
             #print "Changed tags signal instance.tags_pre_clear", instance.tags_pre_clear
             #print "Changed tags signal tag.name:", [tag.name for tag in instance.tags.all()]
             if not hasattr(instance, 'change'):
+                parents = instance.Change.objects.filter(of=instance.parent)
+                if parents:
+                    parent = parents[0]
+                else:
+                    parent = None
                 instance.change = instance.Change(title=instance.title, slug=instance.slug, text=instance.text, url=instance.url,
-                    of=instance, by=instance.user)
+                    of=instance, by=instance.user, comment=instance.comment, parent=parent)
                 instance.change.save()
+
         instance.change.tags.clear()
         instance.change.tags.add(*[tag.name for tag in instance.tags.all()])
         #print "Tags in changed tagged: ", [tag.name for tag in instance.tags.all()]
@@ -51,14 +63,40 @@ def changed_tagged(sender, instance, action, reverse, model, pk_set, **kwargs):
         #print instance.title
         #instance.tags_to_add = [tag.name for tag in instance.tags.all()]
 
+
+def changed_categories(sender, instance, action, reverse, model, pk_set, **kwargs):
+    #print("CHANGED CATEGORIES %s" % action)
+    # Category changes:
+    if action == "pre_clear":
+        instance.categories_pre_clear = instance.categories
+    elif action in ["post_add", "post_remove"] or (action == "post_clear" and instance.categories_pre_clear):
+        if not hasattr(instance, 'change'):
+            parents = instance.Change.objects.filter(of=instance.parent)
+            if parents:
+                parent = parents[0]
+            else:
+                parent = None
+            instance.change = instance.Change(title=instance.title, slug=instance.slug, text=instance.text, url=instance.url,
+                of=instance, by=instance.user, comment=instance.comment, parent=parent )
+            instance.change.save()
+        instance.change.categories = instance.categories.all()
+        #instance.tags.add(*[tag.name for tag in instance.change.tags.all()])
+
+
+
 def changed_images(sender, instance, action, reverse, model, pk_set, **kwargs):
     #print("changed_images: %s" % action)
     if action == "pre_clear":
         instance.images_pre_clear = instance.images
     elif action in ["post_add", "post_remove"] or (action == "post_clear" and instance.images_pre_clear):
         if not hasattr(instance, 'change'):
+            parents = instance.Change.objects.filter(of=instance.parent)
+            if parents:
+                parent = parents[0]
+            else:
+                parent = None
             instance.change = instance.Change(title=instance.title, slug=instance.slug, text=instance.text, url=instance.url,
-                of=instance, by=instance.user)
+                of=instance, by=instance.user, comment=instance.comment, parent=parent)
             instance.change.save()
         instance.change.images = instance.images.all()
         #instance.tags = instance.change.tags.all()
