@@ -19,7 +19,8 @@ from forms import EntryForm, RelationForm, CategoryForm
 def index(request):
     ctx = {'entry': get('Data App'),
            'hierarchy': get('Data Hierarchy'),
-           'categories': get('Data Categories')}
+           'categories': get('Data Categories'),
+           'tags': get('Data Tags')}
     return render_to_response('data/index.html', ctx,
         context_instance=RequestContext(request))
 
