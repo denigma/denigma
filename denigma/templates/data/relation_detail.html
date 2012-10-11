@@ -59,8 +59,9 @@
                     {% endif %}
                 </div>
                 <br>
-                <p><b><a href={% url 'update-entry' object.fr.pk %}>Update entry</a></b>
-                (<a href="/admin/data/entry/{{ object.fr.pk }}/">Admin</a>)</p>
+                <p><b><a href={% url 'update-entry' object.fr.pk %}>Update</a></b>
+                (<a href="/admin/data/entry/{{ object.fr.pk }}/">Admin</a>) |
+                <b><a href={% url 'detail-entry' object.fr.pk %}>View</a></b></p>
             {% endblock %}
             <hr>
         </div>
@@ -94,8 +95,9 @@
                     {% endif %}
                 </div>
                 <br>
-                <p><b><a href={% url 'update-entry' object.be.pk %}>Update entry</a></b>
-                (<a href="/admin/data/entry/{{ object.be.pk }}">Admin</a>)</p>
+                <p><b><a href={% url 'update-entry' object.be.pk %}>Update</a></b>
+                (<a href="/admin/data/entry/{{ object.be.pk }}">Admin</a>) |
+                <b><a href={% url 'detail-entry' object.be.pk %}>View</a></b></p>
             {% endblock %}
             <hr>
         </div>
@@ -129,8 +131,9 @@
                     {% endif %}
                 </div>
                 <br>
-                <p><b><a href={% url 'update-entry' object.to.pk %}>Update entry</a></b>
-                (<a href="/admin/data/entry/{{ object.to.pk }}">Admin</a>)</p>
+                <p><b><a href={% url 'update-entry' object.to.pk %}>Update</a></b>
+                (<a href="/admin/data/entry/{{ object.to.pk }}">Admin</a>) |
+                <b><a href={% url 'detail-entry' object.to.pk %}>View</a></b></p>
             {% endblock %}
             <hr>
         </div>

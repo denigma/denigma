@@ -5,6 +5,8 @@
 {% load hyperlink %}
 {% load crosslink %}
 {% load sets %}
+{% load relations %}
+{% load commentaries %}
 
 {% block head_title %}{{ object.title }}{% endblock %}
 
@@ -54,12 +56,16 @@
             <a href={{ object.url }}>{{ object.url }}</a>
         </p>
     {% endif %}
-    {% if object.url %}<a href={{ object.get_absolute_url }}>View on site</a>{% endif %}
     <br>
     <b><a href={% url 'update-entry' object.pk %}>Update entry</a></b>
     (<a href="/admin/data/entry/{{ object.pk }}/">Admin</a>) |
-    <b><a href={% url 'changes' object.pk %}>See changes</a></b>
+    <b><a href={% url 'changes' object.pk %}>See changes</a></b> |
+    <b>{% if object.url %}<a href={{ object.get_absolute_url }}>View on site</a>{% endif %}</b>
     {% if user.is_superuser %}
         | <b><a href={% url 'delete-entry' object.pk %}>Delete</a></b>
     {% endif %}
+    <hr>
+    {% display_relations object.pk %}
+    <hr>
+    {% display_commentaries object.pk %}
 {% endblock %}

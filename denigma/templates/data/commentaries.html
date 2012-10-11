@@ -1,0 +1,6 @@
+{% if commentaries %}
+    <h3>Commentaries:</h3>
+    {% for commentary in commentaries %}
+        <blockquote><b><a href={{ commentary.fr.get_absolute_url }}>{{ commentary.fr.title }}</a>:</b> {{ commentary.fr.text }}</blockquote>
+    {% endfor %}
+{% endif %}
