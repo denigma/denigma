@@ -1,0 +1,24 @@
+{% load range %}
+
+{% if is_paginated %}
+    <div class="pagination">
+        <span class="page-links">
+            {% if page_obj.number != 1 %}
+                <a href="?page=1">first</a>
+            {% endif %}
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">prev</a>
+            {% endif %}
+            <span class="page-current">
+                <a href="?page={{ page_obj.number }}">Page {{ page_obj.number }} of {{  page_obj.paginator.num_pages }}</a>
+            </span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last</a>
+            {% endif %}
+            {% for i in page_obj.paginator.num_pages|get_range_plus_one %}
+                <a href="?page={{ i }}">{{ i }}</a>
+            {% endfor %}
+        </span>
+    </div>
+{% endif %}
