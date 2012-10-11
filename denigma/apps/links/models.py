@@ -7,6 +7,8 @@ from django.contrib.sites.models import Site
 from django.utils.translation import ugettext as _
 from django.conf import settings
 
+#from mptt.models import MPTTModel, TreeForeignKey
+
 #from tagging.fields import TagField
 #from tagging.models import Tag
 
@@ -20,11 +22,12 @@ class LinkPublishedManager(models.Manager):
             site=Site.objects.get_current(), visibility=True).order_by('ordering', '-creation')
 
 
-class Category(models.Model):
+class Category(models.Model): #MPTTModel
     """Category Model."""
     title = models.CharField(_('title'), max_length=150)
     slug = models.SlugField(_('slug'), help_text=_('Used for the URLs'))
     description = models.TextField(_('description'), blank=True)
+#    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
 
     def __unicode__(self):
         return self.title
@@ -33,6 +36,9 @@ class Category(models.Model):
         verbose_name = _('category')
         verbose_name_plural = _('categories')
         ordering = ('title',)
+
+#    class MPTTMeta:
+#        order_insertion_by = ['title']
 
 
 class Link(models.Model):
@@ -54,7 +60,7 @@ class Link(models.Model):
     site = models.ForeignKey(Site, verbose_name=_('site')) # Can also be ManyToMany()
     objects = models.Manager()
     published = LinkPublishedManager()
-#    tags = TagField()
+    #tags = TagField()
 
     def __unicode__(self):
         return self.title
