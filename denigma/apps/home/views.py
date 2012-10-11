@@ -6,8 +6,6 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import user_passes_test
 from forms import DynamicForm
 
-from blog.models import Post
-
 
 def home(request):
     return HttpResponse("Home Page")
