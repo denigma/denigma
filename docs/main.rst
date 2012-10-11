@@ -201,17 +201,24 @@ admin interface. In this way for instance the title can be changed
 [http://overtag.dk/wordpress/2010/04/changing-the-django-admin-site-title/].
 
 
+App Renaming
+------------
+A entire app can be renamed and the south migration history can be preserved by
+performing defined steps [http://stackoverflow.com/questions/4566978/renaming-an-app-with-django-and-south;
+dhttps://github.com/ASKBOT/django-south-app-rename-example/commit/f7f2218af612922416b4164adae589e86de19951
+
 Database Renaming
 -----------------
 
-There are several ways on how to rename a database. The simplist appears to use
+There are several ways on how to rename a database. The simplest appears to use
 a script which renames all tables in conjuction with another database table 
 [http://stackoverflow.com/questions/67093/how-do-i-quickly-rename-a-mysql-database-change-schema-name].
 
 
-Tagging
--------
-
+Tags
+----
+There are at least two major reusable django apps. one is django-tagging
+and the other is django-taggit
 Django tagging impairs south schema migration. It raises an NoMigration 
 exception similiar as reported for django.contrib.auth 
 [http://stackoverflow.com/questions/2845697/south-migration-error-nomigrations-exception-for-django-contrib-auth].
@@ -397,7 +404,7 @@ this issue entierly.
 Overflow
 --------
 
-Longer pages lead to the inlcusion of a scroll bar which provokes a shift of 
+Longer pages lead to the inclusion of a scroll bar which provokes a shift of
 the header to the left site.
 
 It can be avoided by enforcing the scrollbar for all pages 
@@ -713,7 +720,8 @@ MySQL-python was not installed after deployment.
 
 Hierarchy
 =========
-django-mptt enables the construction of relational tree structures.
+django-mptt enables the construction of relational tree structures
+[http://django-mptt.github.com/django-mptt/index.html#].
 To enable mptt needs added to the requirements, installed and added to the installed apps in Config: ::
 
      nano requirements/project.txt
@@ -748,8 +756,8 @@ migration. Simply specify 0 for those, but make sure to run in the ./manage.py s
 
     ./manage.py schemamigration annotations --auto
     ./manage.py migrate annotations
-    ./manage.py dbshell
-    from annotations import Classification
+    ./manage.py shell
+    from annotations.models import Classification
     Classification.objects.rebuild()
 
 That is it, the model should now support hierarchical structures.
@@ -772,7 +780,7 @@ and iterate over the recursetree passed data objects: ::
             <li>
                 {{ node.name }}
                 {% if not node.is_leaf_node %}
-                    <ul class="childreen">
+                    <ul class="children">
                         {{ children }}
                     </ul>
                 {% endif %}
@@ -780,3 +788,51 @@ and iterate over the recursetree passed data objects: ::
         {% endrecursetree %}
     </ul>
     ...
+
+An the name of parent attribute does not to be `parent`, but than has to be specified in the MPTTMeta class: ::
+
+    nano models.py
+    ...
+    MPTTMeta:
+        order_insertion_by = ['name']
+        parent_attr = 'category'
+    ...
+
+MPTT hierarchy can be integrated with the admin by subclasssing `MPTTModelAdmin` and registration: ::
+
+    nano admin.py
+    ...
+    from models import Classification
+    ...
+    from mptt.admin import MPTTModelAdmin
+    ...
+    class ClassificationAdmin(MPTTModelAdmin): pass
+    admin.site.register(Classification, ClassificationAdmin)
+
+However this works not well in combination with django-reversion. Either one can be used combined mixins do not
+work as both provide alternative template for the list view [http://django-mptt.github.com/django-mptt/mptt.admin.html].
+
+Hacker
+------
+A hacker is someone who strives to solve problems in elegant and ingenious
+ways. Part of the path to elegantly solving problems is to use tools that solve
+sub-problems very-well.
+
+
+QuerySet
+========
+
+Methods which force a query
+---------------------------
+* aggregate()
+* count()
+* create()
+* delete()
+* exists() # Takes whatever sets of filters are on the queryset asks whether an entry matches is and returns an Boolean.
+* get()
+* get_or_create()
+* in_bulk()
+* iterator()
+* latest()
+* update()
+#234567891123456789212345678931234567894123456789512345678961234567897123456789
