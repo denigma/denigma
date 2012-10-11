@@ -1,0 +1,35 @@
+{% extends "site_base.html" %}
+
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}Content{% endblock %}
+
+{% block hierarchy %}
+    > Content
+{% endblock hierarchy %}
+
+{% block title %}Content{% endblock %}
+
+{% block content %}
+    {% for content in contents %}
+        <table>
+            <tr>
+                <td valign="top">
+                    {% if content.title and content.title != "Content" %}
+                        <h3><a href="{{ content.get_absolute_url }}">{{ content.title }}</a></h3>
+                    {% endif %}
+                    {{ content.text|markdown|hyper|recross|safe }}
+                </td>
+                <td valign="top">
+                    {% for image in content.images.all %}
+                        <img <src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250" />
+                    {% endfor%}
+                </td>
+            </tr>
+        </table>
+        <hr>
+    {% endfor %}
+
+{% endblock %}
