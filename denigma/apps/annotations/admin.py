@@ -1,7 +1,9 @@
-from annotations.models import *
 from django.contrib import admin
 
 import reversion
+#from mptt.admin import MPTTModelAdmin
+
+from models import *
 
 
 class TissueAdmin(reversion.VersionAdmin):
@@ -40,7 +42,7 @@ class SpeciesAdmin(reversion.VersionAdmin):
 ##                    'latin_shortcut']
 
 
-class ClassificationAdmin(reversion.VersionAdmin):
+class ClassificationAdmin(reversion.VersionAdmin): # MPTTModelAdmin
     list_display = ('title', 'abbreviation', 'slug', 'description')
     search_fields = ['title', 'abbreviation', 'slug', 'description']
 
