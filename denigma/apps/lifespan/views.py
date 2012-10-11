@@ -202,7 +202,6 @@ def edit_study(request, pk):
                 reversion.set_comment(comment)
                 log(request, study, comment)
                 return redirect('/lifespan/study/%s' % pk)
-
     else:
         form = EditStudyForm(instance=study)
     ctx = {'form': form, 'study': study}
