@@ -25,6 +25,7 @@ urlpatterns = patterns("denigma.views",
     url(r'^google(?P<term>\w+)', 'google'),
     #url(r'^search/(?P<term>.*)', 'search'), # Side-wide search
     url(r'^search/', include('haystack.urls')),
+    url(r'^content/', 'content', name='content'),
     url(r'^404/$', direct_to_template, {'template':'404.html'}, name='404'),
     url(r'^500/$', direct_to_template, {'template':'500.html'}, name='505'),
 #    url(r'^', include('cms.urls')),
@@ -71,6 +72,7 @@ urlpatterns += patterns("",
     url(r'^time/', include('chrono.urls')),
     url(r'^meta/', include('meta.urls')),
     url(r'^aspects/', include('aspects.urls')),
+    #
     url(r'^data/', include('data.urls')),
     url(r'^eva/', include('eva.urls')),
 )
