@@ -30,10 +30,10 @@
     <div class="row">
         <div class="span4">
             {% block column-1 %}
-                <a href={{ hierarchy.get_absolute_url }}><h3>Hierarchy</h3></a>
-                {{ hierarchy.text|markdown|hyper|recross|safe }}
-                {% for image in hierarchy.images.all %}
-                    <a href={{ hierarchy.get_absolute_url }}><img src={{ image.url }} alt={{ image.name }} width="250" height="250"></a>
+                <a href={{ tags.get_absolute_url }}><h3>Tags</h3></a>
+                {{ tags.text|markdown|hyper|recross|safe }}
+                {% for image in tags.images.all %}
+                    <a href={{ tags.get_absolute_url }}><img src={{ image.url }} alt={{ image.name }} width="250" height="250"></a>
                 {% endfor %}
             {% endblock %}
         </div>
@@ -48,10 +48,10 @@
         </div>
         <div class="span4">
             {% block column-3 %}
-                <a href={{ tags.get_absolute_url }}><h3>Tags</h3></a>
-                {{ tags.text|markdown|hyper|recross|safe }}
-                {% for image in tags.images.all %}
-                    <a href={{ tags.get_absolute_url }}><img src={{ image.url }} alt={{ image.name }} width="250" height="250"></a>
+                <a href={{ hierarchy.get_absolute_url }}><h3>Hierarchy</h3></a>
+                {{ hierarchy.text|markdown|hyper|recross|safe }}
+                {% for image in hierarchy.images.all %}
+                    <a href={{ hierarchy.get_absolute_url }}><img src={{ image.url }} alt={{ image.name }} width="250" height="250"></a>
                 {% endfor %}
             {% endblock %}
         </div>
