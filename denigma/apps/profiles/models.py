@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
 
 from idios.models import ProfileBase
 
@@ -21,6 +22,12 @@ class Profile(ProfileBase):
 
     last_list_check = models.DateTimeField(blank=True, null=True)
 
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('profile-detail', args=[self.name])
+
     def promote(self, aspect, level):
         """Executes a promotion."""
         promoted = False
@@ -36,6 +43,7 @@ class Profile(ProfileBase):
             promoted = True
         self.save()
         return promoted
+
 
 
 class Rank(models.Model):
