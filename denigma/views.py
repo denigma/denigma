@@ -23,10 +23,8 @@ def home(request):
     searchform = SearchForm() # Depricated?
     denigma_description = get("Denigma Description")
     denigma_rationality = get("Denigma Rationality")
-    try:
-        news = Entry.objects.filter(tags__name='news').order_by('-created', '-id')[:8] # Fetches all news.
-    except:
-        news = Post.objects.filter(tags__name='news').order_by('-created', '-id')[:8]
+    news = Entry.objects.filter(tags__name='news').order_by('-created', '-id')[:8]\
+        or Post.objects.filter(tags__name='news').order_by('-created', '-id')[:8]
     research = get("Research")
     programming = get("Programming")
     design = get("Design")
