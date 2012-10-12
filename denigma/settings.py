@@ -231,7 +231,8 @@ INSTALLED_APPS = [
     'idios', # UserProfiles
     'metron',
     'south',   # Intelligent schema and data migrations.
-    'taggit',  # "tagging",
+    'taggit',
+    'tagging',
     'reversion',# Revision-control for models.
     'haystack', # Searching
     'django_tables2',
