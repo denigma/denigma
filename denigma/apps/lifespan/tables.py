@@ -1,5 +1,6 @@
-import django_tables2 as tables
 from django.utils.safestring import mark_safe
+
+import django_tables2 as tables
 
 from templatetags.pubmed_linker import pubmed_links
 
