@@ -21,24 +21,25 @@
                     <input type="submit" value="Search">
                 </td>
                 <td valign="top"">
+                <br><br>
                 {% if query %}
-                    <br><br>
                     <h3>Results</h3>
-
-                    {% for result in page.object_list %}
-                        {# {% if result.object.published %} #}
-                        <p>
-                            <b><a href="{{ result.object.get_absolute_url }}">{{ result.object }}</a></b>
-                            {% if result.object.categories %}
-                                (<a href={% url 'detail-entry' result.object.slug %}>View</a> |
-                                <a href={% url 'update-entry' result.object.pk %}>Update</a>)
-                            {% endif %}
-                        </p>
-                        {# {% endif %} #}
-                    {% empty %}
-                        <p>No results found.</p>
-                    {% endfor %}
-
+                    {%  if  page.object_list %}
+                        {% for result in page.object_list %}
+                            {# {% if result.object.published %} #}
+                            <p>
+                                <b><a href="{{ result.object.get_absolute_url }}">{{ result.object }}</a></b>
+                                {% if result.object.categories %}
+                                    (<a href={% url 'detail-entry' result.object.slug %}>View</a> |
+                                    <a href={% url 'update-entry' result.object.pk %}>Update</a>)
+                                {% endif %}
+                            </p>
+                            {# {% endif %} #}
+                        {% empty %}
+                            <p>No results found.</p>
+                        {% endfor %}
+                   {% endif %}
+                      <p>No results found</p>
                     {% if page.has_previous or page.has_next %}
                         <div>
                             {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
@@ -49,6 +50,7 @@
                     {% endif %}
                 {% else %}
                     {# Show some example queries to run, maybe query syntax, something else? #}
+                    <p>Search for instance for entries related to "aging".</p>
                 {% endif %}
                 </td>
             </tr>
