@@ -59,4 +59,9 @@ class Post(models.Model):
         verbose_name = _('Post')
         verbose_name_plural = _('Posts')
 
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, related_name='comments')
+    text = models.TextField()
+
 #23456789112345678921234567893123456789412346789512345678961234567897123456789   

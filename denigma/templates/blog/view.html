@@ -3,6 +3,7 @@
 {% load markup %}
 {% load hyperlink %}
 {% load crosslink %}
+{% load comments %}
 
 {% block head_title %}Post{% endblock %}
 
@@ -47,4 +48,10 @@
     <br>
     <b><a href="/blog/edit/{{ post.pk }}">Edit post</a></b> (<a href="/admin/blog/post/{{ post.pk }}">Admin</a>)
 
+    {% if post.comments.all %}
+        <hr>
+        <h3>Comments:</h3>
+        <br>
+        {% display_comments post.id %}
+    {% endif %}
 {% endblock %}

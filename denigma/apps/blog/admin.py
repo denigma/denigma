@@ -3,7 +3,7 @@ from django.contrib import admin
 
 import reversion
 
-from models import Post
+from models import Post, Comment
 
 
 class PostAdminForm(forms.ModelForm):
@@ -14,6 +14,9 @@ class PostAdminForm(forms.ModelForm):
     class Meta:
        model = Post
 
+class CommentInline(admin.TabularInline):
+    model = Comment
+
 
 class PostAdmin(reversion.VersionAdmin):
     list_display = ('title', 'brief', 'tagged', 'created', 'updated', 'published')
@@ -22,6 +25,8 @@ class PostAdmin(reversion.VersionAdmin):
     search_fields = ('title', 'text')#, 'tagged_items')
 
     form = PostAdminForm  
+
+    inlines = (CommentInline,)
 
     def tagged(self, obj):
         return ", ".join([tag.name for tag in obj.tags.all()])
@@ -41,4 +46,9 @@ class PostAdmin(reversion.VersionAdmin):
         return my_urls + urls
 
 
+class CommentAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(Post, PostAdmin)
+admin.site.register(Comment, CommentAdmin)
