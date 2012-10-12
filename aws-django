@@ -273,7 +273,7 @@ install_project() {
     sudo pip -E /home/$LOCAL_USER/env install distribute
     sudo pip -E /home/$LOCAL_USER/env install -r $PROJECT_ROOT/requirements/pre.txt
     sudo pip -E /home/$LOCAL_USER/env install -r $PROJECT_ROOT/requirements/project.txt
-    sudo pip -E /home/$LOCAL_USER/env install MySQLdb-python
+    sudo pip -E /home/$LOCAL_USER/env install MySQL-python
 }
 
 setup_statics() {

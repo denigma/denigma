@@ -5,7 +5,7 @@ from django.utils.translation import ugettext
 from django.contrib.auth.decorators import login_required
 
 
-from blog.models import Post
+from data import get
 
 
 @login_required
@@ -13,9 +13,9 @@ def matrix(request, number):
     """Welcome in the matrix!"""
     try: 
        if int(number) == 0: 
-          path = Post.objects.get(title="Paths of Truth")
+          path = get(title="Paths of Truth")
     except:
-       path = Post.objects.get(title__startswith="Path of Truth %s:" % number)
+       path = get(title__startswith="Path of Truth %s:" % number)
     return render_to_response('about/matrix.html', {'path': path, 'number': number},
                              context_instance=RequestContext(request))
 
@@ -26,7 +26,7 @@ def choice(request, number, color):
     elif color == "blue":
        path = "Lie"
     print "Path of Truth %s %s" % (number, color)
-    result = Post.objects.get(title="Path of Truth %s %s" % (number, color))
+    result = get(title="Path of Truth %s %s" % (number, color))
 
     ASPECTS = {'I':'rank', 'II':'grade', 'III':'title', 'IV':'role'}
     aspect = ASPECTS[number]
