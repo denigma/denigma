@@ -9,9 +9,6 @@
     <a href="/search/">Site-Wide Search</a>
 {% endblock hierarchy %}
 
-{% block options %}
-    <input type="submit" value="Search">
-{% endblock %}
 {# {% block title %}Search{% endblock %} #}
 
 {% block content %}
@@ -21,6 +18,7 @@
                 <td>
                     {{ form.as_p }}
                     &nbsp;
+                    <input type="submit" value="Search">
                 </td>
                 <td valign="top"">
                 {% if query %}
