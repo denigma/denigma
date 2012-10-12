@@ -8,7 +8,7 @@ class LogEntryAdmin(admin.ModelAdmin):
     date_hierarchy = 'action_time'
     readonly_fields = LogEntry._meta.get_all_field_names()
 
-    list_filter = ['user', 'content_type', 'action_flag']
+    list_filter = ['user', 'action_time', 'content_type', 'action_flag', ]
     search_fields = ['object_repr', 'change_message']
     list_display = ['action_time', 'user', 'content_type',
                     'object_link', 'action_flag', 'change_message']
