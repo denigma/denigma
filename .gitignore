@@ -18,6 +18,7 @@ ami.sh
 ev/
 env/
 envs/
+env14/
 
 # Machine-Specific Settings:
 local_settings.py
