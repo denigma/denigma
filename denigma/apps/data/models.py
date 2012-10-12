@@ -228,7 +228,8 @@ class Entry(Content):
         self.categories_pre_clear = [category.name for category in self.categories.all()]
 
     def __unicode__(self):
-        return "{0} - {1} ({2})".format(self.title, self.created.date(), self.created.time())
+        return self.title
+        #return "{0} - {1} ({2})".format(self.title, self.created.date(), self.created.time())
 
     def get_absolute_url(self):
         return self.url or reverse('detail-entry', args=[self.slug]) #return self.url or u"/data/entry/%s" % self.pk
@@ -236,6 +237,9 @@ class Entry(Content):
     def get_fields(self):
         """Displays only model fields that are non-empty."""
         return [(field.name, field.value_to_string(self)) for field in Entry._meta.fields if field.value_to_string(self) is not None]
+
+    def detail(self):
+        return reverse('detail-entry',args=[self.slug])
 
     class Meta:
         verbose_name_plural = "Entries"
@@ -508,6 +512,7 @@ class Alteration(models.Model):
 class Category(models.Model):
     name = models.CharField(_('name'), max_length=255, unique=True)
     synonyms = models.ManyToManyField('self', blank=True, verbose_name=_('synonyms'))
+    definition = models.ForeignKey('Entry', related_name=_('category'), blank=True, null=True)
 
     def __unicode__(self):
         return self.name
