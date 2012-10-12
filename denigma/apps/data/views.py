@@ -180,7 +180,7 @@ class Create(CreateView):
             log(self.request, self.object, comment)
             reversion.set_user(self.request.user)
             form.save_m2m()
-            self.success_url = self.object.get_absolute_url()
+            self.success_url = self.success_url or self.object.get_absolute_url()
             messages.add_message(self.request, messages.SUCCESS,
                 _(self.message % self.object))
             return HttpResponseRedirect(self.get_success_url())
@@ -193,9 +193,9 @@ class Update(UpdateView):
     message = 'Successfully updated %s'
     action = 'Update'
 
-    def post(self, request, pk):
+    def post(self, request, pk, *args, **kwargs):
         self.request = request
-        super(Update, self).post(request, pk)
+        super(Update, self).post(request, pk, *args, **kwargs)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):
@@ -206,6 +206,7 @@ class Update(UpdateView):
     def form_valid(self, form):
         with reversion.create_revision():
             self.object = form.save(commit=False)
+            print("self.object: %s" % self.object)
             if isinstance(self.request.user, AnonymousUser):
                 self.request.user = User.objects.get(username='Anonymous')
             self.object.user = self.request.user
@@ -216,7 +217,7 @@ class Update(UpdateView):
             log(self.request, self.object, comment)
             reversion.set_user(self.request.user)
             form.save_m2m()
-            self.success_url = self.object.get_absolute_url()
+            self.success_url = self.success_url or self.object.get_absolute_url()
             messages.add_message(self.request, messages.SUCCESS,
                 _(self.message % self.object))
             return HttpResponseRedirect(self.get_success_url())
