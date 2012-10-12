@@ -19,10 +19,18 @@
 {% block title %}Links{% endblock %}
 
 {% block content %}
-    {{ entry.text|markdown|hyper|recross|safe }}
-    {% for image in entry.images.all %}
-        <a href={{ image.url }}>{{ image.name }} width="250" height="250" />
-    {% endfor %}
+    <table>
+        <tr>
+            <td valign="top">
+                {{ entry.text|markdown|hyper|recross|safe }}
+            </td>
+            <td>
+                {% for image in entry.images.all %}
+                    <img src={{ image.url }} alt={{ image.name }} width="250" height="250" />
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
     <hr>
     <form action="" method="POST">
     {% csrf_token %}
