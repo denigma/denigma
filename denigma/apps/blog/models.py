@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.db.models import signals
 #from django.utils.encoding import python_2_unicode_compatible
 
 from taggit.managers import TaggableManager
@@ -10,6 +11,8 @@ try:
     from articles.manager import referencing
 except ImportError:
    print("No article manager for references available.")
+
+from handlers import notify_admin
 
 
 class Post(models.Model):
@@ -39,7 +42,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        if hasattr(self, 'url') and self.url:
+        if self.url:
             return self.url
         else:
             return '/blog/%i' % self.id
@@ -64,4 +67,6 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, related_name='comments')
     text = models.TextField()
 
+
+signals.post_save.connect(notify_admin, sender=Post)
 #23456789112345678921234567893123456789412346789512345678961234567897123456789   

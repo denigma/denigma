@@ -33,6 +33,17 @@ class PostAdmin(reversion.VersionAdmin):
 
     tagged.allow_tag = True
 
+    # Redirecting users to the post view after a save event:
+#    def change_view(self, request, object_id, extra_context=None, *args, **kwargs):
+#        result = super(PostAdmin, self).change_view(request, object_id, extra_context, *args, **kwargs)
+#        print type(result), vars(result)
+
+#        post = Post.objects.get(id__exact=object_id)
+#
+#        if not request.POST.has_key('_addanother') and not request.POST.has_key('_continue'):
+#            result['Location'] = post.get_absolute_url()
+#        return result
+
     # Custom Admin:
     def my_view(self, request):
         return admin_view(request, self)
