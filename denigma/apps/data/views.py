@@ -285,3 +285,9 @@ class CategoryCreate(Create):
     model = Category
     form_class = CategoryForm
     comment = 'Created category.'
+
+
+class CategoryUpdate(Update):
+    model = Category
+    form_class = CategoryForm
+    comment = 'Updated category.'
