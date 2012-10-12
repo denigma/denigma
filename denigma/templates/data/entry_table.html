@@ -18,4 +18,8 @@
 
 {% block content %}
     {% render_table object_list %}
+        {% if object_list %}
+    {% else %}
+        <p>Table empty.</p>
+    {% endif %}
 {% endblock %}
