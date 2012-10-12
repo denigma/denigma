@@ -12,24 +12,37 @@ from models import Entry, EntryDummy
 def get(*args, **kwargs): #title=None, text=None, tags=None, images=None, urls=None
     """Fetches an data entry according to its title."""
     data = []
-    #print len(args), args
-    for title in args:
+    print args
+    print kwargs
+#    if 'title' in kwargs:
+#        args.append(kwargs['title'])
+    args = list(args)
+    if not kwargs and len(kwargs) == 1:
+        kwargs['title'] = args[0]
+        del args[0]
+    if len(args) == 1:
+        kwargs['title'] = args[0]
+        del args[0]
+    print args, kwargs
+
+#    for title in args:
+    try:
+        entry = Entry.objects.get(*args, **kwargs)
+        data.append(entry)
+        #print("Got entry: %s" % entry)
+    except (Entry.DoesNotExist):
         try:
-            entry = Entry.objects.get(title=title)
+            post = Post.objects.get(*args, **kwargs)
+            data.append(post)
+        except (Post.DoesNotExist, Post.MultipleObjectsReturned) as e:
+            dummy = EntryDummy(*args, **kwargs)
+            data.append(dummy)
+        except (Entry.MultipleObjectsReturned) as e:
+            entry = Entry.objects.filter(*args, **kwargs)[0]
             data.append(entry)
-            #print("Got entry: %s" % entry)
-        except (Entry.DoesNotExist):
-            try:
-                post = Post.objects.get(title=title)
-                data.append(post)
-            except (Post.DoesNotExist, Post.MultipleObjectsReturned) as e:
-                dummy = EntryDummy(title=title, text=e)
-                data.append(dummy)
-            except (Entry.MultipleObjectsReturned) as e:
-                entry = Entry.objects.filter(title=title)[0]
-                data.append(entry)
-    if len(args) == 1: return data[0]
-    elif len(args) > 1: return data
+    print("data.control.get: data = %s" % data)
+    if len(data) == 1: return data[0]
+    elif len(data) > 1: return data
 
 
 def init(post=None):

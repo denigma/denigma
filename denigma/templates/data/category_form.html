@@ -1,0 +1,17 @@
+{% extends "data/base.html" %}
+
+{% load url from future %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ action }} Category{% endblock %}
+
+{% block hierarchy %}
+    > <a href={% url 'list-categories' %}>Categories</a>
+    > Create
+{% endblock %}
+
+{% block title %}{{ action }} Category{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

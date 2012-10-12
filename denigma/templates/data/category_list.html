@@ -1,0 +1,18 @@
+{% extends "data/base.html" %}
+
+{% load url from future %}
+
+{% block head_title %}Categories{% endblock %}
+
+{% block hierarchy %}
+    > Categories
+    | <a href={% url 'create-category' %}>Create</a>
+{% endblock %}
+
+{% block title %}Categories{% endblock %}
+
+{% block content %}
+    {% for category in object_list %}
+        <li><a href={{ category.get_absolute_url }}>{{ category }}</a></li>
+    {% endfor %}
+{% endblock %}

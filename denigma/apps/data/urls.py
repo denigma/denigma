@@ -2,8 +2,10 @@ from django.conf.urls import patterns, url
 from django.views.generic import  ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from models import Entry, Change, Relation, Alteration, Tag
-from views import EntryList, ChangeList, EntryCreate, EntryUpdate, RelationCreate, RelationUpdate
+from taggit.models import Tag
+
+from models import Entry, Change, Relation, Alteration,  Category #Tag,
+from views import EntryList, ChangeList, EntryCreate, EntryUpdate, RelationCreate, RelationUpdate, CategoryCreate, TagDetail
 
 
 urlpatterns = patterns('data.views',
@@ -69,14 +71,18 @@ urlpatterns = patterns('data.views',
     url(r'^alterations/$', 'alterations', name='alterations'),
     url(r'^alteration/(?P<slug>d+)', 'alteration', name='alteration'),
 
-    # Tags/Categories:
+    # Tags:
     ## Class-Views
-    url(r'^tags/list/$', ListView.as_view(queryset=Tag.objects.all()), name='list-entry-tags'), # Shows number of tagged entries.
-    url(r'^tag/(?P<pk>\d+)', DetailView.as_view(model=Tag), name='entry-tag-detail'), # Shows list of tagged entries.
+    url(r'^tags/list/$', ListView.as_view(queryset=Tag.objects.all(),
+        template_name='data/tag_list.html'), name='list-entry-tags'), # Shows number of tagged entries.
+    url(r'^tag/(?P<pk>\d+)', TagDetail.as_view(), name='entry-tag-detail'), # Shows list of tagged entries.
     ## Function-Views
     url(r'^tags/$', 'tags', name='entry-tags'),
     url(r'^tag/(?P<slug>.+)', 'tag', name='entry-tag'),
 
-    #url(r'^')
+    # Categories:
+    url(r'^categories/list/$', ListView.as_view(queryset=Category.objects.all(),), name='list-categories'),
+    url(r'^category/detail/(?P<pk>\d+)', DetailView.as_view(model=Category), name='detail-category'),
+    url(r'^category/create', CategoryCreate.as_view(), name='create-category'),
 
 )#234567891123456789212345678931234567894123456789512345678961234567897123456789

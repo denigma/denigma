@@ -135,6 +135,17 @@ class Entry(Content):
         super(Entry, self).__init__(*args, **kwargs)
         self.original = deepcopy(self)
 
+    def get_parent_change(self):
+        parents = Change.objects.filter(of=self.parent)
+        if parents:
+            parent = parents[0]
+        else:
+            parent = None
+            ## Alternative one-liners to fetch parent:
+            #parent = next(iter(Change.objects.filter(of=self.parent), None))
+            #parent, = Change.objects.filter(of=self.parent) or [None]
+        return parent
+
     def save(self, *args, **kwargs):
         #signals.tags_added.send("siste", tags="tags", instance="instance")
         self.Change = Change
@@ -152,33 +163,39 @@ class Entry(Content):
                     self.published = post.published
                     self.title = post.title
                     self.text = post.text
+                    parent = None
+                    self.change = Change(title=self.title, text=self.text, url=self.url, of=self,
+                        by=self.user, comment=self.comment, parent=parent, initial=True)
+                    self.change.save()
+
                     tags = post.tags.all()
                     if tags:
                         signals.tags_added.send("Post", tags=tags, instance=self)
-                    # Deactivate.
                     for tag in tags:
                         tag, created = Tag.objects.get_or_create(name=tag.name)
                         self.tagged.add(tag)
                         #self.tagged =  Tag.objects.all()
+                    self.tags_pre_clear = [tag.name for tag in self.tags.all()]
+
+                    # Deactivate.
+
                     self.images = post.images.all()
 
                 except Exception as e:
                     print("data.models.Entry.save: %s (%s %s)" % (e, post.pk, post.title))
 
-            parents = Change.objects.filter(of=self.parent)
-            if parents:
-                parent = parents[0]
             else:
-                parent = None
-            #parent = next(iter(Change.objects.filter(of=self.parent), None)) # Alterative one-liner to fetch parent.
-            #parent, = Change.objects.filter(of=self.parent) or [None]
-            self.change = Change(title=self.title, text=self.text, url=self.url, of=self, by=self.user,
-                 comment=self.comment, parent=parent, initial=True)
-            #initial.tags = self.tags.all()
-            self.change.save()
-            self.tags_pre_clear = [tag.name for tag in self.tags.all()]
-            self.categories_pre_clear = [category.name for category in self.categories.all()]
-
+                print("data.models.Entry.save(): Searching for parent")
+                parent = self.get_parent_change()
+                self.change = Change(title=self.title, text=self.text, url=self.url,
+                    of=self, by=self.user, comment=self.comment, parent=parent, initial=True)
+                #print("data.models.Entry.save(): self.change = %s" % self.change)
+                #initial.tags = self.tags.all()
+                self.change.save()
+                self.tags_pre_clear = [tag.name for tag in self.tags.all()]
+                self.categories_pre_clear = [category.name for category in
+                                             self.categories.all()]
+#2345678911234567892123456789312345678941234567895123456789612345678961234567897123456789
         else:
             changes = []
             #print("Title %s vs. %s" % (self.title, self.original.title))
@@ -194,12 +211,9 @@ class Entry(Content):
                 changes.append('parent')
 
             if changes:
-                print(changes)
-                parents = Change.objects.filter(of=self.parent)
-                if parents:
-                    parent = parents[0]
-                else:
-                    parent = None
+                #print(changes)
+                #parent = Change.objects.filter(of=self.parent)
+                parent = self.get_parent_change()
                 self.change = Change(title=self.title, slug=self.slug, text=self.text, url=self.url,
                     of=self, by=self.user, comment=self.comment, parent=parent)
 
@@ -287,11 +301,11 @@ class Change(Content):
         self_categories = [category.name for category in self.categories.all()]
         if  previous_categories != self_categories:
             differences.append('Categories')
-        if  previous.url != self.url:
+        if  previous.url != self.url and not (not previous.url and not self.url): # In the case the url are '' and None.
             differences.append('URL')
         if [image.name for image in previous.images.all()] != [image.name for image in self.images.all()]:
             differences.append('Images')
-        print previous.of.parent, self.of.parent
+        print previous.parent, self.parent
         if previous.parent != self.parent:
             differences.append('Parent')
 
@@ -337,17 +351,20 @@ class Change(Content):
         else:
             changes.tags_added = changes.tags_removed = []
             changes.tags = self_tags
+        print previous_tags, self_tags
 
         # Categories:
         previous_categories = set([category.name for category in previous.categories.all()])
         self_categories = set([category.name for category in self.categories.all()])
         if previous_categories != self_categories:
-            changes.added_categories = list(self_categories - previous_categories)
-            changes.removed_categories = list(previous_categories - self_categories)
+            changes.categories_added = list(self_categories - previous_categories)
+            changes.categories_removed = list(previous_categories - self_categories)
             changes.categories = previous_categories & self_categories
+            changes.categories_changed = True
         else:
-            changes.added_categories = changes.removed_categories = []
-            changes.categories = self.categories
+            changes.categories_added = changes.categories_removed = []
+            changes.categories = self_categories
+            changes.categories_changed = False
 
         # Parent:
         if previous.parent != self.parent:
@@ -355,6 +372,22 @@ class Change(Content):
         else:
             changes.previous_parent = None
         changes.parent = changes.current_parent = self.parent
+
+        print("Previous, current, parent: %s %s %s" % (changes.previous_parent, changes.current_parent, self.parent))
+
+        # Images:
+        previous_images = set([image.name() for image in previous.images.all()])
+        self_images = set([image.name() for image in self.images.all()])
+        if previous_images != self_images:
+            changes.images_added = list(self_images - previous_images)
+            changes.images_removed = list(previous_images - self_images)
+            changes.images = previous_images & self_images
+            changes.images_changed = True
+        else:
+            changes.images_added = changes.images_removed = []
+            changes.images = self_images
+            changes.images_changed = False
+        print changes.images_added, changes.images_removed
 
 #        if [tag.name for tag in previous.tagged.all()] != [tag.name for tag in self.tagged.all()]:
 #            differences.append('Tagged')
@@ -376,7 +409,7 @@ class Tag(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('entry-tag', [self.name]) #u"/data/tag/%s" % self.pk
+        return reverse('entry-tag', args=[self.name]) #u"/data/tag/%s" % self.pk
 
 class Category(models.Model):
     name = models.CharField(_('name'), max_length=255, unique=True)
@@ -386,7 +419,7 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('category', [self.pk])
+        return reverse('detail-category', args=[self.pk])
 
     class Meta:
         verbose_name_plural = 'Categories'
@@ -506,12 +539,12 @@ class EntryDummy(object):
 #post_save.connect(handlers.model_saved, sender=Entry)
 #reversion.pre_revision_commit.connect(handlers.pre_revision, sender=Entry)
 #reversion.post_revision_commit.connect(handlers.post_revision, sender=Entry)
+
+
 m2m_changed.connect(handlers.changed_tags, sender=Entry.tags.through)
 m2m_changed.connect(handlers.changed_tagged, sender=Entry.tagged.through)
 m2m_changed.connect(handlers.changed_categories, sender=Entry.images.through)
 m2m_changed.connect(handlers.changed_images, sender=Entry.images.through)
-message_sent.connect(handlers.message_sent)
-
+#message_sent.connect(handlers.message_sent)
 signals.tags_added.connect(handlers.adding_tags)
 
-#2345678911234567892123456789312345678941234567895123456789612345678961234567897123456789

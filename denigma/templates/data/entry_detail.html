@@ -19,11 +19,12 @@
     <p>
         Created on {{ object.created }} by <a href={% url 'profile_detail' object.creator %}>{{ object.creator }}</a>
         {% if object.updates.all %}
-            & updated by
-            {% for updater in object.updates.all|unique %}
-                {{ update.name }}
-                <a href={{ updater.get_absolute_url }}>{{ updater }}</a>
-            {% endfor %}
+                & updated by
+                {% for updater in object.updates.all|unique %}
+                    {# {% if updater != object.creator %}{% endif %} #}
+                        <a href={{ updater.get_absolute_url }}>{{ updater }}</a>
+
+                {% endfor %}
         {% endif %}
     </p>
     {{ object.text|markdown|hyper|recross|safe }}

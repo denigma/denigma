@@ -13,7 +13,7 @@ def matrix(request, number):
     """Welcome in the matrix!"""
     try: 
        if int(number) == 0: 
-          path = get(title="Paths of Truth")
+          path = get("Paths of Truth")
     except:
        path = get(title__startswith="Path of Truth %s:" % number)
     return render_to_response('about/matrix.html', {'path': path, 'number': number},
@@ -26,7 +26,7 @@ def choice(request, number, color):
     elif color == "blue":
        path = "Lie"
     print "Path of Truth %s %s" % (number, color)
-    result = get(title="Path of Truth %s %s" % (number, color))
+    result = get("Path of Truth %s %s" % (number, color))
 
     ASPECTS = {'I':'rank', 'II':'grade', 'III':'title', 'IV':'role'}
     aspect = ASPECTS[number]

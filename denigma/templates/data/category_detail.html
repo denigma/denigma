@@ -1,0 +1,21 @@
+{% extends "data/base.html" %}
+
+{% load url from future %}
+
+{% block head_title %}{{ object }}{% endblock %}
+
+{% block hierarchy %}
+    > <a href={% url 'list-categories' %}>Categories</a>
+    > Category
+    = {{ object }}
+{% endblock %}
+
+{% block title %}{{ object }}{% endblock %}
+
+{% block content %}
+    {% if object.entry_set.all %}
+        {% for entry in object.entry_set.all %}
+            <a href={{ entry.get_absolute_url }}>{{ entry.title }}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

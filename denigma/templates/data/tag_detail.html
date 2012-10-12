@@ -1,0 +1,43 @@
+{% extends "data/base.html" %}
+
+{% load url from future %}
+
+{% block head_title %}{% endblock %}
+
+{% block hierarchy %}
+    > <a href={% url 'list-entry-tags' %}>Tags</a>
+    > Tag
+    = {{ tag }}
+{% endblock %}
+
+{% block title %}{{ tag }}{% endblock %}
+
+{% block content %}
+        {% for object in object_list %}
+            <li>{# {{ object.created|date:"Y-m-d" }}: #}
+            <a href={{ object.get_absolute_url }}>{{ object }}</a>
+            {# ({{ object.updated|date:"Y-m-d" }}) #}</li>
+        {% endfor %}
+{% endblock %}
+    {% comment %}
+    {% if object.entry_set.all %}
+        <p>
+            {% for entry in object.entry_set.all %}
+                {{ entry.created|date:"Y-m-d" }}:
+                <a href={{ entry.get_absolute_url }}>{{ entry }}</a>
+                ({{ entry.updated|date:"Y-m-d" }})
+            {% endfor %}
+        </p>
+    {% else %}
+            <p>
+                {% for post in object.post_set.all %}
+                    {{ post.created|date:"Y-m-d" }}:
+                    <a href={{ post.get_absolute_url }}>{{ post }}</a>
+                    ({{ post.updated|date:"Y-m-d" }})
+                {% endfor %}
+            </p>
+    {% endif %}
+    {% endcomment %}
+
+
+

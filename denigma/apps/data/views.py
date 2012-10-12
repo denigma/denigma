@@ -4,15 +4,16 @@ from django.template import RequestContext
 from django.views.generic import CreateView, ListView, UpdateView
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
-
+from django.contrib.auth.models import AnonymousUser, User
 
 import reversion
+from taggit.models import TaggedItem
 
 from meta.view import log
 from control import get
 
-from models import Entry, Change, Relation
-from forms import EntryForm, RelationForm
+from models import Entry, Change, Relation, Category
+from forms import EntryForm, RelationForm, CategoryForm
 
 
 def index(request):
@@ -88,11 +89,54 @@ class ChangeList(ListView): # Not functional.
     def dispatch(self, *args, **kwargs):
         return render_to_response('data/change_list.html')
 
+class TagDetail(ListView):
+    def dispatch(self, *args, **kwargs):
+        items = TaggedItem.objects.filter(tag__pk=kwargs['pk'])
+        print items
+        return render_to_response('data/tag_detail.html', {'object_list': items})
+            #context_instance=RequestContext(request))
+
+
+class View(object):
+    comment = 'Viewed it.'
+    message = 'Viewing'
+    action = 'View'
+
+    def post(self, request):
+        self.request = request
+        super(View, self).post(request)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super(View, self).get_context_data(**kwargs)
+        context['action'] = self.action
+        return context
+
+    def form_valid(self, form):
+        with reversion.create_revision():
+            self.object = form.save(commit=False)
+            if isinstance(self.request.user, AnonymousUser):
+                self.request.user = User.objects.get(username='Anonymous')
+            self.object.user = self.request.user
+            comment = self.request.POST['comment'] or self.comment
+            reversion.set_comment(comment)
+            self.object.comment = comment
+            self.object.save()
+            log(self.request, self.object, comment)
+            reversion.set_user(self.request.user)
+            form.save_m2m()
+            self.success_url = self.object.get_absolute_url()
+            messages.add_message(self.request, messages.SUCCESS,
+                _(self.message % self.object))
+            return HttpResponseRedirect(self.get_success_url())
+
+
 class Create(CreateView):
     model = Entry
     form_class = EntryForm
     comment = 'Created entry.'
     message = 'Successfully created %s'
+    action = 'Create'
 
     def post(self, request):
         self.request = request
@@ -101,12 +145,14 @@ class Create(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(Create, self).get_context_data(**kwargs)
-        context['action'] = 'Create'
+        context['action'] = self.action
         return context
 
     def form_valid(self, form):
         with reversion.create_revision():
             self.object = form.save(commit=False)
+            if isinstance(self.request.user, AnonymousUser):
+                self.request.user = User.objects.get(username='Anonymous')
             self.object.user = self.request.user
             comment = self.request.POST['comment'] or self.comment
             reversion.set_comment(comment)
@@ -125,7 +171,8 @@ class Update(UpdateView):
     model = Entry
     form_class = EntryForm
     comment = 'Updated entry'
-    message= 'Successfully updated %s'
+    message = 'Successfully updated %s'
+    action = 'Update'
 
     def post(self, request, pk):
         self.request = request
@@ -134,12 +181,14 @@ class Update(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(Update, self).get_context_data(**kwargs)
-        context['action'] = 'Update'
+        context['action'] = self.action
         return context
 
     def form_valid(self, form):
         with reversion.create_revision():
             self.object = form.save(commit=False)
+            if isinstance(self.request.user, AnonymousUser):
+                self.request.user = User.objects.get(username='Anonymous')
             self.object.user = self.request.user
             comment = self.request.POST['comment'] or self.comment
             reversion.set_comment(comment)
@@ -177,4 +226,8 @@ class RelationUpdate(Update):
     form_class = RelationForm
     comment = 'Updated relation'
 
+class CategoryCreate(Create):
+    model = Category
+    form_class = CategoryForm
+    comment = 'Created category'
 

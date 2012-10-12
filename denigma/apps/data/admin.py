@@ -43,7 +43,7 @@ class TagAdmin(reversion.VersionAdmin):
 
 class ChangeAdmin(admin.ModelAdmin):
     search_fields = ('title', 'text')
-    order_by  = ('-at',)
+    order_by  = ('at',)
 
 
 admin.site.register(Entry, EntryAdmin)

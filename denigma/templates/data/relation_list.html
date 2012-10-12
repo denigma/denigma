@@ -13,17 +13,18 @@
 {% block title %}Relation List{% endblock %}
 
 {% block content %}
-    {% for relation in object_list %}
-        <b><a href={{ relation.get_absolute_url }}>o
-        </a></b>
-        <a href={{ relation.fr.get_absolute_url }}>{{ relation.fr.title }}</a>
-        -<a href={{ relation.be.get_absolute_url }}>{{ relation.be.title }}</a>->
-        <a href={{ relation.to.get_absolute_url }}>{{ relation.to.title }}</a>
-        created on {{ relation.created }}
-        by <a href={{ relation.creator.get_absolute_url }}>{{ relation.creator }}</a>
-        updated on {{ relation.updated }}<br>
-    {% endfor %}
-    <br>
+    <div>
+        {% for relation in object_list %}
+            <b><a href={{ relation.get_absolute_url }}>o
+            </a></b>
+            <a href={{ relation.fr.get_absolute_url }}>{{ relation.fr.title }}</a>
+            -<a href={{ relation.be.get_absolute_url }}>{{ relation.be.title }}</a>->
+            <a href={{ relation.to.get_absolute_url }}>{{ relation.to.title }}</a>
+            created on {{ relation.created }}
+            by <a href={{ relation.creator.get_absolute_url }}>{{ relation.creator }}</a>
+            updated on {{ relation.updated }}<br>
+        {% endfor %}
+    </div>
     <b><a href={% url 'create-relation' %}>Create relation</a></b>
     (<a href="/admin/data/relation/add/">Admin</a>)
 {% endblock %}
