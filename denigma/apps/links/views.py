@@ -66,9 +66,9 @@ class Links(SingleTableView, FormView, LinkView):
             return Link.objects.filter(Q(title__icontains=Links.query) |
                                        Q(description__icontains=Links.query) #|
                                        #Q(category__title=Links.query)
-                                      )
+                                      ).order_by('-creation')
         else:
-            return Link.objects.all()
+            return Link.objects.all().order_by('-creation')
 
 
 class LinkList(ListView):
