@@ -57,7 +57,7 @@ class CategoryForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
         self.helper.layout = Layout(
-            Fieldset('', 'name', 'synonyms', 'comment'),
+            Fieldset('', 'name', 'definition', 'synonyms', 'comment'),
             FormActions(Submit('save', 'Save', css_class='btn-primary'),
                 Submit('cancel', 'Cancel'))
         )
