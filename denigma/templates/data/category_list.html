@@ -14,7 +14,7 @@
 {% block content %}
     {% if object_list %}
         {% for category in object_list %}
-            <li><a href={{ category.get_absolute_url }}>{{ category }}</a></li>
+            <li><b><a href={{ category.get_absolute_url }}>{{ category }}</a></b>: {{ category.definition.text }}</li>
         {% endfor %}
     {% else %}
         <p>No data categories.</p>
