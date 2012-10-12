@@ -6,7 +6,9 @@ from taggit.models import Tag
 
 from models import Entry, Change, Relation, Alteration,  Category
 from views import EntryList, EntryView,  EntryCreate, EntryUpdate, EntryDelete,\
-                  ChangeList, RelationCreate, RelationUpdate, CategoryCreate, TagDetail
+                  ChangeList, \
+                  RelationCreate, RelationUpdate, \
+                  CategoryCreate, CategoryUpdate, TagDetail
 
 
 urlpatterns = patterns('data.views',
@@ -88,5 +90,6 @@ urlpatterns = patterns('data.views',
     url(r'^category/detail/(?P<pk>\d+)', DetailView.as_view(model=Category), name='detail-category'),
     #url(r'^category/detail/(?P<slug>.+)', DetailView.as_view)
     url(r'^category/create', CategoryCreate.as_view(), name='create-category'),
+    url(r'^category/update/(?P<pk>\d+)', CategoryUpdate.as_view(), name='update-category'),
 
 )#234567891123456789212345678931234567894123456789512345678961234567897123456789
