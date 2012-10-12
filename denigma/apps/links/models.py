@@ -9,8 +9,8 @@ from django.conf import settings
 
 #from mptt.models import MPTTModel, TreeForeignKey
 
-#from tagging.fields import TagField
-#from tagging.models import Tag
+from tagging.fields import TagField
+from tagging.models import Tag
 
 
 class LinkPublishedManager(models.Manager):
@@ -40,6 +40,8 @@ class Category(models.Model): #MPTTModel
 #    class MPTTMeta:
 #        order_insertion_by = ['title']
 
+def get_site():
+    return Site.objects.get(domain='denigma.de')
 
 class Link(models.Model):
     """Link Model."""
@@ -57,10 +59,12 @@ class Link(models.Model):
                                              default=datetime.now)
     publication_end = models.DateTimeField(_('publication end'),
                                            default=datetime(2042, 3, 15))
-    site = models.ForeignKey(Site, verbose_name=_('site')) # Can also be ManyToMany()
+    site = models.ForeignKey(Site, verbose_name=_('site'), default=get_site) # Can also be ManyToMany()
     objects = models.Manager()
     published = LinkPublishedManager()
-    #tags = TagField()
+    tags = TagField()
+
+
 
     def __unicode__(self):
         return self.title
