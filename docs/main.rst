@@ -8,7 +8,7 @@ very beginning. Every decision is documented as well as every issue
 encountered including the corresponding found solution to it.
 
 In contrast to papers and reviews, in Denigma *the ink is never dry*.
-It changes continously until it gets it absoluty right.
+It changes continously until it gets it absolutly right.
 
 
 Deploying Denigma
@@ -818,21 +818,4 @@ A hacker is someone who strives to solve problems in elegant and ingenious
 ways. Part of the path to elegantly solving problems is to use tools that solve
 sub-problems very-well.
 
-
-QuerySet
-========
-
-Methods which force a query
----------------------------
-* aggregate()
-* count()
-* create()
-* delete()
-* exists() # Takes whatever sets of filters are on the queryset asks whether an entry matches is and returns an Boolean.
-* get()
-* get_or_create()
-* in_bulk()
-* iterator()
-* latest()
-* update()
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
