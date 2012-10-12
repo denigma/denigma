@@ -24,7 +24,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Post'},
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'images': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['gallery.PhotoUrl']", 'symmetrical': 'False', 'blank': 'True'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['media.PhotoUrl']", 'symmetrical': 'False', 'blank': 'True'}),
             'published': ('django.db.models.fields.BooleanField', [], {'default': 'True', 'db_index': 'True'}),
             'text': ('django.db.models.fields.TextField', [], {}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '250'}),
@@ -38,7 +38,7 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        'gallery.photourl': {
+        'media.photourl': {
             'Meta': {'object_name': 'PhotoUrl'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'uploaded': ('django.db.models.fields.DateTimeField', [], {}),

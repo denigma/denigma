@@ -68,7 +68,7 @@ class Content(Title):
 
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
     url = models.CharField(_('url'), max_length=255, blank=True, null=True) #,
-    images = models.ManyToManyField('gallery.PhotoUrl', blank=True, verbose_name=_('images'))
+    images = models.ManyToManyField('media.PhotoUrl', blank=True, verbose_name=_('images'))
 
     def save(self, *args, **kwargs):
         print("%s content model save() called" % self.__class__)

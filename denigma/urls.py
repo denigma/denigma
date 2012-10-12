@@ -48,7 +48,7 @@ urlpatterns += patterns("",
     url(r'^shorty/$', 'shorty.views.home'),
     url(r'^e/([^/]+)/', 'shorty.views.manage', name='source'),
     url(r'^url/(\w+)/', 'shorty.views.visit', name='visit'),
-    url(r'^gallery/', include('gallery.urls')),
+    url(r'^media/', include('media.urls')),
     url(r'^blogs/', include('blogs.urls')),
     url(r'^blog/', include('blog.urls')),
     url(r'^news/$', include('news.urls')), # Blogs is currently functioning as news medium.

@@ -265,7 +265,7 @@ class Migration(SchemaMigration):
             'gendr_genes': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'gendr_orthologs': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'gendr_paralogs': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'images': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['gallery.PhotoUrl']", 'symmetrical': 'False', 'blank': 'True'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['media.PhotoUrl']", 'symmetrical': 'False', 'blank': 'True'}),
             'latin_name': ('django.db.models.fields.CharField', [], {'max_length': '25', 'blank': 'True'}),
             'latin_shortcut': ('django.db.models.fields.CharField', [], {'max_length': '15', 'blank': 'True'}),
             'main_model': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
@@ -297,7 +297,7 @@ class Migration(SchemaMigration):
             'gestation': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'growth_rate': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'images': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['gallery.PhotoUrl']", 'symmetrical': 'False', 'blank': 'True'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['media.PhotoUrl']", 'symmetrical': 'False', 'blank': 'True'}),
             'imr': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
             'in_parts': ('django.db.models.fields.CharField', [], {'max_length': '366', 'blank': 'True'}),
             'includes': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
@@ -354,12 +354,12 @@ class Migration(SchemaMigration):
             'hierarchy': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'identifier': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'images': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['gallery.PhotoUrl']", 'symmetrical': 'False', 'blank': 'True'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['media.PhotoUrl']", 'symmetrical': 'False', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'notes': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'synonyms': ('django.db.models.fields.TextField', [], {'blank': 'True'})
         },
-        'gallery.photourl': {
+        'media.photourl': {
             'Meta': {'object_name': 'PhotoUrl'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'uploaded': ('django.db.models.fields.DateTimeField', [], {}),

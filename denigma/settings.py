@@ -250,7 +250,7 @@ INSTALLED_APPS = [
     'polls',
     'wiki',
     'southtut',
-    'gallery',    
+    'media',
     'blogs',
     'blog',
     'links',

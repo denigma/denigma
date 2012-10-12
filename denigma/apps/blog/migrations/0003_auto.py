@@ -12,7 +12,7 @@ class Migration(SchemaMigration):
         db.create_table('blog_post_images', (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
             ('post', models.ForeignKey(orm['blog.post'], null=False)),
-            ('photourl', models.ForeignKey(orm['gallery.photourl'], null=False))
+            ('photourl', models.ForeignKey(orm['media.photourl'], null=False))
         ))
         db.create_unique('blog_post_images', ['post_id', 'photourl_id'])
 
@@ -27,7 +27,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Post'},
             'created': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'images': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['gallery.PhotoUrl']", 'symmetrical': 'False'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['media.PhotoUrl']", 'symmetrical': 'False'}),
             'text': ('django.db.models.fields.TextField', [], {}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '250'}),
             'updated': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
@@ -39,7 +39,7 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        'gallery.photourl': {
+        'media.photourl': {
             'Meta': {'object_name': 'PhotoUrl'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'uploaded': ('django.db.models.fields.DateTimeField', [], {}),

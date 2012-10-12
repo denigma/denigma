@@ -4,7 +4,7 @@ from django.db import models
 class Abstract(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(blank=True, null=True)
-    symbol = models.ForeignKey('gallery.PhotoUrl', blank=True, null=True)
+    symbol = models.ForeignKey('media.PhotoUrl', blank=True, null=True)
     requirement = models.CharField(max_length=255, blank=True, null=True)
     level = models.IntegerField(blank=True, null=True)
     class Meta:

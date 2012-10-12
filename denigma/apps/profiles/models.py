@@ -60,7 +60,7 @@ class Grade(models.Model):
     """A developer programming grade in marshal arts convention."""
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(blank=True, null=True)
-    symbol = models.ForeignKey('gallery.PhotoUrl', blank=True, null=True)
+    symbol = models.ForeignKey('media.PhotoUrl', blank=True, null=True)
     requirement = models.CharField(max_length=255, blank=True, null=True)
 
     def __unicode__(self):
@@ -71,7 +71,7 @@ class Title(models.Model): # Degree
     """An artistic designer degree in spirituell christian schema."""
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(blank=True, null=True)
-    symbol = models.ForeignKey('gallery.PhotoUrl', blank=True, null=True)
+    symbol = models.ForeignKey('media.PhotoUrl', blank=True, null=True)
     requirement = models.CharField(max_length=255, blank=True, null=True)
 
     def __unicode__(self):
@@ -82,7 +82,7 @@ class Role(models.Model):
     """A special appointed role."""
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(blank=True, null=True)
-    symbol = models.ForeignKey('gallery.PhotoUrl', blank=True, null=True)
+    symbol = models.ForeignKey('media.PhotoUrl', blank=True, null=True)
 
     def __unicode__(self):
         return self.name

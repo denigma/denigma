@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'Role.symbol'
         db.add_column('profiles_role', 'symbol',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['gallery.PhotoUrl'], null=True, blank=True),
+                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['media.PhotoUrl'], null=True, blank=True),
                       keep_default=False)
 
 
@@ -56,7 +56,7 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        'gallery.photourl': {
+        'media.photourl': {
             'Meta': {'object_name': 'PhotoUrl'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'uploaded': ('django.db.models.fields.DateTimeField', [], {}),
@@ -94,7 +94,7 @@ class Migration(SchemaMigration):
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
-            'symbol': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['gallery.PhotoUrl']", 'null': 'True', 'blank': 'True'})
+            'symbol': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['media.PhotoUrl']", 'null': 'True', 'blank': 'True'})
         },
         'profiles.title': {
             'Meta': {'object_name': 'Title'},
