@@ -1,0 +1,10 @@
+{% extends "admin/change_form.html" %}
+
+{% load comments %}
+
+{% block after_field_sets %}
+    {% if object_id %}
+        {% display_comments object_id %}
+    {% endif %}
+
+{% endblock %}
