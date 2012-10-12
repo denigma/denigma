@@ -14,7 +14,7 @@ class Migration(SchemaMigration):
             ('url', self.gf('django.db.models.fields.CharField')(max_length=128)),
             ('uploaded', self.gf('django.db.models.fields.DateTimeField')()),
         ))
-        db.send_create_signal('gallery', ['PhotoUrl'])
+        db.send_create_signal('media', ['PhotoUrl'])
 
 
     def backwards(self, orm):
@@ -24,7 +24,7 @@ class Migration(SchemaMigration):
 
 
     models = {
-        'gallery.photourl': {
+        'media.photourl': {
             'Meta': {'object_name': 'PhotoUrl'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'uploaded': ('django.db.models.fields.DateTimeField', [], {}),
@@ -32,4 +32,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['gallery']
+    complete_apps = ['media']

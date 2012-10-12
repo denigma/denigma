@@ -1,4 +1,4 @@
 from django.conf.urls.defaults import patterns
 
-urlpatterns = patterns('gallery.views',
+urlpatterns = patterns('media.views',
     (r'^$', 'index'),)
