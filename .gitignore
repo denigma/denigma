@@ -8,6 +8,7 @@ whoosh_index
 memo
 output*
 name=*
+.idea/
 
 # Access Keys:
 ami.sh
