@@ -48,7 +48,7 @@ class Migration(SchemaMigration):
             'level': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
             'requirement': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'symbol': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['media.PhotoUrl']", 'null': 'True', 'blank': 'True'}),
+            'symbol': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['media.Image']", 'null': 'True', 'blank': 'True'}),
             'type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['aspects.HierarchyType']", 'null': 'True', 'blank': 'True'})
         },
         'aspects.hierarchytype': {
@@ -58,7 +58,7 @@ class Migration(SchemaMigration):
             'level': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
             'requirement': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'symbol': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['media.PhotoUrl']", 'null': 'True', 'blank': 'True'})
+            'symbol': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['media.Image']", 'null': 'True', 'blank': 'True'})
         },
         'aspects.language': {
             'Meta': {'object_name': 'Language'},
@@ -67,7 +67,7 @@ class Migration(SchemaMigration):
             'level': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '255'}),
             'requirement': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'symbol': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['media.PhotoUrl']", 'null': 'True', 'blank': 'True'})
+            'symbol': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['media.Image']", 'null': 'True', 'blank': 'True'})
         },
         'aspects.rank': {
             'Meta': {'object_name': 'Rank', '_ormbases': ['aspects.Hierarchy']},
@@ -82,7 +82,7 @@ class Migration(SchemaMigration):
             'hierarchy_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['aspects.Hierarchy']", 'unique': 'True', 'primary_key': 'True'})
         },
         'media.photourl': {
-            'Meta': {'object_name': 'PhotoUrl'},
+            'Meta': {'object_name': 'Image'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'uploaded': ('django.db.models.fields.DateTimeField', [], {}),
             'url': ('django.db.models.fields.CharField', [], {'max_length': '128'})

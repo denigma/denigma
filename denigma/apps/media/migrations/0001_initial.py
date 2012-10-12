@@ -14,24 +14,24 @@ class Migration(SchemaMigration):
         if was_applied(__file__, 'gallery'):
             return
 
-        # Adding model 'PhotoUrl'
+        # Adding model 'Image'
         db.create_table('gallery_photourl', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('url', self.gf('django.db.models.fields.CharField')(max_length=128)),
             ('uploaded', self.gf('django.db.models.fields.DateTimeField')()),
         ))
-        db.send_create_signal('media', ['PhotoUrl'])
+        db.send_create_signal('media', ['Image'])
 
 
     def backwards(self, orm):
         
-        # Deleting model 'PhotoUrl'
+        # Deleting model 'Image'
         db.delete_table('gallery_photourl')
 
 
     models = {
         'media.photourl': {
-            'Meta': {'object_name': 'PhotoUrl'},
+            'Meta': {'object_name': 'Image'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'uploaded': ('django.db.models.fields.DateTimeField', [], {}),
             'url': ('django.db.models.fields.CharField', [], {'max_length': '128'})

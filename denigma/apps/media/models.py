@@ -2,7 +2,7 @@ from datetime import datetime
 from django.db import models
 
 
-class PhotoUrl(models.Model):
+class Image(models.Model):
     url = models.CharField(max_length=128)
     uploaded = models.DateTimeField()
     

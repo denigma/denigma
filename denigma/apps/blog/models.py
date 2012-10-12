@@ -22,7 +22,7 @@ class Post(models.Model):
     tags = TaggableManager(_('tags'))
     url = models.CharField(_('URL'), max_length=100, blank=True, null=True,
         help_text="Example: '/future/projects/'. Make sure to have leading and trailing slashes.")
-    images = models.ManyToManyField('media.PhotoUrl', blank=True)
+    images = models.ManyToManyField('media.Image', blank=True)
 
     def save(self, *args, **kwargs):
         """Triggers the generation of referenced document if article is marked

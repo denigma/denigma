@@ -30,7 +30,7 @@ class Tissue(MPTTModel):
     hierarchy = models.IntegerField(blank=True, null=True)
     identifier = models.IntegerField(blank=True, null=True) # DAA cross-reference.
     notes = models.TextField(blank=True, null=True)
-    images = models.ManyToManyField('media.PhotoUrl', blank=True)
+    images = models.ManyToManyField('media.Image', blank=True)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
 
     def __unicode__(self):
@@ -142,7 +142,7 @@ class Taxonomy(models.Model):
     genus = models.CharField(max_length=147, blank=True)
     temperature = models.FloatField(null=True, blank=True)
     misspellings = models.TextField(blank=True)
-    images = models.ManyToManyField('media.PhotoUrl', blank=True)
+    images = models.ManyToManyField('media.Image', blank=True)
 
     class Meta:
         db_table = u"taxonomy" # rename table to annotations_taxonomy.
@@ -171,7 +171,7 @@ class Species(models.Model):
     gendr_genes = models.IntegerField(null=True, blank=True)
     gendr_orthologs = models.IntegerField(null=True, blank=True)
     gendr_paralogs = models.IntegerField(null=True, blank=True)
-    images = models.ManyToManyField('media.PhotoUrl', blank=True)
+    images = models.ManyToManyField('media.Image', blank=True)
     description = models.TextField(blank=True) 
     complexity = models.IntegerField(blank=True, null=True)
     main_model = models.BooleanField(default=False)

@@ -35,7 +35,7 @@ class Migration(SchemaMigration):
             'gendr_genes': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'gendr_orthologs': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'gendr_paralogs': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'images': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['media.PhotoUrl']", 'symmetrical': 'False', 'blank': 'True'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['media.Image']", 'symmetrical': 'False', 'blank': 'True'}),
             'latin_name': ('django.db.models.fields.CharField', [], {'max_length': '25', 'blank': 'True'}),
             'main_model': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'number_genes': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
@@ -49,7 +49,7 @@ class Migration(SchemaMigration):
             'hierarchy': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'identifier': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'images': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['media.PhotoUrl']", 'symmetrical': 'False', 'blank': 'True'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['media.Image']", 'symmetrical': 'False', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'notes': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'synonyms': ('django.db.models.fields.TextField', [], {'blank': 'True'})
@@ -1649,7 +1649,7 @@ class Migration(SchemaMigration):
             'mapping': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
         },
         'media.photourl': {
-            'Meta': {'object_name': 'PhotoUrl'},
+            'Meta': {'object_name': 'Image'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'uploaded': ('django.db.models.fields.DateTimeField', [], {}),
             'url': ('django.db.models.fields.CharField', [], {'max_length': '128'})

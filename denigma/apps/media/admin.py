@@ -2,10 +2,10 @@ from django.contrib import admin
 
 import reversion
 
-from models import PhotoUrl
+from models import Image
 
 
-class PhotoUrlAdmin(reversion.VersionAdmin):
+class ImageAdmin(reversion.VersionAdmin):
     pass
 ##    #fields = ['pub_date', 'question']
 ##    fieldsets = [
@@ -19,5 +19,5 @@ class PhotoUrlAdmin(reversion.VersionAdmin):
 ##    date_hierachy = 'pub_date'
 
 
-admin.site.register(PhotoUrl, PhotoUrlAdmin)
+admin.site.register(Image, ImageAdmin)
 

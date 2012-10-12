@@ -16,7 +16,7 @@ from boto.s3.key import Key
 
 import mimetypes
 
-from models import PhotoUrl
+from models import Image
 
 
 class UploadForm(forms.Form):
@@ -37,7 +37,7 @@ def index(request):
         k.set_contents_from_string(content)
         k.set_acl('public-read')
         
-    photos = PhotoUrl.objects.all().order_by('-uploaded')
+    photos = Image.objects.all().order_by('-uploaded')
     if not request.method == "POST":
         f = UploadForm()
         return render_to_response('./gallery/index.html', {'form':f, 'photos':photos},
@@ -55,8 +55,8 @@ def index(request):
     #filename = file._get_name() #['filename']
     #content = file['content']
     store_in_s3(file.name, file.read())
-    p = PhotoUrl(url="http://%s.s3.amazonaws.com/%s" % (bucket, file.name))
+    p = Image(url="http://%s.s3.amazonaws.com/%s" % (bucket, file.name))
     p.save()
-    photos = PhotoUrl.objects.all().order_by('-uploaded')
+    photos = Image.objects.all().order_by('-uploaded')
     return render_to_response('./gallery/index.html', {'form':f, 'photos':photos},
                               context_instance=RequestContext(request))
