@@ -260,6 +260,10 @@ activate_webserver() {
     fi
 }
 
+install_subversion() {
+    aptitude install subversion
+}
+
 bootstrap_project() {
     adduser --system --disabled-password --disabled-login $LOCAL_USER
     sudo virtualenv /home/$LOCAL_USER/env
@@ -356,6 +360,8 @@ update_system
 install_baseline
 install_python
 install_webserver
+
+install_subversion
 
 bootstrap_project
 install_project
