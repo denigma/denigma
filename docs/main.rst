@@ -821,6 +821,7 @@ sub-problems very-well.
 Renaming Apps
 -------------
 The gallery app will be renamed to media to accommodate a more general purpose.
+The photourl model will be renamed to image as it is more appropriate.
 
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
