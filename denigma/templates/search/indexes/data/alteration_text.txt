@@ -1,0 +1,7 @@
+{{ object.fr.title }}
+{{ object.be.title }}
+{{ object.to.title }}
+{{ object.fr.text }}
+{{ object.be.text }}
+{{ object.to.text }}
+{{ object.comment }}

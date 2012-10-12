@@ -1,5 +1,11 @@
 {{ object.title }}
 {{ object.text }}
+{% for tag in object.tags.all %}
+    {{ tag.name }}
+{% endfor %}
+{% for category in objects.categories.all %}
+    {{ category.title }}
+{% endfor %}
 {% for image in object.images.all %}
     {{ image.name }}
 {% endfor %}
