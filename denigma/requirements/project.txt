@@ -11,10 +11,10 @@ south 		# Necessary for database evolution.
 MySQL-python 	# Required for interfacing with db via manage.py on server.
 PIL		# Used by gallery.
 #tagging	# Allows the inclusion of tags to any model, is used for links.
-#-e svn+http://django-tagging.googlecode.com/svn/trunk/#egg=django-tagging
+-e svn+http://django-tagging.googlecode.com/svn/trunk/#egg=tagging
+django-taggit   # Provides tagging functionality.
 -e git+https://github.com/boto/boto.git#egg=boto # AWS API. 
 django-SES      # Simple Email Service.
-django-taggit   # Provides tagging functionality. 
 django-grappelli==2.3.8 # Alternative admin design with additional functionality.
 django-reversion==1.6.3 # Model version control system. #==1.5.3 # Worked for Django-1.3.2 #==1.6.3 works for Django-1.4.1
 docutils # Documentation utilities.
