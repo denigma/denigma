@@ -823,5 +823,14 @@ Renaming Apps
 The gallery app will be renamed to media to accommodate a more general purpose.
 The photourl model will be renamed to image as it is more appropriate.
 
+The many-to-many tables had to be altered manually with raw sql: ::
+
+    ALTER TABLE data_entry_images CHANGE photourl_id image_id INT NOT NULL;
+    ALTER TABLE data_change_images CHANGE photourl_id image_id INT NOT NULL;
+    ALTER TABLE blog_post_images CHANGE photourl_id image_id INT NOT NULL;
+    ALTER TABLE annotations_species_images CHANGE photourl_id image_id INT NOT NULL;
+    ALTER TABLE annotations_tissue_images CHANGE photourl_id image_id INT NOT NULL;
+    ALTER TABLE taxonomy_images CHANGE photourl_id image_id INT NOT NULL;
+
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
