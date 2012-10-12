@@ -1,18 +1,33 @@
-{% extends "links/base.html" %}
-{% load i18n %}
+{% extends 'links/base.html' %}
+
+{% load url from future %}
+{% load render_table from django_tables2 %}
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+{% endblock %}
+
+{% block head_title %}Links{% endblock %}
+
+{% block hierarchy %}
+    | <a href={% url 'create-link' %}>Create</a>
+{% endblock %}
+
+{% block title %}Links{% endblock %}
 
 {% block content %}
-    <div id="content">
-        <h2>{% trans "Links" %}</h2>
-        <div id="links_list" >
-            {{ links }}
-            {% for link in links_list %}
-            <div class="links">
-                <p><a href="{{ link.url }}">{{ link.title }}</a></p>
-                <p>{{ link.description }}</p>
-                <p><a href="{{ news.get_absolute_url }}">{% trans "Open" %}</a></p>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
+    {{ entry.text|markdown|hyper|recross|safe }}
+    {% for image in entry.images.all %}
+        <a href={{ image.url }}>{{ image.name }} width="250" height="250" />
+    {% endfor %}
+    <hr>
+    <form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_table }}
+    {{ filter.form.as_p }}
+    <input type="submit" value="Apply" />
+    {% render_table table %}
 {% endblock %}

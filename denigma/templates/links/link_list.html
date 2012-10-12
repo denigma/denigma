@@ -1,0 +1,17 @@
+{% extends "links/base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <div id="content">
+        <h2>{% trans "Links" %}</h2>
+        <div id="links_list" >
+            {{ links }}
+            {% for link in links %}
+                <div class="links">
+                    <p><a href="{{ link.url }}">{{ link.title }}</a>:
+                        {{ link.description }} <a href="{{ news.get_absolute_url }}">{% trans "Open" %}</a></p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

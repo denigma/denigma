@@ -1,4 +1,17 @@
-{% extends "base.html" %}
+{% extends "site_base.html" %}
+
+{% load url from future %}
 {% load i18n %}
+
+{% block head_title %}Links{% endblock %}
+
+{% block base_hierarchy %}
+    > <a href="/links/"> Links</a>
+{% endblock %}
+
+{% block options %}
+    <a href={% url 'sURL' %}>sURL</a>
+    {# | <a href={% url 'link-list' %}>List</a> #}
+{% endblock %}
 
 {% block title %}{% trans "Links" %}{% endblock %}
