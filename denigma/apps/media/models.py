@@ -19,4 +19,4 @@ class PhotoUrl(models.Model):
     class Meta:
         verbose_name = u"Photo URL"
         # For now leave table name as is:
-        db_table = 'gallery_photourl'
+        #db_table = 'gallery_photourl'
