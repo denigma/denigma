@@ -1,9 +1,9 @@
 {% extends "blog/base.html" %}
 
 {% block hierarchy %}
-    ><a href="/blog">Blog</a> >
-    Tag =
-    {{ tag }}
+    > <a href="/blog">Blog</a>
+    > Tag
+    = {{ tag }}
 {% endblock %}
 
 {% block subtitle %}Posts tagged: {{ tag }}{% endblock %}
