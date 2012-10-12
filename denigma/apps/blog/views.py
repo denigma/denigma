@@ -123,3 +123,4 @@ def custom_admin_view(request, model_admin):
      template = 'admin/custom/view.html'
      return render_to_response(template, context,
                               context_instance=RequestContext(request))
+
