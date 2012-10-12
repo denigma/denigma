@@ -1,3 +1,9 @@
 {% for comment in comments %}
-    <blockquote>{{ comment.text }}</blockquote>
+    <blockquote>
+        {% if comment.maker  %}
+            {{ comment.maker }}:
+        {% endif %}
+        {{ comment.text }}
+        ({{ comment.created }}{% if comment.created != comment.updated %}/{{ comment.updated }}{% endif %})
+    </blockquote>
 {% endfor %}

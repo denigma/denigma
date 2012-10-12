@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import signals
+from django.contrib.auth.models import User
 #from django.utils.encoding import python_2_unicode_compatible
 
 from taggit.managers import TaggableManager
@@ -15,11 +16,20 @@ except ImportError:
 from handlers import notify_admin
 
 
-class Post(models.Model):
-    """The fundamental textual data-structure of Denigma."""
+class TimeTrack(models.Model):
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class Post(TimeTrack):
+    """The fundamental textual data-structure of Denigma."""
+
     published = models.BooleanField(_('published'), db_index=True, default=True)
+    creator = models.ForeignKey(User, null=True, blank=True, related_name='created_by')
+    updater = models.ForeignKey(User, null=True, blank=True, related_name='updated_by')
     title = models.CharField(_('title'), max_length=250)
     text = models.TextField(_('text'))
     tags = TaggableManager(_('tags'))
@@ -63,9 +73,10 @@ class Post(models.Model):
         verbose_name_plural = _('Posts')
 
 
-class Comment(models.Model):
+class Comment(TimeTrack):
     post = models.ForeignKey(Post, related_name='comments')
     text = models.TextField()
+    maker = models.ForeignKey(User, blank=True, null=True, related_name="made_by")
 
 
 signals.post_save.connect(notify_admin, sender=Post)

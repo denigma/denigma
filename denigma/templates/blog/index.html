@@ -16,7 +16,6 @@
     <hr>
     {% if object_list %}
         {% for post in object_list %}
-
             <table border="0" color="white">
                 <tr>
                     <td>
@@ -24,8 +23,11 @@
                         <div class="post_meta">
                            created on {{ post.created }}
                            {% if post.created != post.updated %}
+                           {% if post.creator %}by <a href={{ post.creator.get_absolute_url }}>{{ post.creator }}</a>{% endif %}
                                updated on {{ post.updated }}
                            {% endif %}
+                           {% if post.updater %}by <a href={{ post.updater.get_absolute_url }}>{{ post.updater }}</a>{% endif %}
+
                         </div>
                             <br>
                         <div class="post_body">

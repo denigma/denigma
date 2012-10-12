@@ -21,12 +21,13 @@
 
     <div class="post_meta">
         created on {{ post.created }}
+        {% if post.created %} by <a href={{ post.creator.get_absolute_url }}>{{ post.creator }}</a>{% endif %}
         {% if post.created != post.updated %}
-            modified on {{ post.updated }}
+            updated on {{ post.updated }}
         {% endif %}
+        {% if post.updated %} by <a href={{ post.updater.get_absolute_url }}>{{ post.updater }}</a>{% endif %}
     </div>
     <br>
-
     <div class="post_body">
       {{ post.text|markdown|hyper|recross|safe }}
     </div>

@@ -14,12 +14,26 @@ class PostAdminForm(forms.ModelForm):
     class Meta:
        model = Post
 
+
 class CommentInline(admin.TabularInline):
     model = Comment
+    fields = ('text',)
+
+    def save_model(self, request, obj, form, change, *args, **kwargs):
+        if getattr(obj, 'maker', None) is None:
+            obj.maker = request.maker
+        obj.maker = request.maker
+        obj.save()
+
+    def queryset(self, request):
+        qs = super(CommentInline, self).queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(maker=request.user)
 
 
 class PostAdmin(reversion.VersionAdmin):
-    list_display = ('title', 'brief', 'tagged', 'created', 'updated', 'published')
+    list_display = ('title', 'brief', 'tagged', 'created', 'updated', 'creator', 'updater', 'published')
     list_filter = ['created', 'updated', 'published', 'tags__name']
     fields = ('title', 'text', 'tags', 'url', 'images', 'published')
     search_fields = ('title', 'text')#, 'tagged_items')
@@ -28,11 +42,18 @@ class PostAdmin(reversion.VersionAdmin):
 
     inlines = (CommentInline,)
 
+    def save_model(self, request, obj, form, change, *args, **kwargs):
+        """Saves the current user as creator and/or updater."""
+        print("Saveing post")
+        if getattr(obj, 'creator', None) is None:
+            obj.creator = request.user
+        obj.updater = request.user
+        obj.save()
+
     def tagged(self, obj):
         return ", ".join([tag.name for tag in obj.tags.all()])
 
     tagged.allow_tag = True
-
     # Redirecting users to the post view after a save event:
 #    def change_view(self, request, object_id, extra_context=None, *args, **kwargs):
 #        result = super(PostAdmin, self).change_view(request, object_id, extra_context, *args, **kwargs)
@@ -58,7 +79,19 @@ class PostAdmin(reversion.VersionAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    pass
+
+    def save_model(self, request, obj, form, change, *args, **kwargs):
+        if getattr(obj, 'maker', None) is None:
+            obj.maker = request.user
+            obj.save()
+
+    def queryset(self, request):
+        qs = super(CommentAdmin, self).queryset(request)
+
+        # If super-user, show all comment
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(maker=request.user)
 
 
 admin.site.register(Post, PostAdmin)

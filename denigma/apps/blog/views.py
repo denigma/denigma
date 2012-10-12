@@ -26,9 +26,11 @@ def add(request):
     if request.POST and form.is_valid():
         with reversion.create_revision():
             post = form.save(commit=False)
-            form.save()
             if isinstance(request.user, AnonymousUser):
                 request.user = User.objects.get(username="Anonymous")
+            post.creator = request.user
+            post.updater = request.user
+            form.save()
             reversion.set_user(request.user)
             comment = request.POST['comment'] or "Initial version."
             reversion.set_comment(comment)
@@ -75,6 +77,8 @@ def edit(request, pk):
         if form.is_valid():
             if changes:
                 with reversion.create_revision():
+                    post = form.save(commit=False)
+                    post.updater = request.user
                     form.save()
                     reversion.set_user(request.user)
                     comment =  'Changed %s. %s' % (', '.join(changes), request.POST['comment'] or '')
@@ -83,6 +87,8 @@ def edit(request, pk):
                 log(request, post, comment)
 
             else:
+                post = form.save(commit=False)
+                post.updater = request.user
                 form.save()
 
             return HttpResponseRedirect('/blog/%s' % pk)
