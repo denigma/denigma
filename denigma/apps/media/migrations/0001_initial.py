@@ -4,10 +4,16 @@ from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
+from media.migration_utils import was_applied
+
+
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
+        if was_applied(__file__, 'gallery'):
+            return
+
         # Adding model 'PhotoUrl'
         db.create_table('gallery_photourl', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
