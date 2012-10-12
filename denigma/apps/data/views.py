@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AnonymousUser, User
 
 import reversion
-from taggit.models import TaggedItem
+from taggit.models import Tag, TaggedItem
 
 from meta.view import log
 from control import get
@@ -90,12 +90,17 @@ class ChangeList(ListView): # Not functional.
         return render_to_response('data/change_list.html')
 
 class TagDetail(ListView):
-    def dispatch(self, *args, **kwargs):
-        items = TaggedItem.objects.filter(tag__pk=kwargs['pk'])
-        print items
-        return render_to_response('data/tag_detail.html', {'object_list': items})
-            #context_instance=RequestContext(request))
+    #def fill_context(self):
+        #self.request
 
+    def dispatch(self, request, *args, **kwargs):
+        tag = Tag.objects.get(pk=kwargs['pk'])
+        items = TaggedItem.objects.filter(tag__pk=kwargs['pk'])
+        for item in items:
+            print("Item: %s;" % vars(item))
+        ctx = {'object_list': items, 'object': tag}
+        return render_to_response('data/tag_detail.html', ctx,
+            context_instance=RequestContext(request))
 
 class View(object):
     comment = 'Viewed it.'
