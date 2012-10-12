@@ -16,7 +16,7 @@
         {% recursetree entries %}
             <li>
                 <a href={% url 'detail-entry' pk=node.pk %}>{{ node.title }}</a>
-                 {% if node.url %}<b><a href={{ node.get_absolute_url }}>on site</a></b>{% endif %}
+                 {% if node.url %}<b><a href={{ node.get_absolute_url }}>on site</a></b>{% endif %} {# {%  for image in node.images.all %}<img src={{ image.url }} alt={{ image.name }} width="20" heigth="20" />{% endfor %} #}
                  {% if not node.is_leaf_node %}
                     <ul class="children">
                         {{ children }}
