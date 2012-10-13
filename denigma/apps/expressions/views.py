@@ -594,15 +594,17 @@ def add_signature(request):
                         ctr_values.append(float(columns[v]))
                     elif k.startswith('exp') and k != 'exp':
                         exp_values.append(float(columns[v]))
-                if exp_values and exp_values != ctr_values:
-                    #print exp_values
-                    es = effect_size(exp_values, ctr_values)
-                else:
-                    es = None
-                if 'pvalue' in header:
-                    pvalue = columns[header['p_value']]
-                else:
+#                if exp_values and exp_values != ctr_values:
+#                    #print exp_values
+#                    es = effect_size(exp_values, ctr_values)
+#                else:
+                es = None
+#                if 'pvalue' in header:
+#                    pvalue = columns[header['p_value']]
+#                else:
+                if exp_values != ctr_values:
                     pvalue = t_two_sample(ctr_values, exp_values)[1]
+                else: pvalue = 1
 
                 transcript = Transcript(seq_id=seq_id, symbol=symbol, ratio=ratio, fold_change=fold_change, pvalue=pvalue, effect_size=es)
 
