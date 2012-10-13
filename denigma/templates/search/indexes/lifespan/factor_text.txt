@@ -1,0 +1,15 @@
+{{ object.entrez_gene_id }}
+{{ object.ensembl_gene_id }}
+{{ object.symbol }}
+{{ object.name }}
+{{ object.alias }}
+{{ object.functional_description }}
+{{ object.observation }}
+{{ object.classification }}
+{{ object.taxid }}
+{{ object.pubmed_id }}
+{{ object.reference }}
+{{ object.manipulation }}
+{{ object.synergistic_epistasis }}
+{{ object.antagonistic_epistasis }}
+{{ object.note }}

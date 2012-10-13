@@ -1,0 +1,7 @@
+{{ name }}
+{{ taxid }}
+{{ pmid }}
+{{ start }}
+{{ stop }}
+{{ gender }}
+{{ description }}

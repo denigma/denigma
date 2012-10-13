@@ -1,0 +1,6 @@
+{{ pmid }}
+{{ title }}
+{{ authors }}
+{{ abstract }}
+{{ keywords }}
+{{ journal }}

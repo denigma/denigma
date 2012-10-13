@@ -1,0 +1,7 @@
+{{ object.title }}
+{{ object.text }}
+{% for image in object.images.all %}
+    {{ image.name }}
+{% endfor %}
+{{ object.url }}
+{{ object.comment }}

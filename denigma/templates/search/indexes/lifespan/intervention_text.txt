@@ -1,0 +1,6 @@
+{{ object.name }}
+{{ object.taxid }}
+{{ object.sex }}
+{{ object.background }}
+{{ object.effect }}
+{{ object.pmid }}
