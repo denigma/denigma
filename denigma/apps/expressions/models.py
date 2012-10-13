@@ -151,6 +151,7 @@ class Expression(models.Model):
     fold_change = models.FloatField()
     pvalue = models.FloatField(blank=True, null=True)
     effect_size = models.FloatField(blank=True, null=True)
+    benjamini = models.FloatField(blank=True, null=True)
 
     def __unicode__(self):
         return "%s %s" % (self.signature.name, self.transcript.seq_id)
@@ -165,6 +166,7 @@ class Transcript(models.Model):
     fold_change = models.FloatField()
     pvalue = models.FloatField("p-value", blank=True, null=True)
     effect_size = models.FloatField(blank=True, null=True)
+    benjamini = models.FloatField(blank=True, null=True)
 
     def __unicode__(self):
         return self.seq_id

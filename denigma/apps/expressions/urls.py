@@ -55,6 +55,7 @@ urlpatterns = patterns('expressions.views',
     url(r'^signature/delete/(?P<pk>\d+)', 'delete_signature', name='delete_signature'),
 
     url('^signatures/delete/$', 'delete_signatures', name='delete_signatures'),
+    url('^signatures/benjamini/(?P<pk>\d+)', 'benjamini', name='benjamini'),
 
     # Others:
     url('^replicates/delete/$', 'delete_replicates', name='delete_replicates'),
@@ -75,4 +76,5 @@ urlpatterns = patterns('expressions.views',
         template_name='expressions/sets.html',
         extra_context={'entry': get('sets')})),
     url('^signatures/set/create$', login_required(SetCreate.as_view()), name='create-set'),
+
 )

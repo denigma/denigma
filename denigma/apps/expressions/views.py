@@ -23,7 +23,7 @@ from blog.models import Post
 from data import get
 
 from stats.effective import effect_size
-from stats.pValue import t_two_sample
+from stats.pValue import t_two_sample, calc_benjamini_hochberg_corrections
 from utils.count import Counter
 
 
@@ -720,6 +720,23 @@ def output_signature(request, pk):
     signature = Signature.objects.get(pk=pk)
     signature.output()
     msg = "Successfully outputted signature: %s" % signature.name
+    messages.add_message(request, messages.SUCCESS, _(msg))
+    return redirect('/expressions/signatures')
+
+
+def benjamini(request, pk):
+    """This view takes a signature and performs Benjamini Hochberg correction."""
+    signature = Signature.objects.get(pk=pk)
+    transcripts = signature.transcripts.all()
+    p = {} # seq_id - p-values mapping.
+    for transcript in transcripts:
+        p[transcript.seq_id] = transcript.pvalue
+    benjamini_pvalues = calc_benjamini_hochberg_corrections(p.values(), len(p))
+    for index, benjamini_pvalue in enumerate(benjamini_pvalues):
+        transcript = transcripts[index]
+        transcript.benjamini = benjamini_pvalue[0] #expression__
+        transcript.save()
+    msg = "Successfully performed Benjamini Hochberg correction on %s" % signature.name
     messages.add_message(request, messages.SUCCESS, _(msg))
     return redirect('/expressions/signatures')
 
