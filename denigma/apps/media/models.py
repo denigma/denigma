@@ -15,6 +15,9 @@ class Image(models.Model):
     def __unicode__(self):
         return self.url.split('/')[-1]
 
+    def get_absolute_url(self):
+        return self.url
+
     def name(self):
         return self.url.split('/')[-1].split('/')[0]
 
