@@ -1,54 +1,48 @@
 {% extends "articles/base.html" %}
 
+{% load url from future %}
 {% load markup %}
 {% load abstraction %}
 {% load hyperlink %}
 
 {% block hierarchy %}
-    > <a href="/articles">Articles</a> >
-    <a href="/articles">Index</a>
+    > <a href="/articles">Index</a>
 {% endblock %}
 
-{% block subtitle %}Index{% endblock %}
+{% block options %}
+    <b><a href={% url 'create-entry' %}>Create</a></b> (<a href="/admin/data/entry/add/">Admin</a>)
+{% endblock %}
 
 {% block content %}
-
-{% for article in object_list %}
-
-<table border="0" color="white">
-<tr>
-<td>
-
-<h3><a href="/articles/{{article.id}}">{{ article.title }}</a></h3>
-
-<div class="post_meta">
- created on {{ article.created }}
- updated on {{ article.updated }}
-</div>
-
-<div class="post_body">
-  {{ article.text|abstract|markdown|hyper|safe}}
-</div>
-
-<div class="tags">
-<b>Keywords:</b>
-  {% for tag in article.tags.all %}
-  <a href="/blog/tag/{{tag}}">{{tag}}</a>
-  {% if not forloop.last %}, {% endif %}
-  {% endfor %}
-</div>
-</td>
-
-<td>
-{% for image in article.images.all %}
-<img src={{ image.url }} width="150" height="150" alt={{ images.name }} /></td>
-{% endfor %}
-</td>
-</tr>
-</table>
-{% endfor %}
-
-<p></p>
-<a href="/admin/blog/post/add/">Add</a>
+    {% for article in object_list %}
+        <hr>
+        <table border="0" color="white">
+            <tr>
+                <td>
+                    <h3><a href="/articles/{{ article.id }}">{{ article.title }}</a></h3
+                    <div class="entry_meta">
+                         created on {{ article.created }}
+                         updated on {{ article.updated }}
+                    </div>
+                    <div class="entry_body">
+                        {{ article.text|abstract|markdown|hyper|safe}}
+                    </div>
+                    <div class="tags">
+                        <b>Keywords:</b>
+                        {% for tag in article.tags.all %}
+                            <a href={% url 'entry-tag' tag.pk %}>{{ tag }}</a>{% if not forloop.last %}, {% endif %}
+                         {% endfor %}
+                    </div>
+                </td>
+                <td>
+                    {% for image in article.images.all %}
+                        <img src={{ image.url }} alt={{ images.name }} width="150" height="150"  />
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+    <hr>
+    <b><a href={% url 'create-entry' %}>Create</a></b> (<a href="/admin/blog/post/add/">Admin</a>)
 {% endblock %}
 

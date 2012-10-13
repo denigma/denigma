@@ -1,41 +1,44 @@
 {% extends "articles/base.html" %}
 
+{% load url from future %}
 {% load markup %}
 {% load hyperlink %}
 {% load negletion %}
 
 {% block hierarchy %}
-    > <a href="/articles">Articles</a> >
-    Article >
-    <a href="/articles/{{ post.id }}">{{ post.title }}</a>
+    > Article
+    > <a href="/articles/{{ article.pk }}">{{ article.title }}</a>
+{% endblock %}
+
+{% block options %}
+    <a href={% url 'update-entry' article.pk %}>Update</a> (<a href="/admin/data/entry/{{ article.pk }}/">Admin</a>)
 {% endblock %}
 
 {% block subtitle %}Article{% endblock %}
 
 {% block content %}
 
-    <div class="post_body">
-      {{ post.text|negle|restructuredtext|neglete|markdown|hyper|safe }}
+    <div class="article_body">
+        {{ article.text|negle|restructuredtext|neglete|markdown|hyper|safe }}
     </div>
 
     <div class="tags">
-      <b>Keywords:</b>
-      {% for tag in post.tags.all %}
-          <a href="/blog/tag/{{ tag }}">{{ tag }}</a>
-      {% if not forloop.last %}, {% endif %}
-      {% endfor %}
+        <b>Keywords:</b>
+        {% for tag in article.tags.all %}
+            <a href={% url 'entry-tag' tag.pk %}>{{ tag }}</a>
+            {% if not forloop.last %}, {% endif %}
+        {% endfor %}
     </div>
 
     <br>
 
     <div class="images">
-       {% for image in post.images.all %}
-          <img src={{ image.url }} alt={{ image.name }}/>
-
+       {% for image in article.images.all %}
+          <img src={{ image.url }} alt={{ image.name }} width="250" height="250" />
        {% endfor %}
     </div>
-
-    <b><a href="/admin/blog/post/{{ post.id }}/">Edit article</a></b>
+    <b><a href={% url 'update-entry' article.pk %}>Update</a></b>
+    (<a href="/admin/data/entry/{{ article.pk }}/">Admin</a>)
 
 {% endblock %}
 
