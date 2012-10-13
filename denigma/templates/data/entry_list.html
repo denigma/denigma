@@ -39,10 +39,23 @@
 
                         {{ entry.brief|markdown|hyper|recross|safe }}
 
-                        <b>Categories:</b>
+                        <b>Tags</b>:
                         {% for tag in entry.tags.all %}
-                            <a href={% url 'entry-tag' tag.slug %}>{{ tag.name }}{% if not forloop.last %}, {% endif %}
+                            <a href={% url 'entry-tag' tag.slug %}>{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
                         {% endfor %}
+                    <div class="categories">
+                        {% if entry.categories.all %}
+                            <b>Categories</b>:
+                            {% for category in entry.categories.all %}
+                                <a href={{ category.get_absolute_url }}>{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="parent">
+                        {% if entry.parent %}
+                            <b>Parent</b>: <a href={{ entry.parent.get_absolute_url }}>{{ entry.parent.title }}</a>
+                        {% endif %}
+                    </div>
                     </td>
                     <td align="right">
                         {% for image in entry.images.all %}
