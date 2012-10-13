@@ -514,11 +514,13 @@ def add_signature(request):
         if file.name.startswith('name='):
             info = dict([item.split('=') for item in file.name.split(';')])
         if 'tissue' in info:
-            tissues = info['tissue'].replace(', ', '@').replace(' and ', '@').split('@') # @ is unlikey to be used as filename.
+            tissues = info['tissue'].replace('-', '@').replace(', ', '@').replace(' and ', '@').split('@') # @ is unlikely to be used as filename.
         else:
             tissues = request.POST.getlist('tissues')
         if "diet" in info:
             regimen = Regimen.objects.get(shortcut__exact=info['diet'])
+        elif 'diet' in request.POST:
+            regimen = Regimen.objects.get(pk=request.POST['diet'])
 
         # Species from form:
         try:
@@ -535,7 +537,7 @@ def add_signature(request):
         # Adding tissues:
         for tissue in tissues:
             try:
-                tissue = Tissue.objects.get(pk=tissue) #if it is selcted from form
+                tissue = Tissue.objects.get(pk=tissue) #if it is selected from form
             except:
                 print "Did not found tissue by pk."
                 try:
@@ -547,15 +549,16 @@ def add_signature(request):
             signature.tissues.add(tissue)
         print "Tissues:", signature.tissues.all()
 
-
-
         header = {}
         for index, column in enumerate(data[0].split('\t')):
             if "DR" in column: column = "exp"
             elif "AL" in column: column = "ctr"
+
             header[column.lower().replace('gene symbol', 'symbol')\
                                  .replace('gene_symbol', 'symbol')\
-                                 .replace(' ', '_')] = index
+                                 .replace(' ', '_')\
+                                 .replace('platform_cloneid', 'seq_id')] = index # WTF is this?
+
 
         #num_lines = len(data); counter = 0
         for line in data[1:]:
@@ -591,12 +594,15 @@ def add_signature(request):
                         ctr_values.append(float(columns[v]))
                     elif k.startswith('exp') and k != 'exp':
                         exp_values.append(float(columns[v]))
-                if exp_values:
-                    print exp_values
+                if exp_values and exp_values != ctr_values:
+                    #print exp_values
                     es = effect_size(exp_values, ctr_values)
                 else:
                     es = None
-                pvalue = columns[header['p_value']]
+                if 'pvalue' in header:
+                    pvalue = columns[header['p_value']]
+                else:
+                    pvalue = t_two_sample(ctr_values, exp_values)[1]
 
                 transcript = Transcript(seq_id=seq_id, symbol=symbol, ratio=ratio, fold_change=fold_change, pvalue=pvalue, effect_size=es)
 
