@@ -335,7 +335,9 @@ class Change(Content):
             changes.text = mark_safe(dmp.diff_prettyHtml(diffs))
         else:
             changes.text = self.text
-        if previous.url != self.url:
+        if previous.url != self.url and not (not previous.url and not self.url):
+            if not previous.url: previous.url = ''
+            if not self.url: self.url = ''
             diffs = dmp.diff_main(previous.url, self.url)
             changes.url = mark_safe(dmp.diff_prettyHtml(diffs))
         else:
