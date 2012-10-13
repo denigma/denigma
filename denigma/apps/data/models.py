@@ -367,12 +367,14 @@ class Change(Content):
             changes.categories_added = changes.categories_removed = []
             changes.categories = self_categories
             changes.categories_changed = False
+        print("Categories: %s %s %s" % (previous_categories, self_categories, self.categories))
 
         # Parent:
+        changes.previous_parent = previous.parent
         if previous.parent != self.parent:
-            changes.previous_parent = previous.parent
+            changes.parent_changed = True
         else:
-            changes.previous_parent = None
+            changes.previous_parent = False
         changes.parent = changes.current_parent = self.parent
 
         print("Previous, current, parent: %s %s %s" % (changes.previous_parent, changes.current_parent, self.parent))

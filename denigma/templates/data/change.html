@@ -54,7 +54,7 @@
                 {% endfor %}
             {% endif %}
             {% if changes.categories_added %}
-                {% for category in changes.categoris_added %}
+                {% for category in changes.categories_added %}
                     {% if category %}
                         <ins style="background:#e6ffe6;"><a href={{ category.get_absolute_url }}>{{ category }}</a></ins>
                     {% endif %}
@@ -70,7 +70,7 @@
         </div>
     {% endif %}
     <div>
-        {% if changes.previous_parent %}
+        {% if changes.parent_changed %}
             <b>Parent</b>:
             <del style="background:#ffe6e6;"><a href={{ changes.previous_parent.get_absolute_url }}>{{ changes.previous_parent.title }}</a></del>
             <ins style="background:#e6ffe6;"><a href={{ changes.current_parent.get_absolute_url }}>{{ changes.current_parent.title }}</a></ins>
