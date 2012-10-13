@@ -50,6 +50,6 @@ def google(request, term):
     return render_to_response('google.html', term)
 
 def content(request):
-    contents = get('Content'), get("Data App"), get("Denigma Blog"), get('Denigma Wiki')
+    contents = get('Content'), get("Data App"), get("Denigma Blog"), get("Danigma's Wiki")
     return render_to_response('content.html', {'contents': contents},
         context_instance=RequestContext(request))
