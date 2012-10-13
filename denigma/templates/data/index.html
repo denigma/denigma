@@ -14,7 +14,7 @@
     > Index
 {% endblock %}
 
-{% block title %}Data{% endblock %}
+{% block title %}<a href={% url 'detail-entry' entry.pk %}><h2>{{ entry.title }}</h2></a>{% endblock %}
 
 {% block content %}
     {{ entry.text|markdown|hyper|recross|safe }}
