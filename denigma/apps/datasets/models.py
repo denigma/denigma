@@ -336,12 +336,15 @@ class Change(models.Model):
     start = models.CharField(max_length=250, null=True, blank=True)
     stop = models.CharField(max_length=250, null=True, blank=True)
     gender = models.CharField(max_length=25, blank=True)
-    description = models.TextField(blank=True)
     references = models.ManyToManyField(Reference, blank=True)
     description = models.TextField(max_length=250, blank=True)
 
     def __repr__(self):
         return self.name
+
+    class Meta():
+        verbose_name = u"Biological change"
+        verbose_name_plural = u"Biological changes"
 
 
 class GenCC(models.Model):
