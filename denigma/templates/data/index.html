@@ -17,18 +17,50 @@
 {% block title %}<a href={% url 'detail-entry' entry.pk %}><h2>{{ entry.title }}</h2></a>{% endblock %}
 
 {% block content %}
-    {{ entry.text|markdown|hyper|recross|safe }}
-    <center>
-    {% for image in entry.images.all %}
-        <img src="{{ image.url }}" alt="{{ image.name }}" />
-    {% endfor %}
-    </center>
-    <a href={% url 'entry-table' %}>Entry Table</a>
-    <br>
-    <a href={% url 'list-entry-tags' %}>Tags</a>
-    <br>
-    <a href={% url 'list-categories' %}>Categories</a>
-    <br>
-    <a href={% url 'hierarchy' %}>Hierarchy</a> <a href={% url 'list-hierarchy' %}>List</a>
+    <table>
+        <tr>
+            <td>
+                {{ entry.text|markdown|hyper|recross|safe }}
+            </td>
+            <td>
+                {% for image in entry.images.all %}
+                        <img src="{{ image.url }}" alt="{{ image.name }}" widht="250" height="250"/>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+    <hr>
+    <div class="row">
+        <div class=span6>
+            {% block column-1 %}
+                <a href={{ hierarchy.get_absolute_url }}><h3>Hierarchy</h3></a>
+                <p>{{ hierarchy.text|markdown|hyper|recross|safe }}</p>
+                {% for image in hierarchy.images.all  %}
+                    <a href={{ hierarchy.get_absolute_url }}><img src={{ image.url }} alt={{ image.name }} width="250" height="250"></a>
+                {% endfor %}
+            {% endblock %}
+        </div>
+        <div class=span6>
+            {% block column-2 %}
+                <a href={{ categories.get_absoulte_url }}><h3>Categories</h3></a>
+                <p>{{ categories.text|markdown|hyper|recross|safe }}</p>
+                {% for image in categories.images.all %}
+                    <a href={{ hierarchy.get_absolute_ul }}><img src={{ image.url }} alt={{ image.name }} width="250" height="250"></a>
+                {% endfor %}
+            {% endblock %}
+        </div>
+    </div>
+
+
+    {% if user.is_superuser %}
+        <hr>
+        <a href={% url 'entry-table' %}>Entry Table</a>
+        <br>
+        <a href={% url 'list-entry-tags' %}>Tags</a>
+        <br>
+        <a href={% url 'list-categories' %}>Categories</a>
+        <br>
+        <a href={% url 'hierarchy' %}>Hierarchy</a> <a href={% url 'list-hierarchy' %}>List</a>
+    {% endif %}
 
 {% endblock %}
