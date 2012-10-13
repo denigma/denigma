@@ -35,9 +35,6 @@ class ChangeIndex(indexes.SearchIndex, indexes.Indexable):
 
 
 class CategoryIndex(indexes.SearchIndex,indexes.Indexable):
-    created = indexes.DateTimeField(model_attr='created')
-    updated = indexes.DateTimeField(model_attr='updated')
-
     text = indexes.CharField(document=True, use_template=True)
 
     def get_model(self):
