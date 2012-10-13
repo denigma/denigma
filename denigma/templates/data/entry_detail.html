@@ -51,7 +51,7 @@
     {% if object.url %}
         <p>
             <b>URL</b>:
-            <a href>{{ object.url }}>{{ object.url }}</a>
+            <a href={{ object.url }}>{{ object.url }}</a>
         </p>
     {% endif %}
     {% if object.url %}<a href={{ object.get_absolute_url }}>View on site</a>{% endif %}
