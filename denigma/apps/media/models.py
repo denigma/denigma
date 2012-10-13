@@ -18,6 +18,6 @@ class Image(models.Model):
     def name(self):
         return self.url.split('/')[-1].split('/')[0]
 
-    class Meta(models.Mode):
+    class Meta():
         verbose_name = _('Image')
         verbose_name_plural = _('Images')
