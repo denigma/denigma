@@ -37,6 +37,10 @@ class Profile(models.Model):
     def __unicode__(self):
         return self.name
 
+    class Meta():
+        verbose_name = u"Expression Profile"
+        verbose_name_plural = u"Expression Profiles"
+
 
 class Signature(models.Model):
     name = models.CharField(max_length=255)
