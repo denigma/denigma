@@ -3,4 +3,5 @@
 {{ object.common_name }}
 {{ object.alternative_names }}
 {{ object.latin_name }}
-{{ object.latin_shortcut }} 
+{{ object.short_latin_name }}
+{{ object.description }}
