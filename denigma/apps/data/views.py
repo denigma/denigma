@@ -17,7 +17,7 @@ from forms import EntryForm, RelationForm, CategoryForm
 
 
 def index(request):
-    return render_to_response('data/index.html', {'entry': get('Data')},
+    return render_to_response('data/index.html', {'entry': get('Data App')},
         context_instance=RequestContext(request))
 
 def hierarchy(request, template_name='data/hierarchy.html'):
