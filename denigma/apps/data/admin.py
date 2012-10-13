@@ -2,7 +2,7 @@ from django.contrib import admin
 
 import reversion
 
-from models import Entry, Change, Tag, Relation, Alteration, Category
+from models import Entry, Change, Relation, Alteration, Category, Tag
 
 
 #class ChangeInline(admin.StackedInline):
@@ -20,7 +20,7 @@ from models import Entry, Change, Tag, Relation, Alteration, Category
 
 class EntryAdmin(reversion.VersionAdmin):
     search_fields = ('title', 'text', 'url')
-    order_by =('-created',)
+    ordering = ('-created',)
     #inlines = [ChangeInline]
     #inlines = [RelationInline]
     def save_model(self, request, obj, form, change):
@@ -31,24 +31,33 @@ class EntryAdmin(reversion.VersionAdmin):
 
 
 class RelationAdmin(reversion.VersionAdmin):
+    ordering = ('-created',)
     def save_model(self, request, obj, form, change):
         print("RelationAdmin.save_model here!")
         obj.user = request.user
         obj.save()
 
 
-class TagAdmin(reversion.VersionAdmin):
-    pass
-
-
 class ChangeAdmin(admin.ModelAdmin):
     search_fields = ('title', 'text')
-    order_by  = ('at',)
+    ordering  = ('at',)
+
+
+class AlterationAdmin(admin.ModelAdmin):
+    ordering = ('at',)
+
+
+class CategoryAdmin(reversion.VersionAdmin):
+    ordering = ('name',)
+
+
+class TagAdmin(reversion.VersionAdmin):
+    ordering = ('name',)
 
 
 admin.site.register(Entry, EntryAdmin)
 admin.site.register(Change, ChangeAdmin)
-admin.site.register(Tag, TagAdmin)
 admin.site.register(Relation, RelationAdmin)
-admin.site.register(Alteration)
-admin.site.register(Category)
+admin.site.register(Alteration, AlterationAdmin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(Tag, TagAdmin)
