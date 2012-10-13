@@ -42,10 +42,10 @@
         </div>
         <div class=span6>
             {% block column-2 %}
-                <a href={{ categories.get_absoulte_url }}><h3>Categories</h3></a>
+                <a href={{ categories.get_absolute_url }}><h3>Categories</h3></a>
                 <p>{{ categories.text|markdown|hyper|recross|safe }}</p>
                 {% for image in categories.images.all %}
-                    <a href={{ hierarchy.get_absolute_ul }}><img src={{ image.url }} alt={{ image.name }} width="250" height="250"></a>
+                    <a href={{ categories.get_absolute_url }}><img src={{ image.url }} alt={{ image.name }} width="250" height="250"></a>
                 {% endfor %}
             {% endblock %}
         </div>
