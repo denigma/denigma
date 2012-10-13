@@ -4,7 +4,7 @@ import re
 
 from django import template
 
-from blog.models import Post
+from data.models import Entry
 
 
 register = template.Library()
@@ -13,12 +13,12 @@ register = template.Library()
 @register.filter
 def cross(text):
     """Performs a crosslinking for single words via dict look-up."""
-    posts = tuple([p.title for p in Post.objects.all()])
+    posts = tuple([e.title for e in Entry.objects.all()])
     terms = text.split(' ')
     for index, term in enumerate(terms):
        if term in posts:
-          post = Post.objects.get(title=term)
-          terms[index] = '<a href="/blog/{0}">{1}</a>'.format(post.id, term)
+          entry = Entry.objects.get(title=term)
+          terms[index] = '<a href="/blog/{0}">{1}</a>'.format(entry.id, term)
     text = " ".join(terms)
     return text
 
@@ -27,14 +27,14 @@ def cross(text):
 def crossing(text):
     """Most powerful crosslinking by utilizing regular expression matching.
     So far the regex only replaces single words."""
-    posts = dict([(p.title, '<a href="/blog/{0}">{1}</a>'.format(p.id, p.title))\
-            for p in Post.objects.all()])
+    entries = dict([(e.title, '<a href="/blog/{0}">{1}</a>'.format(e.id, e.title))\
+            for e in Entry.objects.all()])
 
     def replace(text):
         print text.group(0)
-        return posts.get(text.group(0), text.group(0))
+        return entries.get(text.group(0), text.group(0))
 
-    print posts
+    print entries
     text = re.sub(r'[\w\d]+', replace, text)
     return text
    
@@ -42,19 +42,19 @@ def crossing(text):
 @register.filter
 def crossed(text):
     """Simple crosslinking replace algorithms, which might not work perfectly."""
-    posts = dict([(p.title, '<a href="/blog/{0}">{1}</a>'.format(p.id, p.title))\
-            for p in Post.objects.all()])
-    for title in posts:
-        text = text.replace(title, posts[title])
+    entries = dict([(e.title, '<a href="/blog/{0}">{1}</a>'.format(e.id, e.title))\
+            for e in Entry.objects.all()])
+    for title in entries:
+        text = text.replace(title, entries[title])
     return text
 
 @register.filter
 def recross(text):
     """Takes a text and replaces words that match a key in the posts dictionary with
     the assoicated cross-linked value, return the changed text.""" 
-    posts = dict([(p.title, '<a href="/blog/{0}">{1}</a>'.format(p.id, p.title))\
-            for p in Post.objects.all()])
-    rc = re.compile('|'.join(map(re.escape, posts)))
+    entries = dict([(e.title, '<a href="{0}">{1}</a>'.format(e.get_absolute_url(), e.title))\
+            for e in Entry.objects.all()])
+    rc = re.compile('|'.join(map(re.escape, entries)))
     def translate(match):
-        return posts[match.group(0)]
+        return entries[match.group(0)]
     return rc.sub(translate, text)
