@@ -25,6 +25,9 @@
             updated on {{ relation.updated }}<br>
         {% endfor %}
     </div>
-    <b><a href={% url 'create-relation' %}>Create relation</a></b>
-    (<a href="/admin/data/relation/add/">Admin</a>)
+    <br>
+    <div>
+        <b><a href={% url 'create-relation' %}>Create relation</a></b>
+        (<a href="/admin/data/relation/add/">Admin</a>)
+    </div>
 {% endblock %}
