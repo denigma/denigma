@@ -23,7 +23,7 @@ def adding_tags(**kwargs):
         else:
             parent = None
         instance.change = instance.Change(title=instance.title, slug=instance.slug, text=instance.text, url=instance.url,
-            of=instance, by=instance.user, comment=instance.comment, )
+            of=instance, by=instance.user, comment=instance.comment, parent=parent)
         instance.change.save()
         #instance.change.tags = tags
         instance.change.tags.add(*[tag.name for tag in tags.all()])
@@ -44,7 +44,7 @@ def changed_tagged(sender, instance, action, reverse, model, pk_set, **kwargs):
             else:
                 parent = None
             instance.change = instance.Change(title=instance.title, slug=instance.slug, text=instance.text, url=instance.url,
-                of=instance, by=instance.user, comment=instance.comment, parent=parent )
+                of=instance, by=instance.user, comment=instance.comment, parent=parent)
             instance.change.save()
         instance.change.tagged = instance.tagged.all()
         #instance.tags.add(*[tag.name for tag in instance.change.tags.all()])
@@ -64,7 +64,7 @@ def changed_categories(sender, instance, action, reverse, model, pk_set, **kwarg
             else:
                 parent = None
             instance.change = instance.Change(title=instance.title, slug=instance.slug, text=instance.text, url=instance.url,
-                of=instance, by=instance.user, comment=instance.comment, parent=parent )
+                of=instance, by=instance.user, comment=instance.comment, parent=parent)
             instance.change.save()
         instance.change.categories = instance.categories.all()
         #instance.tags.add(*[tag.name for tag in instance.change.tags.all()])

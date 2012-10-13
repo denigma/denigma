@@ -195,7 +195,7 @@ class Entry(Content):
                 self.tags_pre_clear = [tag.name for tag in self.tags.all()]
                 self.categories_pre_clear = [category.name for category in
                                              self.categories.all()]
-#2345678911234567892123456789312345678941234567895123456789612345678961234567897123456789
+
         else:
             changes = []
             #print("Title %s vs. %s" % (self.title, self.original.title))
@@ -549,3 +549,4 @@ m2m_changed.connect(handlers.changed_images, sender=Entry.images.through)
 #message_sent.connect(handlers.message_sent)
 signals.tags_added.connect(handlers.adding_tags)
 
+#2345678911234567892123456789312345678941234567895123456789612345678961234567897123456789
