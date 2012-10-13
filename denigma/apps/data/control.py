@@ -12,8 +12,8 @@ from models import Entry, EntryDummy
 def get(*args, **kwargs): #title=None, text=None, tags=None, images=None, urls=None
     """Fetches an data entry according to its title."""
     data = []
-    print args
-    print kwargs
+    #print args
+    #print kwargs
 #    if 'title' in kwargs:
 #        args.append(kwargs['title'])
     args = list(args)
@@ -23,7 +23,7 @@ def get(*args, **kwargs): #title=None, text=None, tags=None, images=None, urls=N
     if len(args) == 1:
         kwargs['title'] = args[0]
         del args[0]
-    print args, kwargs
+    #print args, kwargs
 
 #    for title in args:
     try:
@@ -40,7 +40,7 @@ def get(*args, **kwargs): #title=None, text=None, tags=None, images=None, urls=N
         except (Entry.MultipleObjectsReturned) as e:
             entry = Entry.objects.filter(*args, **kwargs)[0]
             data.append(entry)
-    print("data.control.get: data = %s" % data)
+    #print("data.control.get: data = %s" % data)
     if len(data) == 1: return data[0]
     elif len(data) > 1: return data
 
