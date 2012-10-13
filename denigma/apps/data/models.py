@@ -400,30 +400,6 @@ class Change(Content):
 #                print("-"+letter)
 
 
-class Tag(models.Model):
-    """A category tag modeling a namespace."""
-    name = models.CharField(_('name'), max_length=255, unique=True)
-    synonyms = models.ManyToManyField('self', blank=True, verbose_name=_('synonyms'))
-
-    def __unicode__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('entry-tag', args=[self.name]) #u"/data/tag/%s" % self.pk
-
-class Category(models.Model):
-    name = models.CharField(_('name'), max_length=255, unique=True)
-    synonyms = models.ManyToManyField('self', blank=True, verbose_name=_('synonyms'))
-
-    def __unicode__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('detail-category', args=[self.pk])
-
-    class Meta:
-        verbose_name_plural = 'Categories'
-
 #class RelationshipType(models.Model):
 #    name = models.CharField(max_length=255, unique=True)
 #    description = models.TextField(blank=True, null=True)
@@ -524,6 +500,33 @@ class Alteration(models.Model):
         except:
             return ''
 
+
+class Category(models.Model):
+    name = models.CharField(_('name'), max_length=255, unique=True)
+    synonyms = models.ManyToManyField('self', blank=True, verbose_name=_('synonyms'))
+
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('detail-category', args=[self.pk])
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+
+
+class Tag(models.Model):
+    """A category tag modeling a namespace."""
+    name = models.CharField(_('name'), max_length=255, unique=True)
+    synonyms = models.ManyToManyField('self', blank=True, verbose_name=_('synonyms'))
+
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('entry-tag', args=[self.name]) #u"/data/tag/%s" % self.pk
+
+
 class EntryDummy(object):
     def __init__(self, title=None, text=None, tags=None, images=None, urls=None):
         self.title = title
@@ -539,8 +542,6 @@ class EntryDummy(object):
 #post_save.connect(handlers.model_saved, sender=Entry)
 #reversion.pre_revision_commit.connect(handlers.pre_revision, sender=Entry)
 #reversion.post_revision_commit.connect(handlers.post_revision, sender=Entry)
-
-
 m2m_changed.connect(handlers.changed_tags, sender=Entry.tags.through)
 m2m_changed.connect(handlers.changed_tagged, sender=Entry.tagged.through)
 m2m_changed.connect(handlers.changed_categories, sender=Entry.images.through)
