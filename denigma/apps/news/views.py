@@ -2,11 +2,12 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 
-from blog.models import Post
+from data.models import Entry
 
 
 def index(request):
-     news = Post.objects.filter(tags__name='news').order_by('-created', '-id')
+     entry = Entry.objects.get(title='News')
+     news = Entry.objects.filter(tags__name='news').order_by('-created', '-id')
      paginator = Paginator(news, 5)
      page_num = request.GET.get('page', 1)
      try:
@@ -15,7 +16,7 @@ def index(request):
          page = paginator.page(paginator.num_pages)
      except PageNotAnInteger:
          page = paginator.page(1)
-     ctx = {'page': page}
+     ctx = {'page': page, 'entry': entry}
      return render_to_response('news/index.html', ctx,
                                context_instance=RequestContext(request))
 

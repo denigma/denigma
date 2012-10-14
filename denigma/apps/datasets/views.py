@@ -3,17 +3,17 @@ from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 
 from datasets.models import Reference, Change
-from blog.models import Post
+from data import get
 
 
 def index(request):
-    datasets = Post.objects.get(title='Datasets')
+    datasets = get(title='Datasets')
     return render_to_response('datasets/index.html', {'datasets': datasets},
                               context_instance=RequestContext(request))
 
 def references(request):
     references = Reference.objects.all()
-    references_entry = Post.objects.get(title='References')
+    references_entry = get(title='References')
     ctx = {'references': references, 'references_entry': references_entry}
     return render_to_response('datasets/references.html', ctx,
         context_instance=RequestContext(request))
@@ -40,15 +40,15 @@ def duplicates(request):
 
 def changes(request):
     changes = Change.objects.all()
-    changes_description = Post.objects.get(title='Changes')
+    changes_description = get(title='Biological Changes')
     ctx = {'changes': changes, 'changes_description': changes_description}
     return render(request, 'datasets/changes.html', ctx)
 
 def epistasis(request):
-    post = Post.objects.get(title='Epistasis of Longevity')
-    data = post.text.split('\n')
+    entry = get(title='Epistasis of Longevity')
+    data = entry.text.split('\n')
     description = data[0]
     pmids = [i for i in data[2:] if i]
-    ctx = {'post': post, 'description': description, 'pmids': pmids}
+    ctx = {'post': entry, 'description': description, 'pmids': pmids}
     return render_to_response('datasets/epistasis.html', ctx,
                 context_instance=RequestContext(request))

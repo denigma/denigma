@@ -9,6 +9,18 @@
 {% endblock %}
 
 {% block content %}
+    <table>
+        <tr>
+            <td>
+                {{ entry.text|markdown|hyper|recross|safe }}
+            </td>
+            <td>
+                {% for image in entry.images.all %}
+                    <img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250" />
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
     <hr>
    {% for news in page.object_list %}
        <table>
