@@ -1,0 +1,9 @@
+{% extends 'data/base.html' %}
+
+{% load url from future %}
+
+{% block content %}
+    {% for parent in entry.get_ancestor %}
+        <a href={% url 'entry' %}>{{ parent.title }}</a>
+    {% endfor %}
+{% endblock %}
