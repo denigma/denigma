@@ -2,6 +2,8 @@ from django.views.generic import CreateView, UpdateView, DeleteView, ListView, D
 from django.views.generic.base import TemplateView, RedirectView
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.http import Http404
+
 
 class ExtraContextView(TemplateView):
     """Compensates for the missing extra_context argument which was
@@ -94,3 +96,11 @@ class RequestDeleteView(MessageMixin, DeleteView):
     def get_queryset(self):
         qs = super(RequestDeleteView, self).get_queryset()
         return qs.filter(owner=self.request.user)
+
+
+class LoggedInMixin(object):
+    """A mixin requiring a user to be logged in."""
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_athenticated():
+            raise Http404
+        return super(LoggedInMixin, self).dispatch(request, *args, **kwargs)
