@@ -4,8 +4,9 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from taggit.models import Tag
 
-from models import Entry, Change, Relation, Alteration,  Category #Tag,
-from views import EntryList, ChangeList, EntryCreate, EntryUpdate, RelationCreate, RelationUpdate, CategoryCreate, TagDetail
+from models import Entry, Change, Relation, Alteration,  Category
+from views import EntryList, EntryView,  EntryCreate, EntryUpdate, EntryDelete,\
+                  ChangeList, RelationCreate, RelationUpdate, CategoryCreate, TagDetail
 
 
 urlpatterns = patterns('data.views',
@@ -15,17 +16,17 @@ urlpatterns = patterns('data.views',
     ## Class-Views
     url(r'^entries/list/$', EntryList.as_view(paginate_by=10), name='list-entries'),
     url(r'^entry/table/$', EntryList.as_view(template_name='data/entry_table.html'), name='entry-table'),
-    url(r'^hierarchy/list/$', EntryList.as_view(
-            context_object_name='entries',
-            template_name='data/hierarchy.html'),
-        name='list-hierarchy'),
-    url(r'^entry/(?P<pk>\d+)', DetailView.as_view(model=Entry), # template_name='entry_detail.html' # use defaults
-        name='detail-entry'), # User generic class-based view
+    url(r'^entry/(?P<pk>\d+)', DetailView.as_view(model=Entry), name='detail-entry'), # User generic class-based view # template_name='entry_detail.html' # use defaults
+    url(r'^entry/view/(?P<slug>.+)', EntryView.as_view(), name='view-entry'),
     url(r'^entry/create/$', EntryCreate.as_view(), name='create-entry'),
-    url(r'^entry/update/(?P<pk>\d+)', EntryUpdate.as_view(),
-        name='update-entry'),
-    url(r'^entry/delete/(?P<pk>\d+)', DeleteView.as_view(model=Entry),
-        name='delete-entry'),
+    url(r'^entry/update/(?P<pk>\d+)', EntryUpdate.as_view(), name='update-entry'),
+    url(r'^entry/update/(?P<pk>.+)', EntryUpdate.as_view(), name='update-entry'),
+    url(r'^entry/delete/(?P<pk>\d+)', EntryDelete.as_view(), name='delete-entry'),
+    url(r'^entry/(?P<slug>.+)', EntryView.as_view(), name='detail-entry'), #  Alternative detail entry accepting slug.
+    url(r'^hierarchy/list/$', EntryList.as_view(
+        context_object_name='entries',
+        template_name='data/hierarchy.html'),
+        name='list-hierarchy'),
 
     ## Function-Views:
     url(r'^entries/$', 'entries', name='entries'),
@@ -34,6 +35,7 @@ urlpatterns = patterns('data.views',
     url(r'^entry/add', 'add_entry', name='add_entry'),
     url(r'^entry/edit', 'edit_entry', name='edit_view'),
     url(r'^entry/remove', 'remove_entry', name='remove_entry'),
+    url(r'^entry/breadcrump/(?P<slug>.+)', 'breadcrump', name='breadcrump'), # An experimental view to display breadcrump.
 
     # Changes:
     ## Class-Views
@@ -76,9 +78,10 @@ urlpatterns = patterns('data.views',
     url(r'^tags/list/$', ListView.as_view(queryset=Tag.objects.all(),
         template_name='data/tag_list.html'), name='list-entry-tags'), # Shows number of tagged entries.
     url(r'^tag/(?P<pk>\d+)', TagDetail.as_view(), name='entry-tag-detail'), # Shows list of tagged entries.
+    url(r'^tag/(?P<slug>.+)', TagDetail.as_view(), name='entry-tag'),
     ## Function-Views
     url(r'^tags/$', 'tags', name='entry-tags'),
-    url(r'^tag/(?P<slug>.+)', 'tag', name='entry-tag'),
+    #url(r'^tag/(?P<slug>.+)', 'tag', name='entry-tag'),
 
     # Categories:
     url(r'^categories/list/$', ListView.as_view(queryset=Category.objects.all(),), name='list-categories'),
