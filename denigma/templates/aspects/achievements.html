@@ -12,7 +12,7 @@
     </b>(<a href="/admin/aspects/hierarchytype/">Admin</a>)<b>
 {% endblock %}
 
-{% block title %}Achivements{% endblock %}
+{% block title %}Achievements{% endblock %}
 
 {% block content %}
     {{ entry.text|markdown|hyper|recross|safe }}
@@ -21,7 +21,6 @@
         <table width="100%">
             <tr>
                 <td>
-
                     <h3>{{ achievement.name }}</h3>
                     {{ achievement.description|markdown|hyper|recross|safe }}
                     <b><a href="/aspects/{{ achievement.requirement }}/{{ achievement.name|lower }}s/">See all</a></b>
