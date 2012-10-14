@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import  ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AnonymousUser, User
@@ -33,6 +33,12 @@ def entry(): pass
 def add_entry(): pass
 def edit_entry(): pass
 def remove_entry(): pass
+
+def breadcrump(request, slug):
+    print("Breadcrump: %s" % slug)
+    entry = Entry.objects.get(slug=slug)
+    return render_to_response('entry_view.html', {'entry': entry},
+        context_instance=RequestContext(request))
 
 def changes(request, pk=None, template_name='data/change_list.html'):
     if pk:
@@ -92,13 +98,17 @@ class ChangeList(ListView): # Not functional.
     def dispatch(self, *args, **kwargs):
         return render_to_response('data/change_list.html')
 
+
 class TagDetail(ListView):
     #def fill_context(self):
         #self.request
 
     def dispatch(self, request, *args, **kwargs):
-        tag = Tag.objects.get(pk=kwargs['pk'])
-        items = TaggedItem.objects.filter(tag__pk=kwargs['pk'])
+        if 'slug' in kwargs:
+            tag = Tag.objects.get(slug=kwargs['slug'])
+        else:
+            tag = Tag.objects.get(pk=kwargs['pk'])
+        items = TaggedItem.objects.filter(tag__pk=tag.pk)
         for item in items:
             print("Item: %s;" % vars(item))
         ctx = {'object_list': items, 'object': tag}
@@ -211,16 +221,51 @@ class Update(UpdateView):
             return HttpResponseRedirect(self.get_success_url())
 
 
-class EntryCreate(Create):
+class Delete(DeleteView):
     model = Entry
-    form_class = EntryForm
+
+    #def post
+
+class EntryView(DetailView):
+    def dispatch(self, *args, **kwargs):
+        if 'slug' in kwargs:
+            self.slug = kwargs['slug']
+        return super(EntryView, self).dispatch(*args, **kwargs)
+
+    def get_queryset(self):
+        objects = Entry.objects.filter(slug=self.slug)
+        return objects
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(EntryView, self).get_context_data(*args, **kwargs)
+        if 'slug' in kwargs:
+            ctx['slug'] =  self.slug = self.kwargs['slug']
+        return ctx
+
+
+class EntryCreate(Create):
     comment = 'Created entry.'
 
 
 class EntryUpdate(Update):
-    model = Entry
-    form_class = EntryForm
     comment = 'Updated Entry'
+
+    def dispatch(self, *args, **kwargs):
+        if 'slug' in kwargs:
+            self.slug = kwargs['slug']
+        elif 'pk' in kwargs:
+            self.pk = kwargs['pk']
+        return super(EntryUpdate, self).dispatch(*args, **kwargs)
+
+    def get_queryset(self):
+        if hasattr(self, 'slug'):
+            objects = Entry.objects.filter(slug=self.slug)
+        else:
+            objects = Entry.objects.all()#filter(pk=self.pk)
+        return objects
+
+class EntryDelete(Delete): pass
+
 
 
 class RelationCreate(Create):
@@ -234,8 +279,8 @@ class RelationUpdate(Update):
     form_class = RelationForm
     comment = 'Updated relation'
 
+
 class CategoryCreate(Create):
     model = Category
     form_class = CategoryForm
     comment = 'Created category'
-
