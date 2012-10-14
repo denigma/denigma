@@ -11,17 +11,19 @@
 {% block body_class %}Home{% endblock %}
 
 {% block banner %}
-{# <img src="http://dgallery.s3.amazonaws.com/denigma_pos.png" alt="Denigma"></td> #}
-    <table>
-        <tr>
-            <td>
-                <p>{{ denigma_description.text|markdown|hyper|recross|safe }}</p> {# {% blocktrans %}{% endblocktrans %} #}
-                <p>{{ denigma_rationality.text|markdown|hyper|recross|safe }}</p> {#  {% blocktrans %}{% endblocktrans %} #}
-            </td>
-            <td><centre><h1><img src="http://dgallery.s3.amazonaws.com/denigma_pos.png" alt="Denigma - The Digital Enigma" height="500" width="500"></h1></td>
-    
-        </tr>
-    </table>
+<table>
+    <tr>
+        <td>
+            <p>{{ denigma_description.text|markdown|hyper|recross|safe }}</p> {# {% blocktrans %}{% endblocktrans %} #}
+            <p>{{ denigma_rationality.text|markdown|hyper|recross|safe }}</p> {#  {% blocktrans %}{% endblocktrans %} #}
+        </td>
+        <td>
+            <div>
+                <img src="http://dgallery.s3.amazonaws.com/denigma_pos.png" alt="Denigma - The Digital Enigma" height="500" width="500" style="float:right" />
+            </div>
+        </td>
+    </tr>
+</table>
     {% if user.is_authenticated %}
         {% url what_next as what_next_url %}
         <p class="what_next">{% blocktrans %}Wondering <a href="{{ what_next_url }}" class="btn primary large">What Next</a>?{% endblocktrans %}</p>
