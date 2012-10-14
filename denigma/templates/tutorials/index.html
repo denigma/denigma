@@ -13,8 +13,8 @@
 
     <table>
         <tr>
-            <td>
-                <p>{{ tutorials_entry.text|markdown|hyper|recross|safe }}</p>
+            <td valign="top">
+                {{ tutorials_entry.text|markdown|hyper|recross|safe }}
                 {% if tutorials %}
                     {% for tutorial in tutorials %}
                         <li><a href="/tutorials/{{ tutorial.id }}/view/">{{ tutorial.title }}</a></li>
