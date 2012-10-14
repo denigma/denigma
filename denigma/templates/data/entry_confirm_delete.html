@@ -1,0 +1,17 @@
+{% extends 'data/base.html' %}
+
+{% load url from future %}
+
+{% block head_title %}Delete {{ object.title }}{% endblock %}
+
+{% block hierarchy %}
+    > <a href={% url 'list-entries' %}>Entries</a>
+    > {{ object.title }}
+    > Delete
+{% endblock %}
+
+{% block title %}Delete {{ object.title }}{% endblock %}
+
+{% block content %}
+    {{ form.as_p }}
+{% endblock %}
