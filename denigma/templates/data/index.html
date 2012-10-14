@@ -7,9 +7,6 @@
 
 {% block head_title %}Data Index{% endblock %}
 
-
-
-
 {% block hierarchy %}
     > Index
 {% endblock %}
@@ -19,7 +16,7 @@
 {% block content %}
     <table>
         <tr>
-            <td>
+            <td valign="top">
                 {{ entry.text|markdown|hyper|recross|safe }}
             </td>
             <td>
