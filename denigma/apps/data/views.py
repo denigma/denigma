@@ -116,6 +116,7 @@ class TagDetail(ListView):
         return render_to_response('data/tag_detail.html', ctx,
             context_instance=RequestContext(request))
 
+
 class View(object):
     comment = 'Viewed it.'
     message = 'Viewing'
