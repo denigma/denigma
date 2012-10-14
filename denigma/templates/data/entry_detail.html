@@ -59,4 +59,7 @@
     <b><a href={% url 'update-entry' object.pk %}>Update entry</a></b>
     (<a href="/admin/data/entry/{{ object.pk }}/">Admin</a>) |
     <b><a href={% url 'changes' object.pk %}>See changes</a></b>
+    {% if user.is_superuser %}
+        | <b><a href={% url 'delete-entry' object.pk %}>Delete</a></b>
+    {% endif %}
 {% endblock %}
