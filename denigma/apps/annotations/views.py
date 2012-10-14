@@ -58,9 +58,10 @@ def bulk_upload(request):
 
 
 def classifications(request):
+    entry = get("Classifications")
     classifications = Classification.objects.all()
     return render_to_response('annotations/classifications.html',
-                              {'nodes': classifications},
+                              {'nodes': classifications, 'entry': entry},
                               context_instance=RequestContext(request))
 
 def classification(request, pk):

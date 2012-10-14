@@ -1,6 +1,9 @@
 {% extends "annotations/base.html" %}
 
 {% load mptt_tags %}
+{% load markup %}
+{% load crosslink %}
+{% load hyperlink %}
 
 {% block head_title %}Classifications{% endblock %}
 
@@ -8,10 +11,10 @@
     > Classifications
 {% endblock %}
 
-{% block title %}Molecule Classifications{% endblock %}
+{% block title %}{{ entry.title }}{% endblock %}
 
 {% block content %}
-    <p>Dengima developed a sophisticated classification hierarchical schema for biological entities.</p>
+    {{ entry.text|markdown|hyper|recross|safe }}
     <ul>
         {% recursetree nodes %}
             <li>
