@@ -5,6 +5,7 @@ from models import Transcript
 
 class TranscriptFilterSet(django_filters.FilterSet):
     pvalue = django_filters.NumberFilter(lookup_type='lt') # Looks up transcripts with
+    benjamini = django_filters.NumberFilter(lookup_type='lt')
     expression__exp = django_filters.NumberFilter(lookup_type='lt')
     #ctr = django_filters.NumberFilter(lookup_type='lt')
     symbol = django_filters.CharFilter()

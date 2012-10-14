@@ -54,12 +54,14 @@ def signatures(request):
     return render_to_response('expressions/signatures.html', ctx,
         context_instance=RequestContext(request))
 
-def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None):
+def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, benjamini=None):
     if request.GET:
         if 'ratio' in request.GET and request.GET['ratio']:
             ratio = float(request.GET['ratio'])
         if 'pvalue' in request.GET and request.GET['pvalue']:
             pvalue = float(request.GET['pvalue'])
+        if 'benjamini' in request.GET and request.GET['benjamini']:
+            benjamini = float(request.GET and request.GET['benjamini'])
         if 'expression__exp' in request.GET and request.GET['expression__exp']:
             exp = float(request.GET['expression__exp'])
 
@@ -85,11 +87,18 @@ def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None):
             transcripts = transcripts.filter(symbol__icontains=symbol)
         if 'fold_change' in request.GET and request.GET['fold_change']:
             fold_change = float(request.GET['fold_change'])
-            print len(transcripts)
+            #print len(transcripts)
 
             transcripts = transcripts.filter(Q(fold_change__gt=fold_change)
                                            | Q(fold_change__lt=1./fold_change))
-            print "filtered transcripts", len(transcripts)
+            #print "filtered transcripts", len(transcripts)
+
+
+        if 'benjamini' in request.GET and request.GET['benjamini']:
+            benjamini = float(request.GET['benjamini'])
+            transcripts = transcripts.filter(benjamini__lt=benjamini)
+
+
     filter = TranscriptFilterSet(request.GET, transcripts)
     print type(filter), vars(filter)
     print len(filter.queryset)
@@ -98,15 +107,18 @@ def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None):
     transcripts_up = transcripts.filter(Q(ratio__gt=ratio)
                                         & Q(pvalue__lt=pvalue))
 
+
     transcripts_down = transcripts.filter(Q(ratio__lt=1./ratio)
                                           & Q(pvalue__lt=pvalue))
+
     ctx = {'signature': signature, 'transcripts': transcripts,
            'transcripts_up': transcripts_up,
            'transcripts_down': transcripts_down,
            'table': table,
            'ratio': ratio,
            'pvalue': pvalue,
-           'filter': filter}
+           'benjamini': benjamini,
+           'filter': filter,}
     return render_to_response('expressions/signature.html', ctx,
         context_instance=RequestContext(request))
 
