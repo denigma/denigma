@@ -162,7 +162,7 @@ class Intersection(object):
         return " ".join(self.down)
 
 
-def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None):
+def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, benjamini=None):
     entry = get("Intersections")
 
     if request.GET:
@@ -172,6 +172,8 @@ def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, se
             pvalue = float(request.GET['pvalue'])
         if 'fold_change' in request.GET and request.GET['fold_change']:
             fold_change = float(request.GET['fold_change'])
+        if 'benjamini' in request.GET and request.GET['benjamini']:
+            benjamini = float(request.GET['benjamini'])
         if 'expression__exp' in request.GET and request.GET['expression__exp']:
             exp = request.GET['expression__exp']
             print "Expression exp"
@@ -188,7 +190,7 @@ def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, se
         set = Set.objects.get(pk=1)
         signatures = set.signatures.all()
     for signature in signatures:              #
-        signature.differential(ratio, pvalue, fold_change, exp) # Might a good function for a custom manager.
+        signature.differential(ratio, pvalue, fold_change, exp, benjamini) # Might a good function for a custom manager.
     for a_signature in signatures:
         for another_signature in signatures[:len(signatures)/2]: # Prevents duplicated comparisions the other way around.
             if a_signature != another_signature: # Prevent comparision of the same signatures and
@@ -203,6 +205,7 @@ def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, se
            'intersections': intersections,
            'ratio': ratio,
            'pvalue': pvalue,
+           'benjamini': benjamini,
            'fold_change': fold_change,
            'exp': exp,
            'filter': filter,
@@ -212,7 +215,7 @@ def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, se
         context_instance=RequestContext(request))
 
 def intersection(request, a, another, ratio=2., pvalue=0.05,
-                 fold_change=None, exp=None):
+                 fold_change=None, exp=None, benjamini=None):
     a_signature = Signature.objects.get(pk=a)
 
     another_signature = Signature.objects.get(pk=another)
@@ -222,6 +225,8 @@ def intersection(request, a, another, ratio=2., pvalue=0.05,
             ratio = request.GET['ratio']
         if 'pvalue' in request.GET and request.GET['pvalue']:
             pvalue = request.GET['pvalue']
+        if 'benjamini' in request.GET and request.GET['benjamini']:
+            benjamini = request.GET['benjamini']
         if 'fold_change' in request.GET and request.GET['fold_change']:
             fold_change = request.GET['fold_change']
             print "get fold_change", fold_change
@@ -234,9 +239,9 @@ def intersection(request, a, another, ratio=2., pvalue=0.05,
     print fold_change
 
     a_signature.differential(float(ratio), float(pvalue),
-                             float(fold_change or 0), exp)
+                             float(fold_change or 0), exp, benjamini)
     another_signature.differential(float(ratio), float(pvalue),
-                                  float(fold_change or 0), exp)
+                                  float(fold_change or 0), exp, benjamini)
     intersection = Intersection(a_signature, another_signature)
     ctx = {'title': '%s & %s' % (a_signature, another_signature),
            'intersection': intersection,
@@ -247,13 +252,15 @@ def intersection(request, a, another, ratio=2., pvalue=0.05,
     return render_to_response('expressions/intersection.html/', ctx,
         context_instance=RequestContext(request))
 
-def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None):
+def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, benjamini=None):
     """Common to all signature in a category."""
     if request.GET:
         if 'ratio' in request.GET and request.GET['ratio']:
             ratio = float(request.GET['ratio'])
         if 'pvalue' in request.GET and request.GET['pvalue']:
             pvalue = float(request.GET['pvalue'])
+        if 'benjamini' in request.GET and request.GET['benjamini']:
+            benjamini = float(request.GET['benjamini'])
         if 'fold_change' in request.GET and request.GET['fold_change']:
             fold_change = float(request.GET['fold_change'])
         if 'expression__exp' in request.GET and request.GET['expression__exp']:
@@ -264,7 +271,7 @@ def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None):
     set = Set.objects.get(pk = set or 1)
     signatures = set.signatures.all()
     for signature in signatures:
-        signature.differential(ratio, pvalue, fold_change, exp)
+        signature.differential(ratio, pvalue, fold_change, exp, benjamini)
     signatures = Signatures(signatures)
     filter = TranscriptFilterSet(request.GET, transcripts)
     ctx = {'title': 'Meta-Analysis',
@@ -735,10 +742,8 @@ def output_signature(request, pk):
     messages.add_message(request, messages.SUCCESS, _(msg))
     return redirect('/expressions/signatures')
 
-
-def benjamini(request, pk):
-    """This view takes a signature and performs Benjamini Hochberg correction."""
-    signature = Signature.objects.get(pk=pk)
+def calc_benjamini(signature):
+    """Function which preforms the actual Benjamini correction."""
     transcripts = signature.transcripts.all()
     p = {} # seq_id - p-values mapping.
     for transcript in transcripts:
@@ -748,10 +753,24 @@ def benjamini(request, pk):
         transcript = transcripts[index]
         transcript.benjamini = benjamini_pvalue[0] #expression__
         transcript.save()
+
+def benjamini(request, pk):
+    """This view takes a signature and calls a Benjamini Hochberg correction."""
+    signature = Signature.objects.get(pk=pk)
+    calc_benjamini(signature)
     msg = "Successfully performed Benjamini Hochberg correction on %s" % signature.name
     messages.add_message(request, messages.SUCCESS, _(msg))
     return redirect('/expressions/signatures')
 
+def benjaminis(request):
+    "Calls Benjamini Hochberg correction for all signatures in Denigma db."
+    signatures = Signature.objects.all()
+    for signature in signatures:
+        calc_benjamini(signature)
+    msg = "Successfully performed Benjamini Hochberg correction on %s" %\
+          ", ".join([signature.name for signature in signatures])
+    messages.add_message(request, messages.SUCCESS, _(msg))
+    return redirect('/expressions/signatures')
 
 class SetList(ListView):
     queryset = Set.objects.all,

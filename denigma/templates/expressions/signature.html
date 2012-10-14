@@ -28,7 +28,7 @@
     <b>Transcripts</b>: {{ transcripts|count }} |
     <b>Up</b>: {{ transcripts_up|count }} |
     <b>Down</b>: {{ transcripts_down|count }} ...
-    (ratio-cutoff = {{ ratio }}; p-value < {{ pvalue }})
+    (ratio-cutoff = {{ ratio }}; p-value < {{ pvalue }} {% if benjamini %}; Benjamini < {{ benjamini }}{% endif %})
     <hr>
     <table>
         <tr>

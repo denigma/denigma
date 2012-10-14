@@ -55,7 +55,8 @@ urlpatterns = patterns('expressions.views',
     url(r'^signature/delete/(?P<pk>\d+)', 'delete_signature', name='delete_signature'),
 
     url('^signatures/delete/$', 'delete_signatures', name='delete_signatures'),
-    url('^signatures/benjamini/(?P<pk>\d+)', 'benjamini', name='benjamini'),
+    url('^signature/benjamini/(?P<pk>\d+)', 'benjamini', name='benjamini'),
+    url('^signatures/benjamini/$', 'benjaminis', name='benjaminis'),
 
     # Others:
     url('^replicates/delete/$', 'delete_replicates', name='delete_replicates'),

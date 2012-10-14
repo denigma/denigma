@@ -50,4 +50,7 @@
     {% endif %}
     <hr>
     <b><a href="/expressions/signature/add/">Add</a> / </a><a href="/expressions/signature/create/">Create</a></b>
+    {% if user.is_superuser %}
+        <a href={% url 'benjaminis' %}>Benjaminis</a>
+    {% endif %}
 {% endblock %}
