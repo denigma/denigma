@@ -157,7 +157,7 @@ $ aptitude install git
 $ git clone https://github.com/hevok/denigma
 $ bash denigma/reconnect-ebs.sh
 $ bash denigma/open-port.sh
-$ sudo bash ./denigma/aws-django -n denigma -d https://github.com/hevok/denigma/raw/master/denigma.tgz -s "/s" -H <DNS> -D denigma -U denigma -P <PASSWORD>
+$ sudo bash ./denigma/aws-django -n denigma -d nothing -s "/s" -H <DNS> -D denigma -U denigma -P <PASSWORD>
 
 
 Transferring data onto EC2
