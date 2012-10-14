@@ -11,6 +11,7 @@ try:
     from scipy import special
 except ImportError as e:
     print("denigma.stats.pValue: Failed to import scipy. %s" % str(e))
+    import special
 
 import numpy
 
@@ -155,7 +156,6 @@ def calc_benjamini_hochberg_corrections(p_values, num_total_tests):     #http://
 ##x    k      #intersection
 
 ##b = N - m
-
 
 
 def logchoose(n, k):
