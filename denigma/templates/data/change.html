@@ -20,25 +20,24 @@
     {{ changes.text|markdown|hyper|recross|safe }}
     <div class="tags">
         <b>Tags</b>:
-
         {% if changes.tags %}
             {% for tag in changes.tags %}
                 {% if tag %}
-                    <a href={{ tag.get_absolute_url }}>{{ tag }}</a>
+                     <a href={% url 'entry-tag' tag %}>{{ tag }}</a>
                 {% endif %}
             {% endfor %}
         {% endif %}
         {% if changes.tags_added %}
             {% for tag in changes.tags_added %}
                 {% if tag %}
-                    <ins style="background:#e6ffe6;"><a href={{ tag.get_absolute_url }}>{{ tag }}</a></ins>
+                    <ins style="background:#e6ffe6;"><a href={% url 'entry-tag' tag.slug %}>{{ tag }}</a></ins>
                 {% endif %}
             {% endfor %}
         {% endif %}
         {% if changes.tags_removed %}
             {% for tag in changes.tags_removed %}
                 {% if tag %}
-                    <del style="background:#ffe6e6;"><a href={{ tag.get_absolute_url }}>{{ tag }}</a></del>
+                    <del style="background:#ffe6e6;"><a href={% url 'entry-tag' tag.slug %}>{{ tag }}</a></del>
                 {% endif %}
             {% endfor %}
         {% endif %}
