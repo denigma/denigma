@@ -7,7 +7,7 @@ from django_tables2 import RequestConfig, SingleTableView
 from models import Hierarchy, HierarchyType, Rank, Grade, Title
 from forms import AchievementForm, HierarchyForm, RankForm, GradeForm, TitleForm
 
-from blog.models import Post
+from data.models import Entry
 from tables import RankTable, GradeTable, TitleTable
 
 from profiles.models import Profile
@@ -76,8 +76,8 @@ class RankList(SingleTableView): # Not used yet.
 
 
 def index(request):
-    aspects = Post.objects.filter(tags__name="aspect")
-    aspects_entry = Post.objects.get(title="Aspects")
+    aspects = Entry.objects.filter(tags__name="aspect")
+    aspects_entry = Entry.objects.get(title="Aspects")
     print len(aspects)
     hierarchytypes = HierarchyType.objects.all()
     ctx =  {'aspects_entry': aspects_entry,
@@ -87,7 +87,7 @@ def index(request):
         context_instance=RequestContext(request))
 
 def aspect(request, aspect):
-    aspect = Post.objects.get(title=aspect)
+    aspect = Entry.objects.get(title=aspect)
     return render_to_response('aspects/aspect.html', {'aspect': aspect},
         context_instance=RequestContext(request))
 
@@ -95,7 +95,7 @@ def research(request):
     pass
 
 def programming(request):
-    aspect = Post.objects.get(title='Programming')
+    aspect = Entry.objects.get(title='Programming')
     return render_to_response('aspects/aspect.html', {'aspect': aspect},
         context_instance=RequestContext(request))
 
@@ -103,22 +103,22 @@ def design(request):
     pass
 
 def professions(request):
-    professions_entry = Post.objects.get(title="Professions")
-    professions = Post.objects.filter(tags__name="profession")
+    professions_entry = Entry.objects.get(title="Professions")
+    professions = Entry.objects.filter(tags__name="profession")
     ctx = {'professions_entry': professions_entry, 'professions': professions}
     return render_to_response('aspects/professions.html', ctx,
         context_instance=RequestContext(request))
 
 def profession(request, name):
     print name.title()
-    profession = Post.objects.get(title=name.title())
+    profession = Entry.objects.get(title=name.title())
     ctx = {'profession': profession}
     return render_to_response('aspects/profession.html', ctx,
         context_instance=RequestContext(request))
 
 def achievements(request):
-    entry = Post.objects.get(title='Achievements')
-    #achievements = Post.objects.filter(tags_name='achievement')
+    entry = Entry.objects.get(title='Achievements')
+    #achievements = Entry.objects.filter(tags_name='achievement')
     achievements = HierarchyType.objects.all()[:3]
     ctx = {'entry': entry, 'achievements': achievements}
     return render_to_response('aspects/achievements.html', ctx, #achievements
@@ -128,9 +128,12 @@ def add_achievement(request):
     return HttpResponse("Create Achievement: %s" % request)
 
 def ranks(request):
+    entry = Entry.objects.get(title="Ranks")
     table = RankTable(Rank.objects.all().order_by('level'))
     RequestConfig(request).configure(table)
-    ctx = {'hierarchy_name': 'Ranks', 'hierarchy': table}
+    ctx = {'entry': entry,
+           'hierarchy_name': 'Ranks',
+           'hierarchy': table}
     return render_to_response('aspects/hierarchy.html', ctx,
         context_instance=RequestContext(request))
 
@@ -142,9 +145,12 @@ def rank(request, name):
         context_instance=RequestContext(request))
 
 def grades(request):
+    entry = Entry.objects.get(title="Grades")
     table = GradeTable(Grade.objects.all().order_by('level'))
     RequestConfig(request).configure(table)
-    ctx = {'hierarchy_name': 'Grades', 'hierarchy': table}
+    ctx = {'entry': entry,
+           'hierarchy_name': 'Grades',
+           'hierarchy': table}
     return render_to_response('aspects/hierarchy.html', ctx,
         context_instance=RequestContext(request))
 
@@ -156,10 +162,12 @@ def grade(request, name):
         context_instance=RequestContext(request))
 
 def titles(request):
+    entry = Entry.objects.get(title="Titles")
     table = TitleTable(Title.objects.all().order_by('level'))
-
     RequestConfig(request).configure(table)
-    ctx = {'hierarchy_name': 'Titles', 'hierarchy': table}
+    ctx = {'entry': entry,
+           'hierarchy_name': 'Titles',
+           'hierarchy': table}
     return render_to_response('aspects/hierarchy.html', ctx,
         context_instance=RequestContext(request))
 

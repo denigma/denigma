@@ -2,6 +2,9 @@
 
 {% load staticfiles %}
 {% load render_table from django_tables2 %}
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
 
 {% block extra_style %}
     <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
@@ -18,6 +21,19 @@
 {% block title %}{{ hierarchy_name }}{% endblock %}
 
 {% block content %}
+    <table>
+        <tr>
+            <td>
+                {{ entry.text|markdown|hyper|recross|safe }}
+            </td>
+            <td>
+                {% for image in entry.images.all %}
+                    <img src={{ image.url }} alt={{ image.name }} width=250 height=250 />
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+    <hr>
     {% render_table hierarchy %}
     {% comment %}
     <hr>
