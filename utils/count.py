@@ -5,7 +5,10 @@ class Counter:
     """Keeps track of progression in looping through a sequence."""
     def __init__(self, sequence, msg=None):
         """Start the counter."""
-        self.length = len(sequence)
+        if isinstance(sequence, int):
+            self.length=sequence
+        else:
+            self.length = len(sequence)
         self.n = 0          # count
         self.pb = 0         # percentage before
         if msg:
