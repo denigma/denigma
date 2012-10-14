@@ -231,7 +231,7 @@ class Entry(Content):
         return "{0} - {1} ({2})".format(self.title, self.created.date(), self.created.time())
 
     def get_absolute_url(self):
-        return self.url or reverse('detail-entry', args=[self.pk]) #return self.url or u"/data/entry/%s" % self.pk
+        return self.url or reverse('detail-entry', args=[self.slug]) #return self.url or u"/data/entry/%s" % self.pk
 
     def get_fields(self):
         """Displays only model fields that are non-empty."""
