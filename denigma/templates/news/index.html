@@ -24,28 +24,28 @@
     <hr>
    {% for news in page.object_list %}
        <table>
-       <tr>
-       <td>
-       <h3>{{ news.title }}</h3>
-       <p>created on {{ news.created }}; 
-          updated on {{ news.updated }}</p>
-       {% spaceless %}
-       {{ news.brief|markdown|hyper|recross|safe }}
-       <b><a href="/blog/{{ news.id }}">Read More</a></b>
-       {% endspaceless %}
-       ({% for tag in news.tags.all %}
-           <a href="/blog/tag/{{ tag }}">{{ tag }}</a>
-       {% if not forloop.last %}, {% endif %}
-       {% endfor %})
-
-       </td>
-       <td>
-       {% for image in news.images.all %}
-           <img src={{ image.url }} width="100" height="100" alt={{ image.name }} />
-       {% endfor %}
-       </td>
-       </td>
-       </tr>
+           <tr>
+               <td>
+                   <h3>{{ news.title }}</h3>
+                   <p>created on {{ news.created }};
+                      updated on {{ news.updated }}</p>
+                   {% spaceless %}
+                   {{ news.brief|markdown|hyper|recross|safe }}
+                   <b><a href="/blog/{{ news.id }}">Read More</a></b>
+                   {% endspaceless %}
+                   ({% for tag in news.tags.all %}
+                       <a href="/blog/tag/{{ tag }}">{{ tag }}</a>
+                   {% if not forloop.last %}, {% endif %}
+                   {% endfor %})
+               </td>
+               <td>
+                   {% for image in news.images.all %}
+                       {# {% url 'detail-entry' news.slug %} #}
+                       <a href="/data/entry/{{ news.pk }}"><img src="{{ image.url }}" alt="{{ image.name }}" width="100" height="100" /></a>
+                   {% endfor %}
+               </td>
+           </td>
+           </tr>
        </table>
        <hr>
 

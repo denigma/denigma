@@ -59,7 +59,7 @@
                     </td>
                     <td align="right">
                         {% for image in entry.images.all %}
-                            <img src={{ image.url }} alt={{ image.name }} width=250 height=250 />
+                            <a href={% url 'detail-entry' entry.slug %}><img src={{ image.url }} alt={{ image.name }} width=250 height=250 /></a>
                         {% endfor %}
                     </td>
                 </tr>
