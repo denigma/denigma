@@ -22,8 +22,8 @@
         <hr>
 
         <div class="hero-unit well">
-             <h2>{{ dashboard.title }}</2>
-            <p>{{ dashboard.text|markdown|hyper|recross|safe }}</p>
+             <h2>{{ dashboard.title }}</h2>
+            {{ dashboard.text|markdown|hyper|recross|safe }}
         </div>
         <hr>
 
@@ -33,15 +33,15 @@
             <div class="span4">
             {% block column-1 %}
                 <h3>{{ research.title }}</h3>
-                <p>{{ research.text|markdown|hyper|recross|safe }}</p>
-                <p><a class="btn" href="/about/matrix/I/">Become a Scientist &raquo;</a></p>
+                {{ research.text|markdown|hyper|recross|safe }}
+                <a class="btn" href="/about/matrix/I/">Become a Scientist &raquo;</a>
             {% endblock %}
             </div>
             <div class="span4">
             {% block column-2 %}
                 <h3>{{ programming.title }}</h3>
-                <p>{{ programming.text|markdown|hyper|recross|safe }}<p>
-                <p><a class="btn" href="/about/matrix/II/">Become a Developer &raquo;</a></p>
+                {{ programming.text|markdown|hyper|recross|safe }}
+                <a class="btn" href="/about/matrix/II/">Become a Developer &raquo;</a>s
             {% endblock %}
             </div>
             <div class="span4">
