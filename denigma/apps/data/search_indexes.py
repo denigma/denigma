@@ -20,18 +20,18 @@ class EntryIndex(indexes.SearchIndex, indexes.Indexable):
         return self.get_model().objects.filter(created__lte=datetime.datetime.now(), published=True)
 
 
-class ChangeIndex(indexes.SearchIndex, indexes.Indexable):
-    at = indexes.DateTimeField(model_attr='at')
-
-    text = indexes.CharField(document=True, use_template=True)
-    tags = indexes.MultiValueField()
-    categories = indexes.MultiValueField()
-
-    def get_model(self):
-        return Change
-
-    def index_queryset(self):
-        return self.get_model().objects.filter(at__lte=datetime.datetime.now(), of__published=True)
+#class ChangeIndex(indexes.SearchIndex, indexes.Indexable):
+#    at = indexes.DateTimeField(model_attr='at')
+#
+#    text = indexes.CharField(document=True, use_template=True)
+#    tags = indexes.MultiValueField()
+#    categories = indexes.MultiValueField()
+#
+#    def get_model(self):
+#        return Change
+#
+#    def index_queryset(self):
+#        return self.get_model().objects.filter(at__lte=datetime.datetime.now(), of__published=True)
 
 
 class CategoryIndex(indexes.SearchIndex,indexes.Indexable):
