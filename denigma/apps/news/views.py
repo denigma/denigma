@@ -1,13 +1,14 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import RequestContext
 from django.shortcuts import render_to_response
+from django.db.models import Q
 
 from data.models import Entry
 
 
 def index(request):
      entry = Entry.objects.get(title='News')
-     news = Entry.objects.filter(tags__name='news').order_by('-created', '-id')
+     news = Entry.objects.filter(Q(tags__name='news') | Q(parent__title='News')).order_by('-created', '-id')
      paginator = Paginator(news, 5)
      page_num = request.GET.get('page', 1)
      try:
