@@ -1,5 +1,6 @@
 {% extends "tutorials/base.html" %}
 
+{% load url from future %}
 {% load markup %}
 {% load hyperlink %}
 {% load crosslink %}
@@ -22,5 +23,5 @@
 
     {% comment %}<a href="/tutorials/{{tutorial.id }}/edit">Edit?</a>{% endcomment %}
     <br>
-    <b><a href="/admin/blog/post/{{ tutorial.id }}">Edit tutorial</a></b>
+    <b><a href={% url 'update-entry' tutorial.pk %}>Edit tutorial</a></b>
 {% endblock %}
