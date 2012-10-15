@@ -14,8 +14,8 @@
 <table>
     <tr>
         <td>
-            <p>{{ denigma_description.text|markdown|hyper|recross|safe }}</p> {# {% blocktrans %}{% endblocktrans %} #}
-            <p>{{ denigma_rationality.text|markdown|hyper|recross|safe }}</p> {#  {% blocktrans %}{% endblocktrans %} #}
+            {{ denigma_description.text|markdown|hyper|recross|safe }} {# {% blocktrans %}{% endblocktrans %} #}
+            {{ denigma_rationality.text|markdown|hyper|recross|safe }}{#  {% blocktrans %}{% endblocktrans %} #}
         </td>
         <td>
             <div>
