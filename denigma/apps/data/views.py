@@ -188,7 +188,7 @@ class Create(CreateView):
 class Update(UpdateView):
     model = Entry
     form_class = EntryForm
-    comment = 'Updated entry'
+    comment = 'Updated entry.'
     message = 'Successfully updated %s'
     action = 'Update'
 
@@ -277,10 +277,10 @@ class RelationCreate(Create):
 class RelationUpdate(Update):
     model = Relation
     form_class = RelationForm
-    comment = 'Updated relation'
+    comment = 'Updated relation.'
 
 
 class CategoryCreate(Create):
     model = Category
     form_class = CategoryForm
-    comment = 'Created category'
+    comment = 'Created category.'
