@@ -13,9 +13,13 @@
 {% block title %}{{ object }}{% endblock %}
 
 {% block content %}
-    {% if object.entry_set.all %}
-        {% for entry in object.entry_set.all %}
-            <a href={{ entry.get_absolute_url }}>{{ entry.title }}
-        {% endfor %}
+    {% if object.entr_set.all %}
+        {% if object.entry_set.all %}
+            {% for entry in object.entry_set.all %}
+                <li><a href={{ entry.get_absolute_url }}>{{ entry.title }}</a></li>
+            {% endfor %}
+        {% endif %}
+    {% else %}
+        <p>No entries categorized yet.</p>
     {% endif %}
 {% endblock %}
