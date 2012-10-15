@@ -24,8 +24,8 @@
             {% if not change.initial %}<a href={% url 'change' slug=change.slug %}> <b>Diffs</b></a> are on {{ change.diff }} {##}
             {% endif %}
             {# <a href={{ change.get_absolute_url }}>{{ change }}</a> #}
-            {% if change.comment %}
-                    <b>Comment</b>: {{ change.comment }}
+            {% if change.comment and change.comment != "Created entry" and change.comment != "Updated Entry" %}
+                 <b>Comment</b>: {{ change.comment }}
             {% endif %}
             <br>
         {% endfor %}

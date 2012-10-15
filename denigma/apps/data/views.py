@@ -248,7 +248,7 @@ class EntryCreate(Create):
 
 
 class EntryUpdate(Update):
-    comment = 'Updated Entry'
+    comment = 'Updated entry'
 
     def dispatch(self, *args, **kwargs):
         if 'slug' in kwargs:
