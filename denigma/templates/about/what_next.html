@@ -1,7 +1,7 @@
 {% extends "about/base.html" %}
 
 {% block hierarchy %}
-    > <a href="/about/what_next">About</a> >
+    > <a href="/about/what_next" xmlns="http://www.w3.org/1999/html">About</a> >
     What next?
 {% endblock %}
 
@@ -19,7 +19,7 @@
         
         <dl class="what_next">
             <dt><a href="{% url acct_email %}">Verify an email address</a></dt>
-            <dd>so you can receive notifications, reset your password, other people can find you more easily and most importantly recieve access to the Denigma db.</dd>
+            <dd>so you can receive notifications, reset your password, other people can find you more easily and most importantly receive access to capacity to modify Denigma.</dd>
             
             <dt><a href="{% url profile_detail user.username %}">Fill out your profile</a></dt>
             <dd>so that Denigma can serve your needs and interests better.</dd>
@@ -32,11 +32,13 @@
                 {% endif %}
             {% endifsetting %}
             <dt> <a href="/polls">Vote in a poll</a></dt>
-            <dd> so we know the consensus on most important fundamental questions to work on.</dd>
+            <dd> so we know the consensus on most important fundamental questions to work on as well as decide on the destiny of Denigma.</dd>
             <dt> <a href="/wiki">Check out the Wiki</a></dt>
             <dd> which is an innovative Wiki of the next generation to create a common Ontology for computational purposes.</dd>
-            <dt> <a href="/blog">Read the Blog</a></dt>
-            <dd> and therfore study a selection of articles on cutting-edge knowledge and technology as well as news on Denigma and its progress towards singularity.</dd>
+            <dt> <a href="/blog">Engage in the Blog</a></dt>
+            <dd> and therefore study a selection of articles on cutting-edge knowledge and technology as well as news on Denigma and its progress towards singularity.</dd>
+            <dt> <a href="/data">Access the Data App</a></dt>
+            <dd> and met Denigma's internal data structure.</dd>
             <dt> <a href="/shorty">Shorten URLs</a></dt>
             <dd> to Denigmafy external URLs via URLs.</dd>
             <dt> <a href="/gallery">See Gallery</a></dt>
