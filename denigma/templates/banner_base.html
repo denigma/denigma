@@ -47,8 +47,8 @@
             <div class="span4">
             {% block column-3 %}
                 <h3>{{ design.title }}</h3>
-                <p>{{ design.text|markdown|hyper|recross|safe }}</p>
-                <p><a class="btn" href="/about/matrix/III/">Become an Artist &raquo;</a></p>
+                {{ design.text|markdown|hyper|recross|safe }}
+                <a class="btn" href="/about/matrix/III/">Become an Artist &raquo;</a>
             {% endblock %}
             </div>
         </div>
