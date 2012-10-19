@@ -853,14 +853,15 @@ def output_signature(request, pk):
 def calc_benjamini(signature):
     """Function which preforms the actual Benjamini correction."""
     transcripts = signature.transcripts.all()
-    p = {} # seq_id - p-values mapping.
+    p = [] # seq_id - p-values mapping.
+    t = [] #{} # seq_id - transcript mapping.
     for transcript in transcripts:
-        p[transcript.seq_id] = transcript.pvalue
-    benjamini_pvalues = calc_benjamini_hochberg_corrections(p.values(), len(p))
+        t.append(transcript)
+        p.append(transcript.pvalue)
+    benjamini_pvalues = calc_benjamini_hochberg_corrections(p, len(p))
     for index, benjamini_pvalue in enumerate(benjamini_pvalues):
-        transcript = transcripts[index]
-        transcript.benjamini = benjamini_pvalue[0] #expression__
-        transcript.save()
+        t[index].benjamini = benjamini_pvalue[1] #expression__
+        t[index].save()
 
 def benjamini(request, pk):
     """This view takes a signature and calls a Benjamini Hochberg correction."""
