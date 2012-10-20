@@ -855,11 +855,12 @@ def calc_benjamini(signature):
     transcripts = signature.transcripts.all()
     p = [] # seq_id - p-values mapping.
     t = [] #{} # seq_id - transcript mapping.
-    for transcript in transcripts:
+    for transcript in transcripts.order_by('pvalue'):
         t.append(transcript)
         p.append(transcript.pvalue)
     benjamini_pvalues = calc_benjamini_hochberg_corrections(p, len(p))
     for index, benjamini_pvalue in enumerate(benjamini_pvalues):
+        #print  index, benjamini_pvalue
         t[index].benjamini = benjamini_pvalue[1] #expression__
         t[index].save()
 
@@ -869,7 +870,7 @@ def benjamini(request, pk):
     calc_benjamini(signature)
     msg = "Successfully performed Benjamini Hochberg correction on %s" % signature.name
     messages.add_message(request, messages.SUCCESS, _(msg))
-    return redirect('/expressions/signatures')
+    return redirect('/expressions/signatures/')
 
 def benjaminis(request):
     "Calls Benjamini Hochberg correction for all signatures in Denigma db."
@@ -879,7 +880,7 @@ def benjaminis(request):
     msg = "Successfully performed Benjamini Hochberg correction on %s" %\
           ", ".join([signature.name for signature in signatures])
     messages.add_message(request, messages.SUCCESS, _(msg))
-    return redirect('/expressions/signatures')
+    return redirect('/expressions/signatures/')
 
 class SetList(ListView):
     queryset = Set.objects.all,
