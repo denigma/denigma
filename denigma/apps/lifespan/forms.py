@@ -262,6 +262,24 @@ class FactorForm(ModelForm):
 
 # Auxillary:
 class StrainForm(ModelForm):
+    comment = CharField(required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'name',
+                'species',
+                'comment'
+            ),
+            FormActions(
+                Submit('save', 'Save', css_class="btn-primary"),
+                Submit('cancel', 'Cancel')
+            )
+        )
+        super(StrainForm, self).__init__(*args, **kwargs)
+
     class Meta:
         model = Strain
 

@@ -16,12 +16,12 @@ import reversion
 
 from django_tables2 import SingleTableView
 
-from models import Study, Experiment, Measurement, Comparision, Intervention, Factor, Regimen
+from models import Study, Experiment, Measurement, Comparision, Intervention, Factor, Regimen, Strain
 from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
                    ExperimentForm, DeleteExperimentForm,
                    ComparisionForm,
                    InterventionForm, DeleteInterventionForm,
-                   FactorForm)
+                   FactorForm, StrainForm)
 from tables import InterventionTable, FactorTable
 
 from blog.models import Post
@@ -29,6 +29,7 @@ from annotations.models import Species
 
 from meta.view import log
 from home.views import LoginRequiredMixin
+from data.views import Create
 
 
 def index(request):
@@ -549,6 +550,11 @@ def assay(request, pk):
 def type(request):
     return HttpResponse("type")
 
+
+class CreateStrain(Create):
+    model = Strain
+    form_class = StrainForm
+    comment = 'Created strain'
 
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789

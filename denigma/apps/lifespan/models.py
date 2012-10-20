@@ -230,9 +230,9 @@ class Experiment(models.Model):
         super(Experiment, self).save(*args, **kwargs)
 
 
-
 class Strain(models.Model):
     name = models.CharField(max_length=25)
+    species = models.ForeignKey('annotations.Species')
 
     def __unicode__(self):
          return self.name
