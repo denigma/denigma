@@ -390,6 +390,7 @@ class Intervention(models.Model):
     sex = models.CharField(max_length=25, blank=True)
     gender = models.ManyToManyField('Gender', blank=True, null=True)
     background = models.CharField(max_length=250, blank=True)
+    strain = models.ForeignKey('Strain', blank=True, null=True)
     effect = models.TextField(blank=True)
     mean = models.CharField(max_length=15, null=True, blank=True)
     median = models.CharField(max_length=15, null=True, blank=True)
@@ -457,6 +458,7 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
         return self.entrez_gene_id, self.symbol, self.name, self.alias
 
     data = property(data)
+
 
 class Gender(models.Model):
     name = models.CharField(max_length=13)

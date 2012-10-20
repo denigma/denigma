@@ -202,6 +202,7 @@ class InterventionForm(ModelForm):
                 'sex',
                 'gender',
                 'background',
+                'strain',
                 'effect',
                 'mean',
                 'median',
