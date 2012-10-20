@@ -200,6 +200,7 @@ class InterventionForm(ModelForm):
                 'taxid',
                 'species',
                 'sex',
+                'gender',
                 'background',
                 'effect',
                 'mean',
