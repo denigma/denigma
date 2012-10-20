@@ -460,3 +460,6 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
 
 class Gender(models.Model):
     name = models.CharField(max_length=13)
+
+    def __unicode__(self):
+        return self.name
