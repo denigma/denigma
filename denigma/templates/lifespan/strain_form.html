@@ -1,0 +1,18 @@
+{% extends "lifespan/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ action }} Strain{% endblock %}
+
+{% block hierarchy %}
+    > Strain
+    {% if action %}
+        > {{ action }}
+    {% endif %}
+{% endblock %}
+
+{% block title %}{{ action }} Strain{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

@@ -1,5 +1,6 @@
 {% extends "lifespan/base.html" %}
 
+{% load url from future %}
 {% load staticfiles %}
 {% load render_table from django_tables2 %}
 
@@ -12,6 +13,7 @@
 
 {% block hierarchy %}
     > Studies
+    | <a href={% url 'create-strain' %}>Create</a>
 {% endblock %}
 
 {% block title %}Strains{% endblock %}
