@@ -29,7 +29,7 @@ from annotations.models import Species
 
 from meta.view import log
 from home.views import LoginRequiredMixin
-from data.views import Create
+from data.views import Create, Update
 
 
 def index(request):
@@ -554,7 +554,13 @@ def type(request):
 class CreateStrain(Create):
     model = Strain
     form_class = StrainForm
-    comment = 'Created strain'
+    comment = 'Created strain.'
+
+
+class UpdateStrain(Update):
+    model = Strain
+    form_class = StrainForm
+    comment = 'Updated strain.'
 
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789

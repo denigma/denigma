@@ -1,17 +1,25 @@
 {% extends "lifespan/base.html"  %}
 
+{% load url from future %}
+
 {% block head_title %}{{ strain.name }}{% endblock %}
 
 {% block hierarchy %}
-    > Strain
-    = {{ strain.name }}
+    > <a href={% url 'strains' %}>Strains</a>
+    > {{ strain.name }}
 {% endblock %}
 
 {% block title %}{{ strain.name }}{% endblock %}
 
 {% block content %}
-    {{ strain }}
-    {% for measurement in strain.measurement.all %}
-        {{ measurement}}
-    {% endfor %}
+    <b>Name</b>: {{ strain }} <br>
+    <b>Species</b>: {{ strain.species }}
+    {% if strain.measurement_set.all %}
+        <b>Measurements</b>:
+        {% for measurement in strain.measurement_set.all %}
+            <li>{{ measurement }}</li>
+        {% endfor %}
+    {% endif %}
+    <hr>
+    <b><a href={% url 'update-strain' strain.pk %}>Update strain</a></b>
 {% endblock %}
