@@ -274,12 +274,12 @@ install_project() {
     if [ -f $DISTRIBUTION ]; then
         LOCAL_DISTRIBUTION_PATH=$DISTRIBUTION
     fi
-    sudo pip -E /home/$LOCAL_USER/env install distribute
     sudo pip -E /home/$LOCAL_USER/env install -r $PROJECT_ROOT/requirements/pre.txt
     sudo pip -E /home/$LOCAL_USER/env install -r $PROJECT_ROOT/requirements/project.txt
 }
 
 install-mysql() {
+    sudo aptitude install libmysqlclient-dev
     sudo pip -E /home/$LOCAL_USER/env install MySQL-python
 }
 
