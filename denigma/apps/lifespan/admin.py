@@ -3,7 +3,7 @@ from django.contrib import admin
 import reversion
 
 from models import Study, Experiment, Measurement, Comparision, Epistasis, Strain
-from models import Type, Factor, Manipulation, Intervention, Regimen, Assay#, Gender
+from models import Type, Factor, Manipulation, Intervention, Regimen, Assay, Gender
 
 
 class StudyAdmin(reversion.VersionAdmin):
@@ -110,5 +110,5 @@ admin.site.register(Manipulation, ManipulationAdmin)
 admin.site.register(Intervention, InterventionAdmin)
 admin.site.register(Regimen, RegimenAdmin)
 admin.site.register(Assay, AssayAdmin)
-#admin.site.register(Gender)
+admin.site.register(Gender)
 

@@ -249,7 +249,7 @@ class Measurement(models.Model):
 
     background = models.ForeignKey(Strain, blank=True, null=True) # Genetic background.
     genotype = models.ForeignKey(Strain, blank=True, null=True, related_name='strain') #CharField(max_length=50, blank=True, null=True) # Wild-type or mutant.
-    #gender = models.ManyToManyField('Gender', blank=True, null=True)
+    gender = models.ManyToManyField('Gender', blank=True, null=True)
     manipulation = models.ForeignKey('Manipulation', blank=True, null=True)
     diet = models.CharField(max_length=150, blank=True, null=True)
     temperature = models.FloatField(blank=True, null=True)
@@ -388,7 +388,7 @@ class Intervention(models.Model):
     taxid = models.IntegerField(blank=True, null=True)
     species = models.ForeignKey('annotations.Species', blank=True, null=True)
     sex = models.CharField(max_length=25, blank=True)
-    #gender = models.ManyToManyField('Gender', blank=True, null=True)
+    gender = models.ManyToManyField('Gender', blank=True, null=True)
     background = models.CharField(max_length=250, blank=True)
     strain = models.ForeignKey('Strain', blank=True, null=True)
     effect = models.TextField(blank=True)
@@ -460,8 +460,8 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
     data = property(data)
 
 
-#class Gender(models.Model):
-#    name = models.CharField(max_length=13)
-#
-#    def __unicode__(self):
-#        return self.name
+class Gender(models.Model):
+    name = models.CharField(max_length=13)
+
+    def __unicode__(self):
+        return self.name
