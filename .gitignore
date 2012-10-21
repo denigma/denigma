@@ -24,3 +24,8 @@ env14/
 local_settings.py
 configuration
 
+# Annotations:
+discontinued.mrl
+*ToId*
+*IdTo*
+*idTo*
