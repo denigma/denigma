@@ -58,6 +58,9 @@
              <td><center><a href="{{ intersection.another.get_absolute_url }}">{{ intersection.another }}</a>
                  ({% for tissue in intersection.another.tissues.all %}<a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %})
              </center></td>
+             <td>
+                 {{ intersection.up_pvalue }} | {{ intersection.diff_pvalue }} | {{ intersection.down_pvalue }}
+             </td>
          </tr>
         {% endfor %}
 
