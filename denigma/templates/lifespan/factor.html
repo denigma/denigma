@@ -1,5 +1,6 @@
 {% extends "lifespan/base.html" %}
 
+{% load url from future %}
 {% load pubmed_linker %}
 
 {% block head_title %}Factor{% endblock %}
@@ -20,7 +21,7 @@
     <b>Entrez gene ID:</b> {{ factor.entrez_gene_id }}<br>
     <b>Ensembl gene ID:</b> {{ factor.ensembl_gene_id }}<br>
 
-    <b>Species:</b> <a href="/annoations/species/{{ factor.species.pk }}">{{ factor.species.short_name }}</a> (Taxid:</b> {{ factor.taxid }})<br>
+    <b>Species:</b> <a href="/annoations/species/{{ factor.species.pk }}">{{ factor.species.short_name }}</a> (Taxid:</b> <a href={% url 'detail_species' factor.taxid %}>{{ factor.taxid }}</a>)<br>
 
 
     {% if factor.functional_description %}
