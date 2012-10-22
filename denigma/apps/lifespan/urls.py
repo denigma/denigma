@@ -69,7 +69,7 @@ urlpatterns = patterns('lifespan.views',
     url(r'^factors/archive/$', ListView.as_view(queryset=Factor.objects.all(),
         template_name='lifespan/factors_archive.html', context_object_name='factors'),
         name='factors_archive'),
-    url(r'^factor/(?P<pk>\d+)/$', FactorDetail.as_view()),
+    url(r'^factor/(?P<pk>\d+)/$', FactorDetail.as_view(), name='factor'),
     url(r'^factor/add/$', 'add_factor', name='add_factor'),
     url(r'^factor/edit/(?P<pk>\d+)/$', 'edit_factor'),
 
