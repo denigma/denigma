@@ -27,7 +27,7 @@ if os.name == 'posix':
         print("annotations.mapper: Could not set path. %s" % e)
         #PATH = '/media/SDATA1/annotations'
         #PATH = '/home/daniel/denigma/denigma/apps/annotations'
-        PATH = 'home/denigma/denigma/apps/annotations'
+        PATH = '/home/denigma/denigma/apps/annotations'
 
     import sys
     sys.path.append('/media/SDATA1')
