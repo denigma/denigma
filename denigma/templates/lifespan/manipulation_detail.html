@@ -1,0 +1,22 @@
+{% extends "lifespan/base.html" %}
+
+{% load url from future %}
+
+{% block head_title %}{{ manipulation.name }}{% endblock %}
+
+{% block hierarchy %}
+    > <a href={% url 'manipulation' manipulation.pk %}>Manipulations</a>
+    > {{ object.name }}
+{% endblock %}
+
+{% block title %}{{ manipulation.name}} ({{ manipulation.shortcut }}){% endblock %}
+
+{% block content %}
+    {% if manipulation.type.all %}
+        <b>Type</b>: {{ manipulation.type.all }}<br>
+    {% endif %}
+    <b>Interventions</b>:<br>
+    {% for intervention in manipulation.intervention_set.all %}
+        <li><a href={% url 'intervention' intervention.pk %}>{{ intervention }}</a></li>
+    {% endfor %}
+{% endblock %}
