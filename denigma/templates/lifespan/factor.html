@@ -18,18 +18,28 @@
     <b>Name:</b> {{ factor.name }}<br>
     {% if factor.alias %}<b>Alias:</b> {{ factor.alias }}<br>{% endif %}
 
-    <b>Entrez gene ID:</b> {{ factor.entrez_gene_id }}<br>
-    <b>Ensembl gene ID:</b> {{ factor.ensembl_gene_id }}<br>
+    {% if factor.entrez_gene_id %}
+        <b>Entrez gene ID:</b> {{ factor.entrez_gene_id }}<br>
+    {% endif %}
+    {% if factor.ensembl_gene_id %}
+        <b>Ensembl gene ID:</b> {{ factor.ensembl_gene_id }}<br>
+     {% endif %}
 
-    <b>Species:</b> <a href="/annoations/species/{{ factor.species.pk }}">{{ factor.species.short_name }}</a> (Taxid:</b> <a href={% url 'detail_species' factor.taxid %}>{{ factor.taxid }}</a>)<br>
-
+    {% if factor.species or factor.taxid %}
+        <b>Species:</b> <a href="/annotations/species/{{ factor.species.pk }}">{{ factor.species.short_name }}</a>
+        {% if factor.taxid %}
+            (Taxid:</b> <a href={% url 'detail_species' factor.taxid %}>{{ factor.taxid }}</a>)<br>
+        {% endif %}
+    {% endif %}
 
     {% if factor.functional_description %}
         <br><b>Functional description:</b><br>
             {{ factor.functional_description }}
     {% else %}
-        <br><b>Function: </b><br>
-        {{ factor.function }}
+        {% if factor.function %}
+            <br><b>Function: </b><br>
+            {{ factor.function }}
+        {% endif %}
     {% endif %}<br>
 
     <br><b>Observation:</b><br>
