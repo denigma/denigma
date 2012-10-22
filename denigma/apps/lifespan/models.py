@@ -439,7 +439,7 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
     _75 = models.CharField('75%ile', max_length=15, null=True, blank=True)
     _25 = models.CharField('25%lie', max_length=15, null=True, blank=True)
     manipulation = models.CharField(max_length=250, null=True, blank=True)
-    intervention = models.ManyToManyField(Intervention, blank=True)
+    intervention = models.ManyToManyField('Intervention', blank=True, related_name='factors')
     gene_intervention = models.CharField(max_length=250, null=True, blank=True)
     synergistic_epistasis = models.CharField(max_length=33, blank=True)
     antagonistic_epistasis = models.CharField(max_length=216, blank=True)
