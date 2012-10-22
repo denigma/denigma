@@ -58,9 +58,11 @@ else:
             'PASWORD': '',
             'HOST': '',
             'PORT': '',
-            #'OPTIONS': {
+            'OPTIONS': {
                 #'init_command': 'SET storage_engine = MYISAM',
-            #}
+                'init_command': 'SET storage_engine = INNODB,  \
+                                 SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
+            }
         }
     }
 
@@ -145,7 +147,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    #'django.middleware.transaction.TransactionMiddleware', # For ...
+    'django.middleware.transaction.TransactionMiddleware', # For ...
     #'reversion.middleware.RevisionMiddleware',                     # reversions control.
     'django_openid.consumer.SessionConsumer',
     'django.contrib.messages.middleware.MessageMiddleware',
