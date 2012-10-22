@@ -1,6 +1,8 @@
 {% extends "lifespan/base.html" %}
 
 {# {% load crispy_forms_tags %} #}
+{% load url from future %}
+{% load pubmed_linker %}
 
 {% block head_title %}Intervention{% endblock %}
 
@@ -12,8 +14,10 @@
 {% block title %}{{ intervention.name }}{% endblock %}
 
 {% block content %}
-    <b>Species:</b> {{ intervention.species }} (Taxid: {{ intervention.taxid }})<br>
-    <b>Effect:</b><br> {{ intervention.effect }}<br>
+    <b>Species:</b>
+    {% if intervention.species %}<a href={{ intervention.species.get_absolute_url }}>{{ intervention.species }}</a> {% endif %}
+    (Taxid: <a href={% url 'detail_species' intervention.taxid %}>{{ intervention.taxid }}</a>)<br>
+    <b>Effect:</b> {{ intervention.effect|pubmed_links }}<br>
     {% if intervention.mean %}<b>Mean:</b> {{ intervention.mean }}<br>{% endif %}
     {% if intervention.median %}<b>Median:</b> {{ intervention.median }}<br>{% endif %}
     {% if intervention.max %}<b>Maximum:</b> {{ internvention.max }}<br>{% endif %}
@@ -24,14 +28,18 @@
         <a href="/lifespan/manipulation/{{ manipulation.pk }}">{{ manipulation.name }}</a>{% if not forloop.last %}, {% endif %}
     {% endfor %}
     <br>
-    <b>References:</b>
-    {% for reference in intervention.references.all %}
-        <li><a href="/annotations/reference/{{ reference.pk }}">{{ reference.title }}</a></li>
-    {% endfor %}<br>
-    <br><b>Comparisions: </b><br>
-    {% for comparision in intervention.comparision_set.all %}
-        <li><a href="/lifespan/comparision/{{ comparision.pk }}">{{ comparision }}: {{ comparision.data }}</a></li>
-    {% endfor %}
+    {% if intervention.references.all %}
+        <b>References:</b>
+        {% for reference in intervention.references.all %}
+            <li><a href="/annotations/reference/{{ reference.pk }}">{{ reference.title }}</a></li>
+        {% endfor %}<br>
+    {% endif %}
+    {% if intervention.comparision_set.all %}
+        <br><b>Comparisions: </b><br>
+        {% for comparision in intervention.comparision_set.all %}
+            <li><a href="/lifespan/comparision/{{ comparision.pk }}">{{ comparision }}: {{ comparision.data }}</a></li>
+        {% endfor %}
+    {% endif %}
     <br>
     <b><a href="/lifespan/intervention/edit/{{ intervention.pk }}">Edit</a></b> /
     <b><a href="/lifespan/intervention/update/{{ intervention.pk }}">Update</a></b>
