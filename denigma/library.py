@@ -455,7 +455,6 @@ class Reference():
                 return "%s (%s) *%s* %s %s: %s." % (", ".join(self.au), self.year, self.title, self.journal, self.volume, self.pages)
             else: 
                 return "%s (%s) *%s* %s." % (", ".join(self.au), self.year, self.title, self.journal)
-
    
 
     def __str__(self):
