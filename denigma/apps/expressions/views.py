@@ -37,11 +37,11 @@ def functional_enrichment(terms, transcripts_up, transcripts_down, id='seq_id'):
         # Functional Annotation:
         ## Determine seq_id type:
         if isinstance(transcripts_up, (set, list)):
-            for e in transcripts_up:
+            for e in transcripts_up or transcripts_down:
                 up = transcripts_up
                 down = transcripts_down
                 break
-            entity_id = e
+            entity_id = e # What happens if list is empty?
         else:
             entity_id = transcripts_up[0].seq_id
             up = [transcript.seq_id for transcript in transcripts_up if transcript.seq_id]
@@ -1001,8 +1001,9 @@ def map_signatures(request):
             transcript.entrez_gene_id = map(transcript.seq_id)
             if transcript.entrez_gene_id:
                 mapped += 1
-            transcript.save()
-    msg = "Mapped %s%" % 100.*mapped/total
+                transcript.save()
+            #print transcript, transcript.entrez_gene_id
+    msg = "Mapped %s" % (100.*mapped/total)
     messages.add_message(request, messages.INFO, _(msg))
     return redirect('/expressions/signatures/')
 
@@ -1019,8 +1020,14 @@ def map_signature(request, pk):
     for transcript in transcripts:
         counter.count()
         gene_id = map(transcript.seq_id)
-        transcript.entrez_gene_id = gene_id
-        transcript.save()
+
+        #print transcript, gene_id
+        if gene_id:
+            transcript.entrez_gene_id = gene_id
+            transcript.save()
+            #t = Transcript.objects.get(pk = transcript.pk)
+            #print("T: %s %s %s" % (t.pk, t.seq_id, t.entrez_gene_id))
+        #print transcript, transcript.entrez_gene_id
 #        if gene_id:
 #            gene, created = Gene.objects.get_or_create(id=gene_id, species_id=taxid)
 #            if gene_id not in geneExpressions:
