@@ -23,7 +23,7 @@ urlpatterns = patterns('annotations.views',
 
     # Species:
     url(r'^species/$', 'species', name="species"),
-    url(r'^species/(?P<pk>\d+)/$', 'species_details'),
+    url(r'^species/(?P<pk>\d+)/$', 'species_details', name='detail_species'),
     url(r'^species/archive/$', 'species_archive', name="species_archive"),
     url(r'^species/archive/(?P<pk>\d+)/$', 'species_detailed'),
           # DetailView.as_view(
