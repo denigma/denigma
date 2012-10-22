@@ -53,14 +53,14 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'denigma', #test',
+            'NAME': 'denigma',
             'USER': 'root',
             'PASWORD': '',
             'HOST': '',
             'PORT': '',
-            'OPTIONS': {
-                'init_command': 'SET storage_engine = MYISAM',
-            }
+            #'OPTIONS': {
+                #'init_command': 'SET storage_engine = MYISAM',
+            #}
         }
     }
 
@@ -145,7 +145,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.middleware.transaction.TransactionMiddleware', # For ...
+    #'django.middleware.transaction.TransactionMiddleware', # For ...
     #'reversion.middleware.RevisionMiddleware',                     # reversions control.
     'django_openid.consumer.SessionConsumer',
     'django.contrib.messages.middleware.MessageMiddleware',
