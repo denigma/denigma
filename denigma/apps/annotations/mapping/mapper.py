@@ -20,8 +20,13 @@ import urllib2
 from operator import itemgetter, attrgetter
 
 if os.name == 'posix':
-    #PATH = '/media/SDATA1/annotations'
-    PATH = '/home/daniel/denigma/denigma/apps/annotations'
+    try:
+        import annotations
+        PATH = os.path.abspath(annotations.__path__)
+    except:
+        #PATH = '/media/SDATA1/annotations'
+        PATH = '/home/daniel/denigma/denigma/apps/annotations'
+
     import sys
     sys.path.append('/media/SDATA1')
     sys.path.append('/media/SDATA1/scripts')
@@ -69,8 +74,7 @@ class Map:
                 exec("discontinued = open(os.path.join('"+PATH+"', '"+db+"', 'discontinued.mrl'), 'rb')")
                 discontinued = marshal.load(discontinued)
         except Exception as e:
-            print e
-
+            print("annotations.mapper: %s %s %s" % (db, id, e))
 
     ids = dict(zip(map(str, organisms.keys()),[{} for i in organisms.keys()] ))
     ids.update({'None':{}}) # Mapped ids.
