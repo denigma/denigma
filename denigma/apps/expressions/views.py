@@ -9,6 +9,8 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import login_required, permission_required
 from django.db import connection
 from django.db.models import Q
+from django.db import transaction
+
 from django_tables2 import RequestConfig
 
 from lifespan.models import Regimen
@@ -25,7 +27,7 @@ from data import get
 from stats.effective import effect_size
 from stats.pValue import t_two_sample, calc_benjamini_hochberg_corrections, hyperg
 from annotations.david.report import enrich
-from annotations.mapping import map
+from annotations.mapping import mapid
 from utils.count import Counter
 
 
@@ -985,6 +987,7 @@ class GeneExpression(object):
         self.ctr = mean(self.ctr)
         self.ratio = self.exp/self.ctr
 
+@transaction.commit_on_success
 def map_signatures(request):
     print("Initializing mapping.")
     signatures = Signature.objects.all()
@@ -992,23 +995,27 @@ def map_signatures(request):
     total = 0
     for signature in signatures:
         print("Signature: %s" % signature)
+        taxid = signature.species.taxid
         transcripts = signature.transcripts.all()
         transcript_count = transcripts.count()
         total += transcript_count
         counter = Counter(transcript_count)
         for transcript in transcripts:
             counter.count()
-            transcript.entrez_gene_id = map(transcript.seq_id)
-            if transcript.entrez_gene_id:
-                mapped += 1
+            gene_id = mapid(str(transcript.seq_id), taxid=taxid)
+            if gene_id and isinstance(gene_id, int):
+                transcript.entrez_gene_id = gene_id
                 transcript.save()
+                mapped += 1
             #print transcript, transcript.entrez_gene_id
     msg = "Mapped %s" % (100.*mapped/total)
     messages.add_message(request, messages.INFO, _(msg))
     return redirect('/expressions/signatures/')
 
+@transaction.commit_on_success
 def map_signature(request, pk):
     signature = Signature.objects.get(pk=pk)
+    taxid = signature.species.taxid
     transcripts = signature.transcripts.all()
     taxid = signature.species.taxid
     mapped = 0
@@ -1019,15 +1026,14 @@ def map_signature(request, pk):
 
     for transcript in transcripts:
         counter.count()
-        gene_id = map(transcript.seq_id)
-
+        gene_id = mapid(transcript.seq_id, taxid=taxid)
         #print transcript, gene_id
-        if gene_id:
+        if gene_id and isinstance(gene_id, int):
             transcript.entrez_gene_id = gene_id
             transcript.save()
             #t = Transcript.objects.get(pk = transcript.pk)
             #print("T: %s %s %s" % (t.pk, t.seq_id, t.entrez_gene_id))
-        #print transcript, transcript.entrez_gene_id
+            #print transcript, transcript.entrez_gene_id
 #        if gene_id:
 #            gene, created = Gene.objects.get_or_create(id=gene_id, species_id=taxid)
 #            if gene_id not in geneExpressions:
@@ -1035,14 +1041,12 @@ def map_signature(request, pk):
 #            else:
 #                geneExpressions[gene_id].add(transcript, signature)
 #            signature.genes.add(gene)
-#            mapped += 1
+            mapped += 1
 
-    msg = 'Mapped %s' % (1.*mapped/transcript_count)
+    msg = 'Mapped %s' % (100.*mapped/transcript_count)
     messages.add_message(request, messages.INFO, _(msg))
     #genes = signatures.genes.all()
 
     return redirect('/expressions/signatures/')
-
-
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
