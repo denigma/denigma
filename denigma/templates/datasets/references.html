@@ -1,5 +1,6 @@
 {% extends "datasets/base.html" %}
 
+{% load url from future %}
 {% load markup %}
 {% load hyperlink %}
 {% load crosslink %}
@@ -24,7 +25,7 @@
             </tr>
         {% for reference in references %}
             <tr>
-            <td>{{ reference.repr }}</td>
+            <td><a href={% url 'detail-reference' reference.pk %}>{{ reference.repr }}</a></td>
             <td><a href="/admin/datasets/reference/{{ reference.pk }}/">{{ reference.title }}</a></td>
             <td>
                 {% if reference.pmid %}

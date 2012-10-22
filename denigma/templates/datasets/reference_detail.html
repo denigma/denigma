@@ -1,0 +1,23 @@
+{% extends "datasets/base.html" %}
+
+{% block head_title %}{{ object.repr }}{% endblock %}
+
+{% block hierarchy %}
+    > Reference
+    > {{ object.repr }}
+{% endblock %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block content %}
+    <b>Authors</b>: {{ object.authors }}<br>
+    <b>Abstract</b>: {{ object.abstract }}<br>
+    <b>Keywords</b>: {{ object.keywords }}<br>
+    <b>Journal</b>: {{ object.journal }}<br>
+    {% if objects.year %}<b>Year</b>: {{ object.year }}<br>{% endif %}
+    {% if object.volume %}<b>Volume</b>: {{ object.volume }}<br>{% endif %}
+    {% if object.issue %}<b>Issue</b>: {{ object.issue }}<br>{% endif %}
+    {% if object.pages %}<b>Pages</b>: {{ object.pages }}<br>{% endif %}
+    <b>Date</b>: {{ object.date }}<br>
+   {{ object.ref }}
+{% endblock %}
