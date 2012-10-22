@@ -73,31 +73,7 @@ class Reference(models.Model):
     database_provider = models.CharField(max_length=100, blank=True, null=True)
     language = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(max_length=75, blank=True, null=True)        
-    
-    def __repr__(self):
-        if self.authors and self.title:
-            authors = self.authors.split('; ')
-            representation = self.repr()
-            return "%s %s" % (representation, self.title)
-        elif self.title:
-            return self.title
-        else:
-            return u'{0}'.format(self.pmid)
 
-    def repr(self, full=True):
-        """Implement au field for short author names."""
-        if full:
-            authors = self.authors.split('; ')
-        else:
-            authors = self.au.split('; ')
-        if len(authors) == 1:
-            representation = "%s, %s" % (authors[0], self.year)
-        elif len(authors) == 2:
-            representation = "%s & %s, %s" % (authors[0], authors[1], self.year)
-        else:
-            representation = "%s et al., %s" %(authors[0], self.year)
-        return representation
-    
     def __unicode__(self):
         return u"{0} {1}".format(self.pmid, self.title)
 
@@ -268,6 +244,36 @@ class Reference(models.Model):
                 reference.title = reference.title + "."
                 reference.save()
 
+
+    def __repr__(self):
+        if self.authors and self.title:
+            authors = self.authors.split('; ')
+            representation = self.repr()
+            return "%s %s" % (representation, self.title)
+        elif self.title:
+            return self.title
+        else:
+            return u'{0}'.format(self.pmid)
+
+    def repr(self, full=True):
+        """Implement au field for short author names."""
+        if full:
+            authors = self.authors.split('; ')
+        else:
+            authors = self.au.split('; ')
+        if len(authors) == 1:
+            representation = "%s, %s" % (authors[0], self.year)
+        elif len(authors) == 2:
+            representation = "%s & %s, %s" % (authors[0], authors[1], self.year)
+        else:
+            representation = "%s et al., %s" %(authors[0], self.year)
+        return representation
+
+    def ref(self):
+        if self.volume and self.pages:
+            return "%s (%s) *%s* %s %s: %s." % (self.authors.replace(';', ','), self.year, self.title, self.journal, self.volume, self.pages)
+        else:
+            return "%s (%s) *%s* %s." % (self.authors.replace(';', ','), self.year, self.title, self.journal)
 
 
 class Signature(models.Model):
