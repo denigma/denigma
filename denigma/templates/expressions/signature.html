@@ -4,6 +4,7 @@
 {% load staticfiles %}
 {% load render_table from django_tables2 %}
 {% load crispy_forms_tags %}
+{% load factor_linker %}
 
 {% block head_title %}Signature: {{ signature.name }}{% endblock %}
 
@@ -57,17 +58,24 @@
     <hr>
     <h3>Upregulated entities</h3>
     <span style="color:red">
-        {% for transcript in transcripts_up %}
-            {{ transcript }}
-
-        {% endfor %}
+        {% if id == 'entrez_gene_id' %}
+            {{ transcripts_up|factor_links }}
+        {% else %}
+            {% for transcript in transcripts_up %}
+                {{ transcript }}
+            {% endfor %}
+        {% endif %}
     </span>
     <hr>
     <h3>Downregulated entities</h3>
     <span style="color:green">
-        {% for transcript in transcripts_down %}
-            {{ transcript }}
-        {%  endfor %}
+        {% if id == 'entrez_gene_id' %}
+            {{ transcripts_down|factor_links }}
+        {% else %}
+            {% for transcript in transcripts_down %}
+                {{ transcript }}
+            {% endfor %}
+        {% endif %}
     </span>
     {% include "expressions/annotation.html" %}
 

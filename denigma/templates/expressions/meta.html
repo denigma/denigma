@@ -3,6 +3,7 @@
 {% load markup %}
 {% load hyperlink %}
 {% load crosslink %}
+{% load factor_linker %}
 
 {% block head_title %}{{ title }}{% endblock %}
 
@@ -51,23 +52,35 @@
     <hr>
     <h3>Commonly upregulated entities [{{ signatures.up|length }}]:</h2>
     <span style="color:red">
-        {% for transcript in signatures.up %}
-            {{ transcript }}
-        {% endfor %}
+        {% if id == 'entrez_gene_id' %}
+            {{ signatures.up|factor_links }}
+        {% else %}
+            {% for transcript in signatures.up %}
+                {{ transcript }}
+            {% endfor %}
+        {% endif %}
     </span>
     <hr>
     <h3>Commonly downregulated entities [{{ signatures.down|length }}]:</h2>
     <span style="color:green">
-        {% for transcript in signatures.down %}
-            {{ transcript }}
-        {% endfor %}
+        {% if id == 'entrez_gene_id' %}
+            {{ signatures.down|factor_links }}
+        {% else %}
+            {% for transcript in signatures.down %}
+                {{ transcript }}
+            {% endfor %}
+        {% endif %}
     </span>
     <hr>
     <h3>Commonly differential entities to all signatures [{{ signatures.diff|length }}]:</h2>
     <span style="color:orange">
-    {% for transcript in signatures.diff %}
-        {{ transcript }}
-    {% endfor %}
+    {% if id == 'entrez_gene_id' %}
+        {{ signatures.diff|factor_links }}
+    {% else %}
+        {% for transcript in signatures.diff %}
+            {{ transcript }}
+        {% endfor %}
+    {% endif %}
     </span>
 
     {% include "expressions/annotation.html" %}

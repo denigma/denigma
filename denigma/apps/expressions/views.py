@@ -168,6 +168,10 @@ def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, be
     transcripts_down = set([getattr(transcript, id) for transcript in transcripts_down])
     if None in transcripts_down: transcripts_down.remove(None)
 
+    if id == 'entrez_gene_id':
+        transcripts_up = " ".join(map(str, transcripts_up))
+        transcripts_down = " ".join(map(str, transcripts_down))
+
     ctx = {'signature': signature, 'transcripts': transcripts,
            'transcripts_up': transcripts_up,
            'transcripts_down': transcripts_down,

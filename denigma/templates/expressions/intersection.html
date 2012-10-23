@@ -1,6 +1,7 @@
 {% extends "expressions/base.html" %}
 
 {% load render_table from django_tables2 %}
+{% load factor_linker %}
 
 {% block extra_script %}
     <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
@@ -99,16 +100,24 @@
     <hr>
     <h3>Upregulated entities</h3>
     <span style="color:red">
+        {% if id == 'entrez_gene_id' %}
+            {{ intersection.upregulated|factor_links }}
+        {% else %}
         {% for transcript in intersection.upregulated  %}
             {{ transcript }}
         {% endfor %}
+        {% endif %}
     </span>
     <hr>
     <h3>Downregulated entities</h3>
     <span style="color:green">
-        {% for transcript in intersection.downregulated %}
-            {{ transcript }}
-        {% endfor %}
+        {% if id == 'entrez_gene_id' %}
+            {{ intersection.downregulated|factor_links }}
+        {% else %}
+            {% for transcript in intersection.downregulated %}
+                {{ transcript }}
+            {% endfor %}
+        {% endif %}
     </span>
     {% include "expressions/annotation.html" %}
 {% endblock content %}
