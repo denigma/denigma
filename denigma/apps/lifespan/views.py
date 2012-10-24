@@ -11,6 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import AnonymousUser, User
 from django.views.generic.edit import CreateView, UpdateView # DeleteView
 from django.views.generic import ListView, DetailView
+from django.utils.translation import ugettext_lazy as _
 
 import reversion
 
@@ -29,7 +30,7 @@ from annotations.models import Species
 
 from meta.view import log
 from home.views import LoginRequiredMixin
-from data.views import Create, Update
+from data.views import Create, Update, Delete
 
 
 def index(request):
@@ -418,6 +419,18 @@ def delete_intervention(request, pk):
     return render_to_response('lifespan/delete_intervention.html', ctx,
         context_instance=RequestContext(request))
 
+@login_required
+def remove_factor(request, pk):
+    factor = Factor.objects.get(pk=pk)
+    factor.delete()
+    msg = 'Successfully removed %s' % factor
+    messages.add_message(request, messages.SUCCESS, _(msg))
+    return redirect('/lifespan/')
+
+#class DeleteFactor(Delete):
+    #model = Factor
+
+
 def link_interventions(request):
     interventions = Intervention.objects.all()
     for intervention in interventions:
@@ -505,9 +518,7 @@ def edit_factor(request, pk):
         context_instance=RequestContext(request))
 
 
-@login_required
-def delete_factor(request, pk):
-    pass
+
 
 class FactorDetail(DetailView):
     model = Factor
@@ -646,15 +657,14 @@ def functional_description(request):
     return HttpResponse('%s functions and discription united.' % count)
 
 def integrity(request):
-    """Checks for the quility of database records.
+    """Checks for the quality of database records.
     e.g. are all annotations up to date, no naming conflicts.
     no duplicates, etc."""
-    from mapping import m
 
     factors = Factor.objects.exclude(intervention__manipulation__shortcut='DT') #(filter(~Q)
     taxids = []
     ids = []
-    dups = duplicates("GenAge")
+    dups = duplicates("Factor")
     noclasses = []
     nointervention = []
 
@@ -666,8 +676,6 @@ def integrity(request):
 
         # Missing primary id:
         if not factor.entrez_gene_id and factor.symbol not in ['CKIepsilon', 'cyc1', 'Y46G5A.6']:
-
-
             #missed = '\t'.join(map(str, [factor.entrez_gene_id, factor.symbol,
 
             #if factor.symbol:print m(factor.symbol, factor.taxid)
@@ -720,21 +728,35 @@ def integrity(request):
     ni = set([factor.entrez_gene_id for factor in nointervention])
     intersection = nc & ni
     print "Intersection: ", len(intersection)
-            
+    ctx = {'taxids': taxids,
+           'ids': ids,
+           'dups': dups,
+           'noclasses': noclasses
+    }
+    return render_to_response('lifespan/integrity.html', ctx,
+        context_instance=RequestContext(request))
 
+def map_species(request, model):
+    models = eval(model.title()+'.objects.all()')
+    species = dict([(s.taxid,s) for s in Species.objects.all()])
+    mapped = 0
+    for m in models:
+        if m.taxid in species:
+            m.species = species[m.taxid]
+            mapped += 1
+            m.save()
+        else:
+            print m.name, m.taxid
+    msg = 'Mapped %s species' % mapped
+    messages.add_message(request, messages.SUCCESS, _(msg))
+    return redirect('/lifespan/')
 
-        
-    return render_to_response('genage_integrity.html', {'taxids':taxids,
-                                                            'ids':ids,
-                                                            'dups':dups,
-                                                            'noclasses':noclasses}) #HttpResponse#'\n'.join(missing))
-
-def duplicates(table):
+def duplicates(model):
     """Identifies duplicates entries in a tablevbased on unique identifiers
     (i.e. entrez gene IDs)."""
     ids = {}
     dups = []
-    records = eval(table+'.objects.all()')
+    records = eval(model+'.objects.all()')
     for record in records:
         id = record.entrez_gene_id
         if id:
@@ -743,8 +765,6 @@ def duplicates(table):
                 print id
             else: ids[id] = record
     return dups
-
-
 
 def replace(request, table, field, term, by):
     """Replaces a string in a filed by another string."""
@@ -833,7 +853,7 @@ def dump(request):
                 #
                 print
     print "done"
-    return HttpResponse("GenDR was succefully saved.")
+    return HttpResponse("GenDR was successfully saved.")
 
 ##      elif  "DE" in classes:
 ##         print gene.symbol, gene.reference
