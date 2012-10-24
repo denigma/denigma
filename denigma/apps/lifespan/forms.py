@@ -8,7 +8,7 @@ from models import (Study, Experiment, Measurement, Comparision, Intervention, F
                    Strain, Epistasis, Regimen, Assay, Manipulation)
 
 from annotations.models import Species
-
+from datasets.models import Reference
 
 # Main:
 class StudyForm(ModelForm):
@@ -221,6 +221,15 @@ class InterventionForm(ModelForm):
             )
         )
         super(InterventionForm, self).__init__(*args, **kwargs)
+
+    def clean_references(self):
+        pmid = self.cleaned_data.get('pmid', None)
+        clean_references = [reference for reference in self.cleaned_data.get('references', [])]
+        if pmid:
+            reference, created = Reference.objects.get_or_create(pmid=pmid)
+            clean_references.append(reference)
+        return clean_references
+
     class Meta:
         model = Intervention
 
@@ -253,6 +262,15 @@ class FactorForm(ModelForm):
             )
         )
         super(FactorForm, self).__init__(*args, **kwargs)
+
+    def clean_references(self):
+        pmid = self.cleaned_data.get('pmid', None)
+        clean_references = [reference for reference in self.cleaned_data.get('references', [])]
+        if pmid:
+            reference, created = Reference.objects.get_or_create(pmid=pmid)
+            clean_references.append(reference)
+        return clean_references
+
     class Meta:
         model = Factor
         fields = ('symbol', 'name', 'entrez_gene_id', 'ensembl_gene_id',
