@@ -1,5 +1,6 @@
 {% extends "lifespan/base.html" %}
 
+{% load url from future %}
 {% load markup %}
 {% load hyperlink %}
 {% load crosslink %}
@@ -32,6 +33,9 @@
 
     {% if user.is_superuser %}
         <hr>
-        <a href="/lifespan/interventions/link">Link interventions</a>
+        <a href="/lifespan/interventions/link">Link interventions</a><br>
+        <a href={% url 'map_species' 'factor' %}>Map species for factors</a><br>
+        <a href={% url 'map_species' 'intervention' %}>Map species for interventions</a><br>
+        <a href={% url 'integrity' %}>Integrity</a>
     {% endif %}
 {% endblock %}

@@ -1,0 +1,56 @@
+{% extends "lifespan/base.html" %}
+
+{% load url from future %}
+
+{% block head_title %}Integrity{% endblock %}
+
+{% block hierarchy %}
+    > Integrity
+{% endblock %}
+
+{% block title %}Integrity{% endblock %}
+
+{% block content %}
+    <ul>
+        <h3>Missing taxonomy ID:</h3>
+        {% for taxid in taxids %}
+            <li>
+                <a href={{ taxid.get_absolute_url }}>{{ taxid.entrez_gene_id }}</a> {{ taxid.symbol }} {{ taxid.name }} {{ taxid.taxid }} {{ taxid.observation }}
+                | <a href={% url 'delete-factor' taxid.pk  %}>Delete</a> | <a href={% url 'remove_factor' taxid.pk %}>Remove</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <ul>
+        <h3>Missing primary ID:</h3>
+        {% for id in ids %}
+            <li>
+                <a href={{ id.get_absolute_url }}>{{ id.symbol }}</a> {{ id.name }} {{ id.taxid }} {{ id.id }} {{ id.ensembl }} {{ id.alias }}
+                | <a href={% url 'delete-factor' id.pk  %}>Delete</a> | <a href={% url 'remove_factor' id.pk %}>Remove</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <ul>
+        <h3>Duplicated:</h3>
+        {% for dup in dups %}
+            <li>
+                <a href={{ dup.get_primary_id }}>{{ dup.entrez_gene_id }}</a> {{ dup.symbol }} {{ dup.name }}
+                | <a href={% url 'delete-factor' dup.pk  %}>Delete</a> | <a href={% url 'remove_factor' dup.pk %}>Remove</a>
+            </li>
+
+        {% endfor %}
+    </ul>
+
+    <ul>
+        <h3>Not classified:</h3>
+        {% for noclass in noclasses %}
+            <li>
+                <a href={{ noclass.get_absolute_url }}>{{ noclass.entrez_gene_id }}</a> {{ noclass.symbol }} {{ noclass.name }}
+                | <a href={% url 'delete-factor' noclass.pk  %}>Delete</a> | <a href={% url 'remove_factor' noclass.pk %}>Remove</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
+
