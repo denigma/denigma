@@ -416,6 +416,14 @@ class Intervention(models.Model):
     def get_absolute_url(self):
         return "/lifespan/intervention/%i" % self.pk
 
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            if self.taxid and not self.species:
+                self.species = Species.objects.get(taxid=self.taxid)
+            elif not self.taxid and self.species:
+                self.taxid = self.species.taxid
+        super(Intervention, self).save(*args, **kwargs)
+
 
 class Factor(models.Model):  # Rename to Entity AgeFactor
     entrez_gene_id = models.IntegerField("Entrez gene ID", null=True, blank=True)
