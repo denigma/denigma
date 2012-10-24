@@ -8,6 +8,9 @@ from views import FactorList, FactorDetail#, FactorCreate, FactorUpdate, FactorD
 from views import CreateStrain, UpdateStrain
 
 
+from data.views import Delete
+
+
 urlpatterns = patterns('lifespan.views',
     url(r'^$', 'index', name='lifespan'),
 
@@ -72,6 +75,8 @@ urlpatterns = patterns('lifespan.views',
     url(r'^factor/(?P<pk>\d+)/$', FactorDetail.as_view(), name='factor'),
     url(r'^factor/add/$', 'add_factor', name='add_factor'),
     url(r'^factor/edit/(?P<pk>\d+)/$', 'edit_factor'),
+    url(r'^factor/remove/(?P<pk>\d+)/$', 'remove_factor', name='remove_factor'),
+    url(r'^factor/delete/(?P<pk>\d+)/$', login_required(Delete.as_view(model=Factor)), name='delete-factor'),
 
     # Strains;
     url(r'^strains/$', ListView.as_view(queryset=Strain.objects.all(),
@@ -108,8 +113,9 @@ urlpatterns = patterns('lifespan.views',
     # Depricated:
     url(r'^genage/describe', 'describe'),
     url(r'^genage/functional_description', 'functional_description'),
-    url(r'^genage/integrity', 'integrity'),
+    url(r'^integrity', 'integrity', name='integrity'),
     url(r'^(?P<table>\w+)/replace/(?P<field>\w+)/(?P<term>.+)/(?P<by>.+)/$', 'replace'),
     url(r'^gendr/dump', 'dump'),
+    url(r'^map/species/(?P<model>.+)', 'map_species', name='map_species')
 )
 ##234567891123456789212345678931234567894123456789512345678961234567897123456789
