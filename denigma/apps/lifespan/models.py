@@ -5,6 +5,13 @@ from django.core.exceptions import MultipleObjectsReturned
 
 from datasets.models import Reference
 
+try:
+    from annotations.mapping import m
+    from annotations.models import Entrez, Species
+    MAPPING = True
+except:
+    MAPPING = False
+
 WT = ['wt', 'WT' 'wild type']
 
 
@@ -459,6 +466,31 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
 
     data = property(data)
 
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            if MAPPING:
+                #print("lifespan.models.Factors.save()")
+                if self.species:
+                    self.taxid = taxid = self.species.taxid
+                elif self.taxid:
+                    taxid = self.taxid
+                    self.species = Species.objects.get(taxid=taxid)
+                else:
+                    taxid = None
+                ids = [self.entrez_gene_id, self.ensembl_gene_id, self.symbol, self.name]
+                ids = m([str(id) for id in ids if id], taxid)
+                entrez_gene_id = ids[0]
+                if entrez_gene_id and isinstance(entrez_gene_id, int):
+                    entrez = Entrez.objects.get(entrez_gene_id=ids[0])
+                    self.entrez_gene_id = self.entrez_gene_id or entrez_gene_id
+                    self.ensembl_gene_id = self.ensembl_gene_id or entrez.ensembl_gene_id
+                    self.symbol = self.symbol or entrez.gene_symbol
+                    self.name = self.name or entrez.gene_name
+                    if not self.taxid:
+                        taxid = entrez.taxid
+                        self.species = Species.obejcts.get(taxid=taxid)
+
+        super(Factor, self).save(*args, **kwargs)
 
 class Gender(models.Model):
     name = models.CharField(max_length=13)
