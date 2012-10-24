@@ -51,7 +51,7 @@ def crossed(text):
 @register.filter
 def recross(text):
     """Takes a text and replaces words that match a key in the posts dictionary with
-    the assoicated cross-linked value, return the changed text.""" 
+    the associated cross-linked value, return the changed text."""
     entries = dict([(e.title, '<a href="{0}">{1}</a>'.format(e.get_absolute_url(), e.title))\
             for e in Entry.objects.all()])
     rc = re.compile('|'.join(map(re.escape, entries)))
