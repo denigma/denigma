@@ -1,5 +1,5 @@
-from django import forms
 from django.contrib import admin
+from django import forms
 
 import reversion
 
@@ -7,10 +7,13 @@ from models import Post, Comment
 
 
 class PostAdminForm(forms.ModelForm):
-    text = forms.CharField(widget=forms.Textarea(attrs={'rows':30,
-                                                               'cols':80,
-                                                               'style':'font-family:monospace'}),
-                                                               help_text='<a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">reStructuredText Quick Reference</a>')
+    text = forms.CharField(widget=forms.Textarea(
+        attrs={'rows':30,
+               'cols':80,
+               'style':'font-family:monospace'}),
+        help_text='<a href="http://docutils.sourceforge.net/docs/user/rst/'
+                  'quickref.html">reStructuredText Quick Reference</a>'
+    )
     class Meta:
        model = Post
 
