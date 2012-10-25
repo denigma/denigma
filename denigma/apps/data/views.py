@@ -257,8 +257,10 @@ class EntryUpdate(Update):
     def dispatch(self, *args, **kwargs):
         if 'slug' in kwargs:
             self.slug = kwargs['slug']
+            #del kwargs['slug']
         elif 'pk' in kwargs:
             self.pk = kwargs['pk']
+            #del kwargs['pk']
         return super(EntryUpdate, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
