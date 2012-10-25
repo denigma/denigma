@@ -9,12 +9,21 @@ register = template.Library()
 @register.filter
 def abstract(value):
     """Gets the abstract of a article."""
-    if value.startswith("reStructured"):
+#    if not isinstance(value, (unicode, str)):
+#        return value.text
+#    else:
+    if value.startswith("reStructured") and "Abstract" in value:
        return value.replace('\r', '').split('Abstract\n========\n\n')[1].replace('==', '').split('\n')[0]
+    else:
+        return value
+
 
     paragraphs = value.replace('Abstract', '').replace('==', '').replace('## ', '').replace('--', '').replace('=', '').replace('\r', '').split('\n')
     for paragraph in paragraphs:
         if paragraph and paragraph != "-":
              break
     return paragraph
+
+def reST(value):
+    pass
 
