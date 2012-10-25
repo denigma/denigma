@@ -1,7 +1,7 @@
 {% extends "data/base.html" %}
 
 {% load url from future %}
-{% load markup %}
+{% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
 {% load sets %}
@@ -29,7 +29,11 @@
                 {% endfor %}
         {% endif %}
     </p>
-    {{ object.text|markdown|hyper|recross|safe }}
+    {% if object.is_rest %}
+        {{ object.text|restructuredtext }}
+    {% else %}
+        {{ object.text|markdown|hyper|recross|safe }}
+    {% endif %}
     {% for image in object.images.all %}
         <img src="{{ image.url }}" alt="{{ image.name }}" />
     {% endfor %}
