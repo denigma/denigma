@@ -12,7 +12,7 @@ class EntryForm(ModelForm):
     text = CharField(widget=Textarea(
         attrs={'rows': 10, 'cols': 10,
                'style': 'font-family: monospace'}),
-        help_text='<a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html=">reStructuredText Quick Reference</a>\
+        help_text='<a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">reStructuredText Quick Reference</a>\
      | <a href="daringfireball.net/projects/markdown/basics">Markdown Basics</a></p>')
     comment = CharField(help_text='Optional, used for revision control.',
         required=False)
