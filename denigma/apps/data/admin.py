@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 
 import reversion
 
@@ -18,11 +19,22 @@ from models import Entry, Change, Relation, Alteration, Category, Tag
 #        obj.save()
 
 
+class EntryAdminForm(forms.ModelForm):
+    text = forms.CharField(widget=forms.Textarea(
+        attrs={'rows': 30, 'cols': 80, 'style': 'font-family:monospace'}),
+        help_text='<a href="http://docutils.sourceforge.net/docs/user/rst/'
+                  'quickref.html">reStructuredText Quick Reference</a>'
+    )
+
+
 class EntryAdmin(reversion.VersionAdmin):
     search_fields = ('title', 'text', 'url')
     ordering = ('-created',)
+    list_filter = ('published',)
     #inlines = [ChangeInline]
     #inlines = [RelationInline]
+    form = EntryAdminForm
+
     def save_model(self, request, obj, form, change):
         print("EntryAdmin.save_model here!")
         obj.user = request.user
