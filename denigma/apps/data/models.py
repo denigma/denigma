@@ -232,6 +232,8 @@ class Entry(Content):
         #return "{0} - {1} ({2})".format(self.title, self.created.date(), self.created.time())
 
     def get_absolute_url(self):
+        #if not self.published or "rest" in [tag.name for tag in self.tags.all()]:
+        #    return reverse('article', args=[self.title.replace(' ', '_')])
         return self.url or reverse('detail-entry', args=[self.slug]) #return self.url or u"/data/entry/%s" % self.pk
 
     def get_fields(self):
@@ -240,6 +242,15 @@ class Entry(Content):
 
     def detail(self):
         return reverse('detail-entry',args=[self.slug])
+
+    def content(self):
+        return self.text + " <b><a href='/data/entry/update/%s'>o</a></b>" % self.slug
+
+    def is_rest(self):
+        """returns True if entry is tagged to be fully encoded in reStructuredText."""
+        if "rest" in [tag.name for tag in self.tags.all()]:
+            return True
+        return False
 
     class Meta:
         verbose_name_plural = "Entries"
@@ -309,8 +320,10 @@ class Change(Content):
             differences.append('URL')
         if [image.name for image in previous.images.all()] != [image.name for image in self.images.all()]:
             differences.append('Images')
-        print previous.parent, self.parent
+        #print previous.parent, self.parent
         if previous.parent != self.parent:
+            #print previous.parent != self.parent
+            #print previous.parent, self.parent
             differences.append('Parent')
 
         return ", ".join(differences)
@@ -375,6 +388,9 @@ class Change(Content):
 
         # Parent:
         changes.previous_parent = previous.parent
+        #print("data.models: Parent")
+        #print previous.parent, self.parent
+        #previous.parent == self.parent
         if previous.parent != self.parent:
             changes.parent_changed = True
         else:
