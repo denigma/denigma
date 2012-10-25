@@ -22,7 +22,7 @@ urlpatterns = patterns('data.views',
     url(r'^entry/view/(?P<slug>.+)', EntryView.as_view(), name='view-entry'),
     url(r'^entry/create/$', EntryCreate.as_view(), name='create-entry'),
     url(r'^entry/update/(?P<pk>\d+)', EntryUpdate.as_view(), name='update-entry'),
-    url(r'^entry/update/(?P<pk>.+)', EntryUpdate.as_view(), name='update-entry'),
+    url(r'^entry/update/(?P<slug>.+)', EntryUpdate.as_view(), name='update-entry'),
     url(r'^entry/delete/(?P<pk>\d+)', EntryDelete.as_view(), name='delete-entry'),
     url(r'^entry/(?P<slug>.+)', EntryView.as_view(), name='detail-entry'), #  Alternative detail entry accepting slug.
     url(r'^hierarchy/list/$', EntryList.as_view(
