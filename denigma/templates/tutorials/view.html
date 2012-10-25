@@ -1,7 +1,7 @@
 {% extends "tutorials/base.html" %}
 
 {% load url from future %}
-{% load markup %}
+{% load rendering %} {# {% load markup %} #}
 {% load hyperlink %}
 {% load crosslink %}
 {% load negletion %}
@@ -16,10 +16,16 @@
 {% block title %}{{ tutorial.title }}{% endblock %}
 
 {% block content %}
-   {{ tutorial.text|markdown|hyper|recross|safe }} {# restructuredtext #}
-   {% for image in tutorial.images.all %}
+    {% comment %}{#  {{ tutorial|render  }}#}{% endcomment %}
+    {% if tutorial.is_rest %}
+        {{ tutorial.text|restructuredtext }}
+    {% else %}
+        {{ tutorial.text|markdown|hyper|recross }}
+    {% endif %}
+
+    {% for image in tutorial.images.all %}
        <img src={{ image.url }} alt={{ image.name }}/>
-   {% endfor %}
+    {% endfor %}
 
     {% comment %}<a href="/tutorials/{{tutorial.id }}/edit">Edit?</a>{% endcomment %}
     <br>
