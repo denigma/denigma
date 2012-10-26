@@ -31,7 +31,7 @@
         {% endif %}
     </p>
     {% if object.is_rest %}
-        {{ object.text|hyper|negle|reST|neglete|markdown|recross|safe }} {# {{ object.text|reST|safe }} {# restructuredtext }} #} #}
+        {{ object.text|hyper|negle|reST|neglete|markdown|recross|safe }} {# {{ object.text|reST|safe }} {# restructuredtext }} #}
     {% else %}
         {{ object.text|markdown|hyper|recross|safe }}
     {% endif %}
