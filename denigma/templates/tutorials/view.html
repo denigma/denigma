@@ -18,9 +18,9 @@
 {% block content %}
     {% comment %}{#  {{ tutorial|render  }}#}{% endcomment %}
     {% if tutorial.is_rest %}
-        {{ tutorial.text|restructuredtext }}
+        {{ tutorial.text|hyper|negle|reST|neglete|markdown|recross|safe }}
     {% else %}
-        {{ tutorial.text|markdown|hyper|recross }}
+        {{ tutorial.text|markdown|hyper|recross|safe }}
     {% endif %}
 
     {% for image in tutorial.images.all %}
