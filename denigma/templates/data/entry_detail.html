@@ -30,7 +30,7 @@
         {% endif %}
     </p>
     {% if object.is_rest %}
-        {{ object.text|restructuredtext }}
+        {{ object.text|reST|safe }} {# restructuredtext }} #}
     {% else %}
         {{ object.text|markdown|hyper|recross|safe }}
     {% endif %}
