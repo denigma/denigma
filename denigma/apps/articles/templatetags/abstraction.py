@@ -12,10 +12,10 @@ def abstract(value):
 #    if not isinstance(value, (unicode, str)):
 #        return value.text
 #    else:
-    if value.startswith("reStructured") and "Abstract" in value:
+    if "Abstract" in value:
        return value.replace('\r', '').split('Abstract\n========\n\n')[1].replace('==', '').split('\n')[0]
     else:
-        return value
+        return value[:150]
 
 
     paragraphs = value.replace('Abstract', '').replace('==', '').replace('## ', '').replace('--', '').replace('=', '').replace('\r', '').split('\n')
