@@ -1,6 +1,7 @@
 {% extends "tutorials/base.html" %}
 
-{% load markup %}
+{% load url from future %}
+{% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
 
@@ -16,16 +17,29 @@
             <td valign="top">
                 {{ tutorials_entry.text|markdown|hyper|recross|safe }}
                 {% if tutorials %}
+                    {% load mptt_tags %}
+                    {% recursetree tutorials %}
+                        <li>
+                            <a href={% url 'tutorial' node.pk %}>{{ node }}</a>
+                            <ul class="children">
+                                {{ children }}
+                            </ul>
+                        </li>
+                    {% endrecursetree %}
+                    {% comment %}
                     {% for tutorial in tutorials %}
                         <li><a href="/tutorials/{{ tutorial.id }}/view/">{{ tutorial.title }}</a></li>
                     {% endfor %}
+                    {% endcomment %}
+
+
                     <p></p>
                     <b><a href="/admin/blog/post/add/">Add another one</a></b>
                 {% else %}
                     <p>There are currently no tutorials.</p>
                 {% endif %}
             </td>
-            <td>
+            <td valign="top">
                 {% for image in tutorials_entry.images.all %}
                     <img src="{{ image.url }}" alt="{{ image.name }}" />
                 {% endfor %}
