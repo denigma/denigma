@@ -2,6 +2,7 @@
 
 {% load url from future %}
 {% load rendering %}
+{% load negletion %}
 {% load hyperlink %}
 {% load crosslink %}
 {% load sets %}
@@ -30,7 +31,7 @@
         {% endif %}
     </p>
     {% if object.is_rest %}
-        {{ object.text|reST|safe }} {# restructuredtext }} #}
+        {{ object.text|hyper|negle|reST|neglete|markdown|recross|safe }} {# {{ object.text|reST|safe }} {# restructuredtext }} #} #}
     {% else %}
         {{ object.text|markdown|hyper|recross|safe }}
     {% endif %}
