@@ -1,12 +1,13 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.db.models import Q
 
 from data.models import Entry
 
 
 def index(request):
     tutorials_entry = Entry.objects.get(title="Tutorials")
-    tutorials = Entry.objects.filter(tags__name='tutorial').order_by('id')
+    tutorials = Entry.objects.filter(Q(tags__name='tutorial') | Q(categories__name="Tutorial")).order_by('id').distinct()
     ctx = {'tutorials_entry': tutorials_entry, 'tutorials': tutorials}
     return render_to_response('tutorials/index.html', ctx,
                               context_instance=RequestContext(request))
