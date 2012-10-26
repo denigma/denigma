@@ -111,4 +111,13 @@ def render(value):
     else:
         return markdown(value.text)
 
+@register.filter(is_safe=True)
+def reST(value):
+    value = "reStructured\n\n" + value
+    from docutils.core import publish_parts
+    docutils_settings = getattr(settings, 'RESTRUCTUREDTEXT_FILTER_SETTINGS', {})
+    parts = publish_parts(source=value, writer_name='html4css1',
+    settings_overrides=docutils_settings)
+    return parts['html_body'].replace("<p>reStructured</p>", '')
+
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
