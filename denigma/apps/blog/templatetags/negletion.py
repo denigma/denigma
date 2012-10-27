@@ -20,7 +20,7 @@ register = template.Library()
 def negle(value):
     """Presevers image urls in combination with neglete wrapped around
     restructedtext."""
-    return value.replace('http://', "linkaging")
+    return value.replace('<http://', '#~#').replace('http://', "linkaging").replace('#~#', '<http://') #.replace('src="http://', 'linkimage').
 
 
 @register.filter
@@ -29,7 +29,7 @@ def neglete(value):
     value = value.replace('&lt;', '<')\
          .replace('&quot;', '"')\
          .replace('&gt;', '>')\
-         .replace('linkaging', 'http://')
+         .replace('linkaging', 'http://')#.replace('linkimage', 'src="http://')\
  
     value = header4.sub(r"<h4>\1</h4>", value)
     value = header3.sub(r"<h3>\1</h3><p>", value)
