@@ -12,6 +12,7 @@ from django.contrib.auth.models import AnonymousUser, User
 from django.views.generic.edit import CreateView, UpdateView # DeleteView
 from django.views.generic import ListView, DetailView
 from django.utils.translation import ugettext_lazy as _
+from django.http import Http404
 
 import reversion
 
@@ -518,12 +519,65 @@ def edit_factor(request, pk):
         context_instance=RequestContext(request))
 
 
-
-
 class FactorDetail(DetailView):
     model = Factor
     context_object_name = 'factor'
     template_name = 'lifespan/factor.html'
+    #
+#    def get_context_data(self, **kwargs):
+#        print("Get context data")
+#        if 'symbol' in kwargs:
+#            self.symbol = kwargs['symbol']
+#            #kwargs['slug'] = self.symbol
+#            del kwargs['symbol']
+#        else:
+#            self.symbol = None
+#        context = super(FactorDetail, self).get_context_data(**kwargs)
+#        return context
+#
+    #def get_queryset(self):
+        #print("Getting queryset")
+#        if self.symbol:
+#            qs = Factor.objects.filter(symbol__icontains=self.symbol)
+#        else:
+#            qs = Factor.objects.filter(pk=self.pk)
+#        return qs
+
+    def get_object(self, queryset=None):
+        """
+        Returns the object the view is displaying.
+        By default this requires `self.queryset` and a `pk` or `slug` argument
+        in the URLconf, but subclasses can override this to return
+        """
+        print("Get object")
+        # Use a custom queryset if provided; this is required for subclasses
+        # like DateDetailView
+        if queryset is None:
+            queryset = self.get_queryset()
+        # Next, try looking up by primary key.
+        pk = self.kwargs.get('pk', None)
+        slug = self.kwargs.get('slug', None)
+        if pk is not None:
+            queryset = queryset.filter(pk=pk)
+        # Next, try looking up by slug.
+        elif slug is not None:
+            queryset = Factor.objects.filter(symbol=slug)
+            #slug_field = self.get_slug_field()
+            #queryset = queryset.filter(**{slug_field: slug})
+        # If none of those are defined, it's and error.
+        else:
+            raise AttributeError(u"Generic detail view %s must be called with "
+                                 u"either and object pk or a slug, you idiot!"
+                                 % self.__class__.__name__)
+        try:
+            obj = queryset.get()
+        except ObjectDoesNotExist:
+            raise Http404(_(u"No %(verbose_name)s found matching the query") %
+                          {'verbose_name': queryset.model._meta.verbose_name})
+        return obj
+
+
+        return Factor.objects.get(symbol=self.kwargs['slug'])
 
 
 class FactorList(SingleTableView):

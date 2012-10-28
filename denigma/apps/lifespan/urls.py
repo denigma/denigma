@@ -77,6 +77,7 @@ urlpatterns = patterns('lifespan.views',
     url(r'^factor/edit/(?P<pk>\d+)/$', 'edit_factor'),
     url(r'^factor/remove/(?P<pk>\d+)/$', 'remove_factor', name='remove_factor'),
     url(r'^factor/delete/(?P<pk>\d+)/$', login_required(Delete.as_view(model=Factor)), name='delete-factor'),
+    url(r'^factor/(?P<slug>.+)/$', FactorDetail.as_view(), name='factor'),
 
     # Strains;
     url(r'^strains/$', ListView.as_view(queryset=Strain.objects.all(),

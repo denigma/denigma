@@ -500,6 +500,7 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
 
         super(Factor, self).save(*args, **kwargs)
 
+
 class Gender(models.Model):
     name = models.CharField(max_length=13)
 
