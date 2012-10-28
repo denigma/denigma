@@ -6,6 +6,7 @@
 {% load crosslink %}
 {% load negletion %}
 {% load tabling %}
+{% load latinum %}
 
 {% block hierarchy %}
     > Article
@@ -21,10 +22,11 @@
 {% block content %}
 
     <div class="article_body">
-        {{ article.text|tables|hyper|negle|reST|neglete|recross|markdown|safe }}{#  #}
+        {{ article.text|tables|latin|hyper|negle|reST|neglete|recross|markdown|safe }}{#  #}
     </div>
 
     <div class="tags">
+        <br>
         <b>Keywords:</b>
         {% for tag in article.tags.all %}
             <a href={% url 'entry-tag' tag.pk %}>{{ tag }}</a>{% if not forloop.last %}, {% endif %}
