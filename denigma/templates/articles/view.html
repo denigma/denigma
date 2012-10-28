@@ -5,6 +5,7 @@
 {% load hyperlink %}
 {% load crosslink %}
 {% load negletion %}
+{% load tabling %}
 
 {% block hierarchy %}
     > Article
@@ -15,12 +16,12 @@
     <a href={% url 'update-entry' article.pk %}>Update</a> (<a href="/admin/data/entry/{{ article.pk }}/">Admin</a>)
 {% endblock %}
 
-{# {% block subtitle %}Article{% endblock %} #}
+{#{% block title %}{{ article.title }}{% endblock %}  #}
 
 {% block content %}
 
     <div class="article_body">
-        {{ article.text|hyper|negle|reST|neglete|markdown|recross|safe }}
+        {{ article.text|tables|hyper|negle|reST|neglete|recross|markdown|safe }}{#  #}
     </div>
 
     <div class="tags">
