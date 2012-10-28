@@ -48,3 +48,6 @@ django-crispy-forms #==dev # Dev does not work.
 -e git+https://github.com/django-mptt/django-mptt/#egg=django-mptt
 
 -e git://github.com/bradleyayers/suds-htj.git#egg=suds # Required for DAVID. suds==0.4 does not work with DjDT
+
+# Real-time previewing of Markup:
+-e git://github.com/timmyomahony/django-pagedown.git#egg=pagedown
