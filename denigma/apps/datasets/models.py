@@ -2,6 +2,7 @@
 from time import strptime
 from datetime import datetime
 
+from django.core.urlresolvers import reverse
 from django.db import models
 
 from Bio import Entrez, Medline
@@ -76,6 +77,9 @@ class Reference(models.Model):
 
     def __unicode__(self):
         return u"{0} {1}".format(self.pmid, self.title)
+
+    def get_absolute_url(self):
+        return reverse('detail-reference', args=[self.pk])
 
     def save(self, *args, **kwargs):
         if not self.pk:
