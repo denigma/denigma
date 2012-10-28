@@ -98,7 +98,7 @@ def signatures(request):
     return render_to_response('expressions/signatures.html', ctx,
         context_instance=RequestContext(request))
 
-def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, benjamini=None):
+def signature(request, pk=None, ratio=2., pvalue=0.05, fold_change=None, exp=None, benjamini=None, name=None):
     terms = False
     id = 'seq_id'
     if request.GET:
@@ -116,15 +116,15 @@ def signature(request, pk, ratio=2., pvalue=0.05, fold_change=None, exp=None, be
             terms = True
         else:
             terms = False
-
-    signature = Signature.objects.get(pk=pk)
+    if pk: signature = Signature.objects.get(pk=pk)
+    elif name:  signature = Signature.objects.get(name=name)
 
     if not exp:
         transcripts = signature.transcripts.filter((Q(ratio__gt=ratio)
                                                     | Q(ratio__lt=1./ratio))
                                                     & Q(pvalue__lt=pvalue))
     else: # What is about a gene that is only low expressed in one condition?
-        print "Filtering on expression:"
+        #print "Filtering on expression:"
         transcripts = signature.transcripts.filter((Q(ratio__gt=ratio)
                                                     | Q(ratio__lt=1./ratio))
                                                     & Q(pvalue__lt=pvalue

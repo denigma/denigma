@@ -59,6 +59,7 @@ urlpatterns = patterns('expressions.views',
     url('^signatures/benjamini/$', 'benjaminis', name='benjaminis'),
     url('^signature/map/(?P<pk>\d+)', 'map_signature', name='map_signature'),
     url('^signatures/map/$', 'map_signatures', name='map_signatures'),
+    url('^signature/(?P<name>.+)/$', 'signature', name='signature'),
 
     # Others:
     url('^replicates/delete/$', 'delete_replicates', name='delete_replicates'),
