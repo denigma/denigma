@@ -6,6 +6,7 @@ from models import Measurement, Intervention, Factor, Strain, Assay, Regimen, Ep
 from views import InterventionList, InterventionCreate, InterventionUpdate #, InterventionDelete
 from views import FactorList, FactorDetail#, FactorCreate, FactorUpdate, FactorDelete
 from views import CreateStrain, UpdateStrain
+from views import ManipulationDetail
 
 
 from data.views import Delete
@@ -108,7 +109,8 @@ urlpatterns = patterns('lifespan.views',
         template_name='lifespan/manipulations.html',
         context_object_name='manipulations'),
         name='manipulations'),
-    url(r'^manipulation/(?P<pk>\d+)', DetailView.as_view(model=Manipulation), name='manipulation'),
+    url(r'^manipulation/(?P<pk>\d+)/$', ManipulationDetail.as_view(), name='manipulation'),
+    url(r'^manipulation/(?P<slug>.+)/$', ManipulationDetail.as_view(), name='manipulaiton'),
     url(r'^type/$', 'type'),
 
     # Depricated:

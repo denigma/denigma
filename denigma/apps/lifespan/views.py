@@ -18,7 +18,8 @@ import reversion
 
 from django_tables2 import SingleTableView
 
-from models import Study, Experiment, Measurement, Comparision, Intervention, Factor, Regimen, Strain
+from models import (Study, Experiment, Measurement, Comparision, Intervention, Factor, Regimen, Strain,
+                   Manipulation)
 from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
                    ExperimentForm, DeleteExperimentForm,
                    ComparisionForm,
@@ -549,7 +550,7 @@ class FactorDetail(DetailView):
         By default this requires `self.queryset` and a `pk` or `slug` argument
         in the URLconf, but subclasses can override this to return
         """
-        print("Get object")
+        #print("Get object")
         # Use a custom queryset if provided; this is required for subclasses
         # like DateDetailView
         if queryset is None:
@@ -577,8 +578,43 @@ class FactorDetail(DetailView):
         return obj
 
 
-        return Factor.objects.get(symbol=self.kwargs['slug'])
+class ManipulationDetail(DetailView):
+    model=Manipulation
+    context_object_name = 'manipulation'
+    template_name = 'lifespan/manipulation.html'
 
+    def get_object(self, queryset=None):
+        """
+        Returns the object the view is displaying.
+        By default this requires `self.queryset` and a `pk` or `slug` argument
+        in the URLconf, but subclasses can override this to return
+        """
+        #print("Get object")
+        # Use a custom queryset if provided; this is required for subclasses
+        # like DateDetailView
+        if queryset is None:
+            queryset = self.get_queryset()
+            # Next, try looking up by primary key.
+        pk = self.kwargs.get('pk', None)
+        slug = self.kwargs.get('slug', None)
+        if pk is not None:
+            queryset = queryset.filter(pk=pk)
+        # Next, try looking up by slug.
+        elif slug is not None:
+            queryset = Manipulation.objects.filter(shortcut__iexact=slug)
+            #slug_field = self.get_slug_field()
+            #queryset = queryset.filter(**{slug_field: slug})
+        # If none of those are defined, it's and error.
+        else:
+            raise AttributeError(u"Generic detail view %s must be called with "
+                                 u"either and object pk or a slug, you idiot!"
+                                 % self.__class__.__name__)
+        try:
+            obj = queryset.get()
+        except ObjectDoesNotExist:
+            raise Http404(_(u"No %(verbose_name)s found matching the query") %
+                          {'verbose_name': queryset.model._meta.verbose_name})
+        return obj
 
 class FactorList(SingleTableView):
     template_name = 'lifespan/factors.html'
