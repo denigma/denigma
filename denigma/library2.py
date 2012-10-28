@@ -95,6 +95,7 @@ class Bibliography(dict):
         self.findings = []
         
         if str(query) in self.memo:
+            #print self.memo
             print "memo"
             return [self.memo[str(query)]]
         
