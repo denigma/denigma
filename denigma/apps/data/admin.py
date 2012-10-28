@@ -1,7 +1,9 @@
 from django.contrib import admin
+from django.db import models
 from django import forms
 
 import reversion
+from pagedown.widgets import AdminPagedownWidget
 
 from models import Entry, Change, Relation, Alteration, Category, Tag
 
@@ -20,7 +22,10 @@ from models import Entry, Change, Relation, Alteration, Category, Tag
 
 
 class EntryAdminForm(forms.ModelForm):
-    text = forms.CharField(widget=forms.Textarea(
+    formfield_overrides = {
+        models.TextField: {'wdiget': AdminPagedownWidget},
+    }
+    text = forms.CharField(widget=AdminPagedownWidget(
         attrs={'rows': 30, 'cols': 80, 'style': 'font-family:monospace'}),
         help_text='<a href="http://docutils.sourceforge.net/docs/user/rst/'
                   'quickref.html">reStructuredText Quick Reference</a>'

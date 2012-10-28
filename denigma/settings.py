@@ -241,6 +241,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_filters',
     'mptt', # Hierarchy: Utilties for implementing a modified pre-order traversal tree.
+    'pagedown', # Markdown preview editor
 #    'cms", # Content Management System.
 #    'sekizai", # For javascipt and css management.
     

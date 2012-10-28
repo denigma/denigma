@@ -5,13 +5,18 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit
 from crispy_forms.bootstrap import FormActions
 
+from pagedown.widgets import PagedownWidget
+
 from models import Entry, Relation, Tag, Category
 
 
 class EntryForm(ModelForm):
-    text = CharField(widget=Textarea(
+    #widgets = {'<attribute_name': Textarea(attrs={'class':'wmd-input', 'id': 'wmd-inout'})} #http://stackoverflow.com/questions/8459967/pagedownmarkdown-editor-with-django
+    text = CharField(widget=PagedownWidget(
         attrs={'rows': 10, 'cols': 10,
-               'style': 'font-family: monospace'}),
+               'style': 'font-family: monospace',
+               #'class':'wmd-input', 'id': 'wmd-input'
+        }),
         help_text='<a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">reStructuredText Quick Reference</a>\
      | <a href="daringfireball.net/projects/markdown/basics">Markdown Basics</a></p>')
     comment = CharField(help_text='Optional, used for revision control.',
