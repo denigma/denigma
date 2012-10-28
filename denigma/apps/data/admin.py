@@ -23,7 +23,7 @@ from models import Entry, Change, Relation, Alteration, Category, Tag
 
 class EntryAdminForm(forms.ModelForm):
     formfield_overrides = {
-        models.TextField: {'wdiget': AdminPagedownWidget},
+        models.TextField: {'widget': AdminPagedownWidget},
     }
     text = forms.CharField(widget=AdminPagedownWidget(
         attrs={'rows': 30, 'cols': 80, 'style': 'font-family:monospace'}),
