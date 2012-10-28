@@ -39,6 +39,7 @@ urlpatterns = patterns('annotations.views',
     url(r'^tissue/add/$', 'add_tissue', name='add_tissue'),
     url(r'^tissue/edit/(?P<pk>\d+)/$', 'edit_tissue', name='edit_tissue'),
     url(r'^tissue/create/$', TissueCreate.as_view(), name='create_tissue'),
-    url(r'^tissue/delete/(?P<pk>\d+)', 'delete_tissue', name='delete_tissue')
+    url(r'^tissue/delete/(?P<pk>\d+)', 'delete_tissue', name='delete_tissue'),
+    url(r'^tissue/(?P<name>.+)/$', 'tissue', name='tissue')
 )
 

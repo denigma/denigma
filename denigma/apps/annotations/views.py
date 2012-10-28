@@ -207,9 +207,15 @@ def tissues(request):
     return render_to_response('annotations/tissues.html', {'tissues': tissues},
                               context_instance=RequestContext(request))
 
-def tissue(request, pk):
+def tissue(request, pk=None, name=None):
     """Gives a the details of a specific tissue/cell type."""
-    tissue = Tissue.objects.get(pk=pk)
+    if pk:
+        tissue = Tissue.objects.get(pk=pk)
+    elif name:
+        try:
+            tissue = Tissue.objects.get(name=name)
+        except: # Better implement slug, rather than name.
+            tissue = Tissue.objects.get(name=name.replace('-', ' '))
     return render_to_response('annotations/tissue.html', {'tissue': tissue},
                               context_instance=RequestContext(request))
 
