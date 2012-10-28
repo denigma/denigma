@@ -12,7 +12,9 @@ def abstract(value):
 #    if not isinstance(value, (unicode, str)):
 #        return value.text
 #    else:
-    if "Abstract" in value:
+    if ":Abstract:" in value:
+        return value.replace('\r', '').split(':Abstract:')[1].split('\n')[0]
+    elif "Abstract" in value:
        return value.replace('\r', '').split('Abstract\n========\n\n')[1].replace('==', '').split('\n')[0]
     else:
         return value[:150]
