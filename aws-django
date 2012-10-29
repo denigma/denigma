@@ -171,6 +171,13 @@ install_python() {
     apt-get install -y python python-dev python-pip python-setuptools python-mysqldb
 }
 
+prepare_pil() {
+    sudo apt-get build-dep python-imaging
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/
+}
+
 install_nginx() {
     apt-get install -y nginx
     apt-get install -y python-flup
@@ -193,7 +200,7 @@ configure_apache() {
     ErrorLog ${APACHE_LOG_DIR}/${SITE_NAME}_error.log
     CustomLog ${APACHE_LOG_DIR}/${SITE_NAME}_access.log combined
 
-    WSGIDaemonProcess $NAME user=www-data group=www-data maximum-requests=10000 python-path=/home/$LOCAL_USER/env/lib/python2.6/site-packages
+    WSGIDaemonProcess $NAME user=www-data group=www-data maximum-requests=10000 python-path=/home/$LOCAL_USER/env/lib/python2.7/site-packages
     WSGIProcessGroup $NAME
 
     WSGIScriptAlias / $PROJECT_ROOT/deploy/pinax.wsgi
@@ -215,8 +222,8 @@ configure_apache() {
        Allow from all
     </Directory>
 
-    Alias /admin/media /home/$LOCAL_USER/env/lib/python2.6/site-packages/django/contrib/admin/media/
-    <Directory "/home/$LOCAL_USER/env/lib/python2.6/site-packages/django/contrib/admin/media">
+    Alias /admin/media /home/$LOCAL_USER/env/lib/python2.7/site-packages/django/contrib/admin/media/
+    <Directory "/home/$LOCAL_USER/env/lib/python2.7/site-packages/django/contrib/admin/media">
         Order allow,deny
         Options Indexes
         Allow from all
@@ -225,7 +232,7 @@ configure_apache() {
 
 </VirtualHost>
 EOF
-    sudo echo "Alias /django/contrib/admin/media/ /home/$LOCAL_USER/env/lib/python2.6/site-packages/django/contrib/admin/static/admin/" >> /etc/apache2/httpd.conf
+    sudo echo "Alias /django/contrib/admin/media/ /home/$LOCAL_USER/env/lib/python2.7/site-packages/django/contrib/admin/static/admin/" >> /etc/apache2/httpd.conf
 }
 
 activate_apache() {
@@ -279,13 +286,14 @@ install_project() {
 }
 
 install_mysql() {
+    sudo aptitude install libmysqlclient-dev
     sudo pip -E /home/$LOCAL_USER/env install MySQL-python
 }
 
 setup_statics() {
 
-    cp -rf /home/$LOCAL_USER/env/lib/python2.6/site-packages/pinax_theme_bootstrap/static/pinax $PROJECT_ROOT/media/pinax
-    cp -rf /home/$LOCAL_USER/env/lib/python2.6/site-packages/django/contrib/admin/static/admin $PROJECT_ROOT/media/admin
+    cp -rf /home/$LOCAL_USER/env/lib/python2.7/site-packages/pinax_theme_bootstrap/static/pinax $PROJECT_ROOT/media/pinax
+    cp -rf /home/$LOCAL_USER/env/lib/python2.7/site-packages/django/contrib/admin/static/admin $PROJECT_ROOT/media/admin
 }
 
 configure_local_settings() {
@@ -358,6 +366,7 @@ handle_defaults
 update_system
 install_baseline
 install_python
+prepare_pil
 install_webserver
 
 install_subversion

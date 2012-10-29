@@ -4,7 +4,7 @@ sudo aptitude update && sudo aptitude upgrade -y
 export DEBIAN_FRONTEND=noninteractive
 sudo -E aptitude install -y xfsprogs mysql-server
 
-echo "/dev/sdf /vol xfs noatime 0 0" | sudo tee -a /etc/fstab
+echo "/dev/xvdf /vol xfs noatime 0 0" | sudo tee -a /etc/fstab
 sudo mkdir -m 000 /vol
 sudo mount /vol
 
