@@ -38,7 +38,16 @@ elif os.name == 'nt':
 try:
     from taxonomy import organisms
 except:
-    organisms = {7227:'Fruit Fly'} #4932, 6239, 7227, 10090)
+    organisms = {4932:'Budding yeast',
+                 4896: 'Fission yeast',
+                 6239:'Nematode',
+                 7227:'Fruit fly',
+                 10090: 'House mouse',
+                 10116: 'Rat',
+                 7955: 'Zebra fish',
+                 9544: 'Rhesus monkey',
+                 9606: 'Human',
+                 }
     print("annotations.mapper: Could not load taxonomy.")
 
 try:
