@@ -632,7 +632,7 @@ def add_signature(request):
     if request.POST:
         if not "file" in request.POST:
             file = request.FILES['file']
-            data = file.read().split('\n')
+            data = file.read().replace('\r', '').split('\n')
         elif "profile" not in request:
             msg = "No file or profiles selected. Please provide either a signature "\
                   "file to upload or select profiles to derive a signature."
@@ -646,10 +646,11 @@ def add_signature(request):
             tissues = info['tissue'].replace('-', '@').replace(', ', '@').replace(' and ', '@').split('@') # @ is unlikely to be used as filename.
         else:
             tissues = request.POST.getlist('tissues')
-        if "diet" in info:
-            regimen = Regimen.objects.get(shortcut__exact=info['diet'])
-        elif 'diet' in request.POST:
+        if 'diet' in request.POST and request.POST['diet']:
             regimen = Regimen.objects.get(pk=request.POST['diet'])
+        elif "diet" in info:
+            regimen = Regimen.objects.get(shortcut__exact=info['diet'])
+
 
         # Species from form:
         try:
@@ -686,12 +687,17 @@ def add_signature(request):
             header[column.lower().replace('gene symbol', 'symbol')\
                                  .replace('gene_symbol', 'symbol')\
                                  .replace(' ', '_')\
-                                 .replace('platform_cloneid', 'seq_id')] = index # WTF is this?
+                                 .replace('platform_cloneid', 'seq_id')\
+                                 .replace('ensembl_gene', 'seq_id')] = index # WTF is this?
 
 
         #num_lines = len(data); counter = 0
+        print len(data[1:])
         for line in data[1:]:
+            #print(line)
+            #print(header)
             try:
+                #print("Trying")
                 # For effect size
                 ctr_values = []
                 exp_values = []
@@ -699,7 +705,7 @@ def add_signature(request):
                 #counter += 1
                 if not line: continue
                 columns = line.split('\t')
-                if len(columns) <= 5: break #continue
+                if len(columns) < len(header): continue #break #
                 seq_id = columns[header['seq_id']]
                 symbol = columns[header['symbol']]
                 if symbol == "None": symbol = None
@@ -738,6 +744,7 @@ def add_signature(request):
                 transcript = Transcript(seq_id=seq_id, symbol=symbol, ratio=ratio, fold_change=fold_change, pvalue=pvalue, effect_size=es)
 
                 transcript.save()
+                #print(transcript)
                 expression = Expression.objects.create(
                     signature=signature,
                     transcript=transcript,
@@ -748,7 +755,7 @@ def add_signature(request):
                 effect_size=es)
             except ValueError as e:
                 print e, symbol, seq_id, fold_change, pvalue, ctr, exp
-                break
+                #break
 
         #print "Counter=%s; Number of lines:%s" % (counter, num_lines)
         #if counter == num_lines:
