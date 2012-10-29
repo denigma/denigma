@@ -50,36 +50,45 @@
         <input type="submit" value="Apply" />
     </form>
     <hr>
-    <h3>Commonly upregulated entities [{{ signatures.up|length }}]:</h2>
+    <h3>Commonly upregulated entities [{{ signatures.up|length }}]:</h3>
     <span style="color:red">
         {% if id == 'entrez_gene_id' %}
             {{ signatures.up|factor_links }}
         {% else %}
+            {{ signatures.up|factor_links:"ensembl_gene_id" }}
+            {% comment %}
             {% for transcript in signatures.up %}
                 {{ transcript }}
             {% endfor %}
+            {% endcomment %}
         {% endif %}
     </span>
     <hr>
-    <h3>Commonly downregulated entities [{{ signatures.down|length }}]:</h2>
+    <h3>Commonly downregulated entities [{{ signatures.down|length }}]:</h3>
     <span style="color:green">
         {% if id == 'entrez_gene_id' %}
             {{ signatures.down|factor_links }}
         {% else %}
+            {{ signatures.down|factor_links:"ensembl_gene_id" }}
+            {% comment %}
             {% for transcript in signatures.down %}
                 {{ transcript }}
             {% endfor %}
+            {% endcomment %}
         {% endif %}
     </span>
     <hr>
-    <h3>Commonly differential entities to all signatures [{{ signatures.diff|length }}]:</h2>
+    <h3>Commonly differential entities to all signatures [{{ signatures.diff|length }}]:</h3>
     <span style="color:orange">
     {% if id == 'entrez_gene_id' %}
         {{ signatures.diff|factor_links }}
     {% else %}
+        {{ signatures.diff|factor_links:"ensembl_gene_id" }}
+        {% comment %}
         {% for transcript in signatures.diff %}
             {{ transcript }}
         {% endfor %}
+        {% endcomment %}
     {% endif %}
     </span>
 

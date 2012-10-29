@@ -103,9 +103,12 @@
         {% if id == 'entrez_gene_id' %}
             {{ intersection.upregulated|factor_links }}
         {% else %}
-        {% for transcript in intersection.upregulated  %}
-            {{ transcript }}
-        {% endfor %}
+            {{ intersection.upregulated|factor_links:"ensembl_gene_id" }}
+            {% comment %}
+            {% for transcript in intersection.upregulated  %}
+                {{ transcript }}
+            {% endfor %}
+            {% endcomment %}
         {% endif %}
     </span>
     <hr>
@@ -114,9 +117,12 @@
         {% if id == 'entrez_gene_id' %}
             {{ intersection.downregulated|factor_links }}
         {% else %}
+            {{ intersection.upregulated|factor_links:"ensembl_gene_id" }}
+            {% comment %}
             {% for transcript in intersection.downregulated %}
                 {{ transcript }}
             {% endfor %}
+            {% endcomment %}
         {% endif %}
     </span>
     {% include "expressions/annotation.html" %}

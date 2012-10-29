@@ -54,16 +54,13 @@
             </td>
         </tr>
     </table>
-
     <hr>
     <h3>Upregulated entities</h3>
     <span style="color:red">
         {% if id == 'entrez_gene_id' %}
             {{ transcripts_up|factor_links }}
         {% else %}
-            {% for transcript in transcripts_up %}
-                {{ transcript }}
-            {% endfor %}
+            {{ transcripts_up|factor_links:"ensembl_gene_id" }}
         {% endif %}
     </span>
     <hr>
@@ -72,11 +69,13 @@
         {% if id == 'entrez_gene_id' %}
             {{ transcripts_down|factor_links }}
         {% else %}
+            {{ transcripts_down|factor_links:"ensembl_gene_id" }}
+            {% comment %}
             {% for transcript in transcripts_down %}
                 {{ transcript }}
             {% endfor %}
+            {% endcomment %}
         {% endif %}
     </span>
     {% include "expressions/annotation.html" %}
-
 {% endblock %}
