@@ -171,6 +171,13 @@ install_python() {
     apt-get install -y python python-dev python-pip python-setuptools python-mysqldb
 }
 
+prepare_pil() {
+    sudo apt-get build-dep python-imaging
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/
+}
+
 install_nginx() {
     apt-get install -y nginx
     apt-get install -y python-flup
@@ -359,6 +366,7 @@ handle_defaults
 update_system
 install_baseline
 install_python
+prepare_pil
 install_webserver
 
 install_subversion
