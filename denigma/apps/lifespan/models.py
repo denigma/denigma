@@ -496,7 +496,7 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
                     self.name = self.name or entrez.gene_name
                     if not self.taxid:
                         taxid = entrez.taxid
-                        self.species = Species.obejcts.get(taxid=taxid)
+                        self.species = Species.objects.get(taxid=taxid)
 
         super(Factor, self).save(*args, **kwargs)
 
