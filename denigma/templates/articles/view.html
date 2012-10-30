@@ -7,6 +7,7 @@
 {% load negletion %}
 {% load tabling %}
 {% load latinum %}
+{% load math %}
 
 {% block hierarchy %}
     > Article
@@ -22,7 +23,7 @@
 {% block content %}
 
     <div class="article_body">
-        {{ article.text|tables|latin|hyper|negle|reST|neglete|recross|markdown|safe }}{#  #}
+        {{ article.text|formula|tables|latin|hyper|negle|reST|neglete|recross|markdown|safe }}
     </div>
 
     <div class="tags">

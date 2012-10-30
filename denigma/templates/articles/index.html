@@ -33,6 +33,9 @@
                             <a href={% url 'entry-tag' tag.pk %}>{{ tag }}</a>{% if not forloop.last %}, {% endif %}
                          {% endfor %}
                     </div>
+                {% if user.is_superuser %}
+                    <a href={% url 'reference' article.slug %}>Reference</a>
+                {% endif %}
                 </td>
                 <td>
                     {% for image in article.images.all %}
