@@ -6,6 +6,7 @@ from data.models import Entry
 
 
 urlpatterns = patterns('articles.views',
+    url(r'^reference/(?P<slug>.+)', 'reference', name='reference'),
     url(r'^(?P<pk>\d+)$', DetailView.as_view(
             model=Entry,
             context_object_name='article',
@@ -15,7 +16,9 @@ urlpatterns = patterns('articles.views',
     url(r'^', ListView.as_view(
         queryset=Entry.objects.filter(
             Q(tagged__name="article") |
-            Q(categories__name="Article")).order_by("-created", "-id"),
+            Q(categories__name="Article")).order_by("-created", "-id").distinct(),
         template_name="articles/index.html"),
         name='articles'),
+
+    #url(r'output/(?P<pk>)', output)
 )
