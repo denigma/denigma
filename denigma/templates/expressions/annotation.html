@@ -18,5 +18,10 @@
         {% else %}
             <p>None</p>
         {% endif %}
+        {% if table_diff %}
+            <br>
+            <h3>Differential terms</h3>
+            {% render_table table_diff %}
+        {% endif %}
     </div>
 {% endif %}
