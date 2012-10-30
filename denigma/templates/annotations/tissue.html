@@ -27,5 +27,8 @@
     {% if tissue.synonyms %}<p><b>Synonyms:</b> {{ tissue.synonyms }}</p>{% endif %}
     <p><b>Hierarchy:</b> {{ tissue.hierarchy }}</p>
     {% if tissue.notes %}<p><b>Notes:</b> {{ tissue.notes }}</p>{% endif %}
+    {% for image in tissue.images.all %}
+        <img src={{ image.url }} alt={{ image.name }} />
+    {% endfor %}
 {% endblock %}
 
