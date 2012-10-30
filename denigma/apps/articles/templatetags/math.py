@@ -8,6 +8,8 @@ register = template.Library()
 @register.filter
 def formula(value):
     rc = re.compile('(?P<base>\d{0,1}\.{0,1}\d*\*{0,1}\d{1,2})\^(?P<exp>-{0,1}\d+)')#'\d\**\d{1,2}\^-{0,1}\d+')
+    def translate(match):
+        print match
         #return ":math:`%s`" % match.group(0)
         return "%s\ :sup:`%s`" % (match.group('base').replace('*', u'⋅'), match.group('exp')) #•.replace('*', '⋅')&#183;
     result = rc.sub(translate, value)
