@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
@@ -33,21 +35,23 @@ from utils.count import Counter
 
 IDs = ['seq_id', 'entrez_gene_id']
 
-def functional_enrichment(terms, transcripts_up, transcripts_down, id='seq_id'):
+def functional_enrichment(terms, transcripts,  id='seq_id'):
     """Helper function to create annotation tables for functional enrichment."""
     if terms:
         # Functional Annotation:
         ## Determine seq_id type:
-        if isinstance(transcripts_up, (set, list)):
-            for e in transcripts_up or transcripts_down:
-                up = transcripts_up
-                down = transcripts_down
+        if isinstance(transcripts, (set, list)):
+            for e in transcripts:
+                try:
+                    entity_id = transcripts[0].seq_id
+                    ids = [transcript.seq_id for transcript in transcripts if transcript.seq_id]
+                except:
+                    ids = transcripts
+                    entity_id = e # What happens if list is empty?
                 break
-            entity_id = e # What happens if list is empty?
         else:
-            entity_id = transcripts_up[0].seq_id
-            up = [transcript.seq_id for transcript in transcripts_up if transcript.seq_id]
-            down = [transcript.seq_id for transcript in transcripts_down if transcript.seq_id]
+            entity_id = transcripts[0].seq_id
+            ids = [transcript.seq_id for transcript in transcripts if transcript.seq_id]
         if id != 'seq_id':
             idType = id.upper()
         else:
@@ -57,19 +61,14 @@ def functional_enrichment(terms, transcripts_up, transcripts_down, id='seq_id'):
                 idType = 'ENSEMBL_GENE_ID'
         print idType
         ## Create tables:
-        if transcripts_up:
-            terms_up = enrich(up, idType=idType)
-            table_up = AnnotationTable(terms_up.data())
+        if transcripts:
+            terms = enrich(ids, idType=idType )
+            table = AnnotationTable(terms.data())
         else:
-            table_up = None
-        if transcripts_down:
-            terms_down = enrich(down, idType=idType )
-            table_down = AnnotationTable(terms_down.data())
-        else:
-            table_down = None
+            table = None
     else:
-        table_up = table_down = None
-    return table_up, table_down
+        table = None
+    return table
 
 def transcripts(request):
     filterset = TranscriptFilterSet(request.GET or None)
@@ -161,16 +160,22 @@ def signature(request, pk=None, ratio=2., pvalue=0.05, fold_change=None, exp=Non
     transcripts_down = transcripts.filter(Q(ratio__lt=1./ratio)
                                           & Q(pvalue__lt=pvalue))
 
-    table_up, table_down = functional_enrichment(terms, transcripts_up, transcripts_down)
-    print id
+    table_up = functional_enrichment(terms, transcripts_up)
+    table_down = functional_enrichment(terms, transcripts_down)
+    table_diff = functional_enrichment(terms, list(chain(transcripts_up, transcripts_down)))
+
+    #print id
     transcripts_up = set([getattr(transcript, id) for transcript in transcripts_up])
     if None in transcripts_up: transcripts_up.remove(None)
     transcripts_down = set([getattr(transcript, id) for transcript in transcripts_down])
     if None in transcripts_down: transcripts_down.remove(None)
+    #transcripts_diff = set([getattr(transcripts, id) for transcript in transcripts_diff])
+    #if None in transcripts_diff: transcripts_diff.remove(None)
 
     ctx = {'signature': signature, 'transcripts': transcripts,
            'transcripts_up': transcripts_up,
            'transcripts_down': transcripts_down,
+           #'transcripts_diff': transcripts_diff,
            'table': table,
            'ratio': ratio,
            'pvalue': pvalue,
@@ -179,6 +184,7 @@ def signature(request, pk=None, ratio=2., pvalue=0.05, fold_change=None, exp=Non
            'terms': terms,
            'table_up': table_up,
            'table_down': table_down,
+           'table_diff': table_diff,
            'ids': IDs,
            'id': id
     }
@@ -332,7 +338,8 @@ def intersection(request, a, another, ratio=2., pvalue=0.05,
                                   float(fold_change or 0), exp, benjamini, id)
     intersection = Intersection(a_signature, another_signature)
 
-    table_up, table_down = functional_enrichment(terms, intersection.upregulated(), intersection.downregulated(), id)
+    table_up = functional_enrichment(terms, intersection.upregulated(), id)
+    table_down = functional_enrichment(terms, intersection.downregulated(), id)
 
     ctx = {'title': '%s & %s' % (a_signature, another_signature),
            'intersection': intersection,
@@ -377,7 +384,12 @@ def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, b
         signature.differential(ratio, pvalue, fold_change, exp, benjamini, id)
     signatures = Signatures(signatures)
     filter = TranscriptFilterSet(request.GET, transcripts)
-    table_up, table_down = functional_enrichment(terms, signatures.up, signatures.down, id)
+    if terms:
+        table_up = functional_enrichment(terms, signatures.up, id)
+        table_down = functional_enrichment(terms, signatures.down, id)
+        #table_diff = functional_enrichment(terms, list(chain(signatures.up, signatures.down, id)))
+    else:
+        table_up = table_down = table_diff = None
     ctx = {'title': 'Meta-Analysis',
            'entry': entry,
            'signatures': signatures,
@@ -386,6 +398,7 @@ def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, b
            'terms': terms,
            'table_up': table_up,
            'table_down': table_down,
+           'table_diff': table_diff,
            'ids': IDs,
            'id': id,
     }
