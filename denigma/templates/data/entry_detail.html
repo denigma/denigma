@@ -26,7 +26,7 @@
                 {% for updater in object.updates.all|unique %}
                     {# {% if updater != object.creator %}{% endif %} #}
                         <a href={{ updater.get_absolute_url }}>{{ updater }}</a>
-
+                    on {{ object.updated }}
                 {% endfor %}
         {% endif %}
     </p>
