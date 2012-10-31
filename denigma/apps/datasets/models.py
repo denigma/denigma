@@ -107,7 +107,7 @@ class Reference(models.Model):
                        print("Saved")
                     else:
 
-                       from library import Bibliography # This statement at the top breaks Denigma for unknown reason.
+                       from denigma.library import Bibliography # This statement at the top breaks Denigma for unknown reason.
 
                         # Google:
                        bib = Bibliography()
@@ -127,9 +127,9 @@ class Reference(models.Model):
                                self.pmid = r.pmid
                                print self.pmid
                            elif len(r) > 1:
-                               title = normalize(self.title)
+                               title = normalize_title(self.title)
                                for areference in r:
-                                   if normalize(areference.title) == title:
+                                   if normalize_title(areference.title) == title:
                                        r = areference
 
                        self.__dict__.update(r.__dict__)
