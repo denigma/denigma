@@ -35,7 +35,7 @@
                    <b><a href="/blog/{{ news.id }}">Read More</a></b>
                    {% endspaceless %}
                    ({% for tag in news.tags.all %}
-                       <a href="/blog/tag/{{ tag }}">{{ tag }}</a>{% if not forloop.last %}, {% endif %}
+                       <a href={% url 'entry-tag' tag.name %}>{{ tag }}</a>{% if not forloop.last %}, {% endif %}
                    {% endfor %})
                </td>
                <td>
