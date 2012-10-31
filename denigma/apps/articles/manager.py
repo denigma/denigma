@@ -1,22 +1,26 @@
-"""Manages the references of an article. 
+#! -.- coding: utf8 -.-
+"""Manages the references of an article.
 Currently it creates the bibliography for a as "reStructured referenced"
 marked article and and generated an rst file for it."""
 import re
 
 try:
    import article as a
-except ImportError:
-  print("No article module availble.")
+except ImportError as e:
+  print("No article module available. %s" % e)
 
 try:
-    import library
+    import denigma.library as library
 except ImportError:
    print("No library available.")
 
 
 def referencing(self):
     print("Is article.")
-    text = self.text.replace('\r', '').replace(r'\xe2\x80\x93', '-') # Second replace is probaly not any-more necessary.
+    if isinstance(self, (str, unicode)):
+        text = self.replace('\r', '').replace(r'\xe2\x80\x93', '-') # Second replace is probaly not any-more necessary.
+    else:
+        text = self.text.replace('\r', '').replace(r'\xe2\x80\x93', '-') # Second replace is probaly not any-more necessary.
     text = text.encode('ascii', 'ignore')
     article = a.Article()
 
@@ -26,14 +30,16 @@ def referencing(self):
     else: title = self.title
     #print title
 
-    article.title = title
+    #article.title = title
 
     abstract_regex = "Abstract\n={8,}\n+(.+[\n\w\d\s.^!-~]+)\n+.+\n+={2,}"
     abstract = re.findall(abstract_regex, text)
     #print abstract
 
+
     references_regex = "References\n={10,}([.\n\w\d\s^!-~]{1,})\n{3}" #{366\xe2\x80\x93375}{\xe2\x80\x93}]{1,}"
     # Includes the "--" long dash non-asci character.
+    references_regex = re.compile("References\n\W{10}(.+?)\n{3}", re.DOTALL)
     references = re.findall(references_regex, text)[0].replace('*' , '') # Removes markup.
     #print references.split('\n')[:50]
     #print len(references)#, type(references)
@@ -45,12 +51,12 @@ def referencing(self):
     #main = re.findall(main_regex, text)
     # print "main is:", main
 
+
     article.bibliography = library.Bibliography()
     print references
-    stop
-    article.references = a.References(references, article=article) 
+    #stop
 
-    stop
+    article.references = a.References(references, article=article)
 
    #section_headers = re.findall('\n([\w -:.,/]+)\n={3,}', text)    
    #subsections_headers = re.findall('\n([\w -:.,/]+)\n-{3,}', text) 
@@ -159,7 +165,14 @@ def referencing(self):
 
     #print article.abstract.text
 
-    paragraph = a.Paragraph(text)
+    def translate(match):
+        return ''
+    rc = re.compile(references_regex)
+    text = rc.sub(translate, text)
+    from articles.templatetags.tabling import tables
+    from articles.templatetags.math import formula
+    from lifespan.templatetags.factor_linker import symbols
+    paragraph = a.Paragraph(symbols(formula(tables(text), uni=False)))
     article.paragraphs = [paragraph]
     article.referencing(numbered=True, brackets=False)
     # print a.string
@@ -168,5 +181,6 @@ def referencing(self):
     output = open('output.rst', 'w')
     output.write(article.string)
     output.close()
+    return article.string
 
 #23456789112345678921234567893123456789412346789512345678961234567897123456789  
