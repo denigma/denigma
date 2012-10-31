@@ -3,6 +3,8 @@ from django.views.generic.base import TemplateView, RedirectView
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.http import Http404
+from django.template import RequestContext
+from django.template.loader import render_to_string
 
 
 class ExtraContextView(TemplateView):
@@ -117,4 +119,35 @@ class EnvironmentMixin(object):
     def setup_environment(self, request, *args, **kwargs):
         raise NotImplementedError("Subclasses of EnvironmentMixin are "
                                   "supposed to override this hook.")
+
+class BaseViewMixin(object):
+
+    def dispatch(self, request, *args, **kwargs):
+        # Set earlier to let get_loggedin_user() and get_context_user() work.
+        # They run before the get() and post() method are called.
+        self.request = request
+        self.args = args
+        self.kwargs = kwargs
+
+        # Run checks before entering the view.
+        # Note that is_authorized() does not have access to self.object yet,
+        # as the normal get() and post() methods are not entered.
+        if not self.is_authorized():
+            html = render_to_string("403.html", {},
+                context_request=RequestContext(request))
+
+        # Give all subclasses a chance to fetch database values that depend on
+        # the context user, before entering the global get/post code that does
+        # everything. In contrast to overriding get/post, the init() function
+        # can call super() first, to let the parent class initialize, and then
+        # initialize itself. A get/post function can't run super first, since
+        # that would execute the whole view.
+        self.init()
+
+        # Run the complete request, returning a response
+        return super(PermissionMixin, self).dispatch(request, *args, **kwargs) #
+
+    def init(self):
+        # Hook to override in subclasses
+
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
