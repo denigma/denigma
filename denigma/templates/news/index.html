@@ -1,5 +1,6 @@
 {% extends "news/base.html" %}
 
+{% load url from future %}
 {% load markup %}
 {% load hyperlink %}
 {% load crosslink %}
@@ -11,7 +12,7 @@
 {% block content %}
     <table>
         <tr>
-            <td>
+            <td valign="top">
                 {{ entry.text|markdown|hyper|recross|safe }}
             </td>
             <td>
@@ -26,7 +27,7 @@
        <table>
            <tr>
                <td>
-                   <h3>{{ news.title }}</h3>
+                   <a href={% url 'detail-entry' news.slug %}><h3>{{ news.title }}</h3></a>
                    <p>created on {{ news.created }};
                       updated on {{ news.updated }}</p>
                    {% spaceless %}
@@ -34,8 +35,7 @@
                    <b><a href="/blog/{{ news.id }}">Read More</a></b>
                    {% endspaceless %}
                    ({% for tag in news.tags.all %}
-                       <a href="/blog/tag/{{ tag }}">{{ tag }}</a>
-                   {% if not forloop.last %}, {% endif %}
+                       <a href="/blog/tag/{{ tag }}">{{ tag }}</a>{% if not forloop.last %}, {% endif %}
                    {% endfor %})
                </td>
                <td>
