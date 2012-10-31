@@ -162,7 +162,8 @@ def signature(request, pk=None, ratio=2., pvalue=0.05, fold_change=None, exp=Non
 
     table_up = functional_enrichment(terms, transcripts_up)
     table_down = functional_enrichment(terms, transcripts_down)
-    table_diff = functional_enrichment(terms, list(chain(transcripts_up, transcripts_down)))
+    #table_diff = functional_enrichment(terms, list(chain(transcripts_up, transcripts_down)))
+    table_diff = None
 
     #print id
     transcripts_up = set([getattr(transcript, id) for transcript in transcripts_up])
@@ -387,7 +388,8 @@ def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, b
     if terms:
         table_up = functional_enrichment(terms, signatures.up, id)
         table_down = functional_enrichment(terms, signatures.down, id)
-        table_diff = functional_enrichment(terms, list(chain(signatures.up, signatures.down, id)))
+        #table_diff = functional_enrichment(terms, list(chain(signatures.up, signatures.down, id)))
+        table_diff = None
     else:
         table_up = table_down = table_diff = None
     ctx = {'title': 'Meta-Analysis',
