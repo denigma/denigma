@@ -21,7 +21,7 @@ def latin(value):
     except:
         vocabulary = LATIN
     for term in vocabulary:
-        value = value.replace(" %s " % term, '*%s*' % term)\
+        value = value.replace(" %s " % term, ' *%s* ' % term)\
         .replace('(%s)' % term, '(*%s*)' % term)\
         .replace('(%s' % term, '(*%s*' % term)\
         .replace('%s)' % term, '*%s*)' % term)\
