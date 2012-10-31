@@ -73,7 +73,7 @@
 
     {% if factor.human_homolog %}<b>Human homolog:</b> {{ factor.human_homolog }}{% endif %}<br>
 
-    {% if factor.note %}{{ factor.note }}{% endif %}<br>
+    {% if factor.note %}<b>Note: </b>{{ factor.note }}{% endif %}<br>
 
     <br><b><a href="/lifespan/factor/edit/{{ factor.pk }}">Edit</a></b> \
     <b><a href="/lifespan/factor/update/{{ factor.pk }}">Update</a></b>
