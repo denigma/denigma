@@ -3,7 +3,9 @@ import re
 from django import template
 from django.utils.safestring import mark_safe
 
+#try:
 from lifespan.models import Factor
+#dexcept: Factor = None
 
 
 register = template.Library()
@@ -24,4 +26,30 @@ def factor_links(value, id='entrez_gene_id'):
     #if isinstance(value, str): pass
     if isinstance(value, (list, tuple, dict, set)):
         value = " ".join(map(str, value))
-    return mark_safe(rc.sub(translate,value))
+    return mark_safe(rc.sub(translate, value))
+
+@register.filter
+def symbols(value):
+    rc = re.compile('\w{2,}')
+    links = ['/n']
+    factors = dict([(str(factor.symbol), factor) for factor in Factor.objects.all()])
+    del factors['to']
+
+    def translate(match):
+        factor = match.group(0)
+        if factor in factors and not factor.startswith('_') and not factor.endswith('_'):
+            target = '.. _%s: http://denigma.de/lifespan/factor/%s' % (factor, factor)
+            if target not in value and target not in links:
+                links.append(target)
+            return factor + '_'
+        else:
+            return factor
+    result = rc.sub(translate, value)
+    result += "\n".join(links)
+
+    return mark_safe(result)
+
+if __name__ == '__main__':
+    rc = re.compile('\w{2,}') #[a-zA-Z0-9]
+    string = 'Sh_ some more text Hsp23 df '
+    print re.findall(rc, string)
