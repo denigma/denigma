@@ -1,3 +1,4 @@
+#! -.- coding: utf8 -.-
 """Structured Articles.
 
 Structured article seperates the context from the representation in a highly
@@ -82,7 +83,7 @@ import re
 try: 
    from denigma.publication import Bibliography, Reference # as Bib
 except ImportError:
-   from library import Bibliography, Reference
+   from denigma.library import Bibliography, Reference
 
 # Utility functions:
 try:
@@ -281,6 +282,7 @@ class Article(object):
                             print "Exception occured:", e
                             print item, "is not a pmid"
                             item = item.replace('.,', '.').replace(' and ', ' & ')
+                            print self.references
                             if item in self.references:
                                 r = self.references[item]
                                 print "found reference", r
@@ -430,7 +432,7 @@ class Article(object):
         figuresAndTables = False # Will be set to True if there is a Tables a Figures section and prevent the generation of automtaic table and figures section.
         if count: self.counting()
         structure = self.structure
-        structure.append(emphasis+str(self.title)+emphasis)
+        if self.title: structure.append(emphasis+str(self.title)+emphasis)
         if self.abstract:
             structure.append('\n'+emphasis+'Abstract:'+emphasis)
             if count: structure[-1] += ' [%s]' % self.abstract.count
@@ -1014,7 +1016,8 @@ class References(dict):
                         #print "m.group(1)", m.group(1), self[m.group(1)], m.group(2)
                     else:
                         try: r = article.bibliography.find(citation, printing=False)[0]
-                        except: print "Print couldn't search for", citation
+                        except Exception as e: print "apps.articles.article.Reference.__init__:'" \
+                                                     "couldn't search for %s %s" % (citation, e)
                         self.citations.append(r)
                         self[r.ref()] = r
         else:
