@@ -9,6 +9,7 @@ memo
 output*
 name=*
 .idea/
+*.pdf
 
 # Access Keys:
 ami.sh
