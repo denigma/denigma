@@ -254,6 +254,10 @@ class FactorForm(ModelForm):
                 'assay',
                 'intervention',
                 'classifications',
+                'function',
+                'mean',
+                'median',
+                'maximum',
                 'comment'
             ),
             FormActions(
@@ -275,7 +279,8 @@ class FactorForm(ModelForm):
         model = Factor
         fields = ('symbol', 'name', 'entrez_gene_id', 'ensembl_gene_id',
                   'taxid', 'species', 'observation', 'comment',
-                  'assay', 'classifications', 'intervention')
+                  'assay', 'classifications', 'intervention',
+                  'function', 'mean','median','maximum',)
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
 
 # Auxillary:
