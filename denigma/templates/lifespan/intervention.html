@@ -42,6 +42,7 @@
     {% endfor %}
     <br>
     {% if intervention.references.all %}
+        <br>
         <b>References:</b>
         {% for reference in intervention.references.all %}
             <li><a href="/annotations/reference/{{ reference.pk }}">{{ reference.title }}</a></li>
