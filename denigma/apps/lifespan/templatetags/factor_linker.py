@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import re
 
 from django import template
@@ -46,7 +47,7 @@ def symbols(value):
             return factor
     result = rc.sub(translate, value)
     result += "\n".join(links)
-    print result
+    #print result
 
     return mark_safe(result)
 
