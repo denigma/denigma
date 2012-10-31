@@ -8,7 +8,10 @@ from data.models import Entry
 
 def index(request):
      entry = Entry.objects.get(title='News')
-     news = Entry.objects.filter(Q(tags__name='news') | Q(parent__title='News')).order_by('-created', '-id')
+     news = Entry.objects.filter(Q(tags__name='news') |
+                                 Q(categories__name='News') |
+                                 Q(parent__title='News'))\
+                        .order_by('-created', '-id').distinct()
      paginator = Paginator(news, 5)
      page_num = request.GET.get('page', 1)
      try:
