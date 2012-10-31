@@ -21,6 +21,7 @@ def tables(text):
     """
     global number
     number = 1
+    table_names = {}
     #print text
     #regex = re.compile(".. table::(?P<title>[\w\d]+)\n(?P<legend>[\w\d]+)\n(?P<data>)[\w\d]+\n\n]")
     #regex = re.compile("Table\n\W{5}](.+)\n\n", re.DOTALL)
@@ -28,18 +29,20 @@ def tables(text):
     rc = re.compile("#* {0,1}Table: (?P<title>[,\w \d-]+)\.{0,1}\n\W*(?P<legend>.+?\.\n){0,1}(?P<data>.+?)[\n]{2}?", re.DOTALL)
     def translate(match):
         #print("Object: %s" % match)
-        print("Match: %s" % match.group(0))
-        print("Title: %s" % match.group('title'))
-        print("Legend: %s" % match.group('legend'))
-        print("Data: %s" % match.group('data'))
-        print locals(), "number" in globals()
+        #print("Match: %s" % match.group(0))
+        #print("Title: %s" % match.group('title'))
+        #print("Legend: %s" % match.group('legend'))
+        #print("Data: %s" % match.group('data'))
+        #print locals(), "number" in globals()
+        table_names['Table: %s' % match.group('title')] = 'Table %s' % number
         table = create_table(match.group('data'), match.group('title'), match.group('legend'), globals()['number'])
         globals()['number'] += 1
         #print(table)
 
         return table
     text = rc.sub(translate, text.replace('\r', '')+'\n\n')
-    #print text
+    for table_name, table_number in table_names.items():
+        text = text.replace(table_name, table_number)
     return text+'\n.. fin'
 
 def create_table(data, title=None, legend=None, number=1, intend=" "*4):
@@ -54,7 +57,7 @@ def create_table(data, title=None, legend=None, number=1, intend=" "*4):
         header = rows[2].split('\t')
         rows = rows[3:]
     elif not legend:
-        print("No legend")
+        #print("No legend")
         legend = ''
         header = rows[0].split('\t')
         rows = rows[1:]
