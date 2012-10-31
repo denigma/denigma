@@ -2,7 +2,10 @@
 """Manages the references of an article.
 Currently it creates the bibliography for a as "reStructured referenced"
 marked article and and generated an rst file for it."""
+import os
 import re
+
+from django.conf import settings
 
 try:
    import article as a
@@ -10,7 +13,7 @@ except ImportError as e:
   print("No article module available. %s" % e)
 
 try:
-    import denigma.library as library
+    import denigma.library as library #denigma.library as
 except ImportError:
    print("No library available.")
 
@@ -178,7 +181,7 @@ def referencing(self):
     # print a.string
 
     print("Outputing the document...")
-    output = open('output.rst', 'w')
+    output = open(os.path.join(settings.PROJECT_ROOT, 'output.rst'), 'w')
     output.write(article.string)
     output.close()
     return article.string

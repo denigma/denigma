@@ -22,6 +22,8 @@ Entrez.email = "hevok@denigma.de"
 from apps.articles.amazon import API
 from key import AWS_KEY, SECRET_KEY
 
+from django.conf import settings
+
 try:
     import denigma.apps.articles.google as google
 except Exception as e:
@@ -33,7 +35,8 @@ except ImportError:
     print("Could not import Amazon search.")
 
 if sys.platform == "linux2":
-    PATH = '.'
+    #PATH = '.'
+    PATH = settings.PROJECT_ROOT
 else:
    PATH = 'D:/denigma/'
 
