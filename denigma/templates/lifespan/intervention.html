@@ -11,6 +11,13 @@
     > <a href="/lifespan/intervention/{{ intervention.pk }}">{{ intervention.name }}</a>
 {% endblock %}
 
+{% block options %}
+    <a href="/lifespan/interventions/">Interventions</a> |
+    <a href="/lifespan/intervention/add">Add</a> /
+    <a href="/lifespan/intervention/create/">Create</a> |
+    <a href="/lifespan/interventions/archive">Archive</a>
+{% endblock %}
+
 {% block title %}{{ intervention.name }}{% endblock %}
 
 {% block content %}
