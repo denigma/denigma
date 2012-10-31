@@ -5,6 +5,7 @@ from django.template import RequestContext
 from data.models import Entry
 
 from manager import referencing
+from templatetags.presenter import present
 
 
 def view(request, title):
@@ -17,6 +18,15 @@ def view(request, title):
 def reference(request, slug):
     article = Entry.objects.get(slug=slug)
     article.text = referencing(article)
+    return render_to_response('articles/view.html', {'article': article},
+        context_instance=RequestContext(request))
+
+def presentation(request, slug):
+    article = Entry.objects.get(slug=slug)
+    article.text = present(referencing(article))
+    output = open('presentation.rst', 'w')
+    output.write(article.text)
+    output.close()
     return render_to_response('articles/view.html', {'article': article},
         context_instance=RequestContext(request))
 
