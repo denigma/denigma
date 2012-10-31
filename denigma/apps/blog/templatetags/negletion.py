@@ -21,6 +21,8 @@ def negle(value):
     """Presevers image urls in combination with neglete wrapped around
     restructedtext."""
     return value.replace('<http://', '#~#').replace('http://', "linkaging").replace('#~#', '<http://') #.replace('src="http://', 'linkimage').
+    # Leaving off the src enables urls in [] but disables plain urls.
+    # Exchaning of the middle replace by the commented out leads to the opposite effect
 
 
 @register.filter
