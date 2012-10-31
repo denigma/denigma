@@ -31,7 +31,7 @@ def factor_links(value, id='entrez_gene_id'):
 @register.filter
 def symbols(value):
     rc = re.compile('\w{2,}')
-    links = ['/n']
+    links = ['\n']
     factors = dict([(str(factor.symbol), factor) for factor in Factor.objects.all()])
     del factors['to']
 
@@ -46,6 +46,7 @@ def symbols(value):
             return factor
     result = rc.sub(translate, value)
     result += "\n".join(links)
+    print result
 
     return mark_safe(result)
 
