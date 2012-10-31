@@ -172,7 +172,7 @@ install_python() {
 }
 
 prepare_pil() {
-    sudo apt-get build-dep python-imaging
+    apt-get -y build-dep python-imaging
     sudo ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/
     sudo ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/
     sudo ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/
@@ -268,7 +268,7 @@ activate_webserver() {
 }
 
 install_subversion() {
-    aptitude install subversion
+    apt-get install -y subversion
 }
 
 bootstrap_project() {
