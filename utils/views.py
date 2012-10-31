@@ -88,7 +88,7 @@ class RequestDeleteView(MessageMixin, DeleteView):
                     template_name='site/media-photos-delete.html',
                     success_message='Your Photo has been deleted successfully.',
                     ), name='delete-photo-form'),
-#234567891123456789212345678931234567894123456789512345678961234567897123456789
+
 
     """
     success_message = "Deleted Successfully"
@@ -106,3 +106,15 @@ class LoggedInMixin(object):
         return super(LoggedInMixin, self).dispatch(request, *args, **kwargs)
 
 
+class EnvironmentMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        self.args = args
+        self.kwargs = kwargs
+        self.setup_environment(request, *args, **kwargs)
+        return super(EnvironmentMixin, self).dispatch(request, *args, **kwargs)
+
+    def setup_environment(self, request, *args, **kwargs):
+        raise NotImplementedError("Subclasses of EnvironmentMixin are "
+                                  "supposed to override this hook.")
+#234567891123456789212345678931234567894123456789512345678961234567897123456789
