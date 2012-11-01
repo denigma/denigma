@@ -6,14 +6,13 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
 from django.utils.translation import ugettext
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 #from django.core.urlresolvers import reverse # reverse_lazy (Django 1.4)
 from django.contrib.auth.models import AnonymousUser, User
 from django.views.generic.edit import CreateView, UpdateView # DeleteView
 from django.views.generic import ListView, DetailView
 from django.utils.translation import ugettext_lazy as _
 from django.http import Http404
-
 import reversion
 
 from django_tables2 import SingleTableView
@@ -575,6 +574,10 @@ class FactorDetail(DetailView):
         except ObjectDoesNotExist:
             raise Http404(_(u"No %(verbose_name)s found matching the query") %
                           {'verbose_name': queryset.model._meta.verbose_name})
+        except MultipleObjectsReturned:
+            for obj in queryset:
+                if obj.symbol == slug:
+                    return obj
         return obj
 
 
