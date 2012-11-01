@@ -175,7 +175,7 @@ def referencing(self):
     from articles.templatetags.tabling import tables
     from articles.templatetags.math import formula
     from lifespan.templatetags.factor_linker import symbols
-    paragraph = a.Paragraph(symbols(formula(tables(text), uni=False)))
+    paragraph = a.Paragraph(symbols(formula(tables(text), uni=False)).replace('.. header: ', '.. header:: '))
     article.paragraphs = [paragraph]
     article.referencing(numbered=True, brackets=False)
     # print a.string
