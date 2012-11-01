@@ -21,7 +21,7 @@
 
 {% block content %}
     <b>Species</b>: <a href="/annotations/species/{{ signature.species.pk }}">{{ signature.species }}</a> |
-    <b>Tissue</b>{% if signature.tissues.all|count > 1 %}s{% endif %}: {# Pluralize only if ore than one. #}
+    <b>Tissue{% if signature.tissues.all|count > 1 %}s{% endif %}</b>: {# Pluralize only if ore than one. #}
     {% for tissue in signature.tissues.all %}
         <a href="/annotations/tissue/{{ tissue.pk }}/">{{ tissue.name|title }}</a>{% if not forloop.last %}, {% endif %}
     {% endfor %} |
