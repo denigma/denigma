@@ -4,9 +4,8 @@ import re
 from django import template
 from django.utils.safestring import mark_safe
 
-#try:
-from lifespan.models import Factor
-#dexcept: Factor = None
+try:from lifespan.models import Factor
+except: Factor = None
 
 
 register = template.Library()
@@ -31,7 +30,7 @@ def factor_links(value, id='entrez_gene_id'):
 
 @register.filter
 def symbols(value):
-    rc = re.compile('\w{2,}')
+    rc = re.compile('[\w\d-]{3,}|\w+')
     links = ['\n']
     factors = dict([(str(factor.symbol), factor) for factor in Factor.objects.all()])
     del factors['to']
@@ -52,6 +51,6 @@ def symbols(value):
     return mark_safe(result)
 
 if __name__ == '__main__':
-    rc = re.compile('\w{2,}') #[a-zA-Z0-9]
-    string = 'Sh_ some more text Hsp23 df '
+    rc = re.compile('[\w\d-]{3,}|\w+') #[a-zA-Z0-9]
+    string = 'Sh_ some more text Hsp23 df Trx-2 dfs'
     print re.findall(rc, string)
