@@ -26,7 +26,7 @@ def tables(text):
     #regex = re.compile(".. table::(?P<title>[\w\d]+)\n(?P<legend>[\w\d]+)\n(?P<data>)[\w\d]+\n\n]")
     #regex = re.compile("Table\n\W{5}](.+)\n\n", re.DOTALL)
     #rc = re.compile("Table: (?P<title>\w+)\n\W{5,100}(?P<legend>.+?)\n(?P<data>.+)\n\n", re.DOTALL)
-    rc = re.compile("#* {0,1}Table: (?P<title>[,\w \d-]+)\.{0,1}\n\W*(?P<legend>.+?\.\n){0,1}(?P<data>.+?)[\n]{2}?", re.DOTALL)
+    rc = re.compile("#* {0,1}Table: (?P<title>[,.)(/\w \d-]+)\.{0,1}\n\W*(?P<legend>.+?\.\n){0,1}(?P<data>.+?)[\n]{2}?", re.DOTALL)
     def translate(match):
         #print("Object: %s" % match)
         #print("Match: %s" % match.group(0))
