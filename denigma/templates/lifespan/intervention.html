@@ -3,6 +3,7 @@
 {# {% load crispy_forms_tags %} #}
 {% load url from future %}
 {% load pubmed_linker %}
+{% load rendering %}
 
 {% block head_title %}Intervention{% endblock %}
 
@@ -30,7 +31,7 @@
     {% endif %}
     <b>Factor</b>:
     {% for factor in intervention.factors.all %}<a href={% url 'factor' factor.pk %}> {{ factor.symbol }}</a>{% endfor %}<br>
-    <b>Effect:</b> {{ intervention.effect|pubmed_links }}<br>
+    <b>Effect:</b> {{ intervention.effect|pubmed_links|markdown }}<br>
     {% if intervention.mean %}<b>Mean:</b> {{ intervention.mean }}<br>{% endif %}
     {% if intervention.median %}<b>Median:</b> {{ intervention.median }}<br>{% endif %}
     {% if intervention.maximum %}<b>Maximum:</b> {{ intervention.maximum }}<br>{% endif %}

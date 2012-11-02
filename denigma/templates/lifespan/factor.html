@@ -2,6 +2,7 @@
 
 {% load url from future %}
 {% load pubmed_linker %}
+{% load rendering %}
 
 {% block head_title %}Factor{% endblock %}
 
@@ -43,7 +44,7 @@
     {% endif %}<br>
 
     <br><b>Observation:</b><br>
-    {{ factor.observation|pubmed_links }}<br>
+    {{ factor.observation|pubmed_links|markdown }}<br>
 
     <br><b>Interventions:</b>
     {% for intervention in factor.intervention.all %}
