@@ -9,6 +9,10 @@
     > {{ action }}
 {% endblock %}
 
+{% block options %}
+    <a href="/admin/links/link/{{ link.pk }}/">Admin</a>
+{% endblock %}
+
 {% block title %}{{ action }} Link{% endblock %}
 
 {% block content %}

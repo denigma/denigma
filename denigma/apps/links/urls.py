@@ -14,5 +14,6 @@ urlpatterns = patterns('',
     url(r'^update/(?P<pk>\d+)', login_required(LinkUpdate.as_view()),
         name='update-link'),
     url(r'^create/$', LinkCreate.as_view(), name='create-link'),
+    url(r'^category/(?P<category>.+)/$', Links.as_view(), name='links-category'),
 )
 

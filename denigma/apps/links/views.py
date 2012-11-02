@@ -7,10 +7,12 @@ from django.db.models import Q
 
 from django_tables2 import SingleTableView
 
+import django_filters
+
 from data.models import Entry
 from data.views import Create, Update
 
-from models import Link
+from models import Link, Category
 from tables import LinkTable
 from forms import LinkForm, FilterForm
 
@@ -34,9 +36,6 @@ class LinkView(object):
     success_url = '/links/'
 
 
-import django_filters
-
-
 class Filter(django_filters.FilterSet):
     class Meta:
         model = Link
@@ -50,18 +49,31 @@ class Links(SingleTableView, FormView, LinkView):
     success_url = '/links/'
     query = None
     template_name = 'links/index.html'
+    category = None
 
     def form_valid(self, form):
         Links.query = form.cleaned_data['filter']
         return super(Links, self).form_valid(form)
 
+    def dispatch(self, request, *args, **kwargs):
+        print("links.Links.dispatch")
+        if 'category' in kwargs:
+            self.category = kwargs['category']
+        else:
+            self.category = None
+        return super(Links, self).dispatch(request, *args, **kwargs)
+
     def get_context_data(self, *args, **kwargs):
         context = super(Links, self).get_context_data(*args, **kwargs)
         context['entry'] = Entry.objects.get(title='Links')
         context['form'] = FilterForm(initial={'filter': Links.query})
+        context['categories'] = Category.objects.all()
         return context
 
     def get_queryset(self):
+        print("links.Links.get_queryset: %s" % self.category)
+        if self.category:
+            return Link.objects.filter(category__title__exact=self.category)
         if Links.query:
             return Link.objects.filter(Q(title__icontains=Links.query) |
                                        Q(description__icontains=Links.query) #|
@@ -78,7 +90,7 @@ class LinkList(ListView):
 
 class LinkUpdate(LinkView, Update):
     pass
-#
+
 
 class LinkCreate(LinkView, Create):
     model = Link
