@@ -2,8 +2,15 @@
 http://grokbase.com/t/python/python-list/10a6ngmwaf/mantissa-and-exponent-in-base-10"""
 import math
 
-import p
-from denigma.total_ordering import total_ordering
+try:
+    import p
+except ImportError:
+    p = None
+try:
+    from denigma.total_ordering import total_ordering
+except:
+    def total_ordering(func):
+        return func
 
 
 def sfloat(decimal):
@@ -92,7 +99,9 @@ def slogN(x, base=math.e, epsilon=1e-12):
 
 def pf(decimal, precision=2):
     """Converts a float into a pretty form."""
+    if decimal == 0: return 0
     string = str(decimal)
+    if string == '0': return 0
     #if decimal <= 0.001:
     if 'e' in string:
         base, exponent = string.split('e')
