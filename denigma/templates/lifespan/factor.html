@@ -35,7 +35,7 @@
 
     {% if factor.functional_description %}
         <br><b>Functional description:</b><br>
-            {{ factor.functional_description }}
+            {{ factor.functional_description|safe }}
     {% else %}
         {% if factor.function %}
             <br><b>Function: </b><br>
