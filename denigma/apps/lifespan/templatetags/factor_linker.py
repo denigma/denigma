@@ -4,8 +4,9 @@ import re
 from django import template
 from django.utils.safestring import mark_safe
 
-try:from lifespan.models import Factor
-except: Factor = None
+#try:
+from lifespan.models import Factor
+#except: Factor = None
 
 
 register = template.Library()
@@ -30,18 +31,23 @@ def factor_links(value, id='entrez_gene_id'):
 
 @register.filter
 def symbols(value):
-    rc = re.compile('[\w\d-]{3,}|\w+')
+    rc = re.compile('[*\w\d-]{3,}|\w+')
     links = ['\n']
-    factors = dict([(str(factor.symbol), factor) for factor in Factor.objects.all()])
+
+    factors = dict([(str(factor.symbol), factor.symbol) for factor in Factor.objects.all()])
+    factors['TakeOut'] = u'to'
+    factors['Shaker'] = u'Sh'
     del factors['to']
+    del factors['g']
 
     def translate(match):
         factor = match.group(0)
-        if factor in factors and not factor.startswith('_') and not factor.endswith('_'):
-            target = '.. _%s: http://denigma.de/lifespan/factor/%s' % (factor, factor)
+        factor_name = factor.replace('*', '')
+        if factor_name in factors and not factor.startswith('_') and not factor_name.endswith('_'):
+            target = '.. _%s: http://denigma.de/lifespan/factor/%s' % (factor_name, str(factors[factor_name]))
             if target not in value and target not in links:
                 links.append(target)
-            return factor + '_'
+            return factor_name + '_'
         else:
             return factor
     result = rc.sub(translate, value)
