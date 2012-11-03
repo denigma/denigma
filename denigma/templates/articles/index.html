@@ -4,6 +4,7 @@
 {% load markup %}
 {% load abstraction %}
 {% load hyperlink %}
+{% load sets %}
 
 {% block hierarchy %}
     > <a href="/articles">Index</a>
@@ -21,8 +22,13 @@
                 <td>
                     <h3><a href="/articles/{{ article.id }}">{{ article.title }}</a></h3
                     <div class="entry_meta">
-                         created on {{ article.created }}
-                         updated on {{ article.updated }}
+                         Created on {{ article.created }} by <a href={% url 'profile_detail' article.creator.username %}> {{ article.creator.username }}</a>
+                         & updated on {{ article.updated }}
+                         {% if article.updates.all|unique|length > 1 %} by
+                             {% for updater in article.updates.all|unique %}
+                                 {% if updater != article.creator %}<a href{{ updater.get_absolute_url }}>{{ updater }} </a>{% endif %}
+                             {% endfor %}
+                         {% endif %}
                     </div>
                     <div class="entry_body">
                         {{ article.text|abstract|markdown|hyper|safe}}
