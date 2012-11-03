@@ -18,7 +18,7 @@ except ImportError:
    print("No library available.")
 
 
-def referencing(self):
+def referencing(self, linking=True):
     print("Is article.")
     if isinstance(self, (str, unicode)):
         text = self.replace('\r', '').replace(r'\xe2\x80\x93', '-') # Second replace is probaly not any-more necessary.
@@ -172,11 +172,16 @@ def referencing(self):
         return ''
     rc = re.compile(references_regex)
     text = rc.sub(translate, text)
+
     from articles.templatetags.tabling import tables
     from articles.templatetags.math import formula
-    from lifespan.templatetags.factor_linker import symbols
-    from annotations.templatetags.tissue_linker import tissue_links
-    paragraph = a.Paragraph(tables(tissue_links(symbols(formula(text, uni=False)))).replace('.. header: ', '.. header:: '))
+
+    if linking:
+        from lifespan.templatetags.factor_linker import symbols
+        from annotations.templatetags.tissue_linker import tissue_links
+        paragraph = a.Paragraph(tables(tissue_links(symbols(formula(text, uni=False)))).replace('.. header: ', '.. header:: '))
+    else:
+        paragraph = a.Paragraph(tables(formula(text, uni=False)).replace('.. header: ', '.. header:: '))
     article.paragraphs = [paragraph]
     article.referencing(numbered=True, brackets=False)
     # print a.string
