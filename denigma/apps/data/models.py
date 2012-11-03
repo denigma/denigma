@@ -232,7 +232,9 @@ class Entry(Content):
         #return "{0} - {1} ({2})".format(self.title, self.created.date(), self.created.time())
 
     def get_absolute_url(self):
-        #if not self.published or "rest" in [tag.name for tag in self.tags.all()]:
+        if not self.published:
+            return reverse('article', args=[self.title.replace(' ', '_')])
+        # or "rest" in [tag.name for tag in self.tags.all()]:
         #    return reverse('article', args=[self.title.replace(' ', '_')])
         return self.url or reverse('detail-entry', args=[self.slug]) #return self.url or u"/data/entry/%s" % self.pk
 
