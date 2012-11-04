@@ -260,6 +260,7 @@ class FactorForm(ModelForm):
                 'mean',
                 'median',
                 'maximum',
+                'note',
                 'comment'
             ),
             FormActions(
@@ -282,7 +283,7 @@ class FactorForm(ModelForm):
         fields = ('symbol', 'name', 'entrez_gene_id', 'ensembl_gene_id',
                   'taxid', 'species', 'observation', 'comment',
                   'assay', 'classifications', 'intervention',
-                  'function', 'mean','median','maximum',)
+                  'function', 'mean','median','maximum', 'note')
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
 
 # Auxillary:
