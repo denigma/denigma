@@ -23,7 +23,7 @@ from models import (Study, Experiment, Measurement, Comparision, Intervention, F
 from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
                    ExperimentForm, DeleteExperimentForm,
                    ComparisionForm,
-                   InterventionForm, DeleteInterventionForm,
+                   InterventionForm, DeleteInterventionForm, InterventionFilterSet,
                    FactorForm, StrainForm,
                    FilterForm, FactorFilterSet)
 from tables import InterventionTable, FactorTable
@@ -446,12 +446,39 @@ def link_interventions(request):
     return redirect('/lifespan/')
 
 
-class InterventionList(SingleTableView):
+class InterventionList(SingleTableView, FormView):
     queryset = Intervention.objects.all().order_by('-pk')
     template_name = 'lifespan/interventions.html' #_list
     context_object_name = 'interventions'
     table_class = InterventionTable
     model = Intervention
+    form_class = FilterForm
+    success_url = '/lifespan/interventions/'
+    query = None
+
+    def form_valid(self, form):
+        InterventionList.query = form.cleaned_data['filter']
+        return super(InterventionList, self).form_valid(form)
+
+    def form_invalid(self, form):
+        InterventionList.query = None
+        return super(InterventionList, self).form_valid(form)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(InterventionList, self).get_context_data(*args, **kwargs)
+        context['form'] = FilterForm(initial={'filter': InterventionList.query})
+        context['interventionsfilter'] = self.interventionsfilter
+        return context
+
+    def get_queryset(self):
+        if InterventionList.query:
+            interventions = Intervention.objects.filter(Q(name__icontains=InterventionList.query) |
+                                                       Q(effect__icontains=InterventionList.query))
+        else:
+            interventions = Intervention.objects.all()
+        self.interventionsfilter = InterventionFilterSet(interventions, self.request.GET)
+        return self.interventionsfilter.qs
+
 
 class InterventionView(object):
     form_class = InterventionForm
@@ -631,36 +658,25 @@ class FactorList(SingleTableView, FormView):
     model = Factor
     query = None
     symbol = None
-    species = None
-    factorsfilter =None
-    reset = False
 
     def form_valid(self, form):
-        print("form_valid")
         FactorList.query = form.cleaned_data['filter']
         #FactorList.symbol = form.cleaned_data['symbol']
         return super(FactorList, self).form_valid(form)
+
     def form_invalid(self, form):
         FactorList.query = None
-        self.reset = True
         return super(FactorList, self).form_valid(form)
 
     def get_context_data(self, *args, **kwargs):
-        print kwargs
-        #if not 'object_list' in kwargs:
-
         context = super(FactorList, self).get_context_data(*args, **kwargs)
         context['form'] = FilterForm(initial={'filter': FactorList.query})
-
         context['factorsfilter'] = self.factorsfilter
         return context
 
     def get_queryset(self):
-        print self.reset, FactorList.query
         #if FactorList.symbol:
         #   factors = factors.filter(symbol=FactorList.symbol)
-        if self.reset:
-            factors = Factor.objects.all()
         if FactorList.query:
             factors = Factor.objects.filter(Q(symbol__icontains=FactorList.query) |
                                          Q(name__icontains=FactorList.query) |

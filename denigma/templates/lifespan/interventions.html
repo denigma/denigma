@@ -19,5 +19,17 @@
 {% block title %}Interventions{% endblock %}
 
 {% block content %}
-    {% render_table table %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_table }}
+    <input type="submit" value="Apply" />
+        {{ interventionsfilter }}
+        <table width="100%">
+            <tr>
+                <td valign="top">
+                    {% render_table table %}
+                </td>
+            </tr>
+        </table>
+    </form>
 {% endblock %}

@@ -336,3 +336,6 @@ class FilterForm(Form):
 
 class FactorFilterSet(FilterSet):
     fields = ['species', 'classifications']
+
+class InterventionFilterSet(FilterSet):
+    fields = ['species', 'manipulation']
