@@ -43,6 +43,7 @@ django-crispy-forms #==dev # Dev does not work.
 # Filters:
 -e git://github.com/alex/django-filter.git#egg=django-filters # Not django-1.3 compatibile
 #-e git://github.com/hevok/django-filter.git#egg=django-filters
+django_easyfilters
 
 # Hierarchy:
 -e git+https://github.com/django-mptt/django-mptt/#egg=django-mptt
