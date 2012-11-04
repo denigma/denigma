@@ -1,8 +1,10 @@
-from django.forms import (ModelForm, CharField, Textarea, IntegerField, BooleanField,
+from django.forms import (Form, ModelForm, CharField, Textarea, IntegerField, BooleanField,
                           ModelChoiceField, ModelMultipleChoiceField)
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Div, HTML, Button, Row, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
+
+from django_easyfilters import FilterSet
 
 from models import (Study, Experiment, Measurement, Comparision, Intervention, Factor,\
                    Strain, Epistasis, Regimen, Assay, Manipulation)
@@ -325,3 +327,12 @@ class AssayForm(ModelForm):
 class ManipulationForm(ModelForm):
     class Meta:
         model = Manipulation
+
+
+class FilterForm(Form):
+    filter = CharField()
+    #symbol = CharField()
+
+
+class FactorFilterSet(FilterSet):
+    fields = ['species', 'classifications']

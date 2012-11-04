@@ -33,10 +33,13 @@ class FactorTable(tables.Table):
     def render_observation(self, value, record):
         return pubmed_links(value)
 
+    def render_species(self, value, record):
+        return mark_safe('''<a href=/annotations/species/%s>%s</a>''' % (value.taxid, value))
+
     class Meta:
         model = Factor
         attrs = {"class": "paleblue"}
-        fields = ('symbol', 'name', 'observation')
+        fields = ('symbol', 'name', 'observation', 'species')
 #        exclude = ('id', 'mapping', 'entrez_gene_id', 'ensembl_gene_id',
 #                   'alias', 'description', 'functional_description',
 #            'classification', 'manipulation,' 'observation',

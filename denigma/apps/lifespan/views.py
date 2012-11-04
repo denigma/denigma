@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response,redirect
 from django.template import RequestContext
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -9,10 +9,11 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 #from django.core.urlresolvers import reverse # reverse_lazy (Django 1.4)
 from django.contrib.auth.models import AnonymousUser, User
-from django.views.generic.edit import CreateView, UpdateView # DeleteView
+from django.views.generic.edit import CreateView, UpdateView, FormView # DeleteView
 from django.views.generic import ListView, DetailView
 from django.utils.translation import ugettext_lazy as _
-from django.http import Http404
+from django.db.models import Q
+
 import reversion
 
 from django_tables2 import SingleTableView
@@ -23,7 +24,8 @@ from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
                    ExperimentForm, DeleteExperimentForm,
                    ComparisionForm,
                    InterventionForm, DeleteInterventionForm,
-                   FactorForm, StrainForm)
+                   FactorForm, StrainForm,
+                   FilterForm, FactorFilterSet)
 from tables import InterventionTable, FactorTable
 
 from blog.models import Post
@@ -619,11 +621,54 @@ class ManipulationDetail(DetailView):
                           {'verbose_name': queryset.model._meta.verbose_name})
         return obj
 
-class FactorList(SingleTableView):
+
+class FactorList(SingleTableView, FormView):
     template_name = 'lifespan/factors.html'
     context_object_name = 'factors'
     table_class = FactorTable
+    form_class = FilterForm
+    success_url = '/lifespan/factors/'
     model = Factor
+    query = None
+    symbol = None
+    species = None
+    factorsfilter =None
+    reset = False
+
+    def form_valid(self, form):
+        print("form_valid")
+        FactorList.query = form.cleaned_data['filter']
+        #FactorList.symbol = form.cleaned_data['symbol']
+        return super(FactorList, self).form_valid(form)
+    def form_invalid(self, form):
+        FactorList.query = None
+        self.reset = True
+        return super(FactorList, self).form_valid(form)
+
+    def get_context_data(self, *args, **kwargs):
+        print kwargs
+        #if not 'object_list' in kwargs:
+
+        context = super(FactorList, self).get_context_data(*args, **kwargs)
+        context['form'] = FilterForm(initial={'filter': FactorList.query})
+
+        context['factorsfilter'] = self.factorsfilter
+        return context
+
+    def get_queryset(self):
+        print self.reset, FactorList.query
+        #if FactorList.symbol:
+        #   factors = factors.filter(symbol=FactorList.symbol)
+        if self.reset:
+            factors = Factor.objects.all()
+        if FactorList.query:
+            factors = Factor.objects.filter(Q(symbol__icontains=FactorList.query) |
+                                         Q(name__icontains=FactorList.query) |
+                                         Q(observation__icontains=FactorList.query))
+        else:
+            factors = Factor.objects.all()
+        self.factorsfilter = FactorFilterSet(factors, self.request.GET)
+        return self.factorsfilter.qs
 
 
 class FactorView(object):

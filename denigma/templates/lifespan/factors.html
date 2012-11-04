@@ -20,5 +20,17 @@
 {% block title %}Factors{% endblock %}
 
 {% block content %}
-    {% render_table table %}
+    <form action="" method="POST">
+    {% csrf_token %}
+        {{ form.as_table }}
+        {{ filter.form.as_p }}
+    <input type="submit" value="Apply" />
+        {{ factorsfilter }}
+        <table width="100%">
+            <tr>
+                <td valign="top">
+                    {% render_table table %}
+                 </td>
+               </tr>
+        </table>
 {% endblock %}
