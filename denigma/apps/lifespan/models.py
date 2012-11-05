@@ -93,7 +93,7 @@ class Study(models.Model):
                try:
                    reference, created = Reference.objects.get_or_create(title__icontains=self.title, defaults=kwargs)
                except MultipleObjectsReturned as e:
-                   references = Reference.objects.filter(title__icontains=self.title, defaults=kwargs)
+                   references = Reference.objects.filter(title__icontains=self.title) #, defaults=kwargs)
                    for reference in references:
                        if reference.pmid:
                            break
