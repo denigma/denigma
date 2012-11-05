@@ -8,6 +8,12 @@ import urllib
 import urllib2
 import urlparse
 
+try:
+    from django.conf import settings
+except ImportError:
+    print("No django.conf.settings available")
+    settings = None
+
 # URL templates to make Google searches.
 url_home          = "http://www.google.%(tld)s/"
 url_search        = "http://www.google.%(tld)s/search?hl=%(lang)s&q=%(query)s&btnG=Google+Search"
@@ -16,11 +22,14 @@ url_search_num    = "http://www.google.%(tld)s/search?hl=%(lang)s&q=%(query)s&nu
 url_next_page_num = "http://www.google.%(tld)s/search?hl=%(lang)s&q=%(query)s&num=%(num)d&start=%(start)d"
 
 # Cookie jar. Stored at the user's home folder.
-home_folder = os.getenv('HOME')
-if not home_folder:
-    home_folder = os.getenv('USERHOME')
+if settings:
+    home_folder = settings.PROJECT_ROOT
+else:
+    home_folder = os.getenv('HOME')
     if not home_folder:
-        home_folder = '.'   # Use the current folder on error.
+        home_folder = os.getenv('USERHOME')
+        if not home_folder:
+            home_folder = '.'   # Use the current folder on error.
 cookie_jar = cookielib.LWPCookieJar(
                             os.path.join(home_folder, '.google-cookie'))
 try:
