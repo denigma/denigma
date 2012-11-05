@@ -106,22 +106,23 @@ class Reference(models.Model):
                        super(Reference, self).save(*args, **kwargs)
                        print("Saved")
                     else:
-
                        from denigma.library import Bibliography # This statement at the top breaks Denigma for unknown reason.
-
+                       #print("Trying it different. %s" % type(self.title))
                         # Google:
                        bib = Bibliography()
+                       #print("googling")
                        r = bib.google(self.title)
                        if r:
                            r = r[0]
                            self.pmid = r.pmid
-                           print self.pmid
+                           #print("Google successufull: %s" % self.pmid)
                        else:
+                           #print("Google failed.")
 #                           r = bib.find(self.title)[0]
 #                           self.pmid = r.pmid
 #                           print self.pmid
-
-                           r = bib.find(self.title)
+                           #print("Trying it different.")
+                           r = bib.find(unicode(self.title))
                            if len(r) == 1:
                                r = r[0]
                                self.pmid = r.pmid
@@ -169,7 +170,7 @@ class Reference(models.Model):
             self.volume = r.get('Volume', None) or None
             self.issue = r.get('Issue', None) or None
             self.pages = r['Pages']
-            self.authors = '; '.join(r['AuthorList'])
+            self.authors = unicode('; '.join(r['AuthorList']))
             self.journal = r['FullJournalName']
             self.alternate_journal = r['Source']
             self.year = int(r['PubDate'].split(' ')[0])
