@@ -131,7 +131,7 @@ class Reference(models.Model):
                                for areference in r:
                                    if normalize_title(areference.title) == title:
                                        r = areference
-
+                       print("datasets.Reference.save()")
                        self.__dict__.update(r.__dict__)
                        print r
                        print vars(r)
@@ -165,7 +165,7 @@ class Reference(models.Model):
             r = Entrez.read(handle)
             # print r
             r = r[0] #  reference.
-            self.title = r['Title']
+            self.title = unicode(r['Title'])
             self.volume = r.get('Volume', None) or None
             self.issue = r.get('Issue', None) or None
             self.pages = r['Pages']
@@ -189,6 +189,7 @@ class Reference(models.Model):
           if not self.title:
             bib = Bibliography()
             r = bib.efetch(id=self.pmid)
+            #print("datasets.Reference.fetch_data")
             self.__dict__.update(r.__dict__)
 
             # Transforming lists into strings:
