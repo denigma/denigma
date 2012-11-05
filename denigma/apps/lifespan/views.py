@@ -148,7 +148,7 @@ def add_studies(request):
                 created = True
             try:
                 study_confirm = Study.objects.get(pmid=pmid)
-                if study.confirm:
+                if study_confirm:
                     succieded.append(pmid)
                     messages.add_message(request, messages.SUCCESS, ugettext("Succeeded: %s" % pmid))
                 else:
@@ -163,7 +163,7 @@ def add_studies(request):
                 print e
                 failed.append(pmid)
                 messages.add_message(request, messages.ERROR, ugettext("Failed: %s" % pmid))
-                messages.add_message(request, messages.WARNING, ugettext("However added %s" % study.title))
+                messages.add_message(request, messages.WARNING, ugettext("However added %s" % study.pmid))
                 if taxid:
                     print("Adding species")
                     try:
@@ -680,7 +680,8 @@ class FactorList(SingleTableView, FormView):
         if FactorList.query:
             factors = Factor.objects.filter(Q(symbol__icontains=FactorList.query) |
                                          Q(name__icontains=FactorList.query) |
-                                         Q(observation__icontains=FactorList.query))
+                                         Q(observation__icontains=FactorList.query) |
+                                         Q(note__icontains=FactorList.query))
         else:
             factors = Factor.objects.all()
         self.factorsfilter = FactorFilterSet(factors, self.request.GET)
