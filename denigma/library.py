@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """A library suite for references including and bilbiography.
 
 For use of Medline and PubMed see:
