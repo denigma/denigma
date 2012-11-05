@@ -90,7 +90,7 @@ def add_studies(request):
         print "pmids", pmids
         for title in titles:
             if not title: continue
-            print "Title:", title
+            #print "Title:", title
             #study, created = Study.objects.get_or_create(title=title)
             study = Study(title=title)
             study.save()
