@@ -91,7 +91,7 @@ class Reference(models.Model):
                     print "Did not failed"
                     return Reference.objects.get(pmid=self.pmid) #, False
                 elif self.title or 'title' in kwargs:
-                    print self.title
+                    #print self.title
                     handle = Entrez.esearch(db='pubmed', term=self.title)
                     print "Got handle"
                     record = Entrez.read(handle)
@@ -100,7 +100,7 @@ class Reference(models.Model):
                     if record['Count'] == "1":
                        print "Record count is 1"
                        self.pmid = record['IdList'][0]
-                       print self.title, self.pmid
+                       #print self.title, self.pmid
                        Reference.fetch_data(self)
                        print("Saving")
                        super(Reference, self).save(*args, **kwargs)
