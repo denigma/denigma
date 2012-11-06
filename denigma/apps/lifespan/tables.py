@@ -4,7 +4,7 @@ import django_tables2 as tables
 
 from templatetags.pubmed_linker import pubmed_links
 
-from models import Intervention, Factor
+from models import Intervention, Factor, Comparision
 
 
 class InterventionTable(tables.Table):
@@ -44,5 +44,24 @@ class FactorTable(tables.Table):
 #                   'alias', 'description', 'functional_description',
 #            'classification', 'manipulation,' 'observation',
 #            'mean','median', 'max', '_25', '_75')
+
+class ComparisionTable(tables.Table):
+
+    def render_id(self, value, record):
+        return mark_safe('''<a href=/lifespan/comparision/%s/>%s</a>''' % (value, value)) #record.__unicode__()
+
+    def render_exp(self, value, record):
+        return mark_safe('''<a href=/lifespan/measurement/%s/>%s</a>''' % (value.id, value))
+
+    def render_ctr(self, value, record):
+        return mark_safe('''<a href=/lifespan/measurement/%s/>%s</a>''' % (value.id, value))
+
+    def render_intervention(self, value, record):
+        return mark_safe('''<a href=/lifespan/intervention/%s/>%s</a>''' % (value.id, value))
+
+    class Meta:
+        model = Comparision
+        attrs = {"class": "paleblue"}
+
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789

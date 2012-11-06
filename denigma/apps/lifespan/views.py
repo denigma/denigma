@@ -26,7 +26,7 @@ from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
                    InterventionForm, DeleteInterventionForm, InterventionFilterSet,
                    FactorForm, StrainForm,
                    FilterForm, FactorFilterSet)
-from tables import InterventionTable, FactorTable
+from tables import ComparisionTable, InterventionTable, FactorTable
 
 from blog.models import Post
 from annotations.models import Species
@@ -336,20 +336,27 @@ def measurements(request):
     return render_to_response('lifespan/measurements.html', {'measurements': measurements},
                             context_instance=RequestContext(request))
 
+from django_tables2 import RequestConfig
+
 def comparisions(request):
-    comparisions = Comparision.objects.all()
-    return render_to_response("lifespan/comparisions.html", {'comparisions': comparisions},
+    table = ComparisionTable(Comparision.objects.all())
+    RequestConfig(request).configure(table)
+    return render_to_response("lifespan/comparisions.html", {'comparisions': table},
         context_instance=RequestContext(request))
 
 def comparision(request, pk):
     comparision = Comparision.objects.get(pk=pk)
     form = ComparisionForm(request.POST or None, instance=comparision)
+    print("lifespan comparision")
     if request.POST and form.is_valid():
+        print("lifespan.views.comparision: form.is_valid()")
         form.save()
+        #print form
+        #form.save_m2m()
         redirect('/comparision/%s' % pk)
     ctx = {'comparision': comparision, 'form': form}
     return render_to_response('lifespan/comparision.html', ctx,
-    context_instance=RequestContext(request))
+        context_instance=RequestContext(request))
 
 def add_comparision(request, pk):
     return HttpResponse('Add comparision %s' % pk)

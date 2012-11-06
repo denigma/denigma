@@ -176,6 +176,7 @@ class ComparisionForm(ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 '',
+                'intervention',
                 'epistasis',
                 'comment'
             ),
@@ -187,7 +188,7 @@ class ComparisionForm(ModelForm):
         super(ComparisionForm, self).__init__(*args, **kwargs)
     class Meta:
         model = Comparision
-        fields = ('epistasis',)
+        fields = ('epistasis', 'intervention')
 
 
 class InterventionForm(ModelForm):

@@ -309,6 +309,7 @@ class Comparision(models.Model):
     #epistasis = models.PositiveSmallIntegerField(max_length=1, blank=True, null=True, choices=EPISTATIC)
     epistasis = models.ForeignKey(Epistasis, blank=True, null=True)
     intervention = models.ForeignKey('Intervention', blank=True, null=True) # ManyToMany?
+    #factors = models.ManyToManyField('Factor', blank=True, null=True)
     mean = models.FloatField(blank=True, null=True) # Mean lifespan extension.
     median = models.FloatField(blank=True, null=True) # Median lifespan extension.
     max = models.FloatField(blank=True, null=True) # Maximum lifespan extension.#
@@ -332,15 +333,17 @@ class Comparision(models.Model):
         #return "; ".join([attribute for attribute in attributes if attribute])
 
     def save(self, *args, **kwargs):
-        self.mean = percentage(self.exp.mean, self.ctr.mean)
-        self.median = percentage(self.exp.median, self.ctr.median)
-        self.max = percentage(self.exp.max, self.ctr.max)
+        if not self.pk:
+            self.mean = percentage(self.exp.mean, self.ctr.mean)
+            self.median = percentage(self.exp.median, self.ctr.median)
+            self.max = percentage(self.exp.max, self.ctr.max)
 
-        interventions = Intervention.objects.filter(
-            Q(name__icontains=self.exp.genotype) | Q(name__icontains=self.ctr.genotype))
-        for intervention in interventions:
-            self.intervention = intervention
-        #factor = mapping(exp.genotype, exp.experiment.species.taxid)
+            interventions = Intervention.objects.filter(
+                Q(name__icontains=self.exp.genotype) | Q(name__icontains=self.ctr.genotype))
+            #print("%s %s %s" % (self.exp.genotype, self.ctr.genotype, interventions))
+            for intervention in interventions:
+                self.intervention = intervention
+            #factor = mapping(exp.genotype, exp.experiment.species.taxid)
 
         super(Comparision, self).save(*args, **kwargs)
 
