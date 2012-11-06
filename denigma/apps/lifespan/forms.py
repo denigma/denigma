@@ -114,8 +114,8 @@ class DeleteExperimentForm(ModelForm):
                 'comment'),
             Field('tet_input', css_class='input-xlarge'),
             FormActions(
-                Submit('delete_experiment', 'Delete experiment'),
-                Submit('cancel', 'Cancel', css_class="btn-primary")
+                Submit('delete_experiment', 'Delete experiment', css_class="btn"),
+                Submit('cancel', 'Cancel', css_class="btn btn-primary")
             )
         )
         super(DeleteExperimentForm, self).__init__(*args, **kwargs)
@@ -129,6 +129,7 @@ class ExperimentForm(ModelForm):
     name = CharField(help_text="(Use the figure or table title as name for the experiment)")
     study = ModelChoiceField(queryset=Study.objects.all())
     species = ModelChoiceField(queryset=Species.objects.all().order_by('-main_model', 'complexity'))
+    assay = ModelChoiceField(queryset=Assay.objects.all())
     comment = CharField(help_text="Optional, for version-control.", required=False)
     data = CharField(widget=Textarea(attrs={'cols': 160, 'rows': 20,
                                             'style': 'font-family: monospace'}),
@@ -142,6 +143,15 @@ mutant DR 20 25 30 50 1 >0.05
 
     def __init__(self, *args, **kwargs):
         """Overwritting initializer to set default study and species."""
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset('', 'name', 'data', 'study', 'species', 'assay', 'comment'),
+            FormActions(
+                Submit('submit', 'Submit', css_class="btn btn-primary"),
+                Submit('cancel', 'Cancel', css_class="btn")
+            )
+        )
         if 'pk' in kwargs:
             pk = kwargs['pk']
             del kwargs['pk']
@@ -160,7 +170,7 @@ mutant DR 20 25 30 50 1 >0.05
 
     class Meta:
         model = Experiment
-        fields = ['name', 'data', 'study', 'species']
+        fields = ['name', 'data', 'study', 'species', 'assay']
 
 
 class MeasurementForm(ModelForm):

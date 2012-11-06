@@ -144,7 +144,7 @@ class Experiment(models.Model):
     data = models.TextField(blank=True, null=True)
     study = models.ForeignKey(Study)
     species = models.ForeignKey('annotations.Species')
-    #assay = models.ForeignKey('Assay')
+    assay = models.ForeignKey('Assay', default=3)
     meta = {}
 
     keys = {'strain':['genotype'],

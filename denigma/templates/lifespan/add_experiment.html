@@ -1,5 +1,7 @@
 {% extends "lifespan/base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block head_title %}Add Experiment{% endblock %}
 
 {% block hierarchy %}
@@ -10,10 +12,5 @@
 {% block title %}<a href="/lifespan/experiments/add/">Add Experiment</a>{% endblock %}
 
 {% block content %}
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button>Submit</button>
-    </form>
-
+   {% crispy form %}
 {% endblock %}

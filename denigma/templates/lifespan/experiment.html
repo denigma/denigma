@@ -16,22 +16,22 @@
 {% block content %}
     <b>Study</b>: <a href="/lifespan/study/{{ experiment.study.pk }}">{{ experiment.study.title }}</a></br>
     <b>Species</b>: <a href="/annotation/species/{{ species.pk }}">{{ experiment.species.common_name }}</a></br>
-
+    <b>Assay</b>: <a href="/lifespan/assay/{{ experiment.assay.pk }}">{{ experiment.assay }}</a>
 
     <table width="100%">
         <tr>
             <td>
                 <b>Data</b>: {{ experiment.data|replace|safe }}<br>
             </td>
-            <td>
-                {% if experiment.measurement_set.all %}<br>
+            <td valign="top">
+                {% if experiment.measurement_set.all %}
                     <b>Measurments</b>:
                     {% for measurement in experiment.measurement_set.all %}
                         <li><a href="/lifespan/measurement/{{ measurement.pk }}">{{ measurement }}</a></li>
                     {% endfor %}
                 {% endif %}
             </td>
-            <td>
+            <td valign="top">
                 {% if comparisons %}
                     <b>Comparisons</b>:
                     {% for comparison in comparisons %}
