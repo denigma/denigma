@@ -161,10 +161,19 @@ class Experiment(models.Model):
         return u"lifespan/experiment/%s" % self.pk
 
     def save(self, *args, **kwargs):
+        if self.pk:
+            # Eradicate all measurements and comparisons:
+            measurements = Measurement.objects.filter(experiment=self)
+            print("Measurements: %s" % measurements)
+            measurements.delete()
         """Parses the associated data and creates the corresponding measurements."""
-        separator = ' '
+        data = self.data.replace('\r', '').replace(r'\\', '')
+        if "#separator=" in data:
+            separator = data.split('#separator=')[1].split('\n')[0]
+        else:
+            separator = ' '
         #if 'data' in kwargs:data = kwargs['data']
-        data = self.data.replace('\r', '').split('\n')
+        data = data.split('\n')
         control = False
 
         header = data[0].lower().split(separator)
@@ -172,7 +181,6 @@ class Experiment(models.Model):
             if term in Experiment.mapping:
                 header[index] = Experiment.mapping[term]
         print(header)
-
 
         for line in data[2:]:
             #print line
@@ -195,6 +203,7 @@ class Experiment(models.Model):
             # Actually data:
             columns = line.split(separator)
             measurement = Measurement(experiment = self)
+            measurement.save()
             for attr, value in dict(zip(header, columns)).items():
                 if "background" in self.meta:
                     measurement.background = Strain.objects.get_or_create(name=self.meta['background'])
@@ -214,15 +223,15 @@ class Experiment(models.Model):
                             measurement.genotype, created = Strain.objects.get_or_create(name=value)
                     else:
                         print value
-                        if lower in ['wt', 'wild type', 'wild-type']:
+                        if lower in ['wt', 'wild type', 'wild-type', 'canton-s', 'white1118']:
                             strain = multi_replace(value, WT, 'wild-type')
                             measurement.genotype, created = Strain.objects.get_or_create(name=strain)
                         else:
-                            measurement.genotype, created = Strain.objects.get_or_create(name=value)
+                            measurement.genotype, created = Strain.objects.get_or_create(name=value, species=self.species)
+                if attr.lower() == "gender":
+                    measurement.gender.add(Gender.objects.get(name=value.lower()))
                 else:
                     setattr(measurement, attr, value)
-            print line
-
             if not control:
                 control = measurement
                 measurement.control = True
@@ -233,8 +242,6 @@ class Experiment(models.Model):
                 comparision.ctr = control
                 comparision.exp = measurement
                 comparision.save()
-
-
         super(Experiment, self).save(*args, **kwargs)
 
 
