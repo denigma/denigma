@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+import re
+
 from django.db import models, IntegrityError
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import MultipleObjectsReturned
+from django.db.models.signals import m2m_changed
 
 from datasets.models import Reference
 
@@ -12,6 +15,9 @@ try:
     MAPPING = True
 except:
     MAPPING = False
+
+import handlers
+
 
 WT = ['wt', 'WT' 'wild type']
 
@@ -138,6 +144,7 @@ class Experiment(models.Model):
     data = models.TextField(blank=True, null=True)
     study = models.ForeignKey(Study)
     species = models.ForeignKey('annotations.Species')
+    #assay = models.ForeignKey('Assay')
     meta = {}
 
     keys = {'strain':['genotype'],
@@ -401,6 +408,7 @@ class Manipulation(models.Model):
 ##        db_table = u'manipulation_type'
 ##        
 
+
 class Intervention(models.Model):
     name = models.CharField(max_length=250)
     taxid = models.IntegerField(blank=True, null=True)
@@ -517,3 +525,6 @@ class Gender(models.Model):
 
     def __unicode__(self):
         return self.name
+
+m2m_changed.connect(handlers.changed_references, sender=Intervention.references.through)
+m2m_changed.connect(handlers.changed_references, sender=Factor.references.through)

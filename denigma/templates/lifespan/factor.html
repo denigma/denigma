@@ -48,7 +48,11 @@
 
     <br><b>Interventions:</b>
     {% for intervention in factor.intervention.all %}
-        <li><a href="/lifespan/intervention/{{ intervention.pk }}/">{{ intervention.name }}</a></li>
+        <li><a href="/lifespan/intervention/{{ intervention.pk }}/">{{ intervention.name }}</a>
+            {% if intervention.mean %}{{ intervention.mean}}%{% endif %}
+            {% if intervention.median %}{{ intervention.median }}%{% endif %}
+            {% if intervention.maximum %}{{ intervention.maximum }}%{% endif %}
+        </li>
     {% endfor %}
 
     <br><b>Assays:</b>
@@ -66,9 +70,9 @@
     {% endfor %}<br>
 
     {% if factor.references.all %}
-        <br><b>References:</b>
+        <br><b>References:</b><br>
         {% for reference in factor.references.all %}
-            {{ reference.title }}
+            <li><a href="/datasets/reference/{{ reference.id }}">{{ reference.pmid }}: {{ reference.title }}</a></li>
         {% endfor %}<br>
     {% endif %}
 

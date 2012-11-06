@@ -16,7 +16,7 @@ from django.db.models import Q
 
 import reversion
 
-from django_tables2 import SingleTableView
+from django_tables2 import SingleTableView, RequestConfig
 
 from models import (Study, Experiment, Measurement, Comparision, Intervention, Factor, Regimen, Strain,
                    Manipulation)
@@ -336,7 +336,6 @@ def measurements(request):
     return render_to_response('lifespan/measurements.html', {'measurements': measurements},
                             context_instance=RequestContext(request))
 
-from django_tables2 import RequestConfig
 
 def comparisions(request):
     table = ComparisionTable(Comparision.objects.all())
@@ -344,15 +343,16 @@ def comparisions(request):
     return render_to_response("lifespan/comparisions.html", {'comparisions': table},
         context_instance=RequestContext(request))
 
+@login_required
 def comparision(request, pk):
     comparision = Comparision.objects.get(pk=pk)
     form = ComparisionForm(request.POST or None, instance=comparision)
-    print("lifespan comparision")
+    #print("lifespan comparision")
     if request.POST and form.is_valid():
-        print("lifespan.views.comparision: form.is_valid()")
+        #print("lifespan.views.comparison: form.is_valid()")
         form.save()
-        #print form
-        #form.save_m2m()
+        msg = "Successfully changed comparision"
+        messages.add_message(request, messages.SUCCESS, _(msg))
         redirect('/comparision/%s' % pk)
     ctx = {'comparision': comparision, 'form': form}
     return render_to_response('lifespan/comparision.html', ctx,
