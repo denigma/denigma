@@ -16,15 +16,34 @@
 {% block content %}
     <b>Study</b>: <a href="/lifespan/study/{{ experiment.study.pk }}">{{ experiment.study.title }}</a></br>
     <b>Species</b>: <a href="/annotation/species/{{ species.pk }}">{{ experiment.species.common_name }}</a></br>
-    <b>Data</b>: {{ experiment.data|replace|safe }}<br>
-    {% if experiment.measurement_set.all %}<br>
-        <b>Measurments</b>: <br>
-        {% for measurement in experiment.measurement_set.all %}
-            <a href="/lifespan/measurement/{{ measurement.pk }}">{{ measurement }}</a><br>
-        {% endfor %}
-    {% endif %}
+
+
+    <table width="100%">
+        <tr>
+            <td>
+                <b>Data</b>: {{ experiment.data|replace|safe }}<br>
+            </td>
+            <td>
+                {% if experiment.measurement_set.all %}<br>
+                    <b>Measurments</b>:
+                    {% for measurement in experiment.measurement_set.all %}
+                        <li><a href="/lifespan/measurement/{{ measurement.pk }}">{{ measurement }}</a></li>
+                    {% endfor %}
+                {% endif %}
+            </td>
+            <td>
+                {% if comparisons %}
+                    <b>Comparisons</b>:
+                    {% for comparison in comparisons %}
+                        <li><a href="/lifespan/comparision/{{ comparison.pk }}/">{{ comparison }}</a></li>
+                    {% endfor %}
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    <br>
     <hr>
-    <b><a href="/lifespan/experiment/edit/{{ experiment.pk }}">Edit experiment</b></a>
+    <b><a href="/lifespan/experiment/edit/{{ experiment.pk }}">Edit experiment</a></b>
     (<a href="/admin/lifespan/experiment/{{ experiment.pk }}">Admin</a>) |
     <b><a href="/lifespan/experiment/delete/{{ experiment.pk }}">Delete experiment</a></b>
 {% endblock %}

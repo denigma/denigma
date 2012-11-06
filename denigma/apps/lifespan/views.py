@@ -270,7 +270,8 @@ def experiments(request):
 
 def experiment(request, pk):
     experiment = Experiment.objects.get(pk=pk)
-    ctx = {'experiment': experiment}
+    comparisons = Comparision.objects.filter(exp__experiment=experiment)
+    ctx = {'experiment': experiment, 'comparisons': comparisons}
     return render_to_response('lifespan/experiment.html', ctx,
                               context_instance=RequestContext(request))
 
