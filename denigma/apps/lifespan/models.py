@@ -233,7 +233,7 @@ class Experiment(models.Model):
                         print value
                         if lower in ['wt', 'wild type', 'wild-type', 'canton-s', 'white1118']:
                             strain = multi_replace(value, WT, 'wild-type')
-                            measurement.genotype, created = Strain.objects.get_or_create(name=strain)
+                            measurement.genotype, created = Strain.objects.get_or_create(name=strain, species=self.species)
                         else:
                             measurement.genotype, created = Strain.objects.get_or_create(name=value, species=self.species)
                 if attr.lower() == "gender":
