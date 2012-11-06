@@ -86,8 +86,8 @@ def add_studies(request):
     failed = []
 
     with reversion.create_revision():
-        print "Titles", titles
-        print "pmids", pmids
+        #print "Titles", titles
+        #print "pmids", pmids
         for title in titles:
             if not title: continue
             #print "Title:", title
@@ -139,7 +139,7 @@ def add_studies(request):
             print "PMID:", pmid
             study = Study(pmid=pmid)
             study.save()
-            print "views.add.studies for pmid in pmids:", vars(study)
+            #print "views.add.studies for pmid in pmids:", vars(study)
             if not study.reference_was_created:
                 warned.append(pmid)
                 messages.add_message(request, messages.WARNING, ugettext("Already in db: %s" % pmid))
