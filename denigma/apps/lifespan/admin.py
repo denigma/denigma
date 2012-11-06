@@ -2,7 +2,7 @@ from django.contrib import admin
 
 import reversion
 
-from models import Study, Experiment, Measurement, Comparision, Epistasis, Strain
+from models import Study, Experiment, Measurement, Comparison, Epistasis, Strain
 from models import Type, Factor, Manipulation, Intervention, Regimen, Assay, Gender
 
 
@@ -27,7 +27,7 @@ class MeasurementAdmin(reversion.VersionAdmin):
    list_display = ('genotype', 'mean', 'median', 'max')
 
 
-class ComparisionAdmin(reversion.VersionAdmin):
+class ComparisonAdmin(reversion.VersionAdmin):
    list_display = ('__unicode__', 'mean', 'median', 'max')
 
 
@@ -101,7 +101,7 @@ class AssayAdmin(reversion.VersionAdmin):
 admin.site.register(Study, StudyAdmin)
 admin.site.register(Experiment, ExperimentAdmin)
 admin.site.register(Measurement, MeasurementAdmin)
-admin.site.register(Comparision, ComparisionAdmin)
+admin.site.register(Comparison, ComparisonAdmin)
 admin.site.register(Epistasis, EpistasisAdmin)
 admin.site.register(Strain, StrainAdmin)
 admin.site.register(Type, TypeAdmin)

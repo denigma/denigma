@@ -49,10 +49,10 @@
             <li><a href="/annotations/reference/{{ reference.pk }}">{{ reference.title }}</a></li>
         {% endfor %}<br>
     {% endif %}
-    {% if intervention.comparision_set.all %}
-        <br><b>Comparisions: </b><br>
-        {% for comparision in intervention.comparision_set.all %}
-            <li><a href="/lifespan/comparision/{{ comparision.pk }}">{{ comparision }}: {{ comparision.data }}</a></li>
+    {% if intervention.comparison_set.all %}
+        <br><b>Comparisons: </b><br>
+        {% for comparison in intervention.comparison_set.all %}
+            <li><a href="/lifespan/comparison/{{ comparison.pk }}">{{ comparison }}: {{ comparison.data }}</a></li>
         {% endfor %}
     {% endif %}
     <br>

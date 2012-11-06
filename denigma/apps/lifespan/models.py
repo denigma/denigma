@@ -246,10 +246,10 @@ class Experiment(models.Model):
                 measurement.save()
             else:
                 measurement.save()
-                comparision = Comparision()
-                comparision.ctr = control
-                comparision.exp = measurement
-                comparision.save()
+                comparison = Comparison()
+                comparison.ctr = control
+                comparison.exp = measurement
+                comparison.save()
 
 
 
@@ -267,7 +267,7 @@ class Strain(models.Model):
 class Measurement(models.Model):
     """A lifespan measurment from a table or graph."""
     experiment = models.ForeignKey(Experiment)
-    comparisions = models.ManyToManyField("self", through="Comparision", symmetrical=False)
+    comparisions = models.ManyToManyField("self", through="Comparison", symmetrical=False)
     control = models.BooleanField()
 
     background = models.ForeignKey(Strain, blank=True, null=True) # Genetic background.
@@ -305,7 +305,7 @@ class Epistasis(models.Model):
         verbose_name_plural = "epistases"
 
 
-class Comparision(models.Model):
+class Comparison(models.Model):
     """A comparision between two lifespan measurements."""
     #EPISTATIC = (
     #    (1, _('Neutral')),
@@ -353,7 +353,7 @@ class Comparision(models.Model):
                 self.intervention = intervention
             #factor = mapping(exp.genotype, exp.experiment.species.taxid)
 
-        super(Comparision, self).save(*args, **kwargs)
+        super(Comparison, self).save(*args, **kwargs)
 
 
 class Type(models.Model):

@@ -6,7 +6,7 @@ from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 
 from django_easyfilters import FilterSet
 
-from models import (Study, Experiment, Measurement, Comparision, Intervention, Factor,\
+from models import (Study, Experiment, Measurement, Comparison, Intervention, Factor,\
                    Strain, Epistasis, Regimen, Assay, Manipulation)
 
 from annotations.models import Species
@@ -178,7 +178,7 @@ class MeasurementForm(ModelForm):
         model = Measurement
 
 
-class ComparisionForm(ModelForm):
+class ComparisonForm(ModelForm):
     comment = CharField(required=False)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
@@ -195,9 +195,9 @@ class ComparisionForm(ModelForm):
                 Submit('cancel', 'Cancel')
             )
         )
-        super(ComparisionForm, self).__init__(*args, **kwargs)
+        super(ComparisonForm, self).__init__(*args, **kwargs)
     class Meta:
-        model = Comparision
+        model = Comparison
         fields = ('epistasis', 'intervention')
 
 

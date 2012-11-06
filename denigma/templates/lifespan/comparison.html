@@ -1,0 +1,25 @@
+{% extends "lifespan/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block head_title %}Comparison{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/comparisons/">Comparison</a>
+    > Comparison
+{% endblock %}
+
+{% block title %}{{ comparison }}{% endblock %}
+
+{% block content %}
+    <b>Study:</b> <a href="/lifespan/study/{{ comparison.exp.experiment.study.pk }}">{{ comparison.exp.experiment.study }}</a><br>
+    <b>Experiment: </b> <a href="/lifespan/experiment/{{ comparison.exp.experiment.pk }}/">{{ comparison.exp.experiment.name }}</a><br>
+    <b>Experimental measurement:</b> <a href="/lifespan/measurement/{{ comparison.exp.pk }}">{{ comparison.exp }}</a><br>
+    <b>Control measurement:</b> <a href="/lifespan/measurement/{{ comparison.ctr.pk }}">{{ comparison.ctr }}</a><br>
+    <b>Epistasis:</b> <a href="/lifespan/epistasis/{{ comparison.epistasis.pk }}">{{ comparison.epistasis }}</a><br>
+    <b>Intervention:</b> <a href="/lifespan/intervention/{{ comparison.intervention.pk }}">{{ comparison.intervention }}</a><br>
+    <b>Mean lifespan change: </b> {{ comparison.mean }}<br>
+    <b>Median lifespan change: </b> {{ comparison.median }}<br>
+    <b>Maximum lifespan change: </b>{{ comparison.max }}<br>
+    {% crispy form %}
+{% endblock %}

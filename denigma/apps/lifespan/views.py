@@ -18,15 +18,15 @@ import reversion
 
 from django_tables2 import SingleTableView, RequestConfig
 
-from models import (Study, Experiment, Measurement, Comparision, Intervention, Factor, Regimen, Strain,
+from models import (Study, Experiment, Measurement, Comparison, Intervention, Factor, Regimen, Strain,
                    Manipulation)
 from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
                    ExperimentForm, DeleteExperimentForm,
-                   ComparisionForm,
+                   ComparisonForm,
                    InterventionForm, DeleteInterventionForm, InterventionFilterSet,
                    FactorForm, StrainForm,
                    FilterForm, FactorFilterSet)
-from tables import ComparisionTable, InterventionTable, FactorTable
+from tables import ComparisonTable, InterventionTable, FactorTable
 
 from blog.models import Post
 from annotations.models import Species
@@ -270,7 +270,7 @@ def experiments(request):
 
 def experiment(request, pk):
     experiment = Experiment.objects.get(pk=pk)
-    comparisons = Comparision.objects.filter(exp__experiment=experiment)
+    comparisons = Comparison.objects.filter(exp__experiment=experiment)
     ctx = {'experiment': experiment, 'comparisons': comparisons}
     return render_to_response('lifespan/experiment.html', ctx,
                               context_instance=RequestContext(request))
@@ -338,32 +338,32 @@ def measurements(request):
                             context_instance=RequestContext(request))
 
 
-def comparisions(request):
-    table = ComparisionTable(Comparision.objects.all())
+def comparisons(request):
+    table = ComparisonTable(Comparison.objects.all())
     RequestConfig(request).configure(table)
-    return render_to_response("lifespan/comparisions.html", {'comparisions': table},
+    return render_to_response("lifespan/comparisons.html", {'comparisons': table},
         context_instance=RequestContext(request))
 
 @login_required
-def comparision(request, pk):
-    comparision = Comparision.objects.get(pk=pk)
-    form = ComparisionForm(request.POST or None, instance=comparision)
-    #print("lifespan comparision")
+def comparison(request, pk):
+    comparison = Comparison.objects.get(pk=pk)
+    form = ComparisonForm(request.POST or None, instance=comparison)
+    #print("lifespan comparison")
     if request.POST and form.is_valid():
         #print("lifespan.views.comparison: form.is_valid()")
         form.save()
-        msg = "Successfully changed comparision"
+        msg = "Successfully changed comparison"
         messages.add_message(request, messages.SUCCESS, _(msg))
-        redirect('/comparision/%s' % pk)
-    ctx = {'comparision': comparision, 'form': form}
-    return render_to_response('lifespan/comparision.html', ctx,
+        redirect('/comparison/%s' % pk)
+    ctx = {'comparison': comparison, 'form': form}
+    return render_to_response('lifespan/comparison.html', ctx,
         context_instance=RequestContext(request))
 
-def add_comparision(request, pk):
-    return HttpResponse('Add comparision %s' % pk)
+def add_comparison(request, pk):
+    return HttpResponse('Add comparison %s' % pk)
 
-def edit_comparision(request, pk):
-    return HttpResponse('Edit comparision %s' % pk)
+def edit_comparison(request, pk):
+    return HttpResponse('Edit comparison %s' % pk)
 
 """Interventions"""
 def interventions(request):

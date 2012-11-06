@@ -40,10 +40,10 @@ urlpatterns = patterns('lifespan.views',
             template_name='lifespan/measurement.html')),
 
     # Comparisions:
-    url(r'^comparisions/$', 'comparisions', name='comparisions'),
-    url(r'^comparision/(?P<pk>\d+)', 'comparision'),
-    url(r'^comparision/add', 'add_comparision', name='add_comparision'),
-    url(r'^comparision/edit/(?P<pk>\d+)', 'edit_comparision'),
+    url(r'^comparisons/$', 'comparisons', name='comparisons'),
+    url(r'^comparison/(?P<pk>\d+)', 'comparison'),
+    url(r'^comparison/add', 'add_comparison', name='add_comparison'),
+    url(r'^comparison/edit/(?P<pk>\d+)', 'edit_comparison'),
 
     # Interventions:
     url(r'^interventions/$', InterventionList.as_view(),

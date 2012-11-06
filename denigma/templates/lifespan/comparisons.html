@@ -3,18 +3,18 @@
 {% load staticfiles %}
 {% load render_table from django_tables2 %}
 
-{% block head_title %}Comparisions{% endblock %}
+{% block head_title %}Comparisons{% endblock %}
 
 {% block hierarchy %}
-    > Comparisions
+    > Comparisons
 {% endblock %}
 
 {% block options %}
-    (<a href="/admin/lifespan/comparision/">Admin</a>)
+    (<a href="/admin/lifespan/comparison/">Admin</a>)
 {% endblock %}
 
-{% block title %}Comparisions{% endblock %}
+{% block title %}Comparisons{% endblock %}
 
 {% block content %}
-    {% render_table comparisions %}
+    {% render_table comparisons %}
 {% endblock %}
