@@ -173,6 +173,7 @@ class Experiment(models.Model):
             measurements = Measurement.objects.filter(experiment=self)
             print("Measurements: %s" % measurements)
             measurements.delete()
+        super(Experiment, self).save(*args, **kwargs)
         """Parses the associated data and creates the corresponding measurements."""
         data = self.data.replace('\r', '').replace(r'\\', '')
         if "#separator=" in data:
@@ -249,7 +250,7 @@ class Experiment(models.Model):
                 comparision.ctr = control
                 comparision.exp = measurement
                 comparision.save()
-        super(Experiment, self).save(*args, **kwargs)
+
 
 
 class Strain(models.Model):
