@@ -48,7 +48,7 @@ class FactorTable(tables.Table):
 class ComparisonTable(tables.Table):
 
     def render_id(self, value, record):
-        return mark_safe('''<a href=/lifespan/comparision/%s/>%s</a>''' % (value, value)) #record.__unicode__()
+        return mark_safe('''<a href=/lifespan/comparison/%s/>%s</a>''' % (value, value)) #record.__unicode__()
 
     def render_exp(self, value, record):
         return mark_safe('''<a href=/lifespan/measurement/%s/>%s</a>''' % (value.id, value))
