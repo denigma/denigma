@@ -16,6 +16,7 @@
 
     <b>Strain:</b> <a href="/lifespan/strain/{{ measurement.strain.pk }}">{{ measurement.strain }}</a><br>
     <b>Genotype:</b> {{ measurement.genotype }}<br>
+    {% if measurement.gender.all %}<b>Gender:</b> {% for gender in measurement.gender.all %}{{ gender }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}<br>
 
     <b>Diet:</b> {{ measurement.diet }}<br>
     <b>Temperature:</b> {{ measurement.temperature }}<br>
