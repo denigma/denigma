@@ -271,7 +271,9 @@ def experiments(request):
 def experiment(request, pk):
     experiment = Experiment.objects.get(pk=pk)
     comparisons = Comparison.objects.filter(exp__experiment=experiment)
-    ctx = {'experiment': experiment, 'comparisons': comparisons}
+    table = ComparisonTable(comparisons)
+    RequestConfig(request).configure(table)
+    ctx = {'experiment': experiment, 'comparisons': comparisons, 'table': table}
     return render_to_response('lifespan/experiment.html', ctx,
                               context_instance=RequestContext(request))
 

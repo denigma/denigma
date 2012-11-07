@@ -2,6 +2,7 @@
 
 {% load markup %}
 {% load replacer %}
+{% load django_tables2 %}
 
 {% block head_title %}Experiment{% endblock %}
 
@@ -41,7 +42,8 @@
             </td>
         </tr>
     </table>
-    <br>
+    <hr>
+    {% render_table table %}
     <hr>
     <b><a href="/lifespan/experiment/edit/{{ experiment.pk }}">Edit experiment</a></b>
     (<a href="/admin/lifespan/experiment/{{ experiment.pk }}">Admin</a>) |
