@@ -223,6 +223,8 @@ class Experiment(models.Model):
             for attr, value in dict(zip(header, columns)).items():
                 if "background" in self.meta:
                     measurement.background = Strain.objects.get_or_create(name=self.meta['background'])
+                if "temperature" in self.meta:
+                    measurement.temperature = self.meta['temperature']
                 if value: lower = value.lower()
                 #print "attr, value:", attr, value
                 value = examine(value)
@@ -244,8 +246,8 @@ class Experiment(models.Model):
                             measurement.genotype, created = Strain.objects.get_or_create(name=strain, species=self.species)
                         else:
                             measurement.genotype, created = Strain.objects.get_or_create(name=value, species=self.species)
-                if attr.lower() == "gender":
-                    measurement.gender.add(Gender.objects.get(name=value.lower()))
+                if attr == "gender":
+                    measurement.gender.add(Gender.objects.get(name=value))
                 else:
                     setattr(measurement, attr, value)
             if not control:
