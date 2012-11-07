@@ -68,7 +68,11 @@ def studies(request):
 def study(request, pk):
     study = Study.objects.get(pk=pk)
     experiments = study.experiment_set.all()
-    ctx = {'study': study, 'experiments': experiments}
+    interventions = Intervention.objects.filter(references=study.reference)
+    ctx = {'study': study,
+           'experiments': experiments,
+           'interventions': interventions
+    }
     return render_to_response('lifespan/study.html', ctx,
                               context_instance=RequestContext(request))
 #@reversion.create_revision()

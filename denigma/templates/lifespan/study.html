@@ -51,6 +51,12 @@
         {%  endfor %}
     {% endif %}
     <br>
+    <b>Interventions:</b>
+    {% if interventions %}
+        {% for intervention in interventions %}
+            <li><a href={{ intervention.get_absolute_url }}>{{ intervention }}</a></li>
+        {% endfor %}
+    {% endif %}
     <br>
     <b><a href="/lifespan/study/edit/{{ study.pk }}">Edit study</a></b> (<a href="/admin/lifespan/study/{{ study.pk }}">Admin</a>)
      |
