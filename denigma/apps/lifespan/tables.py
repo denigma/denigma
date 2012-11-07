@@ -22,7 +22,7 @@ class InterventionTable(tables.Table):
         model = Intervention
         # add class ="paleblue" to <table> tag
         attrs = {"class": "paleblue"}
-        exclude = ('id', 'taxid', '_25', '_75', 'sex', 'background', 'lifespans', 'pmid')
+        exclude = ('id', 'taxid', 'strain',  '_25', '_75', 'sex', 'background', 'lifespans', 'pmid')
 
 
 class FactorTable(tables.Table):
@@ -62,7 +62,7 @@ class ComparisonTable(tables.Table):
     class Meta:
         model = Comparison
         attrs = {"class": "paleblue"}
-        fields = ('id', 'exp', 'ctr', 'intervention', 'mean', 'median', 'max', 'epistasis', 't', 'gender') #'exp_t', 'ctr_t')
+        fields = ('id', 'exp', 'ctr', 'intervention', 'mean', 'median', 'max', 't', 'gender', 'epistasis') #'exp_t', 'ctr_t')
 
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
