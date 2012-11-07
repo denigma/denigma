@@ -169,10 +169,18 @@ class Experiment(models.Model):
 
     def save(self, *args, **kwargs):
         if self.pk:
+
+            # Create a memory of the intervention mapping to a comparison:
+            memory = {}
+            comparisons = Comparison.objects.filter(exp__experiment=self)
+            for comparison in comparisons:
+                memory[str(comparison)] = comparison.intervention
+
             # Eradicate all measurements and comparisons:
             measurements = Measurement.objects.filter(experiment=self)
-            print("Measurements: %s" % measurements)
+            #print("Measurements: %s" % measurements)
             measurements.delete()
+
         super(Experiment, self).save(*args, **kwargs)
         """Parses the associated data and creates the corresponding measurements."""
         data = self.data.replace('\r', '').replace(r'\\', '')
@@ -251,6 +259,10 @@ class Experiment(models.Model):
                 comparison.exp = measurement
                 comparison.save()
 
+                # Restore interventions mapping via memory:
+                if str(comparison) in memory:
+                    comparison.intervention = memory[str(comparison)]
+                    comparison.save()
 
 
 class Strain(models.Model):
@@ -333,7 +345,9 @@ class Comparison(models.Model):
         data = []
         attributes = [self.exp.manipulation, self.ctr.manipulation,
                       self.exp.background, self.ctr.background, self.exp.diet, self.ctr.diet,
-                      self.mean, self.median, self.max, self.epistasis]
+                      #self.exp.gender.all(), self.ctr.gender.all(),
+                      self.exp.temperature, self.ctr.temperature,
+                      round(self.mean or 0, 1), round(self.median or 0, 1), round(self.max or 0, 1), self.epistasis]
         for attribute in attributes:
             if attribute:
                 data.append(attribute)
