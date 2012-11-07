@@ -28,8 +28,9 @@
     <b>Num:</b> {{ measurement.num }}<br>
 
     <b>Comparisions:</b>
-    {% for comparision in measurement.comparisions.all %}
-        {{ comparision }}<br>
+
+    {% for comparison in measurement.comparisons.all %}
+        {{ comparison }}<br>
     {% endfor %}
     <br>
     <br>
