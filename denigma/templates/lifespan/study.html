@@ -2,6 +2,7 @@
 
 {% load counter %}
 {% load slicer %}
+{% load rendering %}
 
 {% block head_title %}Study{% endblock %}
 
@@ -24,13 +25,14 @@
     and lastly updated on {{ study.updated }}
     {% endif %}<br>
     {% if study.link %}
-         <b><a href="{{ study.link }}">Full text available</a><br>
+         <a href="{{ study.link }}">Full text available</a><br>
     {% else %}
          <b>Not linked</b><br>
     {% endif %}
     <b>Integrated:</b> {{ study.integrated }}<br>
+    <br>
     {% if study.notes %}
-        <b>Notes:</b> {{ study.notes }}<br>
+        <b>Notes:</b> {{ study.notes|reST|safe }}<br>
     {% else %}
         <b>No notes</b><br>
     {% endif %}
