@@ -4,7 +4,7 @@ import re
 from django.db import models, IntegrityError
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
-from django.core.exceptions import MultipleObjectsReturned
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models.signals import m2m_changed
 
 from datasets.models import Reference
@@ -183,6 +183,9 @@ class Experiment(models.Model):
             #print("Measurements: %s" % measurements)
             measurements.delete()
 
+        else:
+            memory = {}
+
         super(Experiment, self).save(*args, **kwargs)
         """Parses the associated data and creates the corresponding measurements."""
         data = self.data.replace('\r', '').replace(r'\\', '')
@@ -200,8 +203,8 @@ class Experiment(models.Model):
                 header[index] = Experiment.mapping[term]
         print(header)
 
-        for line in data[2:]:
-            #print line
+        for line in data[1:]:
+            #print(line)
 
             # Meta data text:
             if line.startswith('# '):
@@ -209,6 +212,7 @@ class Experiment(models.Model):
 
             # Meta data attributes:
             elif line.startswith('#'):
+                print("meta line %s" % line)
                 attribute, value = line.split('#')[1].split('=')
                 self.meta[attribute] = value
                 continue
@@ -223,10 +227,15 @@ class Experiment(models.Model):
             measurement = Measurement(experiment = self)
             measurement.save()
             for attr, value in dict(zip(header, columns)).items():
+                print self.meta
                 if "background" in self.meta:
-                    measurement.background = Strain.objects.get_or_create(name=self.meta['background'])
+                    measurement.background, created = Strain.objects.get_or_create(name=self.meta['background'], species=self.species)
                 if "temperature" in self.meta:
                     measurement.temperature = self.meta['temperature']
+                if "gender" in self.meta:
+                    #print("gender")
+                    measurement.gender.add(Gender.objects.get(name=self.meta['gender']))
+                    #print measurement.gender.all()
                 if value: lower = value.lower()
                 #print "attr, value:", attr, value
                 value = examine(value)
@@ -242,7 +251,7 @@ class Experiment(models.Model):
                         else:
                             measurement.genotype, created = Strain.objects.get_or_create(name=value)
                     else:
-                        print value
+                        #print(value)
                         if lower in ['wt', 'wild type', 'wild-type', 'canton-s', 'white1118']:
                             strain = multi_replace(value, WT, 'wild-type')
                             measurement.genotype, created = Strain.objects.get_or_create(name=strain, species=self.species)
@@ -255,6 +264,7 @@ class Experiment(models.Model):
                     #measurement.pvalue = unicode(value).replace("<", '')
                 else:
                     setattr(measurement, attr, value)
+
             if not control:
                 control = measurement
                 measurement.control = True
@@ -396,8 +406,8 @@ class Comparison(models.Model):
             self.median = percentage(self.exp.median, self.ctr.median)
             self.max = percentage(self.exp.max, self.ctr.max)
 
-            interventions = Intervention.objects.filter(
-                Q(name__icontains=self.exp.genotype) | Q(name__icontains=self.ctr.genotype))
+            interventions = Intervention.objects.filter(name__icontains=self.exp.genotype)
+                #Q(name__icontains=self.exp.genotype) | Q(name__icontains=self.ctr.genotype))
             #print("%s %s %s" % (self.exp.genotype, self.ctr.genotype, interventions))
             for intervention in interventions:
                 self.intervention = intervention
@@ -409,10 +419,18 @@ class Comparison(models.Model):
                 genotype = genotype.split('(')[0].rstrip()
             id = mapid(genotype, self.exp.experiment.species.taxid)
             if id:
-                factor = Factor.objects.get(entrez_gene_id=id)
-                interventions = factor.intervention.all()
-                if interventions:
-                    self.intervention = interventions[0]
+                try:
+                    factor = Factor.objects.get(entrez_gene_id=id)
+                    interventions = factor.intervention.all()
+                    if interventions:
+                        self.intervention = interventions[0]
+                except ObjectDoesNotExist:
+                    pass # Make message
+                    #print("ObjectDoesNotExist %s" % id)
+                except MultipleObjectsReturned:
+                    pass # Make message
+                    #print("MultipleObjectsReturned %s" % id)
+
                     #print self.intervention
             #else: factor = ''
             #print("Mapped factor: %s = %s (%s) %s" % (genotype, id, factor, interventions))
@@ -583,7 +601,6 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
                         self.species = Species.objects.get(taxid=taxid)
 
         super(Factor, self).save(*args, **kwargs)
-
 
 class Gender(models.Model):
     name = models.CharField(max_length=13)
