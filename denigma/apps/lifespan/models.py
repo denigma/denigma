@@ -250,6 +250,9 @@ class Experiment(models.Model):
                             measurement.genotype, created = Strain.objects.get_or_create(name=value, species=self.species)
                 if attr == "gender":
                     measurement.gender.add(Gender.objects.get(name=value))
+                #elif attr =="pvalue":
+                    #print value
+                    #measurement.pvalue = unicode(value).replace("<", '')
                 else:
                     setattr(measurement, attr, value)
             if not control:
@@ -261,6 +264,7 @@ class Experiment(models.Model):
                 comparison = Comparison()
                 comparison.ctr = control
                 comparison.exp = measurement
+                comparison.pvalue = measurement.pvalue
                 comparison.save()
 
                 # Restore interventions mapping via memory:
@@ -299,6 +303,7 @@ class Measurement(models.Model):
     median = models.FloatField(blank=True, null=True)
     max = models.FloatField(blank=True, null=True)   # Maximum lifespan
     num = models.IntegerField(blank=True, null=True)
+    pvalue = None
 
     def __unicode__(self):
          return u"{0} {1}".format(self.genotype or '', self.diet or '')
@@ -339,6 +344,7 @@ class Comparison(models.Model):
     mean = models.FloatField(blank=True, null=True) # Mean lifespan extension.
     median = models.FloatField(blank=True, null=True) # Median lifespan extension.
     max = models.FloatField(blank=True, null=True) # Maximum lifespan extension.#
+    pvalue = models.CharField(max_length=10, blank=True, null=True)#models.FloatField(blank=True, null=True)
 
     def __unicode__(self):
         return u"{0} vs. {1}".format(self.exp.genotype, self.ctr.genotype)

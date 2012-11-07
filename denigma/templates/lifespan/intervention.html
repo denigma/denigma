@@ -57,6 +57,7 @@
                 {% if comparison.mean %} {{ comparison.mean|floatformat }}(mean){% endif %}
                 {% if comparison.median %} {{ comparison.median|floatformat }}(median){% endif %}
                 {% if comparison.max %} {{ comparison.max|floatformat }}(max){% endif %}
+                {% if comparison.pvalue %} {{ comparison.pvalue }}(p-value){% endif %}
                 </a></li>
         {% endfor %}
     {% endif %}

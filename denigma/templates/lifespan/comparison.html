@@ -21,5 +21,6 @@
     <b>Mean lifespan change: </b> {{ comparison.mean }}<br>
     <b>Median lifespan change: </b> {{ comparison.median }}<br>
     <b>Maximum lifespan change: </b>{{ comparison.max }}<br>
+    {% if comparison.pvalue %}<b>p-value: </b> {{ comparison.pvalue }}{% endif %}
     {% crispy form %}
 {% endblock %}
