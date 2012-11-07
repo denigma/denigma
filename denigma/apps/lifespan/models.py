@@ -137,6 +137,7 @@ class Study(models.Model):
             print e
 
 
+
 class Experiment(models.Model):
     """A lifespan experiment composed of lifespan measurements.
     a.k.a. Measurements."""
@@ -174,7 +175,8 @@ class Experiment(models.Model):
             memory = {}
             comparisons = Comparison.objects.filter(exp__experiment=self)
             for comparison in comparisons:
-                memory[str(comparison)] = comparison.intervention
+                if  comparison.intervention:
+                    memory[str(comparison)] = comparison.intervention
 
             # Eradicate all measurements and comparisons:
             measurements = Measurement.objects.filter(experiment=self)
@@ -281,7 +283,7 @@ class Strain(models.Model):
 class Measurement(models.Model):
     """A lifespan measurment from a table or graph."""
     experiment = models.ForeignKey(Experiment)
-    comparisions = models.ManyToManyField("self", through="Comparison", symmetrical=False)
+    comparisons = models.ManyToManyField("self", through="Comparison", symmetrical=False)
     control = models.BooleanField()
 
     background = models.ForeignKey(Strain, blank=True, null=True) # Genetic background.
@@ -318,6 +320,8 @@ class Epistasis(models.Model):
     class Meta:
         verbose_name_plural = "epistases"
 
+
+from annotations.mapping import mapid
 
 class Comparison(models.Model):
     """A comparision between two lifespan measurements."""
@@ -367,7 +371,21 @@ class Comparison(models.Model):
             #print("%s %s %s" % (self.exp.genotype, self.ctr.genotype, interventions))
             for intervention in interventions:
                 self.intervention = intervention
-            #factor = mapping(exp.genotype, exp.experiment.species.taxid)
+            if "/" in self.exp.genotype.name:
+                genotype = self.exp.genotype.name.split('/')[0]
+            else:
+                genotype = self.exp.genotype.name
+            if "(" in genotype:
+                genotype = genotype.split('(')[0].rstrip()
+            id = mapid(genotype, self.exp.experiment.species.taxid)
+            if id:
+                factor = Factor.objects.get(entrez_gene_id=id)
+                interventions = factor.intervention.all()
+                if interventions:
+                    self.intervention = interventions[0]
+                    #print self.intervention
+            #else: factor = ''
+            #print("Mapped factor: %s = %s (%s) %s" % (genotype, id, factor, interventions))
 
         super(Comparison, self).save(*args, **kwargs)
 
