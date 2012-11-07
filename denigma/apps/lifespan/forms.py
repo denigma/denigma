@@ -271,6 +271,7 @@ class FactorForm(ModelForm):
                 'mean',
                 'median',
                 'maximum',
+                'pubmed_id',
                 'references',
                 'note',
                 'comment'
@@ -296,7 +297,7 @@ class FactorForm(ModelForm):
                   'taxid', 'species', 'observation', 'comment',
                   'assay', 'classifications', 'intervention',
                   'function', 'mean','median','maximum',
-                  'references', 'note')
+                  'pubmed_id', 'references', 'note')
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
 
 # Auxillary:
