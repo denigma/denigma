@@ -352,13 +352,37 @@ class Comparison(models.Model):
         attributes = [self.exp.manipulation, self.ctr.manipulation,
                       self.exp.background, self.ctr.background, self.exp.diet, self.ctr.diet,
                       #self.exp.gender.all(), self.ctr.gender.all(),
-                      self.exp.temperature, self.ctr.temperature,
+                      #self.exp.temperature, self.ctr.temperature,
                       round(self.mean or 0, 1), round(self.median or 0, 1), round(self.max or 0, 1), self.epistasis]
         for attribute in attributes:
             if attribute:
                 data.append(attribute)
         return "; ".join(map(str, data))
         #return "; ".join([attribute for attribute in attributes if attribute])
+
+    @property
+    def exp_t(self):
+        return self.exp.temperature
+
+    @property
+    def ctr_t(self):
+        return self.ctr.temperature
+
+    @property
+    def t(self):
+        if self.exp.temperature == self.ctr.temperature:
+            return "%s°C" % int(self.exp.temperature)
+        else:
+            return "%s°C vs. %s°C" % (int(self.exp.temperature), int(self.ctr.temperature))
+
+    @property
+    def gender(self):
+        exp_gender = ", ".join(gender.name for gender in self.exp.gender.all())
+        ctr_gender = ", ".join(gender.name for gender in self.exp.gender.all())
+        if exp_gender == ctr_gender:
+            return exp_gender
+        else:
+            return "%s vs. %s" % (exp_gender, ctr_gender)
 
     def save(self, *args, **kwargs):
         if not self.pk:
