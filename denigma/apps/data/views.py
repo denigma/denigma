@@ -194,9 +194,9 @@ class Update(UpdateView):
     message = 'Successfully updated %s'
     action = 'Update'
 
-    def post(self, request, pk, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         self.request = request
-        super(Update, self).post(request, pk, *args, **kwargs)
+        super(Update, self).post(request, *args, **kwargs)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):
@@ -231,10 +231,10 @@ class Delete(DeleteView):
 
 
 class EntryView(DetailView):
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         if 'slug' in kwargs:
             self.slug = kwargs['slug']
-        return super(EntryView, self).dispatch(*args, **kwargs)
+        return super(EntryView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         objects = Entry.objects.filter(slug=self.slug)
@@ -254,14 +254,14 @@ class EntryCreate(Create):
 class EntryUpdate(Update):
     comment = 'Updated entry'
 
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         if 'slug' in kwargs:
             self.slug = kwargs['slug']
             #del kwargs['slug']
         elif 'pk' in kwargs:
             self.pk = kwargs['pk']
             #del kwargs['pk']
-        return super(EntryUpdate, self).dispatch(*args, **kwargs)
+        return super(EntryUpdate, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         if hasattr(self, 'slug'):
