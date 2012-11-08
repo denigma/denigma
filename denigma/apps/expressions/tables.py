@@ -20,7 +20,11 @@ class TranscriptTable(tables.Table):
         return value
 
     def render_seq_id(self, value, record):
-        return mark_safe('<a href="http://flybase.org/reports/%s.html">%s</a>' % (value, value))
+        if record.seq_id.startswith('F'):
+            link = '<a href="http://flybase.org/reports/%s.html">%s</a>'
+        elif record.seq_id.startswith('Y'):
+            link = '<a href="http://www.yeastgenome.org/cgi-bin/locus.fpl?locus=%s">%s</a>'
+        return mark_safe(link % (value, value))
 
     class Meta:
         model = Transcript
