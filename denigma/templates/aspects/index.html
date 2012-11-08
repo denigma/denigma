@@ -1,5 +1,6 @@
 {% extends "aspects/base.html" %}
 
+{% load url from future %}
 {% load markup %}
 {% load hyperlink %}
 {% load crosslink %}
@@ -14,19 +15,19 @@
 
 
 {% block content %}
-    {{ aspects_entry.text|markdown|hyper|recross|safe }}
+    {{ aspects_entry.content|markdown|hyper|recross|safe }}
     {% for aspect in aspects %}
         <hr>
         <table>
             <tr>
                 <td>
-                    <h3>{{ aspect.title }}</h3>
-                    {{ aspect.text|markdown|hyper|recross|safe }}
+                    <a href={{ aspect.get_absolute_url }}><h3>{{ aspect.title }}</h3></a>
+                    {{ aspect.content|markdown|hyper|recross|safe }}
                     <b><a href="/aspects/{{ aspect.title|lower }}">Read more</a></b>
                 </td>
                 <td>
                     {% for image in aspect.images.all %}
-                        <img src={{ image.url }} alt={{ image.name }} width=250 height=250/>
+                        <a href={{ aspect.get_absolute_url }}><img src={{ image.url }} alt={{ image.name }} width=250 height=250/></a>
                     {% endfor %}
                 </td>
             </tr>
