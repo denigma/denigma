@@ -24,7 +24,7 @@
     <table>
         <tr>
             <td valign="top">
-                {{ entry.text|markdown|hyper|recross|safe }}
+                {{ entry.content|markdown|hyper|recross|safe }}
             </td>
             <td>
                 {% for image in entry.images.all %}

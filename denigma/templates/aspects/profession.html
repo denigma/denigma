@@ -14,7 +14,7 @@
 {% block title %}{{ profession.title }}{% endblock %}
 
 {% block content %}
-    {{ profession.text|markdown|hyper|recross|safe }}
+    {{ profession.content|markdown|hyper|recross|safe }}
     {% for image in profession.images.all %}
         <img src="{{ image.url }}", alt="{{ image.name }}" />
     {% endfor %}

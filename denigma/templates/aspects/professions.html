@@ -1,5 +1,6 @@
 {% extends "aspects/base.html" %}
 
+{% load url from future %}
 {% load markup %}
 {% load hyperlink %}
 {% load crosslink %}
@@ -13,22 +14,20 @@
 {% block title %}Professions{% endblock %}
 
 {% block content %}
-    {{ professions_entry.text|markdown|hyper|recross|safe }}
-
+    {{ professions_entry.content|markdown|hyper|recross|safe }}
     {% for profession in professions %}
         <hr>
         <table>
             <tr>
                 <td>
-                    <h2>{{ profession.title }}</h2>
-                    {{ profession.text|markdown|hyper|recross|safe }}
+                    <a href={{ profession.get_absolute_url }}><h2>{{ profession.title }}</h2></a>
+                    {{ profession.content|markdown|hyper|recross|safe }}
                     <b><a href="/aspects/profession/{{ profession.title|lower }}/">Read more</a></b>
                 </td>
                 <td>
                     {% for image in profession.images.all %}
-                        <img src={{ image.url }} alt={{ image.name }} width=250 height=250 />
+                        <a href={{ profession.get_absolute_url }}><img src={{ image.url }} alt={{ image.name }} width=250 height=250 /></a>
                     {% endfor %}
-
                 </td>
             </tr>
         </table>
