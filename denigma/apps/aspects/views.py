@@ -76,9 +76,9 @@ class RankList(SingleTableView): # Not used yet.
 
 
 def index(request):
-    aspects = Entry.objects.filter(tags__name="aspect")
+    aspects = Entry.objects.filter(tags__name="aspect").order_by('id')
     aspects_entry = Entry.objects.get(title="Aspects")
-    print len(aspects)
+    #print len(aspects)
     hierarchytypes = HierarchyType.objects.all()
     ctx =  {'aspects_entry': aspects_entry,
             'aspects': aspects,
