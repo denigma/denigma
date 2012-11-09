@@ -63,8 +63,8 @@ class Links(SingleTableView, FormView, LinkView):
             self.category = None
         return super(Links, self).dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, *args, **kwargs):
-        context = super(Links, self).get_context_data(*args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(Links, self).get_context_data(**kwargs)
         context['entry'] = Entry.objects.get(title='Links')
         context['form'] = FilterForm(initial={'filter': Links.query})
         context['categories'] = Category.objects.all()
