@@ -1,7 +1,7 @@
 {% extends "data/base.html" %}
 
 {% load url from future %}
-{% load markup %}
+{% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
 
@@ -17,7 +17,11 @@
 {% block content %}
     <p>Created on {{ change.of.created }} by <a href={% url 'profile_detail' change.of.creator %}>{{ change.of.creator }}</a>
     & updated on {{ change.at }} by <a href={%  url 'profile_detail' change.by %}>{{ change.by }}</a></p>
-    {{ changes.text|markdown|hyper|recross|safe }}
+    {% if change.is_rest %}
+        {{ changes.text|reST|safe }}
+    {% else %}
+        {{ changes.text|markdown|hyper|recross|safe }}
+    {% endif %}
     <div class="tags">
         <b>Tags</b>:
         {% if changes.tags %}
