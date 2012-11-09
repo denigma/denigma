@@ -43,7 +43,7 @@
             {% if not forloop.last %}, {% endif %}
         {% endfor %}
     {% else %}?
-    {% endif %}<br>
+    {% endif %}<br><br>
     <b>Experiments: </b>{{ experiments|count }}
     {% if experiments %}
         {% for experiment in experiments %}
