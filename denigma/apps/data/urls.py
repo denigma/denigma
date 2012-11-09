@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 from django.views.generic import  ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.decorators import login_required
 
 from taggit.models import Tag
 
@@ -21,9 +22,9 @@ urlpatterns = patterns('data.views',
     url(r'^entry/(?P<pk>\d+)', DetailView.as_view(model=Entry), name='detail-entry'), # User generic class-based view # template_name='entry_detail.html' # use defaults
     url(r'^entry/view/(?P<slug>.+)', EntryView.as_view(), name='view-entry'),
     url(r'^entry/create/$', EntryCreate.as_view(), name='create-entry'),
-    url(r'^entry/update/(?P<pk>\d+)', EntryUpdate.as_view(), name='update-entry'),
-    url(r'^entry/update/(?P<slug>.+)', EntryUpdate.as_view(), name='update-entry'),
-    url(r'^entry/delete/(?P<pk>\d+)', EntryDelete.as_view(), name='delete-entry'),
+    url(r'^entry/update/(?P<pk>\d+)', login_required(EntryUpdate.as_view()), name='update-entry'),
+    url(r'^entry/update/(?P<slug>.+)', login_required(EntryUpdate.as_view()), name='update-entry'),
+    url(r'^entry/delete/(?P<pk>\d+)', login_required(EntryDelete.as_view()), name='delete-entry'),
     url(r'^entry/(?P<slug>.+)', EntryView.as_view(), name='detail-entry'), #  Alternative detail entry accepting slug.
     url(r'^hierarchy/list/$', EntryList.as_view(
         context_object_name='entries',
@@ -58,8 +59,8 @@ urlpatterns = patterns('data.views',
     url(r'^relations/list', ListView.as_view(queryset=Relation.objects.all()), name='list-relations'),
     url(r'^relation/(?P<pk>\d+)', DetailView.as_view(model=Relation), name='relation-details'),
     url(r'^relation/create', RelationCreate.as_view(), name='create-relation'),
-    url(r'^relation/update/(?P<pk>\d+)', RelationUpdate.as_view(), name='update-relation'),
-    url(r'^relation/delete', DeleteView.as_view(model=Relation), name='delete-relation'),
+    url(r'^relation/update/(?P<pk>\d+)', login_required(RelationUpdate.as_view()), name='update-relation'),
+    url(r'^relation/delete', login_required(DeleteView.as_view(model=Relation)), name='delete-relation'),
     ## Function-Views:
     url(r'^relations/$', 'relations', name='relations'),
     url(r'^relation/(?P<slug>.+)', 'relation', name='relation'),
@@ -90,6 +91,6 @@ urlpatterns = patterns('data.views',
     url(r'^category/detail/(?P<pk>\d+)', DetailView.as_view(model=Category), name='detail-category'),
     #url(r'^category/detail/(?P<slug>.+)', DetailView.as_view)
     url(r'^category/create', CategoryCreate.as_view(), name='create-category'),
-    url(r'^category/update/(?P<pk>\d+)', CategoryUpdate.as_view(), name='update-category'),
+    url(r'^category/update/(?P<pk>\d+)', login_required(CategoryUpdate.as_view()), name='update-category'),
 
 )#234567891123456789212345678931234567894123456789512345678961234567897123456789
