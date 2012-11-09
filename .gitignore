@@ -10,7 +10,9 @@ output*
 name=*
 .idea/
 *.pdf
-denigma/documents/
+denigma/documents/*.txt
+denigma/documents/*.rst
+denigma/documents/*.style
 
 # Access Keys:
 ami.sh
