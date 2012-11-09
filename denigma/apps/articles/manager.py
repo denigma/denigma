@@ -1,4 +1,4 @@
-#! -.- coding: utf8 -.-
+# -.- coding: utf8 -.-
 """Manages the references of an article.
 Currently it creates the bibliography for a as "reStructured referenced"
 marked article and and generated an rst file for it."""
@@ -18,19 +18,19 @@ except ImportError:
    print("No library available.")
 
 
-def referencing(self, linking=True):
+def referencing(entry, linking=True):
     print("Is article.")
-    if isinstance(self, (str, unicode)):
-        text = self.replace('\r', '').replace(r'\xe2\x80\x93', '-') # Second replace is probaly not any-more necessary.
+    if isinstance(entry, (str, unicode)):
+        text = entry.replace('\r', '').replace(r'\xe2\x80\x93', '-') # Second replace is probaly not any-more necessary.
     else:
-        text = self.text.replace('\r', '').replace(r'\xe2\x80\x93', '-') # Second replace is probaly not any-more necessary.
+        text = entry.text.replace('\r', '').replace(r'\xe2\x80\x93', '-') # Second replace is probaly not any-more necessary.
     text = text.encode('ascii', 'ignore')
     article = a.Article()
 
     title_regex = "={2,}\n(.{2,})\n={2,}"
     title = re.findall(title_regex, text)
     if title: title = title[0]
-    else: title = self.title
+    else: title = entry.title
     #print title
 
     #article.title = title
@@ -39,27 +39,26 @@ def referencing(self, linking=True):
     abstract = re.findall(abstract_regex, text)
     #print abstract
 
-
-    references_regex = "References\n={10,}([.\n\w\d\s^!-~]{1,})\n{3}" #{366\xe2\x80\x93375}{\xe2\x80\x93}]{1,}"
-    # Includes the "--" long dash non-asci character.
     references_regex = re.compile("References\n\W{10}(.+?)\n{3}", re.DOTALL)
-    references = re.findall(references_regex, text)[0].replace('*' , '') # Removes markup.
-    #print references.split('\n')[:50]
-    #print len(references)#, type(references)
-    # for reference in references: print reference
+    if "References\n==========" in text:
+        #references_regex = "References\n={10,}([.\n\w\d\s^!-~]{1,})\n{3}" #{366\xe2\x80\x93375}{\xe2\x80\x93}]{1,}"
+        # Includes the "--" long dash non-asci character.
+        references = re.findall(references_regex, text)[0].replace('*' , '') # Removes markup.
+        #print references.split('\n')[:50]
+        #print len(references)#, type(references)
+        # for reference in references: print reference
 
-    # Form a regular expression to fetch the main text part:
+        # Form a regular expression to fetch the main text part:
 
-    #main_regex = "Abstract\n={8,}\n+.+[\n\w\d\s.^!-~]+\n+.+\n+={2,}([\n\w\d\s.^!-~]+)\n+References\n={10,}[.\n\w\d\s^!-~]{1,}\n{3}"#
-    #main = re.findall(main_regex, text)
-    # print "main is:", main
+        #main_regex = "Abstract\n={8,}\n+.+[\n\w\d\s.^!-~]+\n+.+\n+={2,}([\n\w\d\s.^!-~]+)\n+References\n={10,}[.\n\w\d\s^!-~]{1,}\n{3}"#
+        #main = re.findall(main_regex, text)
+        # print "main is:", main
 
+        article.bibliography = library.Bibliography()
+        #print references
+        #stop
 
-    article.bibliography = library.Bibliography()
-    print references
-    #stop
-
-    article.references = a.References(references, article=article)
+        article.references = a.References(references, article=article)
 
    #section_headers = re.findall('\n([\w -:.,/]+)\n={3,}', text)    
    #subsections_headers = re.findall('\n([\w -:.,/]+)\n-{3,}', text) 
@@ -187,7 +186,7 @@ def referencing(self, linking=True):
     # print a.string
 
     print("Outputing the document...")
-    output = open(os.path.join(settings.PROJECT_ROOT, 'output.rst'), 'w')
+    output = open(os.path.join(os.path.join(settings.PROJECT_ROOT, 'documents'), entry.slug+'.rst'), 'w')
     output.write(article.string)
     output.close()
     return article.string
