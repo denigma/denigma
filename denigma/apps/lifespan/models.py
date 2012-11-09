@@ -241,15 +241,15 @@ class Experiment(models.Model):
                 value = examine(value)
                 if attr in ['genotype', 'strain']:
                     # Separate strain from treatment:
-                    if ";" in value:
+                    if ";" in value and not "; ":
                         if "RNAi" in value:
                             strain = ';'.join(value.split(';')[:-1])
                             if lower in ['wt', 'wild type', 'wild-type']:
                                 strain = multi_replace(strain, WT, 'wild-type')
-                                measurement.genotype, created = Strain.objects.get_or_create(name=strain)
+                                measurement.genotype, created = Strain.objects.get_or_create(name=strain, species=self.species)
                             measurement.treatment = value.split(';')[-1]
                         else:
-                            measurement.genotype, created = Strain.objects.get_or_create(name=value)
+                            measurement.genotype, created = Strain.objects.get_or_create(name=value, species=self.species)
                     else:
                         #print(value)
                         if lower in ['wt', 'wild type', 'wild-type', 'canton-s', 'white1118']:
@@ -284,7 +284,7 @@ class Experiment(models.Model):
 
 
 class Strain(models.Model):
-    name = models.CharField(max_length=25)
+    name = models.CharField(max_length=50)
     species = models.ForeignKey('annotations.Species')
 
     def __unicode__(self):
