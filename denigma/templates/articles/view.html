@@ -46,6 +46,15 @@
     </div>
     <b><a href={% url 'update-entry' article.pk %}>Update</a></b>
     (<a href="/admin/data/entry/{{ article.pk }}/">Admin</a>)
+    <hr>
+    {% if changes %}
+        <h3>Changes:</h3>
+        {% for change in changes %}
+            <li><a href="/data/change/{{ change.slug }}/">{{ change }}</a></li>
+    {% endfor %}
+    {% endif %}
+
+
 
 {% endblock %}
 
