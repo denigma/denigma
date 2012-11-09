@@ -57,7 +57,8 @@ class RelationAdmin(reversion.VersionAdmin):
 
 class ChangeAdmin(admin.ModelAdmin):
     search_fields = ('title', 'text')
-    ordering  = ('at',)
+    ordering  = ('-at',)
+    list_filter = ('by',)
 
 
 class AlterationAdmin(admin.ModelAdmin):
