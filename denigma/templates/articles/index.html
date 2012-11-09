@@ -42,6 +42,7 @@
                 {% if user.is_superuser %}
                     <a href={% url 'reference' article.slug %}>Reference</a>
                     | <a href={% url 'presentation' article.slug %}>Presentation</a>
+                    | <a href={% url 'connect' article.slug %}>Connect</a>
                 {% endif %}
                 </td>
                 <td>
