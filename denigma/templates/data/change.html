@@ -4,6 +4,7 @@
 {% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
+{% load negletion %}
 
 {% block head_title %}Change {{ change.title }}{% endblock %}
 
@@ -18,7 +19,7 @@
     <p>Created on {{ change.of.created }} by <a href={% url 'profile_detail' change.of.creator %}>{{ change.of.creator }}</a>
     & updated on {{ change.at }} by <a href={%  url 'profile_detail' change.by %}>{{ change.by }}</a></p>
     {% if change.is_rest %}
-        {{ changes.text|reST|safe }}
+        {{ changes.text|hyper|negle|reST|neglete|markdown|recross|safe }}
     {% else %}
         {{ changes.text|markdown|hyper|recross|safe }}
     {% endif %}
