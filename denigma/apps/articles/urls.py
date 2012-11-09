@@ -7,6 +7,7 @@ from data.models import Entry
 
 urlpatterns = patterns('articles.views',
     url(r'^reference/(?P<slug>.+)', 'reference', name='reference'),
+    url(r'^connect/(?P<slug>.+)', 'connect', name='connect'),
     url(r'^presentation/(?P<slug>.+)', 'presentation', name='presentation'),
     url(r'^(?P<pk>\d+)$', DetailView.as_view(
             model=Entry,
