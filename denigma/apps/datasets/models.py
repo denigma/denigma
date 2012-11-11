@@ -188,6 +188,7 @@ class Reference(models.Model):
                print "Failed fetching information"
                print e, self
           if not self.title:
+            from denigma.library import Bibliography
             bib = Bibliography()
             r = bib.efetch(id=self.pmid)
             #print("datasets.Reference.fetch_data")
