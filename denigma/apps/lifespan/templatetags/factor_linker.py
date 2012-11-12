@@ -39,6 +39,7 @@ def symbols(value):
     factors['Shaker'] = u'Sh'
     del factors['to']
     del factors['g']
+    del factors['Arntl']
 
     def translate(match):
         factor = match.group(0)
