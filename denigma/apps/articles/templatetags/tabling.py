@@ -4,6 +4,7 @@ import re
 
 from django import template
 
+
 register = template.Library()
 
 @register.filter
@@ -26,24 +27,38 @@ def tables(text):
     #regex = re.compile(".. table::(?P<title>[\w\d]+)\n(?P<legend>[\w\d]+)\n(?P<data>)[\w\d]+\n\n]")
     #regex = re.compile("Table\n\W{5}](.+)\n\n", re.DOTALL)
     #rc = re.compile("Table: (?P<title>\w+)\n\W{5,100}(?P<legend>.+?)\n(?P<data>.+)\n\n", re.DOTALL)
-    rc = re.compile("#* {0,1}Table: (?P<title>[*,.)(/\w \d-]+)\.{0,1}\n\W*(?P<legend>.+?\.\n){0,1}(?P<data>.+?)[\n]{2}?", re.DOTALL)
-    def translate(match):
+    rc = re.compile("#* {0,1}(?P<pre>\.\. table\:\: \*\*){0,1}Table: (?P<title>[*,.)(/\w \d-]+)\.{0,1}\n\W*(?P<legend>[\/;\*\,\(\).\-_,+=\w\s\d]+?\.\n){0,1}(?P<data>.+?)[\n]{2}?", re.DOTALL)
+    def translate(match): # Terms that are up-regulated in the liver_ by lipoic acid treatment in young rats
         #print("Object: %s" % match)
         #print("Match: %s" % match.group(0))
         #print("Title: %s" % match.group('title'))
         #print("Legend: %s" % match.group('legend'))
         #print("Data: %s" % match.group('data'))
         #print locals(), "number" in globals()
-        table_names['Table: %s' % match.group('title')] = 'Table %s' % number
-        table = create_table(match.group('data'), match.group('title'), match.group('legend'), globals()['number'])
-        globals()['number'] += 1
-        #print(table)
 
-        return table
+        number = globals()['number']
+
+        if not match.group('title').endswith('.**'):
+            table_names['Table: %s' % match.group('title')] = 'Table %s' % number
+            table = create_table(match.group('data'), match.group('title'), match.group('legend'), number)
+        else:
+            table_name =  match.group('title').replace('.**', '')
+            table_names['Table: %s' % table_name] = 'Table %s' % number
+            #table = "%s\n\n    %s" % (match.group('title'), match.group('data'))
+            table =  match.group(0).replace("Table: ", "Table %s: " % number) # + '\n\n.. _`Table %s`:' % number
+            #print table
+        #print  globals()['number'],match.group('title'), match.group(0)
+        table_link = '.. _`Table %s`:\n' % number
+        globals()['number'] += 1
+        #print(table_link + table)
+        return table_link + table
+
     text = rc.sub(translate, text.replace('\r', '')+'\n\n')
     for table_name, table_number in table_names.items():
-        text = text.replace(table_name, table_number)
-    return text+'\n.. fin'
+        text = text.replace(table_name, "`%s`_" % table_number)
+
+    #print text
+    return text+'\n.. fin\n'
 
 def create_table(data, title=None, legend=None, number=1, intend=" "*4):
     # Determine max row length of each column
