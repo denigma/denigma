@@ -28,7 +28,13 @@ def formula(value, uni=True):
     rc = re.compile('(?P<base>\d+\.{0,1}\d+)[eE](?P<exp>-{0,1}\d+)')
     value = rc.sub(transform, value)
 
-    return value.replace("CO2", "CO\ :sub:`2`")
+    return value.replace("CO2", "CO\ :sub:`2`")\
+    .replace("H2O2", "H\ :sub:`2`O\ :sub:`1`")\
+    .replace("H2O", "H\ :sub:`2`\ O")\
+    .replace("Fe3+", "Fe\ :sub:`3+`")\
+    .replace("Cu2+", "Cu\ :sub:`2+`")\
+    .replace("NAD+", "NAD\ :sup:`+`")\
+    #.replace("-/-", "\ :sup:`-/-`\ ")
 
 
 if __name__ == '__main__':
