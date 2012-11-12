@@ -6,6 +6,7 @@
 {% load crosslink %}
 {% load negletion %}
 {% load tabling %}
+{% load figuring %}
 {% load latinum %}
 {% load math %}
 {% load factor_linker %}
@@ -26,7 +27,7 @@
 {% block content %}
 
     <div class="article_body">
-        {{ article.text|tissue_links|formula|symbols|tables|latin|hyper|negle|reST|neglete|recross|markdown|pubmed_links|safe }}
+        {{ article.text|tissue_links|formula|symbols|figures|tables|latin|hyper|negle|reST|neglete|recross|markdown|pubmed_links|safe }}
     </div>
 
     <div class="tags">
@@ -46,6 +47,9 @@
     </div>
     <b><a href={% url 'update-entry' article.pk %}>Update</a></b>
     (<a href="/admin/data/entry/{{ article.pk }}/">Admin</a>)
+    {% if user.is_superuser %}
+        | <b><a href={% url 'reference' article.slug %}>Reference</a></b>
+    {% endif %}
     <hr>
     {% if changes %}
         <h3>Changes:</h3>
