@@ -12,7 +12,8 @@ LATIN = ['in silico', 'in vitro', 'in vivo', 'in situ',
         'Mus musculus', 'M. musculus',
         'Rattus norvegicus', 'R. norvegicus',
         'Macca mullata', 'M. mullata',
-        'Homo sapiens', 'H. sapiens']
+        'Homo sapiens', 'H. sapiens',
+        'ad libitum', 'vice versa']
 
 @register.filter(is_safe=True)
 def latin(value):
