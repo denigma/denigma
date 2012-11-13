@@ -19,6 +19,7 @@
     <b>Year:</b> {{ study.reference.year }}<br>
     <b>Journal:</b> {{ study.reference.journal }}<br>
     <b>Abstract:</b> {{ study.reference.abstract }}<br>
+    <a href={{ study.reference.get_absolute_url }}>Reference</a><br>
     <br>
     <h3>Integration:</h3>
     Created on {{ study.created }} {% if study.created != study.updated %}

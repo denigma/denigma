@@ -21,7 +21,12 @@
     {% if object.issue %}<b>Issue</b>: {{ object.issue }}<br>{% endif %}
     {% if object.pages %}<b>Pages</b>: {{ object.pages }}<br>{% endif %}
     <b>Date</b>: {{ object.date }}<br>
-   {{ object.ref }}
+    {% if object.study_set.all %}
+        {% for study in object.study_set.all %}
+            <a href={{ study.get_absolute_url }}>Study</a>
+        {% endfor %}
+    {% endif %}
+
     <br><br>
     <b><a href={% url 'update_reference' object.pk %}>Auto-Update</a></b>
 {% endblock %}
