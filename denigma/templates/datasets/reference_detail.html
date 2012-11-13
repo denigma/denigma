@@ -1,5 +1,7 @@
 {% extends "datasets/base.html" %}
 
+{% load url from future %}
+
 {% block head_title %}{{ object.repr }}{% endblock %}
 
 {% block hierarchy %}
@@ -20,4 +22,6 @@
     {% if object.pages %}<b>Pages</b>: {{ object.pages }}<br>{% endif %}
     <b>Date</b>: {{ object.date }}<br>
    {{ object.ref }}
+    <br><br>
+    <b><a href={% url 'update_reference' object.pk %}>Auto-Update</a></b>
 {% endblock %}

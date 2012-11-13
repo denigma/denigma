@@ -81,12 +81,12 @@ class Reference(models.Model):
     def get_absolute_url(self):
         return reverse('detail-reference', args=[self.pk])
 
-    def save(self, *args, **kwargs):
-        if not self.pk:
+    def save(self, update=False, *args, **kwargs):
+        if not self.pk or update:
             # This code only happens if the objects is not in the database yet.
             # Otherwise it would have pk.
             try:
-                Reference._for_write = True
+                #Reference._for_write = True
                 if self.pmid or 'pmid' in kwargs:
                     print "Did not failed"
                     return Reference.objects.get(pmid=self.pmid) #, False

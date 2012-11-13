@@ -8,6 +8,7 @@ from models import Reference
 urlpatterns = patterns('datasets.views',
     url(r'^$', 'index', name='annotations'),
     url(r'^references/update', 'update_references'),
+    url(r'^reference/update/(?P<pk>\d+)', 'update_reference', name='update_reference'),
     url(r'^references/duplicates', 'duplicates'),
     url(r'^references/update', 'update_references'),
     url(r'^references', 'references'),

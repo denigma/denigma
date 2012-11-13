@@ -33,6 +33,13 @@ def update_references(request):
 #        except: print('Failed retieving information for %s' % i)
 #    return HttpResponse('Updated!')
 
+def update_reference(request, pk):
+    reference = Reference.objects.get(pk=pk)
+    reference.save(update=True)
+    return render_to_response('datasets/reference_detail.html', {'object': reference},
+        context_instance=RequestContext(request))
+
+
 def duplicates(request):
     dups = Reference.duplicates()
     return render_to_response('datasets/references.html', {'references': dups},
