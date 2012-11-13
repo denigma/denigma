@@ -26,7 +26,6 @@
             <a href={{ study.get_absolute_url }}>Study</a>
         {% endfor %}
     {% endif %}
-
     <br><br>
-    <b><a href={% url 'update_reference' object.pk %}>Auto-Update</a></b>
+    <b><a href={% url 'update_reference' object.pk %}>Auto-Update</a></b> | <a href="/admin/datasets/reference/{{ object.pk }}/">Admin</a>
 {% endblock %}
