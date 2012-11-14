@@ -9,7 +9,7 @@
 {% block head_title %}Change {{ change.title }}{% endblock %}
 
 {% block hierarchy %}
-    > <a href={% url 'changes' %} xmlns="http://www.w3.org/1999/html">Changes</a>
+    > <a href={% url 'changes' %}>Changes</a>
     > {{ change.title }}
 {% endblock %}
 
@@ -35,14 +35,14 @@
         {% if changes.tags_added %}
             {% for tag in changes.tags_added %}
                 {% if tag %}
-                    <ins style="background:#e6ffe6;"><a href={% url 'entry-tag' tag.slug %}>{{ tag }}</a></ins>
+                    <ins style="background:#e6ffe6;"><a href={% url 'entry-tag' tag %}>{{ tag }}</a></ins> {# Might fail if tag.name != tag.slug #}
                 {% endif %}
             {% endfor %}
         {% endif %}
         {% if changes.tags_removed %}
             {% for tag in changes.tags_removed %}
                 {% if tag %}
-                    <del style="background:#ffe6e6;"><a href={% url 'entry-tag' tag.slug %}>{{ tag }}</a></del>
+                    <del style="background:#ffe6e6;"><a href={% url 'entry-tag' tag %}>{{ tag }}</a></del> {# Might fail if tag.name != tag.slug #}
                 {% endif %}
             {% endfor %}
         {% endif %}
