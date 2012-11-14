@@ -1,4 +1,5 @@
-#! -*- coding: utf8 -*-
+# -*- coding: utf8 -*-
+"""Provides templatetags/filters to render mathematical expressions."""
 import re
 from django import template
 
@@ -7,6 +8,8 @@ register = template.Library()
 
 @register.filter
 def formula(value, uni=True):
+    """Convertes all instance of decimal numbers of the form base*10^exp or baseE-exp in
+    proper appearance for rendering."""
     if uni:
         multiplication = u'⋅'
     else:
@@ -21,11 +24,11 @@ def formula(value, uni=True):
 
     def transform(match):
         exp = match.group('exp')
-        if exp.startswith('-0'):
-            exp = '-'+exp[2:]
-        return "%s*10\ :sup:`%s`".replace('*', multiplication) % (match.group('base'), exp) #
+        while exp.startswith('0'): #-
+            exp = exp[1:] #
+        return "%s*10\ :sup:`%s`".replace('*', multiplication) % (match.group('base'), '-'+exp) #
 
-    rc = re.compile('(?P<base>\d+\.{0,1}\d+)[eE](?P<exp>-{0,1}\d+)')
+    rc = re.compile('(?P<base>\d+\.{0,1}\d+)[eE]-(?P<exp>-{0,1}\d+)')
     value = rc.sub(transform, value)
 
     return value.replace("CO2", "CO\ :sub:`2`")\
