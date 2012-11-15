@@ -46,7 +46,7 @@
         <br>
         <b>References:</b>
         {% for reference in intervention.references.all %}
-            <li><a href="/annotations/reference/{{ reference.pk }}">{{ reference.title }}</a></li>
+            <li><a href="/datasets/reference/{{ reference.pk }}">{{ reference.title }}</a></li>
         {% endfor %}<br>
     {% endif %}
     {% if intervention.comparison_set.all %}
