@@ -98,7 +98,7 @@ class Search():
             Title = self.title,
             Author = self.author,
             Keywords = self.keywords)
-        print self.results
+        #print self.results
 ##        for i in self.results:
 ##            print i
 
@@ -140,7 +140,7 @@ class Search():
 
     def result(self):
         d = {}
-        print self.parsedXML[0]['Author']
+        #print self.parsedXML[0]['Author']
         d['authors'] = self.parsedXML[0]['Author']
         d['authors'] = [', '.join([d['authors'].split(' ')[1], d['authors'].split(' ')[0]])]
         d['date'] = self.parsedXML[0]['PublicationDate']
