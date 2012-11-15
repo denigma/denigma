@@ -212,7 +212,7 @@ class Experiment(models.Model):
 
             # Meta data attributes:
             elif line.startswith('#'):
-                print("meta line %s" % line)
+                #print("meta line %s" % line)
                 attribute, value = line.split('#')[1].split('=')
                 self.meta[attribute] = value
                 continue
@@ -226,8 +226,9 @@ class Experiment(models.Model):
             columns = line.split(separator)
             measurement = Measurement(experiment = self)
             measurement.save()
-            for attr, value in dict(zip(header, columns)).items():
-                print self.meta
+            attributes = dict(zip(header, columns))
+            for attr, value in attributes.items():
+                #print self.meta
                 if "background" in self.meta:
                     measurement.background, created = Strain.objects.get_or_create(name=self.meta['background'], species=self.species)
                 if "temperature" in self.meta:
@@ -262,9 +263,15 @@ class Experiment(models.Model):
                 #elif attr =="pvalue":
                     #print value
                     #measurement.pvalue = unicode(value).replace("<", '')
+                #elif attr.endswith("_extension"):
+                elif attr == "intervention":
+                    gene, intervention = value.replace('(', ' ').replace(')', '').split(' ')
+                    measurement.genotype, created = Strain.objects.get_or_create(name=gene, species=self.species)
+                    measurement.manipulation = Manipulation.objects.get(shortcut=intervention)
                 else:
                     setattr(measurement, attr, value)
 
+            #print("Attributes: %s" % attributes)
             if not control:
                 control = measurement
                 measurement.control = True
@@ -275,6 +282,15 @@ class Experiment(models.Model):
                 comparison.ctr = control
                 comparison.exp = measurement
                 comparison.pvalue = measurement.pvalue
+                if "mean_extension" in attributes:
+                    comparison.mean = attributes["mean_extension"]
+                    #print("Measurement background = %s" % measurement.background)
+                    #print("Mean extension %s" % comparison.mean)
+                    comparison.ctr.genotype = measurement.background
+                    comparison.ctr.save()
+                    #print("Comparison ctr genotype: %s" % comparison.ctr.genotype)
+                if "max_extension" in attributes:
+                    comparison.max = attributes['max_extension']
                 comparison.save()
 
                 # Restore interventions mapping via memory:
@@ -345,8 +361,8 @@ class Comparison(models.Model):
     #    (2, _('Addative')),
     #    (3, _('Multiplicative'))
     #           )
-    exp = models.ForeignKey(Measurement, related_name="experimental_group")
-    ctr = models.ForeignKey(Measurement, related_name="control_group")
+    exp = models.ForeignKey(Measurement, related_name="experimental_group")#, blank=True, null=True)
+    ctr = models.ForeignKey(Measurement, related_name="control_group")#, blank=True, null=True)
     #epistasis = models.PositiveSmallIntegerField(max_length=1, blank=True, null=True, choices=EPISTATIC)
     epistasis = models.ForeignKey(Epistasis, blank=True, null=True)
     intervention = models.ForeignKey('Intervention', blank=True, null=True) # ManyToMany?
@@ -402,9 +418,9 @@ class Comparison(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-            self.mean = percentage(self.exp.mean, self.ctr.mean)
-            self.median = percentage(self.exp.median, self.ctr.median)
-            self.max = percentage(self.exp.max, self.ctr.max)
+            self.mean = percentage(self.exp.mean, self.ctr.mean) or self.mean
+            self.median = percentage(self.exp.median, self.ctr.median) or self.median
+            self.max = percentage(self.exp.max, self.ctr.max) or self.max
 
             interventions = Intervention.objects.filter(name__icontains=self.exp.genotype)
                 #Q(name__icontains=self.exp.genotype) | Q(name__icontains=self.ctr.genotype))
