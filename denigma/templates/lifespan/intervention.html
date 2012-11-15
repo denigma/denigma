@@ -52,13 +52,16 @@
     {% if intervention.comparison_set.all %}
         <br><b>Comparisons: </b><br>
         {% for comparison in intervention.comparison_set.all %}
-            <li><a href="/lifespan/comparison/{{ comparison.pk }}">{{ comparison }}
-                ( {{ comparison.t }} {{ comparison.gender }} ):
-                {% if comparison.mean %} {{ comparison.mean|floatformat }}(mean){% endif %}
-                {% if comparison.median %} {{ comparison.median|floatformat }}(median){% endif %}
-                {% if comparison.max %} {{ comparison.max|floatformat }}(max){% endif %}
-                {% if comparison.pvalue %} {{ comparison.pvalue }}(p-value){% endif %}
-                </a></li>
+            <li>
+                <a href="/lifespan/comparison/{{ comparison.pk }}">
+                    {{ comparison }}
+                    ( {{ comparison.t }} {{ comparison.gender }} ):
+                    {% if comparison.mean %} {{ comparison.mean|floatformat }}(mean){% endif %}
+                    {% if comparison.median %} {{ comparison.median|floatformat }}(median){% endif %}
+                    {% if comparison.max %} {{ comparison.max|floatformat }}(max){% endif %}
+                    {% if comparison.pvalue %} {{ comparison.pvalue }}(p-value){% endif %}
+                </a>
+            </li>
         {% endfor %}
     {% endif %}
     <br>
