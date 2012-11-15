@@ -373,7 +373,11 @@ class Comparison(models.Model):
     pvalue = models.CharField(max_length=10, blank=True, null=True)#models.FloatField(blank=True, null=True)
 
     def __unicode__(self):
-        return u"{0} vs. {1}".format(self.exp.genotype, self.ctr.genotype)
+        if self.exp.manipulation:
+            manipulation = ' %s' % self.exp.manipulation.shortcut
+        else:
+            manipulation = ''
+        return u"{0}{1} vs. {2}".format(self.exp.genotype, manipulation, self.ctr.genotype)
 
     def get_absolute_url(self):
         return u"/lifespan/comparision/%s" % self.pk
