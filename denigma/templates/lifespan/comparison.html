@@ -15,6 +15,9 @@
     <b>Study:</b> <a href="/lifespan/study/{{ comparison.exp.experiment.study.pk }}">{{ comparison.exp.experiment.study }}</a><br>
     <b>Experiment: </b> <a href="/lifespan/experiment/{{ comparison.exp.experiment.pk }}/">{{ comparison.exp.experiment.name }}</a><br>
     <b>Experimental measurement:</b> <a href="/lifespan/measurement/{{ comparison.exp.pk }}">{{ comparison.exp }}</a><br>
+    {% if comparison.exp.manipulation %}
+        <b>Manipulation: </b> <a href={{ comparison.exp.manipulation.get_absolute_url }}>{{ comparison.exp.manipulation }}</a><br>
+    {% endif %}
     <b>Control measurement:</b> <a href="/lifespan/measurement/{{ comparison.ctr.pk }}">{{ comparison.ctr }}</a><br>
     <b>Epistasis:</b> <a href="/lifespan/epistasis/{{ comparison.epistasis.pk }}">{{ comparison.epistasis }}</a><br>
     <b>Intervention:</b> <a href="/lifespan/intervention/{{ comparison.intervention.pk }}">{{ comparison.intervention }}</a><br>
