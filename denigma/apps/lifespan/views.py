@@ -694,6 +694,7 @@ class FactorList(SingleTableView, FormView):
         if FactorList.query:
             factors = Factor.objects.filter(Q(symbol__icontains=FactorList.query) |
                                          Q(name__icontains=FactorList.query) |
+                                         Q(ensembl_gene_id=FactorList.query) |
                                          Q(observation__icontains=FactorList.query) |
                                          Q(note__icontains=FactorList.query))
         else:
