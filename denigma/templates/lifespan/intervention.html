@@ -55,7 +55,9 @@
             <li>
                 <a href="/lifespan/comparison/{{ comparison.pk }}">
                     {{ comparison }}
-                    ( {{ comparison.t }} {{ comparison.gender }} ):
+                    {% if comparison.t or comparison.gender %}
+                        ( {{ comparison.t }} {{ comparison.gender }} )
+                    {% endif %}:
                     {% if comparison.mean %} {{ comparison.mean|floatformat }}(mean){% endif %}
                     {% if comparison.median %} {{ comparison.median|floatformat }}(median){% endif %}
                     {% if comparison.max %} {{ comparison.max|floatformat }}(max){% endif %}
