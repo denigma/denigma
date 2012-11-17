@@ -17,7 +17,7 @@
     <table>
         <tr>
             <td valign="top">
-                {{ entry.text|markdown|hyper|recross|safe }}
+                {{ entry.content|markdown|hyper|recross|safe }}
             </td>
             <td>
                 {% for image in entry.images.all %}
@@ -31,7 +31,7 @@
         <div class="span4">
             {% block column-1 %}
                 <a href={{ tags.get_absolute_url }}><h3>Tags</h3></a>
-                {{ tags.text|markdown|hyper|recross|safe }}
+                {{ tags.content|markdown|hyper|recross|safe }}
                 {% for image in tags.images.all %}
                     <a href={{ tags.get_absolute_url }}><img src={{ image.url }} alt={{ image.name }} width="250" height="250"></a>
                 {% endfor %}
@@ -40,7 +40,7 @@
         <div class="span4">
             {% block column-2 %}
                 <a href={{ categories.get_absolute_url }}><h3>Categories</h3></a>
-                {{ categories.text|markdown|hyper|recross|safe }}
+                {{ categories.content|markdown|hyper|recross|safe }}
                 {% for image in categories.images.all %}
                     <a href={{ categories.get_absolute_url }}><img src={{ image.url }} alt={{ image.name }} width="250" height="250"></a>
                 {% endfor %}
@@ -49,7 +49,7 @@
         <div class="span4">
             {% block column-3 %}
                 <a href={{ hierarchy.get_absolute_url }}><h3>Hierarchy</h3></a>
-                {{ hierarchy.text|markdown|hyper|recross|safe }}
+                {{ hierarchy.content|markdown|hyper|recross|safe }}
                 {% for image in hierarchy.images.all %}
                     <a href={{ hierarchy.get_absolute_url }}><img src={{ image.url }} alt={{ image.name }} width="250" height="250"></a>
                 {% endfor %}
