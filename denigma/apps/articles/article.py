@@ -1,4 +1,4 @@
-#! -.- coding: utf8 -.-
+# -.- coding: utf8 -.-
 """Structured Articles.
 
 Structured article seperates the context from the representation in a highly
@@ -135,8 +135,9 @@ class Article(object):
         self.bibliography = Bibliography()
         self.citations = Citations()
         self.content = None
+        self.connect = False
 
-    def referencing(self, numbered=False, brackets=False, rest=True):
+    def referencing(self, numbered=False, brackets=False, rest=True, connect=False):
         """This function goes through all the paragraph and replaces the
         references for printing purposes."""
         if numbered: # Numbered referencing style.
@@ -145,6 +146,8 @@ class Article(object):
             self.citations.brackets = True
         if rest:
            self.citations.rest = True
+        if connect:
+            self.connect=True
             
         mapping = {}
         text = ''
@@ -160,7 +163,7 @@ class Article(object):
                 #print "match in finding"
                 #print "match is:", match[1:-1]
                 if "Figure" in match or "Table" in match:
-                    print "mapping is", match, match[1:-1]
+                    #print "mapping is", match, match[1:-1]
 
                     #print "Identified %s as match" % match, mapping, mapping[match[1:-1]]
                     citationstyle = "(%s)"
@@ -178,7 +181,7 @@ class Article(object):
             # find []
             # use regex to replace all in place citations.
             pattern = "\[(.+?)\]"
-            findings = re.findall(pattern, str(paragraph))
+            findings = re.findall(pattern, unicode(paragraph))
             for finding in findings:
                 if finding.startswith('Figure'): #finding in self.figures or
                     items = finding.replace('; ', ';').split(';')
@@ -189,26 +192,27 @@ class Article(object):
                         paragraph.references[item] = numberedfigure
                         #self.figures[figurename].title = numberedfigure
                 elif finding in self.tables or finding.startswith('Table'):
-                    items = finding.replace('; ', ';').split(';')
-                    for item in items:
-                        tablename = item.replace('Table: ', '')
-                        m = re.findall(' (\w)$', tablename) # http://stackoverflow.com/questions/2362471/match-start-and-end-of-file-in-python-with-regex
-                        if m:
-                            panel = m[0]
-                            print "Panel =", panel
-                            tablename = tablename[:-2]
-                            print "Tabelname =", tablename
-                        else:
-                            panel = ''
-                        self.tables.order.append(tablename)
-                        try:
-                            numberedtable = "Table %s" % (self.tables.order.index(tablename)+1)
-                            print "Numbered table =", numberedtable
-                            paragraph.references[item] = numberedtable+panel
-                            print "Assigning %s to %s" % (item, numberedtable+panel)
-                            #self.tables[tablename] = numberedtable
-                        except Exception as e:
-                            print "Failed to refer to table: ", e
+                    pass
+#                    items = finding.replace('; ', ';').split(';')
+#                    for item in items:
+#                        tablename = item.replace('Table: ', '')
+#                        m = re.findall(' (\w)$', tablename) # http://stackoverflow.com/questions/2362471/match-start-and-end-of-file-in-python-with-regex
+#                        if m:
+#                            panel = m[0]
+#                            print "Panel =", panel
+#                            tablename = tablename[:-2]
+#                            print "Tabelname =", tablename
+#                        else:
+#                            panel = ''
+#                        self.tables.order.append(tablename)
+#                        try:
+#                            numberedtable = "Table %s" % (self.tables.order.index(tablename)+1)
+#                            print "Numbered table =", numberedtable
+#                            paragraph.references[item] = numberedtable+panel
+#                            print "Assigning %s to %s" % (item, numberedtable+panel)
+#                            #self.tables[tablename] = numberedtable
+#                        except Exception as e:
+#                            print "Failed to refer to table: ", e
                 elif finding.startswith('http://'): continue # Is link
                 else:
                     paragraph.references[finding] = Refs(numbered, self.citations)
@@ -224,7 +228,7 @@ class Article(object):
                 if not am and (m or (isdigit(finding) and int(finding) < 500)):
                     print "Found m"
                     items = finding.split(',')
-                    print items
+                    #print items
                     for item in items[:]:
                         if "-" in item:
                             start, end = item.split('-')
@@ -240,7 +244,7 @@ class Article(object):
                             paragraph.references[finding].append(r)
                             mapping = paragraph.references
                             self.citations.add(r)
-                            text = re.sub(pattern, replace, str(paragraph)) #http://stackoverflow.com/questions/3997525/python-replace-with-regex
+                            text = re.sub(pattern, replace, unicode(paragraph)) #http://stackoverflow.com/questions/3997525/python-replace-with-regex
                         else:
                             pass
                             #paragraph.references[finding].append(item)
@@ -275,7 +279,7 @@ class Article(object):
                             #print "Mapped paragaph"
                             #pattern = "\[.+?\]"
                             
-                            text = re.sub(pattern, replace, str(paragraph))
+                            text = re.sub(pattern, replace, unicode(paragraph))
                             #print "paragraph is now subsitututed:", text
 
                         except Exception as e:
@@ -291,22 +295,22 @@ class Article(object):
                                 mapping = paragraph.references
                                 #paragraph.text =
                                 self.citations.add(r)
-                                text = re.sub(pattern, replace, str(paragraph))
+                                text = re.sub(pattern, replace, unicode(paragraph))
                                 
                                 #print len(self.citations), self.citations
                             elif item.replace('Figure: ' , '') in self.figures:
                                 #print "Figure need to be handled", item, paragraph.references[finding]
                                 mapping = paragraph.references
-                                text = re.sub(pattern, replace, str(paragraph))
+                                text = re.sub(pattern, replace, unicode(paragraph))
                                 #print item, "is not in references."
                             elif item.replace('Table: ', '') in self.tables or item.replace('Table: ', '')[:-1] in self.tables:
                                 mapping = paragraph.references
-                                text = re.sub(pattern, replace, str(paragraph))
+                                text = re.sub(pattern, replace, unicode(paragraph))
                             else:
                                 print "Ref did not match anything:", finding
                                 if "Table: " in item: # I don't know why this has to be here?
                                     mapping = paragraph.references
-                                    text = re.sub(pattern, replace, str(paragraph))
+                                    text = re.sub(pattern, replace, unicode(paragraph))
                                 else:
                                     try:
                                         if len(item) > 5: # Too short will probaly match something weird.
@@ -320,7 +324,7 @@ class Article(object):
                                                 paragraph.references[finding].append(r[0])
                                                 mapping = paragraph.references
                                                 #print paragraph.references
-                                                text = re.sub(pattern, replace, str(paragraph))
+                                                text = re.sub(pattern, replace, unicode(paragraph))
                                                #print text
                                             else:
                                                  raise Exception
@@ -330,8 +334,8 @@ class Article(object):
                                         try:
                                             # Assumed to be alredy a reference:
                                             paragraph.references[finding].append(item)
-                                            text = re.sub(pattern, replace, str(paragraph))
-                                            print finding, paragraph.references[finding]
+                                            text = re.sub(pattern, replace, unicode(paragraph))
+                                            #print finding, paragraph.references[finding]
                                         except Exception as e:
                                             print e, finding, "is no reference."
                                 
@@ -386,17 +390,17 @@ class Article(object):
     def glossaring(self):
         """Creates an automatic generated glossary."""
         for paragraph in self.paragraphs:
-            findings = re.findall("[A-Z]{2,}", str(paragraph)) #More tha two capital letters.
+            findings = re.findall("[A-Z]{2,}", unicode(paragraph)) #More than two capital letters.
             #print findings
             
-            abbreviation_explained = re.findall("[a-z]?[A-Z]{2,}[a-z]? \(.*?\)", str(paragraph)) #"([a-z]{1})?[A-Z]{2,}([a-z]{1})? \(.*?\)"
+            abbreviation_explained = re.findall("[a-z]?[A-Z]{2,}[a-z]? \(.*?\)", unicode(paragraph)) #"([a-z]{1})?[A-Z]{2,}([a-z]{1})? \(.*?\)"
             for abbreviation_explaination in abbreviation_explained:
                 #print abbreviation_explaination
                 abbreviation = abbreviation_explaination.split(' (')[0]
                 explaination = abbreviation_explaination.split('(')[1].split(')')[0]
                 self.glossary[abbreviation] = explaination
                 
-            explaination_abbreviated = re.findall("\(([a-z]?[A-Z]{2,}[a-z]?)\)", str(paragraph))
+            explaination_abbreviated = re.findall("\(([a-z]?[A-Z]{2,}[a-z]?)\)", unicode(paragraph))
             #print explaination_abbreviated
             for explaination_abbreviation in explaination_abbreviated:
                 number_of_words = len(explaination_abbreviation)
@@ -406,7 +410,7 @@ class Article(object):
                 word = '[A-Z,a-z,0-9]+ '
                 regex = '%s\([a-z]?[A-Z]{2,}[a-z]?\)' % (word * number_of_words)
                 #print regex
-                results = re.findall(regex, str(paragraph))
+                results = re.findall(regex, unicode(paragraph))
                 for result in results:
                     explaination = result.split('(')[0]
                     abbreviation = result.split(' (')[1].split(')')[0]
@@ -428,11 +432,12 @@ class Article(object):
             print section.title, section.count
                         
 
-    def structuring(self, type='Console', emphasis='**', count=False, rest=True):
+    def structuring(self, type='Console', emphasis='**', count=False, rest=True, connect=False):
+        print("Structuring")
         figuresAndTables = False # Will be set to True if there is a Tables a Figures section and prevent the generation of automtaic table and figures section.
         if count: self.counting()
         structure = self.structure
-        if self.title: structure.append(emphasis+str(self.title)+emphasis)
+        if self.title: structure.append(emphasis+unicode(self.title)+emphasis)
         if self.abstract:
             structure.append('\n'+emphasis+'Abstract:'+emphasis)
             if count: structure[-1] += ' [%s]' % self.abstract.count
@@ -442,40 +447,46 @@ class Article(object):
         if self.content:
             structure.append('\n'+emphasis+'Content:'+emphasis)
             structure.append(str(self.content))
+        #print("Glossary: %s" % self.glossary)
         if self.glossary:
+            #print("Has glossary")
             structure.append('\n'+emphasis+'Glossary:'+emphasis)
             if count: structure[-1] += ' [%s]' % len(self.glossary)
             abbreviations = [structure.append('%s = %s' % (k, v)) for k,v in self.glossary.items()] #.title()
         structure.append('')
         if self.sections:
             for section in self.sections:
-                structure.append(emphasis+str(section)+emphasis)
+                structure.append(emphasis+unicode(section)+emphasis)
                 if count: structure[-1] += ' [%s]' % section.count
                 if section.paragraphs:
                     for paragraph in section.paragraphs:
-                        if not rest: structure.append('%s\n' % str(paragraph).replace('**\n', '.** '))
+                        if not rest: structure.append('%s\n' % unicode(paragraph).replace('**\n', '.** '))
                 if section.subsections:
                     for subsection in section.subsections:
                         structure.append(emphasis+str(subsection)+emphasis)
                         if count: structure[-1] += ' [%s]' % subsection.count
                         for paragraph in subsection.paragraphs:
-                            if not rest: structure.append('%s\n' % str(paragraph).replace('**\n', '.** '))
+                            if not rest: structure.append('%s\n' % unicode(paragraph).replace('**\n', '.** '))
                 if section.title == "Figures & Tables":
                     if count:
                         structure[-1] = structure[-1][:-3]+' [%s] [%s]' % (len(self.figures), len(self.tables))
                         #structure[-1] += ' [%s] [%s]' % (len(self.figures), len(self.tables))
 
-                    structure.append(str(self.figures) or '')
-                    structure.append(str(self.tables) or '')
+                    structure.append(unicode(self.figures) or '')
+                    structure.append(unicode(self.tables) or '')
                     figuresAndTables = True
 ##                else:
 ##                    for paragraph in section.paragraphs:
 ##                        structure.append('%s\n' % paragraph)
         else:
-            structure.append('\n\n'.join(map(str, self.paragraphs))) # Call referencing here.
+            structure.append('\n\n'.join(map(unicode, self.paragraphs))) # Call referencing here.
 
+        if rest:
+            if self.connect:
+                structure.append('\n============\nBibliography\n============\n')
+            else:
+                structure.append('\nReferences\n==========') # ReST
 
-        if rest: structure.append('\nReferences\n==========') # ReST
         else: structure.append('\n'+emphasis+'References'+emphasis)
         if count: structure[-1] += ' [%s]' % len(self.citations)
         #structure.append(str("\n".join(self.references)))
@@ -485,12 +496,22 @@ class Article(object):
             structure.append('')
             if self.figures:
                 structure.append('**Figures**')
-                structure.append(str(self.figures) or '')
+                structure.append(unicode(self.figures) or '')
                 structure.append('')
             if self.tables:
                 structure.append('**Tables**')
                 structure.append('')
-                structure.append(str(self.tables) or '')
+                structure.append(unicode(self.tables) or '')
+
+        if rest:
+            #print("rest")
+            #print structure
+            for index, part in enumerate(structure[:]):
+                if "Glossary" in part:
+                    #print("Glossary in structure")
+                    abbreviations = "\n".join(["%s\n    %s" % (k, v) for k, v in self.glossary.items()])
+                    #print(abbreviations)
+                    structure[index].replace('========\nGlossary\n========', '========\nGlossary\n========\n%s' % abbreviations)
 
         return structure
 
@@ -504,7 +525,10 @@ class Article(object):
     def __repr__(self):
         """Prints brief consentive summary of the article
         Number of sections, parapgraphs and total word count"""
-        return string
+        return self.string
+
+    def __unicode__(self):
+        return self.__repr__()
 
     def __len__(self):
         """Character count."""
@@ -755,6 +779,9 @@ class Keys(list):
     def __repr__(self):
         return '; '.join(self)
 
+    def __unicode__(self):
+        return __repr__()
+
 class Subtitle:
     """Depriciated, use section instead."""
     def __init__(self, text, level):
@@ -777,8 +804,12 @@ class Section:
         article.section = self
         self.subsections = []
         self.count = 0
+
     def __repr__(self):
         return self.title
+
+    def __unicode__(self):
+        return self.__repr__()
 
     def append(self, string):
         #if isinstance(self.text, list):
@@ -809,6 +840,9 @@ class Subsection:
         
     def __repr__(self):
         return self.title
+
+    def __unicode(self):
+        return self.__repr__()
     
   
 class Paragraph:
@@ -829,6 +863,8 @@ class Paragraph:
     def __repr__(self):
         return self.text
 
+    def __unicode__(self):
+        return self.__repr__()
 
 
 class Collection(dict):#, list):TypeError: Error when calling the metaclass base multiple bases have instance lay-out conflict
@@ -865,6 +901,9 @@ class Figures(Collection):
                                                              self[figure].legend))
         return "".join(string)
 
+    def __unicode__(self):
+        return self.__repr__()
+
 
 class Figure:
     """A figure which can be any image file."""
@@ -878,12 +917,16 @@ class Figure:
     def __repr__(self):
         return '%s %s' % (self.title, self.filename)
 
+    def __unicode__(self):
+        return self.__repr__()
+
 
 class Tables(Collection):
     """All the tables of the article."""
     def __init__(self, type='dict'):
         Collection.__init__(self)
         self.order = []
+
     def __repr__(self):
         string = []
         for table in self.order:
@@ -899,6 +942,9 @@ class Tables(Collection):
                     string.append(self[table].unique)
                 string.append('\n\n')
         return "".join(string)
+
+    def __unicode__(self):
+        return self.__repr__()
 
         
 
@@ -986,7 +1032,7 @@ class Refs(list):
     def __repr__(self):
         if not self.numbered:
             # If it was not identfied use the initial ref:
-            return "; ".join([i.ref() if not isinstance(i, str) else i for i in self])
+            return "; ".join([i.ref() if not isinstance(i, (unicode, str)) else i for i in self])
         else:
             try:
                 numbers = continum([self.citations.index(repr(i))+1 for i in self])
@@ -1040,6 +1086,8 @@ class Citations(list):
             self.add = self.adding
         self.numbered = False
         self.brackets = False # [1] [2] [3]
+        self.rest = False
+
 
         self.format = "{authors} ({year}) {title}. {journal} {volume}: {pages}." #author_last_name, author_intial, et al.
             
@@ -1063,7 +1111,7 @@ class Citations(list):
             for i in self:
                 string.append(self.dictionary[i].full())
             
-        return "\n".join(string)
+        return "\n\n".join(string)
 
 
 class Acknowledgements:
