@@ -88,7 +88,7 @@ SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = True
+USE_I18N = False
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
@@ -201,8 +201,11 @@ TEMPLATE_CONTEXT_PROCESSORS = [
 ]
 
 INSTALLED_APPS = [
+    # Alternative admin designs:
+    #'grappelli',
+    #'djangocms_admin_style',
+
     # Django
-    #'grappelli', # Alternative admin design.
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -259,7 +262,9 @@ INSTALLED_APPS = [
     'blog',
     'links',
     'books',
+    'quests',
     'todos',
+    #'todo',
     'pastebin',
     'experts',
     #'news',
