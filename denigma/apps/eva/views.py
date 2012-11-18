@@ -7,11 +7,12 @@ try:
     from django.template import RequestContext
     from django import forms
     from django.contrib import messages
-    from django.translation import ugettext
+    from django.utils.translation import ugettext
 
     from data import get
+
 except ImportError as e:
-    print e
+    print("eva.views: %s" % e)
 
 try:
     from browser import br
