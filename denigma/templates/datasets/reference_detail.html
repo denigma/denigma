@@ -1,6 +1,7 @@
 {% extends "datasets/base.html" %}
 
 {% load url from future %}
+{% load rendering %}
 
 {% block head_title %}{{ object.repr }}{% endblock %}
 
@@ -21,7 +22,7 @@
     {% if object.issue %}<b>Issue</b>: {{ object.issue }}<br>{% endif %}
     {% if object.pages %}<b>Pages</b>: {{ object.pages }}<br>{% endif %}
     <b>Date</b>: {{ object.date }}<br>
-    <b>Citation</b>: {{ object.ref }}
+    <b>Citation</b>: {{ object.ref|markup }}<br>
     {% if object.study_set.all %}
         {% for study in object.study_set.all %}
             <a href={{ study.get_absolute_url }}>Study</a>
