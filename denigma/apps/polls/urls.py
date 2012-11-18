@@ -1,10 +1,8 @@
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, url
 from django.views.generic import DetailView, CreateView
 
 from models import Poll
 from views import PollsList
-
-
 
 
 urlpatterns = patterns('',
