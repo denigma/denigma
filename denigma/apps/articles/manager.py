@@ -18,13 +18,13 @@ except ImportError:
    print("No library available.")
 
 
-def referencing(entry, linking=True):
+def referencing(entry, linking=True, numbered=True):
     print("Is article.")
     if isinstance(entry, (str, unicode)):
         text = entry.replace('\r', '').replace(r'\xe2\x80\x93', '-') # Second replace is probaly not any-more necessary.
     else:
         text = entry.text.replace('\r', '').replace(r'\xe2\x80\x93', '-') # Second replace is probaly not any-more necessary.
-    text = text.encode('ascii', 'ignore')
+    #text = text.encode('ascii', 'ignore') # This causes the conversion into ascii code, which is not necessary as everything should be utf8.
     article = a.Article()
 
     title_regex = "={2,}\n(.{2,})\n={2,}"
@@ -173,22 +173,30 @@ def referencing(entry, linking=True):
     text = rc.sub(translate, text)
 
     from articles.templatetags.tabling import tables
+    from articles.templatetags.figuring import figures
     from articles.templatetags.math import formula
+    from articles.templatetags.formatter import pageBreak
 
     if linking:
         from lifespan.templatetags.factor_linker import symbols
         from annotations.templatetags.tissue_linker import tissue_links
-        paragraph = a.Paragraph(tables(tissue_links(symbols(formula(text, uni=False)))).replace('.. header: ', '.. header:: '))
+        paragraph = a.Paragraph(pageBreak(figures((tables(tissue_links(symbols(formula(text, uni=False))))))).replace('.. header: ', '.. header:: '))
     else:
-        paragraph = a.Paragraph(tables(formula(text, uni=False)).replace('.. header: ', '.. header:: '))
+        paragraph = a.Paragraph(pageBreak(figures(tables(formula(text, uni=True)))).replace('.. header: ', '.. header:: '))
     article.paragraphs = [paragraph]
-    article.referencing(numbered=True, brackets=False)
+    article.referencing(numbered=numbered, brackets=False)
     # print a.string
-
-    print("Outputing the document...")
-    output = open(os.path.join(os.path.join(settings.PROJECT_ROOT, 'documents'), entry.slug+'.rst'), 'w')
-    output.write(article.string)
+    #article.glossaring()
+    #print article.glossary
+    print("Outputting the document...")
+    if hasattr(entry, 'slug'):
+        name = entry.slug
+    else:
+        name = 'output'
+    output = open(os.path.join(os.path.join(settings.PROJECT_ROOT, 'documents'), name+'.rst'), 'w')
+    output.write(article.__unicode__().encode('utf8'))
     output.close()
     return article.string
 
 #23456789112345678921234567893123456789412346789512345678961234567897123456789  
+
