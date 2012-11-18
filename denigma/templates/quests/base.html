@@ -1,0 +1,17 @@
+{% extends "site_base.html" %}
+
+{% load url from future %}
+
+{% block head_title %}Quests{% endblock %}
+
+{% block base_hierarchy %}
+    > <a href={% url "quests" %}>Quests</a>
+{% endblock %}
+
+{% block title %}Quests{% endblock %}
+
+{% block options %}
+    <a href={% url 'create-entry' %}>Create</a>
+    | a href={% url "todos" %}>Todos</a>
+
+{% endblock %}

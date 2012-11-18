@@ -1,0 +1,22 @@
+{% extends "quests/base.html" %}
+
+{% load url from future %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink%}
+
+{% block content %}
+    {{ quests.content|markdown|hyper|recross|safe }}
+    {% for image in quests.images.all %}
+        <img src={{ image.get_absolute_url }}> alt={{ image.name }} width="250" height="250">
+    {% endfor %}
+    <hr>
+    {% for entry in entries %}
+        <li>
+            <a href={% url "quest" entry.slug %}>{{ entry.title }}</a>
+            ({% for tag in entry.tags.all %}
+                <a href={% url 'entry-tag' tag.name %}>{{ tag }}</a>
+            {% endfor %})
+        </li>
+    {% endfor %}
+{% endblock %}

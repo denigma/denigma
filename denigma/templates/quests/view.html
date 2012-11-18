@@ -1,0 +1,22 @@
+{% extends "quests/base.html" %}
+
+{% load url from future %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}{{ quest.title }}{% endblock %}
+
+{% block hierarchy %}
+    > Quest
+    = {{ quest.title }}
+{% endblock %}
+
+{% block title %}{{ quest.title }}{% endblock %}
+
+{% block content %}
+    {{ quest.text|reST|markdown|hyper|recross|safe }}
+    <hr>
+    <b><a href={% url 'update-entry' quest.slug %}>Update</a></b> |
+    <b><a href={% url 'create-entry' %}>Engage</a></b>
+{% endblock %}
