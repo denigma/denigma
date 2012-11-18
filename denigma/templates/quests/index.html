@@ -6,10 +6,20 @@
 {% load crosslink%}
 
 {% block content %}
-    {{ quests.content|markdown|hyper|recross|safe }}
-    {% for image in quests.images.all %}
-        <img src={{ image.get_absolute_url }}> alt={{ image.name }} width="250" height="250">
-    {% endfor %}
+    <table>
+        <tr>
+            <td valign="top">
+                {{ quests.content|markdown|hyper|recross|safe }}
+            </td>
+            <td>
+                {% for image in quests.images.all %}
+                    <img src={{ image.get_absolute_url }} alt={{ image.name }} width="250" height="250">
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+
+
     <hr>
     {% for entry in entries %}
         <li>
