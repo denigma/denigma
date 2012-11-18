@@ -1,7 +1,7 @@
 from itertools import chain
 
 from django.http import HttpResponse
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
@@ -28,6 +28,8 @@ from data import get
 
 from stats.effective import effect_size
 from stats.pValue import t_two_sample, calc_benjamini_hochberg_corrections, hyperg
+from stats.superfloat import pf
+
 from annotations.david.report import enrich
 from annotations.mapping import mapid
 from utils.count import Counter
@@ -243,7 +245,7 @@ class Intersection(object):
 
 
 
-def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, benjamini=None):
+def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, benjamini=None ):
     entry = get("Intersections")
     id = 'seq_id'
     if request.GET:
@@ -296,9 +298,62 @@ def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, se
            'sets': Set.objects.all(),
            'ids': IDs,
            'id': id,
+           'set': set,
     }
     return render_to_response('expressions/intersections.html', ctx,
         context_instance=RequestContext(request))
+
+def intersections_table(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, benjamini=None):
+    id = 'seq_id'
+    ratio = float(ratio)
+    pvalue=float(pvalue)
+    if fold_change == "None": fold_change = None
+    if exp == "None": exp = None
+    if benjamini == "None": benjamini = None
+    filter = TranscriptFilterSet(request.GET, transcripts)
+
+    intersections = []
+    #signatures = Signature.objects.differential(ratio, pvalue)      #
+    if set:
+        set = Set.objects.get(pk=set)
+        signatures = set.signatures.all()
+    else:
+        set = Set.objects.get(pk=1)
+        signatures = set.signatures.all()
+    for signature in signatures:              #
+        signature.differential(ratio, pvalue, fold_change, exp, benjamini, id) # Might a good function for a custom manager.
+
+    # Construct table:
+
+    rows = []
+    row = ['Signature']
+    limit = len(signatures)
+    for a_signature in signatures:
+        row.append(a_signature.name)
+    row_count = 0
+    rows.append("\t".join(row))
+    for row_number, a_signature in enumerate(signatures):
+        row = [a_signature.name]
+        for column_number, another_signature in enumerate(signatures):
+            if column_number == row_number:
+                intersection = ''
+            elif column_number <= row_number:
+                intersection = Intersection(a_signature, another_signature)
+                intersection = "%s" % (pf(intersection.up_pvalue, 1)) #/%s
+                #pf(intersection.diff_pvalue, 1),
+                #)#pf(intersection.down_pvalue, 1)
+            else:
+                intersection = Intersection(a_signature, another_signature)
+                intersection = "%s" % (len(intersection.up))#) #/%s/%slen(intersection.diff),, len(intersection.down
+
+            row.append(intersection)
+        rows.append("\t".join(row))
+    table = "Table: Intersections\n~~~~~~~~~~~~~~~~~~~~~~\n"+"\n".join(rows)
+
+    ctx = {'title': 'Intersections',
+           'table': table
+    }
+    return render(request, 'expressions/intersections_table.html', ctx)
 
 def intersection(request, a, another, ratio=2., pvalue=0.05,
                  fold_change=None, exp=None, benjamini=None):

@@ -66,6 +66,7 @@ urlpatterns = patterns('expressions.views',
     url('^transcripts/$', 'transcripts', name='transcripts'),
     url('^transcripts/list/$', 'transcript_list', name='transcript_list'),
     url('^transcripts/delete/$', 'delete_transcripts', name='delete_transcripts'),
+    url('^intersections/table/(?P<ratio>[\d\.]+)/(?P<pvalue>[\d\.]+)/(?P<fold_change>[\w\d\.]+)/(?P<exp>[\w\d\.]+)/(?P<set>\d+)/(?P<benjamini>[\w\d\.]+)', 'intersections_table', name='intersection_table'),  # #}
     url('^intersections/$', 'intersections', name='intersections'),
     url('^intersection/(?P<a>\d+)&(?P<another>\d+)/(?P<ratio>[\d\.]+)/(?P<pvalue>[\d\.]+)', 'intersection', name='intersection'),
     url('^meta/', 'meta', name='meta-analysis'),

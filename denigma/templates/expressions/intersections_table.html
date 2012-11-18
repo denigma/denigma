@@ -1,0 +1,16 @@
+{% extends "expressions/base.html" %}
+
+{% load tabling %}
+{% load rendering %}
+
+{% block head_title %}Intersections Table{% endblock %}
+
+{% block hierarchy %}
+    > Intersections Table
+{% endblock %}
+
+{% block title %}Intersection Table{% endblock %}
+
+{% block content %}
+    {{ table|tables|reST|safe }}
+{% endblock %}

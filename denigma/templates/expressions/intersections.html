@@ -3,6 +3,8 @@
 {% load markup %}
 {% load hyperlink %}
 {% load crosslink %}
+{% load tabling %}
+{% load rendering %}
 
 {% block head_title %}{{ title }}{% endblock %}
 
@@ -91,6 +93,10 @@
         <input type="submit" value="Apply" />
     </form>
 
+  {{ table|tables|reST|safe }}
+  <a href="/expressions/intersections/table/{{ ratio }}/{{ pvalue }}/{{ fold_change }}/{{ exp }}/{{ set.pk }}/{{ benjamini }}">Intersections table</a> {# #}
+
+  <hr>
     {% comment %}
 
              <td><center><b>A&B</b></center></td>
