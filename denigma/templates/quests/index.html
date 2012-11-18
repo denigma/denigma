@@ -14,7 +14,7 @@
                     <li>
                         <a href={% url "quest" entry.slug %}>{{ entry.title }}</a>
                         ({% for tag in entry.tags.all %}
-                        <a href={% url 'entry-tag' tag.name %}>{{ tag }}</a>
+                        <a href={% url 'entry-tag' tag.name %}>{{ tag }}</a>{% if not forloop.last %}, {% endif %}
                     {% endfor %})
                     </li>
                 {% endfor %}
