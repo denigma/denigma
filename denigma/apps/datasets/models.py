@@ -21,8 +21,17 @@ def normalize_time(date):
         try:
             time = datetime(*strptime(date, "%Y/%m/%d")[0:3])
         except:
-            time = datetime(*strptime(date, "%Y-%m-%d")[0:3])
+            try:
+                time = datetime(*strptime(date, "%Y-%m-%d")[0:3])
+            except:
+                months = {'Jan':1, 'Feb':2, 'Mar':3, 'Apr':4, 'Mai':5, 'Jun':6, 'Jul':7, 'Aug':8, 'Sep':9, 'Oct':10,'Nov':11, 'Dec':12}
+                for month, number in months.items():
+                    if month in date:
+                        date = date.replace(month, unicode(number))
+                time = datetime(*strptime(date, "%Y %m %d")[0:3])
     return time
+
+
 
 def normalize_title(title):
     title = title.lower()
