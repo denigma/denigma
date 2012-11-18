@@ -10,6 +10,14 @@
         <tr>
             <td valign="top">
                 {{ quests.content|markdown|hyper|recross|safe }}
+                {% for entry in entries %}
+                    <li>
+                        <a href={% url "quest" entry.slug %}>{{ entry.title }}</a>
+                        ({% for tag in entry.tags.all %}
+                        <a href={% url 'entry-tag' tag.name %}>{{ tag }}</a>
+                    {% endfor %})
+                    </li>
+                {% endfor %}
             </td>
             <td>
                 {% for image in quests.images.all %}
@@ -18,15 +26,4 @@
             </td>
         </tr>
     </table>
-
-
-    <hr>
-    {% for entry in entries %}
-        <li>
-            <a href={% url "quest" entry.slug %}>{{ entry.title }}</a>
-            ({% for tag in entry.tags.all %}
-                <a href={% url 'entry-tag' tag.name %}>{{ tag }}</a>
-            {% endfor %})
-        </li>
-    {% endfor %}
 {% endblock %}
