@@ -232,6 +232,7 @@ class Delete(DeleteView):
 
 class EntryView(DetailView):
     def dispatch(self, request, *args, **kwargs):
+        #print("data.views.EntryView.dispatch: args=%s, kwargs=%s" % (args, kwargs))
         if 'slug' in kwargs:
             self.slug = kwargs['slug']
         return super(EntryView, self).dispatch(request, *args, **kwargs)
