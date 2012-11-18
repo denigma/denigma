@@ -50,9 +50,15 @@ def q(s):
         #print terms
         records = Entrez.read(Entrez.esearch(db='pubmed', term=' '.join(terms)))
         counts = int(records['Count'])
+        print("counts = %s" % counts)
         if not counts:
-            print " ".join(terms)
-            terms = terms[1:]
+            print("Quering %s (%s)" % (" ".join(terms), s))
+            if len(terms)%2:
+                terms = terms[1:]
+                print("terms len uneven: %s" % terms)
+            else:
+                terms = terms[:-1]
+                print("terms len even: %s" % terms)
         else: return records
 
 
@@ -147,7 +153,7 @@ class Bibliography(dict):
                     pass
                 else:
                     continue
-                print representation
+                #print representation
                 return reference
 
     def efetch(self, id, printing=True, brief=False):
@@ -161,7 +167,7 @@ class Bibliography(dict):
             if printing:
                 for k,v in r.items():
                     pass
-                    #print k, v
+                    #print k, "=", v
         try:
            reference = Reference(pmid=id,
                               title=r.get('TI', None) or r['BTI'][0],
@@ -171,13 +177,16 @@ class Bibliography(dict):
                               language=r['LA'][0],
                               authors=r.get('FAU', '') or r['FED'],
                               au=r.get('AU', '') or r['ED'],
-                              date=r.get('EDAT', None),
+                              date=r.get('DP', None) or r.get('DEP', None) or r.get('MDAT', None), # EDAT = Entrez date
                               issue=r.get('IP', ''),
                               volume=r.get('VI', ''),
                               pages=r.get('PG', ''),
                               keywords=r.get('MH', '')) # MeSH terms
            if reference.date:
-              reference.year = reference.date.split('/')[0]
+               if "/" in reference.date:
+                 reference.year = reference.date.split('/')[0]
+               else:
+                   reference.year = reference.date.split(None)[0]
            else:
               reference.date = r['PHST']
               reference.year = reference.date[:4]
@@ -276,7 +285,7 @@ class Bibliography(dict):
         if not id:
             handle = Entrez.esearch(db=db, term=term)
             record = Entrez.read(handle)
-            print "Found %s publications" % record['Count']
+            #print "Found %s publications" % record['Count']
             if add:
                 for id in record['IdList']:
                     self.add(int(id))
@@ -302,7 +311,7 @@ class Bibliography(dict):
         words = []
         for i in terms:
             if not isdigit(i) and i not in ['et', 'al', 'Suppl', 'Chem', 'Biol', 'RJ', 'MJ', 'Exp', '&', 'Sci', 'Med', 'Mol', 'Gerontol', 'BMC', 'Dev', 'Biochem', 'Epub', 'ahead', 'print', 'Biosyst', 'Nucleic', 'Acids', 'Res', 'W228-W232', 'Curr', 'S20', 'Proc', 'Natl', 'Acad', 'Mech', 'Rev', 'TW', 'Delongchamp',  'Cruz', 'V', 'Bioinformatics', 'Genes', 'Dev', 'Syst', 'Vis', 'May', 'pii', 'doi'] and i not in words and (":" not in i): # and "-" not in i
-                print i
+                #print i
                 words.append(i)
                 
         print "words:", words
