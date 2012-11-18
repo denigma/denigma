@@ -1,5 +1,7 @@
 {% extends "todos/base.html" %}
 
+{% load url from future %}
+
 {% block hierarchy %}
     > Index
 {% endblock %}
@@ -7,6 +9,7 @@
 {% block options %}
     <a href="/todos/create/">Create</a>
     (</b><a href="/admin/todo/">Admin</a><b>)
+    | <a href={% url 'quests' %}>Quests</a>
 {% endblock %}
 
 {% block title %}Todo{% endblock %}
