@@ -284,6 +284,7 @@ INSTALLED_APPS = [
     'data',
     'eva',
     'stats',
+    'utils',
 ]
 
 FIXTURE_DIRS = [
