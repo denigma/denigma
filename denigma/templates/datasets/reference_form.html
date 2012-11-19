@@ -1,0 +1,20 @@
+{% extends "datasets/base.html" %}
+
+{% load url from future %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ action }} Reference{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/datasets/references/">References</a>
+    > {{ action }}
+    {% if reference.repr %}
+        > {{ reference.repr }}
+    {% endif %}
+{% endblock %}
+
+{% block title %}{{ action }} Reference{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

@@ -1,22 +1,26 @@
 {% extends "datasets/base.html" %}
 
-{% load markup %}
+{% load url from future %}
+{% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
-
-{% block hierarchy %}
-    > <a href="/datasets/">Datasets</a>
-    > Index
-{% endblock hierarchy %}
 
 {% block subtitle %}Index{% endblock %}
 
 {% block content %}
-    {{ datasets.text|markdown|hyper|recross|safe }}
-    <center>
-    {% for image in datasets.images.all %}
-        <img src={{ image.url }} alt="datasets" width="500" height="500"/>
-    {% endfor %}
-    </center>
+    <table>
+        <tr>
+            <td valign="top">
+                {{ datasets.content|markdown|hyper|recross|safe }}
+            </td>
+            <td>
+                <center>
+                    {% for image in datasets.images.all %}
+                        <img src="{{ image.url }}" alt="datasets" width="250" height="250">
+                    {% endfor %}
+                </center>
+            </td>
+        </tr>
+    </table>
 {% endblock %}
 

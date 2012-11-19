@@ -34,6 +34,7 @@ from annotations.models import Species
 from meta.view import log
 from home.views import LoginRequiredMixin
 from data.views import Create, Update, Delete
+from data import get
 
 
 def index(request):
@@ -709,7 +710,13 @@ class FactorView(object):
 
 
 def epistasis(request):
-    HttpResponse("regimen")
+    entry = get(title='Epistasis of Longevity')
+    data = entry.text.split('\n')
+    description = data[0]
+    pmids = [i for i in data[2:] if i]
+    ctx = {'entry': entry, 'description': description, 'pmids': pmids}
+    return render_to_response('lifespan/epistasis.html', ctx,
+        context_instance=RequestContext(request))
 
 def regimen(request, pk):
     regimen = Regimen.objects.get(pk=pk)

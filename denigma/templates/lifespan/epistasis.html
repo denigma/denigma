@@ -1,0 +1,24 @@
+{% extends "lifespan/base.html" %}
+
+{% load url from future %}
+
+{% block header_title %}Epistatis{% endblock %}
+
+{% block hierarchy %}
+    > Epistatis
+{% endblock %}
+
+{% block options %}
+    <a href={% url 'epistases' %}>Epistases</a>
+{% endblock %}
+
+{% block title %}{{ entry.title }}{% endblock %}
+
+{% block content %}
+    <p>{{ description}}</p>
+    {% for pmid in pmids %}
+        <li><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ pmid }}">{{ pmid }}</a></li>
+    {% endfor %}
+    <br>
+    <b><a href={% url 'update-entry' entry.slug %}>Edit list</a></b> (<a href="/admin/blog/post/{{ entry.pk }}">Admin</a>)
+{% endblock %}

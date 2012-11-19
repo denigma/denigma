@@ -1,12 +1,19 @@
 {% extends "site_base.html" %}
 
+{% load url from future %}
+
 {% block head_title %}Datasets{% endblock %}
 
+{% block base_hierarchy %}
+    > <a href={% url 'datasets' %}>Datasets</a>
+{% endblock %}
+
 {% block options %}
-    <a href="/datasets/references/">References</a> |
-    <a href="/datasets/references/duplicates/">Duplicates</a> |
-    <a href="/datasets/changes/">Changes</a> |
-    <a href="/datasets/epistasis/">Epistasis</a>
+    <a href={% url 'create-reference' %}>Create</a>
+    </b>(<a href="/admin/datasets/reference/add/">Admin</a>)<b> |
+    <a href={% url 'references' %}>References</a>
+    </b>(<a href={% url 'references_archive' %}>Archive</a>)<b> |
+    <a href="/datasets/changes/">Changes</a>
 {% endblock %}
 
 {% block title %}Datasets{% endblock %}

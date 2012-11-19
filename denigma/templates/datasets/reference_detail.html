@@ -13,7 +13,7 @@
 {% block title %}{{ object.title }}{% endblock %}
 
 {% block content %}
-    <b xmlns="http://www.w3.org/1999/html">Authors</b>: {{ object.authors }}<br>
+    <b>Authors</b>: {{ object.authors }}<br>
     <b>Abstract</b>: {{ object.abstract }}<br>
     <b>Keywords</b>: {{ object.keywords }}<br>
     <b>Journal</b>: {{ object.journal }}<br>
@@ -22,12 +22,15 @@
     {% if object.issue %}<b>Issue</b>: {{ object.issue }}<br>{% endif %}
     {% if object.pages %}<b>Pages</b>: {{ object.pages }}<br>{% endif %}
     <b>Date</b>: {{ object.date }}<br>
-    <b>Citation</b>: {{ object.ref|markup }}<br>
+    <b>Notes</b>: {{ object.notes }}<br><br>
+    <b>Citation</b>: {{ object.ref|markdown }}<br>
     {% if object.study_set.all %}
         {% for study in object.study_set.all %}
             <a href={{ study.get_absolute_url }}>Study</a>
         {% endfor %}
     {% endif %}
     <br><br>
-    <b><a href={% url 'update_reference' object.pk %}>Auto-Update</a></b> | <a href="/admin/datasets/reference/{{ object.pk }}/">Admin</a>
+    <b><a href={% url 'update-reference' object.pk %}>Update</a></b>
+    (<a href="/admin/datasets/reference/{{ object.pk }}/">Admin</a>)
+    | <b><a href={% url 'autoupdate_reference' object.pk %}>Auto-Update</a></b>
 {% endblock %}

@@ -1,0 +1,35 @@
+{% extends "datasets/base.html" %}
+
+{% load url from future %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
+{% load render_table from django_tables2 %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+{% endblock %}
+
+{% block head_title %}References{% endblock %}
+
+{% block hierarchy %}
+   > <a href={% url 'references' %}>References</a>
+{% endblock %}
+
+{% block title %}References{% endblock %}
+
+{% block content %}
+    {{ entry.content|markdown|hyper|recross|safe }}
+    <form action="" method="POST">
+       {% csrf_token %}
+        {{ form.as_table }}
+        <input type="submit" value="Apply" />
+            <tr>
+                <td valign="top">
+                    {% render_table table %}
+                </td>
+            </tr>
+    </form>
+
+
+{% endblock %}

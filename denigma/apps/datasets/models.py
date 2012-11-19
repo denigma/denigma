@@ -28,7 +28,10 @@ def normalize_time(date):
                 for month, number in months.items():
                     if month in date:
                         date = date.replace(month, unicode(number))
-                time = datetime(*strptime(date, "%Y %m %d")[0:3])
+                try:
+                    time = datetime(*strptime(date, "%Y %m %d")[0:3])
+                except:
+                    time = datetime(*strptime(date, "%Y %m")[0:3])
     return time
 
 
@@ -291,6 +294,9 @@ class Reference(models.Model):
         else:
             return "%s (%s) *%s* %s." % (self.authors.replace(';', ','), self.year, self.title, self.journal)
 
+    @property
+    def citations(self):
+        return ref()
 
 class Signature(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)

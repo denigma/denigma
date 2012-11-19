@@ -1,20 +1,20 @@
 {% extends "datasets/base.html" %}
 
 {% load url from future %}
-{% load markup %}
+{% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
 {% load counter %}
 
 {% block hierarchy %}
-    > <a href="/datasets">Datasets</a>
-    > <a href="/datasets/references">References</a>
+    > <a href={% url 'references' %} xmlns="http://www.w3.org/1999/html">References</a>
+    > <a href={% url 'references_archive' %}>Archive
 {% endblock hierarchy %}
 
-{% block subtitle %}References{% endblock %}
+{% block title %}References Archive{% endblock %}
 
 {% block content %}
-    {{ references_entry.text|markdown|hyper|recross|safe }}
+    {{ references_entry.content|markdown|hyper|recross|safe }}
     {% if references %}
         <p>There are currently {{ references|count }} references in <a href="/admin/">Denigma db</a>:</p>
         <table>
@@ -37,16 +37,14 @@
             </tr>
         {% endfor %}
         </table>
-
         <hr>
             <b><a href="/admin/datasets/reference/add">Add reference</a></b>
         <br>
         {% if user.is_authenticated %}
-            <br><a href="/datasets/references/update">Update the references information with Entrez EUtils</a>
+            <b><a href={% url 'duplicates' %}>Duplicates</a></b> |
+            <a href="/datasets/references/update">Update the references information with Entrez EUtils</a>
     {% endif %}
-
 {% else %}
     <p>There are no references in the database.</p>
-
 {% endif %}
 {% endblock %}

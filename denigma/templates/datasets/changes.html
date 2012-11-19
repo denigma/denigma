@@ -2,7 +2,7 @@
 
 {% load staticfiles %}
 {% load render_table from django_tables2 %}
-{% load markup %}
+{% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
 
@@ -14,14 +14,13 @@
 {% block head_title %}Changes{% endblock %}
 
 {% block hierarchy %}
-    > <a href="/datasets/">Datasets</a>
     > Changes
-{%  endblock %}
+{% endblock %}
 
 {% block subtitle %}Changes{% endblock %}
 
 {% block content %}
-    {{ changes_description.text|markdown|hyper|recross|safe }}
+    {{ changes_description.content|markdown|hyper|recross|safe }}
     {% render_table changes %}<br>
     <b><a href="/admin/datasets/change/add">Add change</a></b>
 {% endblock %}

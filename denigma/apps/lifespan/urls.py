@@ -100,6 +100,7 @@ urlpatterns = patterns('lifespan.views',
     url(r'^epistases/$', ListView.as_view(queryset=Epistasis.objects.all(),
         template_name='lifespan/epistases.html', context_object_name='epistases'),
         name='epistases'),
+    url(r'^epistasis', 'epistasis', name='epistasis'),
 
     url(r'^regimens/$', ListView.as_view(queryset=Regimen.objects.all(),
         template_name='lifespan/regimens.html', context_object_name='regimens'),

@@ -1,5 +1,6 @@
 {% extends "lifespan/base.html" %}
 
+{% load url from future %}
 {% load staticfiles %}
 {% load render_table from django_tables2 %}
 
@@ -7,6 +8,10 @@
 
 {% block hierarchy %}
     > Epistases
+{% endblock %}
+
+{% block options %}
+    <a href={% url 'epistasis' %}>Epistasis of Longevity</a>
 {% endblock %}
 
 {% block title %}Epistases{% endblock %}
