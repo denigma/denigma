@@ -99,7 +99,7 @@ def add_classification(request):
             if isinstance(request.user, AnonymousUser):
                 request.user = User.objects.get(username="Anonymous")
             reversion.set_user(request.user)
-            comment = request.method['comment'] or "Added classification"
+            comment = request.method.POST['comment'] or "Added classification"
             reversion.set_comment(comment)
             log(request, classification, comment)
             msg = "Successfully added classification."
