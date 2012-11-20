@@ -99,13 +99,13 @@ def add_classification(request):
             if isinstance(request.user, AnonymousUser):
                 request.user = User.objects.get(username="Anonymous")
             reversion.set_user(request.user)
-            comment = request.method.POST['comment'] or "Added classification"
+            comment = request.POST['comment'] or "Added classification"
             reversion.set_comment(comment)
             log(request, classification, comment)
             msg = "Successfully added classification."
             messages.add_message(request, messages.SUCCESS, _(msg))
-            return redirect('annotations/classification/%s' % classification.pk)
-    return render_to_response('annotations/classification_form.html', {'form': form},
+            return redirect('/annotations/classification/%s' % classification.pk)
+    return render_to_response('/annotations/classification_form.html', {'form': form},
         context_instance=RequestContext(request))
 
 @login_required
