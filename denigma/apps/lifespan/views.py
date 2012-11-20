@@ -12,6 +12,7 @@ from django.contrib.auth.models import AnonymousUser, User
 from django.views.generic.edit import CreateView, UpdateView, FormView # DeleteView
 from django.views.generic import ListView, DetailView
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse_lazy
 from django.db.models import Q
 
 import reversion
@@ -707,6 +708,12 @@ class FactorList(SingleTableView, FormView):
 class FactorView(object):
     form_class = FactorForm
     model = Factor
+
+
+class FactorDelete(Delete):
+    model = Factor
+    comment = 'Deleted factor'
+    success_url = reverse_lazy('factors')
 
 
 def epistasis(request):
