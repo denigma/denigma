@@ -31,7 +31,10 @@ def normalize_time(date):
                 try:
                     time = datetime(*strptime(date, "%Y %m %d")[0:3])
                 except:
-                    time = datetime(*strptime(date, "%Y %m")[0:3])
+                    try:
+                        time = datetime(*strptime(date, "%Y %m")[0:3])
+                    except:
+                        time = datetime(*strptime(date, "%Y")[0:3])
     return time
 
 
