@@ -9,7 +9,7 @@ class ReferenceTable(tables.Table):
 
     def render_pmid(self, value, record):
         if value != None:
-            return mark_safe('<a href="http://ncbi.org/pubmed/%s">%s</a>' % (value, value))
+            return mark_safe('<a href="http://www.ncbi.nlm.nih.gov/pubmed/%s">%s</a>' % (value, value))
         else:
             return None
 
