@@ -41,7 +41,7 @@
     {% endif %}<br>
     <br><b>Observation:</b><br>
     {{ factor.observation|pubmed_links|markdown }}<br>
-    {% if factor.interventions.all %}
+    {% if factor.intervention.all %}
         <br><b>Interventions:</b>
         {% for intervention in factor.intervention.all %}
             <li><a href="/lifespan/intervention/{{ intervention.pk }}/">{{ intervention.name }}</a>
