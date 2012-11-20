@@ -294,7 +294,7 @@ class FactorForm(ModelForm):
 
     class Meta:
         model = Factor
-        fields = ('symbol', 'name', 'entrez_gene_id', 'ensembl_gene_id',
+        fields = ('symbol', 'name', 'alias', 'entrez_gene_id', 'ensembl_gene_id',
                   'taxid', 'species', 'observation', 'comment',
                   'assay', 'classifications', 'intervention',
                   'function', 'mean','median','maximum',
