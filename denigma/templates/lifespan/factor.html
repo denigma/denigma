@@ -15,24 +15,21 @@
 {% block title %}{{ factor.symbol }}{% endblock %}
 
 {% block content %}
-    <b>Symbol:</b> {{ factor.symbol }}<br>
-    <b>Name:</b> {{ factor.name }}<br>
+    {% if factor.symbol %}<b>Symbol:</b> {{ factor.symbol }}<br>{% endif %}
+    {% if factor.name %}<b>Name:</b> {{ factor.name }}<br>{% endif %}
     {% if factor.alias %}<b>Alias:</b> {{ factor.alias }}<br>{% endif %}
-
     {% if factor.entrez_gene_id %}
         <b>Entrez gene ID:</b> <a href="http://www.ncbi.nlm.nih.gov/gene/{{ factor.entrez_gene_id }}">{{ factor.entrez_gene_id }}</a><br>
     {% endif %}
     {% if factor.ensembl_gene_id %}
         <b>Ensembl gene ID:</b> <a href="http://www.ensembl.org/Multi/Search/Results?species=all;idx=;q={{ factor.ensembl_gene_id }}">{{ factor.ensembl_gene_id }}</a><br>
      {% endif %}
-
     {% if factor.species or factor.taxid %}
         <b>Species:</b> <a href="/annotations/species/{{ factor.species.pk }}">{{ factor.species.short_name }}</a>
         {% if factor.taxid %}
             (Taxid:</b> <a href={% url 'detail_species' factor.taxid %}>{{ factor.taxid }}</a>)<br>
         {% endif %}
     {% endif %}
-
     {% if factor.functional_description %}
         <br><b>Functional description:</b><br>
             {{ factor.functional_description|pubmed_links|safe }}
@@ -42,10 +39,8 @@
             {{ factor.function|pubmed_links }}
         {% endif %}
     {% endif %}<br>
-
     <br><b>Observation:</b><br>
     {{ factor.observation|pubmed_links|markdown }}<br>
-
     <br><b>Interventions:</b>
     {% for intervention in factor.intervention.all %}
         <li><a href="/lifespan/intervention/{{ intervention.pk }}/">{{ intervention.name }}</a>
