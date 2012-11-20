@@ -259,6 +259,7 @@ class FactorForm(ModelForm):
                 '',
                 'symbol',
                 'name',
+                'alias',
                 'entrez_gene_id',
                 'ensembl_gene_id',
                 'taxid',
