@@ -38,7 +38,7 @@ class ReferenceList(SingleTableView, FormView):
     context_object_name = 'references'
     table_class = ReferenceTable
     form_class = FilterForm
-    success_url = '/datasets/references/table'
+    success_url = '/datasets/references/'
     model = Reference
     query = None
 
