@@ -1,10 +1,13 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.views.generic import  ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AnonymousUser, User
+from django.core.urlresolvers import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 import reversion
 from taggit.models import Tag, TaggedItem
@@ -13,7 +16,7 @@ from meta.view import log
 from control import get
 
 from models import Entry, Change, Relation, Category
-from forms import EntryForm, RelationForm, CategoryForm
+from forms import EntryForm, RelationForm, CategoryForm, DeleteForm
 
 
 def index(request):
@@ -178,7 +181,7 @@ class Create(CreateView):
             reversion.set_comment(comment)
             self.object.comment = comment
             self.object.save()
-            log(self.request, self.object, comment)
+            log(self.request, self.object, comment, 1)
             reversion.set_user(self.request.user)
             form.save_m2m()
             self.success_url = self.success_url or self.object.get_absolute_url()
@@ -215,7 +218,7 @@ class Update(UpdateView):
             reversion.set_comment(comment)
             self.object.comment = comment
             self.object.save()
-            log(self.request, self.object, comment)
+            log(self.request, self.object, comment, 2)
             reversion.set_user(self.request.user)
             form.save_m2m()
             self.success_url = self.success_url or self.object.get_absolute_url()
@@ -226,8 +229,44 @@ class Update(UpdateView):
 
 class Delete(DeleteView):
     model = Entry
+    form_class = DeleteForm
+    comment = 'Deleted entry'
+    message = 'Successfully deleted %s'
+    action = 'Delete'
+    success_url = reverse_lazy('list-entries')
 
-    #def post
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(Delete, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(Delete, self).get_context_data(**kwargs)
+        context['action'] = self.action
+        context['form'] = DeleteForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.request = request
+        super(Delete, self).post(request, *args, **kwargs)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def delete(self, request, *args, **kwargs):
+        #print("data.views.Delete.delete()")
+        with reversion.create_revision():
+            self.object = self.get_object()
+            if isinstance(self.request.user, AnonymousUser):
+                self.request.user = User.objects.get(username='Anonymous')
+            self.object.user = self.request.user
+            comment = self.request.POST['comment'] or self.comment
+            reversion.set_comment(comment)
+            self.object.delete()
+            log(self.request, self.object, comment, 3)
+            reversion.set_user(self.request.user)
+            self.success_url = self.success_url or self.object.get_absolute_url()
+            messages.add_message(self.request, messages.SUCCESS,
+                _(self.message % self.object))
+            return HttpResponseRedirect(self.get_success_url())
+
 
 
 class EntryView(DetailView):
