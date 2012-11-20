@@ -105,7 +105,7 @@ def add_classification(request):
             msg = "Successfully added classification."
             messages.add_message(request, messages.SUCCESS, _(msg))
             return redirect('/annotations/classification/%s' % classification.pk)
-    return render_to_response('/annotations/classification_form.html', {'form': form},
+    return render_to_response('annotations/classification_form.html', {'form': form},
         context_instance=RequestContext(request))
 
 @login_required
