@@ -698,9 +698,9 @@ class FactorList(SingleTableView, FormView):
                                          Q(name__icontains=FactorList.query) |
                                          Q(ensembl_gene_id=FactorList.query) |
                                          Q(observation__icontains=FactorList.query) |
-                                         Q(note__icontains=FactorList.query))
+                                         Q(note__icontains=FactorList.query)).order_by('-id')
         else:
-            factors = Factor.objects.all()
+            factors = Factor.objects.all().order_by('-id')
         self.factorsfilter = FactorFilterSet(factors, self.request.GET)
         return self.factorsfilter.qs
 
