@@ -1,0 +1,18 @@
+{% extends 'lifespan/base.html' %}
+
+{% load url from future %}
+{% load crsipy_froms_tags %}
+
+{% block head_title %}Delete Factor{% endblock %}
+
+{% block hierarchy %}
+    > <a href={% url 'factors' %}>Factors</a>
+    > <a href={% url 'factor-detail' factor.pk %}>{{ factor.symbol }}</a>
+    > Delete
+{% endblock %}
+
+{% block title %}Delete Factor{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

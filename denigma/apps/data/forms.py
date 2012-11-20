@@ -1,4 +1,4 @@
-from django.forms import ModelForm, CharField, Textarea
+from django.forms import Form, ModelForm, CharField, Textarea
 from django.utils.translation import ugettext_lazy as _
 
 from crispy_forms.helper import FormHelper
@@ -71,4 +71,17 @@ class CategoryForm(ModelForm):
     class Meta:
         model = Category
 
+
+class DeleteForm(Form):
+    comment = CharField(help_text='Provide a reason why it is obsolute.',
+        required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset('', 'comment'),
+            FormActions(Submit('delete', 'Delete', css_class="btn-primary"),
+                        Submit('cancel', 'Cancel'))
+        )
+        super(DeleteForm, self).__init__(*args, **kwargs)
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
