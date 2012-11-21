@@ -16,7 +16,18 @@
 
 {% block content %}
     {{ quest.text|reST|markdown|hyper|recross|safe }}
+    {% for image in quest.images.all %}
+        <img src={{ image.get_absolute_url }} alt={{ image.name }}>
+    {% endfor %}
+    <br><br>
+    <b>Tags</b>:
+    {% for tag in quest.tags.all %}
+        <a href={% url 'entry-tag' tag.name %}>{{ tag.name}}</a>{% if not forloop.last %},{% endif %}
+    {% endfor %}
+
     <hr>
     <b><a href={% url 'update-entry' quest.slug %}>Update</a></b> |
     <b><a href={% url 'create-entry' %}>Engage</a></b>
+
+
 {% endblock %}
