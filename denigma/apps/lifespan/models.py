@@ -264,10 +264,13 @@ class Experiment(models.Model):
                     #print value
                     #measurement.pvalue = unicode(value).replace("<", '')
                 #elif attr.endswith("_extension"):
-                elif attr == "intervention":
-                    gene, intervention = value.replace('(', ' ').replace(')', '').split(' ')
-                    measurement.genotype, created = Strain.objects.get_or_create(name=gene, species=self.species)
-                    measurement.manipulation = Manipulation.objects.get(shortcut=intervention)
+                elif attr == "treatment" and value:
+                    if "(" in value:
+                        gene, treatment = value.replace('(', ' ').replace(')', '').split(' ')
+                        measurement.genotype, created = Strain.objects.get_or_create(name=gene, species=self.species)
+                    else:
+                        treatment = value
+                    measurement.manipulation = Manipulation.objects.get(shortcut=treatment)
                 else:
                     setattr(measurement, attr, value)
 
