@@ -14,7 +14,7 @@
 {% block title %}{{ entry.title }}{% endblock %}
 
 {% block content %}
-    {{ entry.text|markdown|hyper|recross|safe }}
+    {{ entry.content|markdown|hyper|recross|safe }}
     <ul>
         {% recursetree nodes %}
             <li>
