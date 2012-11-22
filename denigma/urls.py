@@ -22,7 +22,7 @@ handler500 = "pinax.views.server_error"
 
 urlpatterns = patterns("denigma.views",
     url(r'^$', 'home', name="home"),
-    url(r'^google(?P<term>\w+)', 'google'),
+    #url(r'^google(?P<term>\w+)', 'google'),
     #url(r'^search/(?P<term>.*)', 'search'), # Side-wide search
     url(r'^search/', include('haystack.urls')),
     url(r'^content/', 'content', name='content'),
