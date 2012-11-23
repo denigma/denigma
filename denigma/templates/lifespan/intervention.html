@@ -31,26 +31,25 @@
     {% endif %}
     <b>Factor</b>:
     {% for factor in intervention.factors.all %}<a href={% url 'factor' factor.pk %}> {{ factor.symbol }}</a>{% endfor %}<br>
-    <b>Effect:</b> {{ intervention.effect|pubmed_links|markdown }}<br>
+    <b>Manipulation:</b>
+    {% for manipulation in intervention.manipulation.all %}
+        <a href="/lifespan/manipulation/{{ manipulation.pk }}">{{ manipulation.name }}</a>{% if not forloop.last %}, {% endif %}
+    {% endfor %}<br>
+    <b>Effect:</b> {{ intervention.effect|pubmed_links|markdown }}
     {% if intervention.mean %}<b>Mean:</b> {{ intervention.mean }}<br>{% endif %}
     {% if intervention.median %}<b>Median:</b> {{ intervention.median }}<br>{% endif %}
     {% if intervention.maximum %}<b>Maximum:</b> {{ intervention.maximum }}<br>{% endif %}
     {% if intervention.25 %}<b>25%ile:</b> {{ intervention.25 }}<br>{% endif %}
     {% if intervention.75 %}<b>75%ile:</b> {{ intervention.75 }}<br>{% endif %}
-    <br><b>Manipulation:</b>
-    {% for manipulation in intervention.manipulation.all %}
-        <a href="/lifespan/manipulation/{{ manipulation.pk }}">{{ manipulation.name }}</a>{% if not forloop.last %}, {% endif %}
-    {% endfor %}
-    <br>
     {% if intervention.references.all %}
         <br>
         <b>References:</b>
         {% for reference in intervention.references.all %}
-            <li><a href="/datasets/reference/{{ reference.pk }}">{{ reference.title }}</a></li>
+            <li><a href="/datasets/reference/{{ reference.pk }}">{{ reference.pmid }}: {{ reference.title }}</a></li>
         {% endfor %}<br>
     {% endif %}
     {% if intervention.comparison_set.all %}
-        <br><b>Comparisons: </b><br>
+        <b>Comparisons:</b><br>
         {% for comparison in intervention.comparison_set.all %}
             <li>
                 <a href="/lifespan/comparison/{{ comparison.pk }}">
