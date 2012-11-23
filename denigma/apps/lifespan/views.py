@@ -489,9 +489,10 @@ class InterventionList(SingleTableView, FormView):
     def get_queryset(self):
         if InterventionList.query:
             interventions = Intervention.objects.filter(Q(name__icontains=InterventionList.query) |
-                                                       Q(effect__icontains=InterventionList.query))
+                                                        Q(effect__icontains=InterventionList.query)
+                                                        ).order_by('-pk')
         else:
-            interventions = Intervention.objects.all()
+            interventions = Intervention.objects.all().order_by('-pk')
         self.interventionsfilter = InterventionFilterSet(interventions, self.request.GET)
         return self.interventionsfilter.qs
 
