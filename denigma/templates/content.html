@@ -27,7 +27,7 @@
                     {% if content.title and content.title != "Content" %}
                         <h3><a href="{{ content.get_absolute_url }}">{{ content.title }}</a></h3>
                     {% endif %}
-                    {{ content.text|markdown|hyper|recross|safe }}
+                    {{ content.content|markdown|hyper|recross|safe }}
                 </td>
                 <td valign="top">
                     {% for image in content.images.all %}
