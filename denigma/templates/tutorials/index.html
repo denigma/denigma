@@ -15,7 +15,7 @@
     <table>
         <tr>
             <td valign="top">
-                {{ tutorials_entry.text|markdown|hyper|recross|safe }}
+                {{ tutorials_entry.content|markdown|hyper|recross|safe }}
                 {% if tutorials %}
                     {% load mptt_tags %}
                     {% recursetree tutorials %}
