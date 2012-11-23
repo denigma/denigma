@@ -13,7 +13,7 @@
         <tr>
             <td>
                 {% if entry %}
-                    {{ entry.text|markdown|hyper|recross|safe }}
+                    {{ entry.content|markdown|hyper|recross|safe }}
                 {% else %}
                     <p>This is the legendary classic Polls app with some enhancements. Here it functions to get a common sense on fundamental questions as well as to vote about the fate of Denigma.</p>
                 {% endif %}
