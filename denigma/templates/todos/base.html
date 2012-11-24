@@ -1,9 +1,18 @@
 {% extends "site_base.html" %}
 
+{% load url from future %}
+
 {% block head_title %}Todos{% endblock %}
 
 {% block base_hierarchy %}
     > <a href="/todos">Todos</a>
+{% endblock %}
+
+{% block options %}
+    <a href="/todos/create/">Create</a>
+    (</b><a href="/admin/todo/">Admin</a><b>)
+    | <a href={% url 'quests' %}>Quests</a>
+    | <a href={% url 'tasks' %}>Tasks</a>
 {% endblock %}
 
 {% block title %}Todos{% endblock %}

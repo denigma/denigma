@@ -221,6 +221,8 @@ INSTALLED_APPS = [
     
     # theme
     'pinax_theme_bootstrap',
+    #'pinax_theme_bootstrap_account',
+    #'django_forms_bootstrap',
     
     # external
     'notification', # must be first
@@ -265,6 +267,7 @@ INSTALLED_APPS = [
     'quests',
     'todos',
     #'todo',
+    'tasks',
     'pastebin',
     'experts',
     #'news',

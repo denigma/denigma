@@ -1,0 +1,49 @@
+{% extends "tasks/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{%  trans "Tasks" %}{% endblock %}
+
+{% block body_class %}index{% endblock %}
+
+{# {% block topbar_base %}{% endblock %} #}
+
+{% block body %}
+    <div class="row">
+        <div class="span4"></div>
+        <div class="span4>">
+            <h1>Tasks</h1>
+            <p class="lead">
+                Simple tasks based on
+                <a href="https://github.com/eldarion/bootstrap-ajax/">
+                    bootstrap-ajax
+                </a>
+            </p>
+            <form class="form-inline ajax" method="post" action="{% url task_add %}" data-append="#tasks">
+                {% csrf_token %}
+                <div class="input-append">
+                    <input type="text" class="span4" name="label" placeholder="Enter a task...">
+                </div>
+            </form>
+            {% include "tasks/_complete_count.html" %}
+            <table class="table table-striped" id="tasks">
+                {% for task in tasks %}
+                    {% include "tasks/_task.html" %}
+                {% endfor %}
+            </table>
+        </div>
+        <div class="span4"></div>
+    </div>
+{% endblock %}
+
+Festnetz
+14.95 /
+incl mwst
+grundgebuehr
+
+all e gesprach
+
++60 freiminuten in alle mobike funk netze
+
+tarif garantie
+telefonummer

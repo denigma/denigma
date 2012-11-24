@@ -1,0 +1,39 @@
+{% extends "site_base.html" %}
+
+{% load url from future %}
+{% load metron_tags %}
+{% load i18n %}
+
+{% block extra_head_base %}
+    <style type="text/css">
+        .task-label {
+            margin: 10px 0;
+            width: 250px;
+        }
+        #done-count h2 {
+            text-align: center;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+{% endblock %}
+
+{% block hierarchy %}
+    > <a href={% url 'tasks' %}>Tasks</a>
+{% endblock %}
+
+{% block options %}
+    <a href={% url 'quests' %}>Quests</a>
+    | <a href={% url 'todos' %}>Todos</a>
+{% endblock %}
+
+{% comment %}
+{% block footer %}
+    {% include "tasks/_footer.html" %}
+{% endblock %}
+{% endcomment %}
+
+{% block extra_body_base %}
+    <script type="text/javascript" src="https://raw.github.com/eldarion/bootstrap-ajax/e272efd297da2ed140049e420912960b280a066d/js/bootstrap-ajax.js"></script>
+    {% analytics %}
+    {% block extra_body %}{% endblock %}
+{% endblock %}
