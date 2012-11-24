@@ -37,8 +37,17 @@ def reverse_and_redirect(view, *args, **kwargs):
     return _Redirect.as_view()
 
 
+class OwnerDelete(DeleteView):
+    def get_object(self, queryset=None):
+        """Hook to ensure object is owned by request user."""
+        obj = super(OwnerDelete, self).get_object()
+        if not obj.owner == self.request.user:
+            raise Http404
+        return obj
+
+
 class MessageMixin(object):
-    """Make it easy to dispaly notification messages when using Class Based Views."""
+    """Make it easy to display notification messages when using Class Based Views."""
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
         return super(MessageMixin, self).delete(request, *args, **kwargs)
@@ -49,18 +58,18 @@ class MessageMixin(object):
 
 
 class RequestCreateView(MessageMixin, CreateView):
-    """Sub-class of CreateView to automatically pass the Request to the Form."""
+    """Sub-class of the CreateView to automatically pass the request to the form."""
     success_message = "Created Successfully"
 
     def get_form_kwargs(self):
-        """Add the Request object to the form's keyword arguments."""
+        """Adds the request object to the forms's keyword arguments."""
         kwargs = super(RequestCreateView, self).get_form_kwargs()
         kwargs.update({'request': self.request})
         return kwargs
 
 
 class RequestUpdateView(MessageMixin, UpdateView):
-    """Sub-class the UdpateView to pass teh request ot the form and limit the
+    """Sub-class the UpdateView to pass the request ot the form and limit the
     queryset to the requesting user."""
     success_message = "Updated Successfully"
 
@@ -71,7 +80,7 @@ class RequestUpdateView(MessageMixin, UpdateView):
         return kwargs
 
     def get_queryset(self):
-        """Limit a user to only modfying their own data."""
+        """Limit a user to only modify their own data."""
         qs = super(RequestUpdateView, self).get_queryset()
         return qs.filter(owner=self.request.user)
 
@@ -151,3 +160,4 @@ class BaseViewMixin(object):
         # Hook to override in subclasses
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
+
