@@ -12,6 +12,7 @@ from datasets.models import Reference
 try:
     from annotations.mapping import m
     from annotations.models import Entrez, Species
+    from annotations.SGD.yeastmine import retrieve
     MAPPING = True
 except:
     MAPPING = False
@@ -615,14 +616,27 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
                 ids = m([str(id) for id in ids if id], taxid)
                 entrez_gene_id = ids[0]
                 if entrez_gene_id and isinstance(entrez_gene_id, int):
-                    entrez = Entrez.objects.get(entrez_gene_id=ids[0])
                     self.entrez_gene_id = self.entrez_gene_id or entrez_gene_id
-                    self.ensembl_gene_id = self.ensembl_gene_id or entrez.ensembl_gene_id
-                    self.symbol = self.symbol or entrez.gene_symbol
-                    self.name = self.name or entrez.gene_name
-                    if not self.taxid:
-                        taxid = entrez.taxid
-                        self.species = Species.objects.get(taxid=taxid)
+                    if self.taxid == 4932:
+                        self.ensembl_gene_id = ids[1]['ensembl_gene'] # ro maybe sgd
+                        annotation = retrieve(self.ensembl_gene_id)
+                        self.symbol = annotation['symbol']
+                        self.name = annotation['name']
+                        self.description = annotation['description']
+                        if not self.function:
+                            self.functional_description = self.description
+                        if self.symbol and self.name:
+                            number = re.findall('\d+', self.symbol) # match would be more suitable here.
+                            if number:
+                                self.name += " " + number[0]
+                    else:
+                        entrez = Entrez.objects.get(entrez_gene_id=ids[0])
+                        self.ensembl_gene_id = self.ensembl_gene_id or entrez.ensembl_gene_id
+                        self.symbol = self.symbol or entrez.gene_symbol
+                        self.name = self.name or entrez.gene_name
+                        if not self.taxid:
+                            taxid = entrez.taxid
+                            self.species = Species.objects.get(taxid=taxid)
 
         super(Factor, self).save(*args, **kwargs)
 

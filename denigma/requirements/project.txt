@@ -21,6 +21,7 @@ docutils # Documentation utilities.
 #scipy # Required for parts of the stats app. However, scipy can cause issues on deployment (see docs).
 biopython # For EUtils
 cogent # For t-test
+intermine # Provides yeastmine (SGD) API.
 
 # Alternative Admin designs:
 django-grappelli==2.3.8 # Alternative admin design with additional functionality.
