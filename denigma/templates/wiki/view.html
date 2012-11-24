@@ -3,6 +3,11 @@
 {% load wikilink %}
 {% load markup %}
 {% load hyperlink %}
+{% load staticfiles %}
+
+{% block extra_style %}
+    <link href="{% static "css/code.css" %}" rel="stylesheet">
+{% endblock %}
 
 {% block hierarchy %}
     > Page
@@ -14,7 +19,7 @@
 
 {% block actual_content %}
     {% comment %}<h1>{{ page_name }}</h1>{% endcomment %}
-    {{ content|wikify|markdown|hyper|safe }}
+    {{ content|wikify|markdown|hyper|safe }} {# :'codehilite' #}
     <hr/>
     <p>Tags: {% for tag in tags %}<a href="/wiki/tag/{{ tag.name }}/">{{ tag.name }}</a> {% endfor %}</p>
     <b><a href="/wiki/page/{{ page_name }}/edit/">Edit this page</a></b>
