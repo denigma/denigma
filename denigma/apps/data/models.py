@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-print("Denigma's fundamental data structure here!")
+#print("Denigma's fundamental data structure here!")
 from copy import deepcopy
 
 from django.db import models, IntegrityError, transaction
