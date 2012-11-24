@@ -59,10 +59,19 @@ class ComparisonTable(tables.Table):
     def render_intervention(self, value, record):
         return mark_safe('''<a href=/lifespan/intervention/%s/>%s</a>''' % (value.id, value))
 
+    def render_manipulation(self, value, record):
+        manipulation = record.exp.manipulation
+        if manipulation:
+            return mark_safe('''<a href=/lifespan/manipulation/%s/>%s</a>''' % (record.exp.manipulation.pk, record.exp.manipulation.shortcut))
+        else:
+            return "-"
+
+
+
     class Meta:
         model = Comparison
         attrs = {"class": "paleblue"}
-        fields = ('id', 'exp', 'ctr', 'intervention', 'mean', 'median', 'max', 't', 'gender', 'epistasis') #'exp_t', 'ctr_t')
+        fields = ('id', 'exp', 'ctr', 'manipulation', 'intervention', 'mean', 'median', 'max', 'pvalue', 't', 'gender', 'epistasis') #'exp_t', 'ctr_t')
 
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789

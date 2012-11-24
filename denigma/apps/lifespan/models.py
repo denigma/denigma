@@ -374,6 +374,7 @@ class Comparison(models.Model):
     median = models.FloatField(blank=True, null=True) # Median lifespan extension.
     max = models.FloatField(blank=True, null=True) # Maximum lifespan extension.#
     pvalue = models.CharField(max_length=10, blank=True, null=True)#models.FloatField(blank=True, null=True)
+    manipulation = 'dummy'
 
     def __unicode__(self):
         if self.exp.manipulation:
