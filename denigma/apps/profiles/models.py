@@ -14,19 +14,19 @@ class Profile(ProfileBase):
     location = models.CharField(_("location"), max_length=40, null=True, blank=True)
     website = models.URLField(_("website"), null=True, blank=True, verify_exists=False)
 
-    rank = models.ForeignKey('aspects.Rank', blank=True, null=True)
+    rank = models.ForeignKey('aspects.Rank', blank=True, null=True, editable=False)
     #grade = models.ForeignKey('aspects.Grade', blank=True, null=True)
-    grades = models.ManyToManyField('aspects.Grade', blank=True, null=True)
-    title = models.ForeignKey('aspects.Title', blank=True, null=True)
-    role = models.ManyToManyField('aspects.Role', blank=True, null=True)
+    grades = models.ManyToManyField('aspects.Grade', blank=True, null=True, editable=False)
+    title = models.ForeignKey('aspects.Title', blank=True, null=True, editable=False)
+    role = models.ManyToManyField('aspects.Role', blank=True, null=True, editable=False)
 
-    last_list_check = models.DateTimeField(blank=True, null=True)
+    last_list_check = models.DateTimeField(blank=True, null=True, editable=False)
 
     def __unicode__(self):
-        return self.name
+        return self.name  or self.user.username
 
     def get_absolute_url(self):
-        return reverse('profile-detail', args=[self.name])
+        return reverse('profile_detail', args=[self.name])
 
     def promote(self, aspect, level):
         """Executes a promotion."""
@@ -43,7 +43,6 @@ class Profile(ProfileBase):
             promoted = True
         self.save()
         return promoted
-
 
 
 class Rank(models.Model):
