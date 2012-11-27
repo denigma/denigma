@@ -627,6 +627,12 @@ class FactorDetail(DetailView):
         return obj
 
 
+class CreateFactor(Create):
+    model = Factor
+    form_class = FactorForm
+    comment = 'Created factor.'
+
+
 class ManipulationDetail(DetailView):
     model=Manipulation
     context_object_name = 'manipulation'
