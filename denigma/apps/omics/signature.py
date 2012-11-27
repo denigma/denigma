@@ -188,7 +188,7 @@ class Signatures(dict):
                     if pvalue:
                         if S2[gene].pvalue < pvalue: S2.up[gene] = S2[gene]
                     else: S2.up[gene] = S2[gene]
-            Intersection = setS1.up) & set(S2.up)
+            Intersection = set(S1.up) & set(S2.up)
             if not S1.up or not S2.up or not Intersection: break
             pvalue = hyperg(len(S1.up), len(S2.up), total, len(Intersection))
             print upper, len(S1.up), len(S2.up), len(Intersection), pvalue, ', '.join(Intersection)
