@@ -11,7 +11,7 @@ try:
 except:
     def msg(message): print message
 
-from taxonomy import organisms, species_translation
+from annotations.taxonomy import organisms, species_translation
 from utils import evalu, roman_to_int
 
 if os.name == 'posix':
