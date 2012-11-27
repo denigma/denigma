@@ -31,7 +31,7 @@ def alphabet_decode(string, alphabet=ALPHABET):
     return num - base
 
 class SourceURL(models.Model):
-    url = models.URLField(verify_exists=False, max_length=250)
+    url = models.URLField(max_length=250) # verify_exists=False Depricated in 1.5
     email = models.EmailField()
     admin_key = models.CharField(max_length=40, db_index=True, editable=False, unique=True)
 

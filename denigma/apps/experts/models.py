@@ -75,7 +75,7 @@ class Profile(models.Model): # User
     country = models.CharField(max_length=30, blank=True)
     business_hours = models.ManyToManyField(BusinessHour, blank=True)
     work = models.TextField(blank=True, null=True)
-    website = models.URLField(_('website'), blank=True, verify_exists=True)
+    website = models.URLField(_('website'), blank=True) # verify_exists=True Deprecated in 1.5
     
     def __unicode(self):
         name = self.first_name + self.last_name
