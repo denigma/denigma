@@ -1,5 +1,6 @@
 """Uitility middlewares."""
 import re
+from threading import current_thread
 
 
 """Middleware to redirect users.
@@ -27,3 +28,31 @@ class ProfileMiddleware(object):
         request.profile = None
         if request.user.is_authenticated():
             request.profile = request.user.get_profile()
+
+
+class GlobalRequest(object):
+    """"A middleware for the cases when it is very inconvenient to make the
+    `request` object depp in the call stack."""
+    _request = {}
+
+    @staticmethod
+    def get_request():
+        try:
+            return GlobalRequest._request[current_thread()]
+        except KeyError:
+            return None
+
+    def process_request(self, request):
+        GlobalRequest._requests[current_thread()] = request
+
+    def process_response(self, request, response):
+        # Cleanup
+        thread = current_thread()
+        try:
+            del GlobalRequest._request[thread]
+        except KeyError:
+            pass
+        return response
+
+def get_request():
+    return GlobalRequest.get_request()
