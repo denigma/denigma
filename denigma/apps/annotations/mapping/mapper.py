@@ -95,6 +95,7 @@ class Map:
     def it(aliases, taxid=None):
         """Takes either a symbol/name/id or a list of those and maps it
         to a unique primary identifiers as well as all found synonyms."""
+        #print("aliases %s & taxid %s" % (aliases, taxid))
         if isinstance(aliases, (int, str)): aliases = [aliases]
         if not aliases: return None
 
@@ -102,10 +103,11 @@ class Map:
         taxid = str(taxid)
         ids = Map.ids
         query = ", ".join(map(str, aliases))
-        if query in ids[taxid]:
+        if query in ids[taxid]: # False: Exchange this to enforce not using dynamic programming.
             #print("Used dynamic pogramming.")
             return (ids[taxid][query]['ID'], ids[taxid][query])
-        else: ids[taxid][query] = {'id':'', 'ID':'', 'synonyms':[]} # MUST BE IN THE FIRST
+        else:
+            ids[taxid][query] = {'id':'', 'ID':'', 'synonyms':[]} # MUST BE IN THE FIRST
 
         # Restrict database selection arcording to species:
 
@@ -145,7 +147,8 @@ class Map:
         uniqueID = ''
 
         for db, id in dbs.items():
-            #print "DB, id:", db, id
+            #print("DB, id:", db, id)
+
             # Resets scoring:
             ids[taxid][query][id] = ''
             foundUniqueID = False
@@ -175,6 +178,7 @@ class Map:
             if foundUniqueID == True:
                 for uniqueID, score in scoring.items():
                     t = (score, uniqueID) # t = tuple
+                    #print(t)
                     scoringList.append(t)
                 sortedScoringList = sorted(scoringList, key=itemgetter(0,1))
                 sortedScoringList.reverse()
@@ -235,7 +239,7 @@ class Map:
             ids[taxid][query]['ID'] = uniqueID # Secondary defined ID.
 
         for db, id in dbs.items():
-            #print db
+            #print(db, id)
             if not ids[taxid][query]['ID']:
 
                 foundUniqueID = False
