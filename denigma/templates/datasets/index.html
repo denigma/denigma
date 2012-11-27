@@ -13,7 +13,7 @@
             <td valign="top">
                 {{ datasets.content|markdown|hyper|recross|safe }}
             </td>
-            <td>
+            <td style="width: 250px">
                 <center>
                     {% for image in datasets.images.all %}
                         <img src="{{ image.url }}" alt="datasets" width="250" height="250">

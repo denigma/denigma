@@ -1,7 +1,7 @@
 {% extends "aspects/base.html" %}
 
 {% load url from future %}
-{% load markup %}
+{% load rendering %}
 {% load hyperlink %}
 {% load crosslink%}
 
@@ -26,13 +26,12 @@
                     {{ achievement.description|markdown|hyper|recross|safe }}
                     <b><a href="/aspects/{{ achievement.requirement }}/{{ achievement.name|lower }}s/">See all</a></b>
                 </td>
-                <td> <right>
-                    <a href="/aspects/{{ achievement.requirement }}/{{ achievement.name|lower }}s/"><img src="{{ achievement.symbol.url }}" alt="{{ achievement.symbol.name }}" width="250"  height="250" /></a>
-                </right>
+                <td style="width: 250px">
+                    <right>
+                    <a href="/aspects/{{ achievement.requirement }}/{{ achievement.name|lower }}s/"><img src="{{ achievement.symbol.url }}" alt="{{ achievement.symbol.name }}" width="250"  height="250"></a>
+                    </right>
                 </td>
             </tr>
         </table>
     {% endfor %}
-
-
 {% endblock %}

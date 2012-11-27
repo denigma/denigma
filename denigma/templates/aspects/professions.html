@@ -24,9 +24,9 @@
                     {{ profession.content|markdown|hyper|recross|safe }}
                     <b><a href="/aspects/profession/{{ profession.title|lower }}/">Read more</a></b>
                 </td>
-                <td>
+                <td align="right" style="width: 250px">
                     {% for image in profession.images.all %}
-                        <a href={{ profession.get_absolute_url }}><img src={{ image.url }} alt={{ image.name }} width=250 height=250 /></a>
+                        <a href={{ profession.get_absolute_url }}><img src={{ image.url }} alt={{ image.name }} width="250" height="250"></a>
                     {% endfor %}
                 </td>
             </tr>

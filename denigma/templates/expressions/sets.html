@@ -32,9 +32,9 @@
                 <p>No sets defined yet.</p>
                 {% endif %}
             </td>
-            <td valign="top">
+            <td align="right" valign="top" style="width: 250px">
                 {% for image in entry.images.all %}
-                    <img src="{{ image.url }}" alt="{{ image.name }}" width="250" heigth="250" />
+                    <img src="{{ image.url }}" alt="{{ image.name }}" width="250" heigth="250">
                 {% endfor %}
             </td>
         </tr>

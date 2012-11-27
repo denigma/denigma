@@ -15,7 +15,7 @@
             <td valign="top">
                 {{ entry.text|markdown|hyper|recross|safe }}
             </td>
-            <td>
+            <td style="width: 250">
                 {% for image in entry.images.all %}
                     <img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250" />
                 {% endfor %}
@@ -24,7 +24,7 @@
     </table>
     <hr>
    {% for news in page.object_list %}
-       <table>
+       <table width="100%">
            <tr>
                <td>
                    <a href={% url 'detail-entry' news.slug %}><h3>{{ news.title }}</h3></a>
@@ -38,10 +38,10 @@
                        <a href={% url 'entry-tag' tag.name %}>{{ tag }}</a>{% if not forloop.last %}, {% endif %}
                    {% endfor %})
                </td>
-               <td>
+               <td align="right" style="width: 150">
                    {% for image in news.images.all %}
                        {# {% url 'detail-entry' news.slug %} #}
-                       <a href="/data/entry/{{ news.pk }}"><img src="{{ image.url }}" alt="{{ image.name }}" width="100" height="100" /></a>
+                       <a href="/data/entry/{{ news.pk }}"><img src="{{ image.url }}" alt="{{ image.name }}" width="150" height="150"></a>
                    {% endfor %}
                </td>
            </td>

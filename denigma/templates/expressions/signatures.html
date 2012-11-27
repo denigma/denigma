@@ -20,9 +20,9 @@
             <td valign="top">
                 {{ entry.text|markdown|hyper|recross|safe }}
             </td>
-            <td>
+            <td style="width: 200px">
                 {% for image in entry.images.all %}
-                    <img src="{{ image.url }}" alt="{{ image.name }}" width="200" height="200" />
+                    <img src="{{ image.url }}" alt="{{ image.name }}" width="200" height="200">
                 {% endfor %}
             </td>
         </tr>

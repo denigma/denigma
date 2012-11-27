@@ -6,9 +6,8 @@
 <h2>News</h2>
 <hr>
 {% for anews in news %}
-    <table border="0" color="white">
+    <table border="0" color="white" width="100%">
         <tr>
-
             <td>
                 <a href="{{ anews.get_absolute_url }}"><h3>{{ anews.title }}</h3></a>
 
@@ -29,9 +28,9 @@
                     {% endfor %}
                 </div>
             </td>
-            <td>
+            <td align="right" style="width: 150">
                 {% for image in anews.images.all %}
-                    <a href={% url 'detail-entry' anews.slug %}><img src="{{ image.url }}" alt="{{ image.name }}" width="100" height="100" /></a>
+                    <a href={% url 'detail-entry' anews.slug %}><img src={{ image.url }} alt={{ image.name }} width="150" height="150"></a>
                 {% endfor %}
            </td>
         </tr>

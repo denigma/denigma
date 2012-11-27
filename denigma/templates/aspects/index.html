@@ -25,9 +25,9 @@
                     {{ aspect.content|markdown|hyper|recross|safe }}
                     <b><a href="/aspects/{{ aspect.title|lower }}">Read more</a></b>
                 </td>
-                <td>
+                <td align="right" style="width: 250px">
                     {% for image in aspect.images.all %}
-                        <a href={{ aspect.get_absolute_url }}><img src={{ image.url }} alt={{ image.name }} width=250 height=250/></a>
+                        <a href={{ aspect.get_absolute_url }}><img src={{ image.url }} alt={{ image.name }} width="250" height="250"></a>
                     {% endfor %}
                 </td>
             </tr>
