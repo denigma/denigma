@@ -19,6 +19,11 @@ def average(x):
     assert len(x) > 0
     return float(sum(x))/len(x)
 
+def median(*values):
+    """Calculates the median of a list of numbers."""
+    values = sorted(values)
+    return values[len(values)/2]
+
 def pearsonr(x, y):
     """Assume len(x) == len(y)""" #http://stackoverflow.com/questions/3949226/calculating-pearson-correlation-and-significance-in-python
     from itertools import imap
