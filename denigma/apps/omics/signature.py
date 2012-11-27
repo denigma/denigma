@@ -6,9 +6,9 @@ import shelve
 from numpy import arange
 
 from omics.gen import Genes, Gene, genes
-from scripts.c import intersect
+from utils import intersect # Could be replaced by build-in set functions.
 from stats.pValue import hyperg
-try: from mapping import m
+try: from annotations.mapper import m
 except: "Print failed to import mapping"
 
 if os.name == 'posix':
@@ -622,7 +622,7 @@ class Signature(dict):
             self[G.id] = G
 
     def top(self, dir='up', limit=300):
-        """Retrievies the top differential expressed genes."""
+        """Retrieves the top differential expressed genes."""
         ratios = []
         for id, gene in self.items():
             ratios.append((gene.ratio, gene))
