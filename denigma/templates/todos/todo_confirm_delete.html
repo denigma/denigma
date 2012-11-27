@@ -1,9 +1,9 @@
 {% extends "todos/base.html" %}
 
 {% block hierarchy %}
-   Todo =
-   <a href="/todos/{{ object.id }}">{{ object.title }}</a> >
-   <a href="/todos/{{ object.id }}/delete">Delete</a>
+   Todo
+   = <a href="/todos/{{ object.id }}">{{ object.title }}</a>
+   > <a href="/todos/{{ object.id }}/delete">Delete</a>
 {% endblock %}
 
 {% block subtitle %}Todo{% endblock %}
