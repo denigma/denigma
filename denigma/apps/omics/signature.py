@@ -6,7 +6,7 @@ import shelve
 from numpy import arange
 
 from omics.gen import Genes, Gene, genes
-from utils import intersect # Could be replaced by build-in set functions.
+#from utils import intersect # Replaced by build-in set functions.
 from stats.pValue import hyperg
 try: from annotations.mapper import m
 except: "Print failed to import mapping"
@@ -99,7 +99,7 @@ class Signatures(dict):
             S2.up = {}
             for ratio, s1 in S1_ranked_list[:threshold]: S1.up[s1.id] = s1
             for ratio, s2 in S2_ranked_list[:threshold]: S2.up[s2.id] = s2
-            Intersection = intersect(S1.up, S2.up)
+            Intersection = set(S1.up) & set(S2.up)
             pvalue = hyperg(len(S1.up), len(S2.up), total, len(Intersection))
             print  threshold, '\t', len(S1.up), '\t', len(S2.up), '\t', len(Intersection), '\t', pvalue# len(IntersectionUp), pvalueUp, len(S1.down), len(S2.down), len(IntersectionDown), pvalueDown, len(IntersectionComb), pvalueComb
 
@@ -145,11 +145,11 @@ class Signatures(dict):
 
     ##        else: S2.delta = S2.genes
             #print len(S1.delta), len(S2.delta)
-            Intersection = intersect(S1.delta, S2.delta)
+            Intersection = set(S1.delta) & set(S2.delta)
             
-    ##        IntersectionUp = intersect(S1.up, S2.up)
-    ##        IntersectionDown = intersect(S1.down, S2.down)
-    ##        IntersectionComb = union(IntersectionUp, IntersectionDown)
+    ##        IntersectionUp = set(S1.up) & set(S2.up)
+    ##        IntersectionDown = set(S1.down) & set(S2.down)
+    ##        IntersectionComb = set(IntersectionUp) | set(IntersectionDown)
             if not len(S1.delta) or not len(S2.delta) or not Intersection: return None
             pvalue = hyperg(len(S1.delta), len(S2.delta), total, len(Intersection))
 
@@ -188,7 +188,7 @@ class Signatures(dict):
                     if pvalue:
                         if S2[gene].pvalue < pvalue: S2.up[gene] = S2[gene]
                     else: S2.up[gene] = S2[gene]
-            Intersection = intersect(S1.up, S2.up)
+            Intersection = setS1.up) & set(S2.up)
             if not S1.up or not S2.up or not Intersection: break
             pvalue = hyperg(len(S1.up), len(S2.up), total, len(Intersection))
             print upper, len(S1.up), len(S2.up), len(Intersection), pvalue, ', '.join(Intersection)
