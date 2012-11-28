@@ -1,0 +1,28 @@
+{% extends "duties/base.html" %}
+
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}Duties{% endblock %}
+
+{% block hierarchy %}
+    > Index
+{% endblock %}
+
+{% block title %}Duties{% endblock %}
+
+{% block content %}
+    <table>
+        <tr>
+            <td valign="top">
+                {{ duties.content|hyper|reST|markdown|recross|safe }}
+            </td>
+            <td align="right" valign="top" style="width: 250px">
+                {% for image in duties.images %}
+                    <img src="{{ image.get_absolute_url }}" alt="{{ image.name }}" width="250" height="250">
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+{% endblock %}
