@@ -62,7 +62,7 @@
  		{% if user.is_authenticated %}{% spaceless %}
 			<li id="tab_profile"><a href="{% url profile_detail user.username %}">{% trans "Profile" %}</a></li>
 			<li id="tab_notices"><a href="{% url notification_notices %}">{% trans "Notices" %}{% if notice_unseen_count %}({{ notice_unseen_count }}){% endif %}</a></li>
-			<li id="tab_quests"> <a href={% url quests %}>Quests</a> </li> {# Todo #}
+			<li id="tab_duties"> <a href={% url duties %}>Duties</a> </li> {# Tasks, Todos and Quests #}
 		        <li id="tab_msg"> <a href="/pastebin/">Messaging</a> </li>
                         <li id="tab_msg"> <a href="/articles/">Articles</a> </li>
         		{% endspaceless %}</ul>
