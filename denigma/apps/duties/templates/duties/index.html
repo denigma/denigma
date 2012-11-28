@@ -16,10 +16,10 @@
     <table>
         <tr>
             <td valign="top">
-                {{ duties.content|hyper|reST|markdown|recross|safe }}
+                {{ duties.content|hyper|markdown|recross|safe }}
             </td>
             <td align="right" valign="top" style="width: 250px">
-                {% for image in duties.images %}
+                {% for image in duties.images.all %}
                     <img src="{{ image.get_absolute_url }}" alt="{{ image.name }}" width="250" height="250">
                 {% endfor %}
             </td>
