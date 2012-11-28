@@ -1,0 +1,27 @@
+{% extends "todos/base.html" %}
+
+{% load render_table from django_tables2 %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+{% endblock %}
+
+{% block head_title %}Todo List{% endblock %}
+
+{% block hierarchy %}
+    > List
+{% endblock %}
+
+{% block title %}Todo List{% endblock %}
+
+{% block content %}
+    <p>This is a list of things which were proposed to improve Denigma.</p>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_table }}
+        {{ filter.form.as_p }}
+        <input type="submit" value="Apply" />
+        {{ filterset }}
+    </form>
+   {% render_table table %}
+{% endblock %}

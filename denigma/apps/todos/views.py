@@ -1,20 +1,22 @@
 import datetime
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template import Context, loader
 
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic.create_update import update_object, delete_object
 from django.template import RequestContext
+from django.views.generic.edit import CreateView
+from django.db.models import Q
 
-from django.views.generic.edit import CreateView, UpdateView
-
-from models import Todo, importance_choices
-
+from models import Todo, priorities
 from forms import TodoForm
+from tables import TodoTable
+from filters import TodoFilterSet
 
 from profiles.models import Profile
+from data.filters import FilterForm, TableFilter
 
 
 class TodoCreate(CreateView):
@@ -22,13 +24,50 @@ class TodoCreate(CreateView):
     template_name= 'todos/create_todo.html'
     form_class = TodoForm
     model = Todo
-    success_url = '/todos/'
+    success_url = '/todos/index'
+
+    def dispatch(self, request, *args, **kwargs):
+        if 'task' in kwargs and kwargs['task']:
+            self.task = kwargs['task']
+        else:
+            self.task = None
+        return super(TodoCreate, self).dispatch(request, *args, **kwargs)
+
+    def get_initial(self):
+        """Get initial dictionary from the superclass method."""
+        initial = super(TodoCreate, self).get_initial()
+        initial = initial.copy()
+        initial['owner'] = self.request.user.pk
+        initial['importance'] = 'C'
+        if self.task:
+            initial['title'] = self.task
+        return initial
+
+
+class TodoList(TableFilter):
+    model = Todo
+    table_class = TodoTable
+    queryset = Todo.objects.filter(done=False).order_by('-updated')
+    filterset = TodoFilterSet
+    success_url = '/todos/index'
+
+#
+    def get_queryset(self):
+        qs = self.queryset
+        if TodoList.query:
+            terms = TodoList.query.split(None)
+            for term in terms:
+                qs = qs.filter(Q(title__icontains=TodoList.query) |
+                               Q(description__icontains=TodoList.query))
+        self.filterset = TodoFilterSet(qs, self.request.GET)
+        return self.filterset.qs
+
 
 
 def todo_index(request):
 ##    todos = Todo.objects.all().order_by('importance', 'title')
 ##    t = loader.get_template('index.html')
-##    c = Context({'todos':todos, 'choices': importance_choices,})
+##    c = Context({'todos':todos, 'choices': priorities,})
 ##    return HttpResponse(t.render(c))
     if request.user.id is None: # Catch people who haven't logged in.
         return HttpResponseRedirect(reverse(todo_login))
@@ -38,7 +77,7 @@ def todo_index(request):
     todos = Todo.objects.filter(owner=request.user).order_by('importance', '-created', 'title')
     return render_to_response('todos/index.html',
                               {'todos': todos,
-                               'choices': importance_choices,
+                               'choices': priorities,
                                'user': request.user,
                                'error_msg': request.GET.get('error_msg', ''),
                                }, context_instance=RequestContext(request))
@@ -59,9 +98,12 @@ def add_todo(request):
 
 def update_todo(request, todo_id):
     todo = get_object_or_404(Todo, id=todo_id)
-    if todo.owner.id != request.user.id:
-        return HttpResponseRedirect(reverse(todo_index) +
-                                    "?error_msw=That's not your todo!")
+    try:
+        if todo.owner.id != request.user.id:
+            return HttpResponseRedirect(reverse(todo_index) +
+                                        "?error_msw=That's not your todo!")
+    except ObjectDoesNotExist:
+        pass
     return update_object( # Call generic update function:
         request,
         object_id=todo_id,

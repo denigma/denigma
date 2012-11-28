@@ -1,5 +1,7 @@
 {% extends "todos/base.html" %}
 
+{% load url from future %}
+
 {% block hierarchy %}
     > Todo
     = <a href="/todos/{{ object.id }}">{{ object.title }}</a>
@@ -54,7 +56,13 @@
     </table>
 </form>
 
-<p><a href=".">Return to todo list</a></p>
+    <p>
+    <b>
+      <a href="/todos/index">Return to todo list</a>
+    | <a href="{% url 'create-quest' object.pk %}">Create Quest</a>
+    </b>
+    </p>
+
 
 </body>
 </html>
