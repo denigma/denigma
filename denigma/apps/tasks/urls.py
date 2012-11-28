@@ -7,6 +7,7 @@ urlpatterns = patterns("tasks.views",
     url(r'^(?P<pk>\d+)/undone/$', 'mark_undone', name='task_mark_undone'),
     url(r'^completed/$', 'complete_count_fragment', name='task_complete_count_fragment'),
     url(r'^add/$', 'add', name='task_add'),
-    url(r'(?P<pk>\d+)/delete/$', 'delete', name='task_delete')
+    url(r'(?P<pk>\d+)/delete/$', 'delete', name='task_delete'),
+    url(r'(?P<pk>\d+)/todo/$', 'task_todo', name='task_todo'),
 )
 

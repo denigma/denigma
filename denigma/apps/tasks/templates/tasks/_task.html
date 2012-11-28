@@ -1,4 +1,4 @@
-<tr class="{% if task.done %}success{% endif %}">
+<tr class="{% if task.done %}success{% endif %}" xmlns="http://www.w3.org/1999/html">
     <td>
         <div class="btn-toolbar">
             <div class="btn-group">
@@ -8,6 +8,7 @@
                     <a href="{% url task_mark_done task.pk %}" class="btn ajax" data-method="post" data-refresh="#done-count" data-replace-closest="tr"><i class="icon-ok"></i></a>
                 {% endif %}
                 <a href="{% url task_delete task.pk %}" class="btn ajax" data-method="post" data-replace-closest="tr" data-refresh="#done-count"><i class="icon-trash"></i></a>
+                <a href="{% url task_todo task.pk %}" class="btn"><i class="icon-list"></i> </a> {# data-method="post" data-replace-closest="tr" data-refresh="#done-count"><i class="icon-home"></i>/a>#}
             </div>
         </div>
     </td>

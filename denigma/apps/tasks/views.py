@@ -91,3 +91,11 @@ def delete(request, pk):
         'html': ''
     }
     return HttpResponse(json.dumps(data), mimetype='application/json')
+
+from django.shortcuts import redirect
+
+def task_todo(request, pk):
+    print("worked")
+    task = Task.objects.get(pk=pk)
+    print task
+    return redirect('create_todo', task=task.label)
