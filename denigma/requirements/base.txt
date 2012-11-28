@@ -25,7 +25,9 @@ django-announcements==0.1.2
 django-pagination==1.0.7
 django-notification==0.2 # feed is incompatible with Django-1.4. Need to be modified.
 #-e git+https://github.com/yourcelf/django-notification#egg=django-notification
-idios==0.2a1
+idios==0.2a1 #-e git://github.com/eldarion/idios.git#egg=idios
 metron==0.1
 
 pinax-theme-bootstrap==2.0.1
+
+
