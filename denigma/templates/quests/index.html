@@ -12,10 +12,10 @@
                 {{ quests.content|markdown|hyper|recross|safe }}
                 {% for entry in entries %}
                     <li>
-                        <a href={% url "quest" entry.slug %}>{{ entry.title }}</a>
+                        <b><a href={% url "quest" entry.slug %}>{{ entry.title }}</a></b>
                         ({% for tag in entry.tags.all %}
                         <a href={% url 'entry-tag' tag.name %}>{{ tag }}</a>{% if not forloop.last %}, {% endif %}
-                    {% endfor %})
+                    {% endfor %}) <b><a href={% url 'engage-quest' entry.slug %}>Engage</a></b>
                     </li>
                 {% endfor %}
             </td>
