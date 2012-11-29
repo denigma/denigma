@@ -431,18 +431,21 @@ class Comparison(models.Model):
             self.median = percentage(self.exp.median, self.ctr.median) or self.median
             self.max = percentage(self.exp.max, self.ctr.max) or self.max
 
-            interventions = Intervention.objects.filter(name__icontains=self.exp.genotype)
+            interventions = Intervention.objects.filter(name__icontains=self.exp.genotype or self.exp.diet)
                 #Q(name__icontains=self.exp.genotype) | Q(name__icontains=self.ctr.genotype))
             #print("%s %s %s" % (self.exp.genotype, self.ctr.genotype, interventions))
             for intervention in interventions:
                 self.intervention = intervention
-            if "/" in self.exp.genotype.name:
-                genotype = self.exp.genotype.name.split('/')[0]
+            if self.exp.genotype:
+                if "/" in self.exp.genotype.name:
+                    genotype = self.exp.genotype.name.split('/')[0]
+                else:
+                    genotype = self.exp.genotype.name
+                if "(" in genotype:
+                    genotype = genotype.split('(')[0].rstrip()
+                id = mapid(genotype, self.exp.experiment.species.taxid)
             else:
-                genotype = self.exp.genotype.name
-            if "(" in genotype:
-                genotype = genotype.split('(')[0].rstrip()
-            id = mapid(genotype, self.exp.experiment.species.taxid)
+                id = None
             if id:
                 try:
                     factor = Factor.objects.get(entrez_gene_id=id)
