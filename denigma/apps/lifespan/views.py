@@ -767,6 +767,29 @@ class UpdateStrain(Update):
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
 
+def correct_classes(request):
+    """Performs automated correction of the factor classifications."""
+    from annotations.models import Classification
+    gerontogene = Classification.objects.get(title='Gerontogene')
+    agingSuppressor = Classification.objects.get(title='Aging-Suppressor')
+
+    factors = Factor.objects.filter(Q(classifications__title='Positive Gerontogene') |
+                                    Q(classifications__title='Negative Gerontogene'))
+    msg = 'Gerontogenes: %s' % factors.count()
+    #print(msg)
+    messages.add_message(request, messages.SUCCESS, msg)
+    for factor in factors:
+        factor.classifications.add(gerontogene)
+
+    factors = Factor.objects.filter(Q(classifications__title='Positive Aging-Suppressor') |
+                                    Q(classifications__title='Negative Aging-Suppressor'))
+    msg = 'Aging-Suppressors: %s' % factors.count()
+    messages.add_message(request, messages.SUCCESS, msg)
+    print(msg)
+    for factor in factors:
+        factor.classifications.add(agingSuppressor)
+    return redirect("lifespan")
+
 def describe(request):
     """Annotates the AgeFactor table with description from various sources.
     Put everything into a seperate thread."""

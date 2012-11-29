@@ -121,6 +121,7 @@ urlpatterns = patterns('lifespan.views',
     url(r'^integrity', 'integrity', name='integrity'),
     url(r'^(?P<table>\w+)/replace/(?P<field>\w+)/(?P<term>.+)/(?P<by>.+)/$', 'replace'),
     url(r'^gendr/dump', 'dump'),
-    url(r'^map/species/(?P<model>.+)', 'map_species', name='map_species')
+    url(r'^map/species/(?P<model>.+)', 'map_species', name='map_species'),
+    url(r'^correct/$', 'correct_classes', name='correct_classes'),
 )
 ##234567891123456789212345678931234567894123456789512345678961234567897123456789
