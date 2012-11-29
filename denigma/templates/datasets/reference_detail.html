@@ -14,8 +14,9 @@
 
 {% block content %}
     <b>Authors</b>: {{ object.authors }}<br>
-    <b>Abstract</b>: {{ object.abstract }}<br>
+    <b>Abstract</b>: {{ object.abstract }}<br><br>
     <b>Keywords</b>: {{ object.keywords }}<br>
+    <br>
     <b>Journal</b>: {{ object.journal }}<br>
     {% if objects.year %}<b>Year</b>: {{ object.year }}<br>{% endif %}
     {% if object.volume %}<b>Volume</b>: {{ object.volume }}<br>{% endif %}
