@@ -12,7 +12,13 @@
     = {% if factor.symbol %}{{ factor.symbol }}{% else %}{{ factor.name }}{% endif %}
 {% endblock %}
 
-{% block title %}{{ factor.symbol }}{% endblock %}
+{% block title %}
+    {% if factor.symbol %}
+        {{ factor.symbol }}
+    {% else %}
+        {{ factor.name }}
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     {% if factor.symbol %}<b>Symbol:</b> {{ factor.symbol }}<br>{% endif %}
