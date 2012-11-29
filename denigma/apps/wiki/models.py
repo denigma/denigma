@@ -12,7 +12,7 @@ class Tag(models.Model):
 
 
 class Page(models.Model):
-    name = models.CharField(max_length=20, primary_key=True)
+    name = models.CharField(max_length=250, primary_key=True)
     content = models.TextField(blank=True)
     tags = models.ManyToManyField(Tag)
     
