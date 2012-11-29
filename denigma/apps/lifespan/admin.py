@@ -36,7 +36,7 @@ class EpistasisAdmin(reversion.VersionAdmin):
 
 
 class StrainAdmin(reversion.VersionAdmin):
-    pass
+    search_fields =('name',)
 
 
 class TypeAdmin(reversion.VersionAdmin):
