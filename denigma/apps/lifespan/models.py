@@ -202,7 +202,7 @@ class Experiment(models.Model):
         for index, term in enumerate(header):
             if term in Experiment.mapping:
                 header[index] = Experiment.mapping[term]
-        print(header)
+        #print(header)
 
         for line in data[1:]:
             #print(line)
@@ -229,6 +229,7 @@ class Experiment(models.Model):
             measurement.save()
             attributes = dict(zip(header, columns))
             for attr, value in attributes.items():
+                #print(attr, value)
                 #print self.meta
                 if "background" in self.meta:
                     measurement.background, created = Strain.objects.get_or_create(name=self.meta['background'], species=self.species)
@@ -268,10 +269,17 @@ class Experiment(models.Model):
                 elif attr == "treatment" and value:
                     if "(" in value:
                         gene, treatment = value.replace('(', ' ').replace(')', '').split(' ')
-                        measurement.genotype, created = Strain.objects.get_or_create(name=gene, species=self.species)
+                        if not measurement.genotype:
+                            measurement.genotype, created = Strain.objects.get_or_create(name=gene, species=self.species)
+                        else:
+                            measurement.diet = value
+                            #measurement.genotype, created = Strain.objects.get_or_create(name=measurement.genotype.name+';'+gene, species=self.species)
                     else:
                         treatment = value
-                    measurement.manipulation = Manipulation.objects.get(shortcut=treatment)
+                    try:
+                        measurement.manipulation = Manipulation.objects.get(shortcut=treatment)
+                    except ObjectDoesNotExist:
+                        measurement.manipulation = Manipulation.objects.get(name='mutation')
                 else:
                     setattr(measurement, attr, value)
 
@@ -441,6 +449,7 @@ class Comparison(models.Model):
             #print("%s %s %s" % (self.exp.genotype, self.ctr.genotype, interventions))
             for intervention in interventions:
                 self.intervention = intervention
+            #print("mapping")
             if self.exp.genotype:
                 if "/" in self.exp.genotype.name:
                     genotype = self.exp.genotype.name.split('/')[0]
@@ -448,7 +457,10 @@ class Comparison(models.Model):
                     genotype = self.exp.genotype.name
                 if "(" in genotype:
                     genotype = genotype.split('(')[0].rstrip()
+                #print("map id")
+                #print(genotype)
                 id = mapid(genotype, self.exp.experiment.species.taxid)
+                #print("mapped")
             else:
                 id = None
             if id:
