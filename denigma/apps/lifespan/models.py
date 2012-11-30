@@ -393,7 +393,7 @@ class Comparison(models.Model):
         return u"{0}{1} vs. {2}".format(self.exp.genotype, manipulation, self.ctr.genotype)
 
     def get_absolute_url(self):
-        return u"/lifespan/comparision/%s" % self.pk
+        return u"/lifespan/comparison/%s" % self.pk
 
     @property
     def data(self):
@@ -650,10 +650,13 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
                             if number:
                                 self.name += " " + number[0]
                     else:
-                        entrez = Entrez.objects.get(entrez_gene_id=ids[0])
-                        self.ensembl_gene_id = self.ensembl_gene_id or entrez.ensembl_gene_id
-                        self.symbol = self.symbol or entrez.gene_symbol
-                        self.name = self.name or entrez.gene_name
+                        try:
+                            entrez = Entrez.objects.get(entrez_gene_id=ids[0])
+                            self.ensembl_gene_id = self.ensembl_gene_id or entrez.ensembl_gene_id
+                            self.symbol = self.symbol or entrez.gene_symbol
+                            self.name = self.name or entrez.gene_name
+                        except ObjectDoesNotExist:
+                            self.entrez_gene_id = ids[0]
                         if not self.taxid:
                             taxid = entrez.taxid
                             self.species = Species.objects.get(taxid=taxid)
