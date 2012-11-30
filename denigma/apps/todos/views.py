@@ -99,9 +99,10 @@ def add_todo(request):
 def update_todo(request, todo_id):
     todo = get_object_or_404(Todo, id=todo_id)
     try:
-        if todo.owner.id != request.user.id:
-            return HttpResponseRedirect(reverse(todo_index) +
-                                        "?error_msw=That's not your todo!")
+        #if todo.owner.id != request.user.id:
+        #    return HttpResponseRedirect(reverse(todo_index) +
+        #                                "?error_msw=That's not your todo!")
+        pass
     except ObjectDoesNotExist:
         pass
     return update_object( # Call generic update function:
