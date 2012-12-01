@@ -1,5 +1,9 @@
 {% extends "gallery/base.html" %}
 
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
+
 {% block content %}
 <html>
 <head>
@@ -40,7 +44,10 @@
                 <input type="submit" value="Upload Photo"/>
             </form>
         </div>
-        <p></p>
+        <br>
+        {% if entry.text %}
+            {{ entry.content|markdown|hyper|recross|safe }}
+        {% else %}
         <p>
         Denigma Gallery is an illustration of using Amazon's Simple Storage Service 
         (S3) with the Django web Framework. This demo shows a common usage of S3;
@@ -48,7 +55,7 @@
         </p>
         <p>
         Photos that are uploaded using the form above are not stored on the local
-        server, but are remoterly transferred to storage space on S3. Once stored,
+        server, but are remotely transferred to storage space on S3. Once stored,
         the files can be served directly from S3, saving storage and bandwith
         expenses for the site.
         </p>
@@ -57,6 +64,7 @@
         Thus, its up to your imagination.
         Uploaded figures can be inserted into Denigma wherever you like, depending on your programming skills and creativity.
         </p>
+        {% endif %}
     </div>
     <div> <class="container">
         <div style="padding:1em;">
