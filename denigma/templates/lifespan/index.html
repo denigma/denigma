@@ -14,7 +14,18 @@
 {% endblock %}
 
 {% block content %}
-    {{ lifespan.text|hyper|recross|safe }}
+    <table width="100%">
+        <tr valign="top">
+            <td>
+                {{ lifespan.content|hyper|recross|safe }}
+            </td>
+            <td align="right" valign="top" style="width: 250px">
+                {% for image in lifespan.images.all %}
+                    <img src="{{ image.url }}" name="{{ image.nam }}" width="250" height="250">
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
     <hr>
     <b>Main:</b><br>
     <a href="/lifespan/studies/">Studies</a><br>

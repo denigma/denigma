@@ -39,7 +39,7 @@ from data import get
 
 
 def index(request):
-    lifespan = Post.objects.get(title="Lifespan")
+    lifespan = get(title="Lifespan")
     return render_to_response('lifespan/index.html', {'lifespan': lifespan},
                               context_instance=RequestContext(request))
 
