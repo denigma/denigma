@@ -1,6 +1,6 @@
 import datetime
 
-#from django.utils import timezone # Not avilable in Django 1.3.
+from django.utils import timezone # Not available in Django 1.3.
 from django.db import models
 
 
@@ -18,8 +18,9 @@ class Poll(models.Model): #  Inherit from models class.
     was_published_today.short_description = 'Published today?'
 
     def was_published_recently(self): # Note: not available with Django 1.3.
-        return self.pub_date >= datetime.datetime.now() - datetime.timedelta(days=7)
-        #return self.pub_date >= timezone.now() - datetime.timedelta(days=7) # A week.
+        #return self.pub_date >= datetime.datetime.now() - datetime.timedelta(days=7)
+        return self.pub_date >= timezone.now() - datetime.timedelta(days=7  # A week.
+            and self.pub_date < timezone.now())
     was_published_recently.admin_order_field = 'pub_date'
     was_published_recently.boolean = True
     was_published_recently.short_description = 'Published recently?'    
