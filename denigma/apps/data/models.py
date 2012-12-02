@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 #print("Denigma's fundamental data structure here!")
+import re
 from copy import deepcopy
 
 from django.db import models, IntegrityError, transaction
@@ -79,7 +80,14 @@ class Content(Title):
             len(self.tags.all()), len(self.images.all()))
 
     def brief(self, limit=150):
-        return self.text[:limit] + '...'
+        rc = re.compile(r'={2,}\r\n.{2,}\r\n={2,}')
+        match = re.match(rc, self.text)
+        if match:
+            #print match.group(0)
+            text = self.text.replace(match.group(0), '')
+        else:
+            text = self.text
+        return text[:limit].replace('Abstract\r\n========', '') + '...'
 
     class Meta:
         abstract = True
