@@ -25,12 +25,14 @@ urlpatterns = patterns('annotations.views',
     url(r'^species/$', 'species', name="species"),
     url(r'^species/(?P<pk>\d+)/$', 'species_details', name='detail_species'),
     url(r'^species/archive/$', 'species_archive', name="species_archive"),
-    url(r'^species/archive/(?P<pk>\d+)/$', 'species_detailed'),
+    url(r'^species/archive/(?P<pk>\d+)/$', 'species_detailed',
+        name='species_detailed'),
           # DetailView.as_view(
            #  model=Taxonomy,
             # template_name='annotations/species_detailed')
-    url(r'^species/edit/(?P<pk>\d+)/$', login_required(SpeciesUpdate.as_view())),
-    url(r'^species/add/$', SpeciesCreate.as_view()),
+    url(r'^species/edit/(?P<pk>\d+)/$',
+        login_required(SpeciesUpdate.as_view()), name='update-species'),
+    url(r'^species/add/$', SpeciesCreate.as_view(), name='create-species'),
 
     # Tissues:
     url(r'^tissues/$', 'tissues', name="tissues"),
@@ -42,4 +44,4 @@ urlpatterns = patterns('annotations.views',
     url(r'^tissue/delete/(?P<pk>\d+)', 'delete_tissue', name='delete_tissue'),
     url(r'^tissue/(?P<name>.+)/$', 'tissue', name='tissue')
 )
-
+#234567891123456789212345678931234567894123456789512345678961234567897123456789
