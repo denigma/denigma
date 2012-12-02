@@ -17,9 +17,9 @@
 {% block content %}
     {% for article in object_list %}
         <hr>
-        <table border="0" color="white">
+        <table border="0" color="white" width="100%">
             <tr>
-                <td>
+                <td valign="top">
                     <h3><a href="/articles/{{ article.id }}">{{ article.title }}</a></h3
                     <div class="entry_meta">
                          Created on {{ article.created }} by <a href={% url 'profile_detail' article.creator.username %}> {{ article.creator.username }}</a>
@@ -45,9 +45,9 @@
                     | <a href={% url 'connect' article.slug %}>Connect</a>
                 {% endif %}
                 </td>
-                <td>
+                <td align="right" valign="top" style="width: 200">
                     {% for image in article.images.all %}
-                        <img src={{ image.url }} alt={{ images.name }} width="150" height="150"  />
+                        <img src="{{ image.url }}" alt="{{ images.name }}" width="200" height="200">
                     {% endfor %}
                 </td>
             </tr>
