@@ -1,6 +1,6 @@
 """Annotation views."""
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response, redirect, render
 from django.template import RequestContext
 from django.contrib import messages
 from django.utils.translation import ugettext, ugettext_lazy as _
@@ -21,11 +21,9 @@ from meta.view import log
 from data import get
 
 
-def index(request):
+def index(request, template='annotations/index.html'):
     annotations = get("Annotations")
-    return render_to_response('annotations/index.html',
-                              {'annotations': annotations},
-                               context_instance=RequestContext(request))
+    return render(request, template, {'annotations': annotations})
 
 def bulk_upload(request):
     """Bulk upload function for annotation data."""
@@ -90,7 +88,7 @@ def edit_classification(request, pk):
     return render_to_response('annotations/classification_form.html', ctx,
         context_instance=RequestContext(request))
 
-def add_classification(request):
+def add_classification(request, template='annotations/classification_form.html'):
     form = ClassificationForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         with reversion.create_revision():
@@ -104,9 +102,10 @@ def add_classification(request):
             log(request, classification, comment)
             msg = "Successfully added classification."
             messages.add_message(request, messages.SUCCESS, _(msg))
-            return redirect('/annotations/classification/%s' % classification.pk)
-    return render_to_response('annotations/classification_form.html', {'form': form},
-        context_instance=RequestContext(request))
+            return redirect('/annotations/classification/%s' %
+                            classification.pk)
+    return render(request, template, {'form': form})
+
 
 @login_required
 def delete_classification(request, pk):
@@ -121,17 +120,18 @@ def delete_classification(request, pk):
                 reversion.set_user(request.user)
                 comment = request.POST['comment'] or "Delete classification"
                 log(request, classification, comment)
-                msg = "Successfully deleted classification %s." % classification.title
+                msg = "Successfully deleted classification %s." % \
+                      classification.title
                 messages.add_message(request, messages.SUCCESS, _(msg))
                 return redirect('/annotations/classifications/')
     ctx = {'classification': classification, 'form': form}
     return render_to_response('annotations/delete_classification.html', ctx,
         context_instance=RequestContext(request))
 
-def species(request):
+def species(request, template='annotations/species.html'):
+    entry = get("Species")
     species = Species.objects.filter(main_model=True).order_by('complexity')
-    return render_to_response('annotations/species.html', {'species': species},
-                              context_instance=RequestContext(request))         
+    return render(request, template, {'entry': entry, 'species': species})
 
 def species_details(request, pk):
     species = Species.objects.get(pk=pk)
@@ -198,7 +198,6 @@ class SpeciesCreate(SpeciesView, CreateView):
         context = super(SpeciesView, self).get_context_data(**kwargs)
         context['action'] = 'Add'
         return context
-
 
 
 def tissues(request):
@@ -298,6 +297,5 @@ class TissueCreate(TissueView, CreateView):
 
 class TissueUpdate(TissueView, CreateView):
     pass
-
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
