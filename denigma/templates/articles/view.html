@@ -56,7 +56,7 @@
     {% if changes %}
         <h3>Changes:</h3>
         {% for change in changes %}
-            <li><a href="/data/change/{{ change.slug }}/">{{ change }}</a></li>
+            <li><a href="/data/change/{{ change.slug }}/">{{ change }}</a> {{ change.comment }}</li>
         {% endfor %}
     {% endif %}
 {% endblock %}
