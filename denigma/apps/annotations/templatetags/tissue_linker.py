@@ -35,8 +35,8 @@ def tissue_links(value):
 
     rc = re.compile('(?P<tissue>\w{3,}( \w{3,})?)')
     value = rc.sub(translate, value)
-    rc = re.compile(r'(?P<tissue>\b([a-z`]+)\b)') #|\b([a-z]+)\b \b([a-z]+)\b) #r'.?(?!`)(\b([a-z]+)\b).?(?!`)'
-    value = rc.sub(translate, value)
+    #rc = re.compile(r'(?P<tissue>\b([a-z`]+)\b)') #|\b([a-z]+)\b \b([a-z]+)\b) #r'.?(?!`)(\b([a-z]+)\b).?(?!`)'
+    #value = rc.sub(translate, value)
     value += "\n\n"+"\n".join(links) +'\n\n'
     return mark_safe(value)
 
