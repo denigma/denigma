@@ -41,8 +41,10 @@
     <br>
 
     <div class="images">
+       <center>
        {% for image in article.images.all %}
-          <img src={{ image.url }} alt={{ image.name }} width="250" height="250" />
+          <img src={{ image.url }} alt={{ image.name }} width="300" height="300" />
+       </center>
        {% endfor %}
     </div>
     <b><a href={% url 'update-entry' article.pk %}>Update</a></b>
