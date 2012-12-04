@@ -8,6 +8,7 @@
 {% load sets %}
 {% load relations %}
 {% load commentaries %}
+{% load pubmed_linker %}
 
 {% block head_title %}{{ object.title }}{% endblock %}
 
@@ -31,9 +32,9 @@
         {% endif %}
     </p>
     {% if object.is_rest %}
-        {{ object.text|hyper|negle|reST|neglete|markdown|recross|safe }} {# {{ object.text|reST|safe }} {# restructuredtext }} #}
+        {{ object.text|hyper|negle|reST|neglete|markdown|recross|pubmed_links|safe }} {# {{ object.text|reST|safe }} {# restructuredtext }} #}
     {% else %}
-        {{ object.text|markdown|hyper|recross|safe }}
+        {{ object.text|markdown|hyper|recross|pubmed_links|safe }}
     {% endif %}
     {% for image in object.images.all %}
         <img src="{{ image.url }}" alt="{{ image.name }}" />

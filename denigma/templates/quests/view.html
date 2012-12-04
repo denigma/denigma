@@ -4,6 +4,7 @@
 {% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
+{% load pubmed_linker %}
 
 {% block head_title %}{{ quest.title }}{% endblock %}
 
@@ -15,7 +16,7 @@
 {% block title %}{{ quest.title }}{% endblock %}
 
 {% block content %}
-    {{ quest.text|markdown|hyper|recross|safe }}
+    {{ quest.text|markdown|hyper|recross|pubmed_links|safe }}
     {% for image in quest.images.all %}
         <img src={{ image.get_absolute_url }} alt={{ image.name }}>
     {% endfor %}
@@ -28,6 +29,4 @@
     <hr>
     <b><a href={% url 'update-entry' quest.slug %}>Update</a></b> |
     <b><a href={% url 'engage-quest' quest.slug %}>Engage</a></b>
-
-
 {% endblock %}
