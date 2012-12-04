@@ -6,7 +6,6 @@
 
 {% block base_hierarchy %}
     > <a href={% url "quests" %}>Quests</a>
-    | <a href={% url 'create-entry' %}>Create</a>
 {% endblock %}
 
 {% block title %}Quests{% endblock %}
@@ -15,5 +14,4 @@
     <a href={% url 'tasks' %}>Tasks</a>
     | <a href={% url 'todos' %}>Todos</a>
     | <a href={% url "quests" %}>Quests</a>
-
 {% endblock %}

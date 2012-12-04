@@ -5,21 +5,40 @@
 {% load hyperlink %}
 {% load crosslink%}
 
+{% block hierarchy %}
+    | <a href={% url 'create-entry' %}>Create</a>
+{% endblock %}
+
 {% block content %}
     <table>
         <tr>
             <td valign="top">
                 {{ quests.content|markdown|hyper|recross|safe }}
                 {% for entry in entries %}
-                    <li>
-                        <b><a href={% url "quest" entry.slug %}>{{ entry.title }}</a></b>
-                        ({% for tag in entry.tags.all %}
-                        <a href={% url 'entry-tag' tag.name %}>{{ tag }}</a>{% if not forloop.last %}, {% endif %}
-                    {% endfor %}) <b><a href={% url 'engage-quest' entry.slug %}>Engage</a></b>
-                    </li>
+                    {#  <li>#}
+                    <table width="350">
+                        <tr>
+                            <hr>
+                            <td>
+                                <h3><b><a href={% url "quest" entry.slug %}>{{ entry.title }}</a></b><br></h3>
+                                ({% for tag in entry.tags.all %}
+                                <a href={% url 'entry-tag' tag.name %}>{{ tag }}</a>{% if not forloop.last %}, {% endif %}
+                                {% endfor %})
+                                <b><a href={% url 'engage-quest' entry.slug %}>Engage</a></b>
+                            </td>
+                            <td style="width: 50px">
+                                {% for image in entry.images.all %}
+                                    <img src="{{ image.url }}" alt="{{ image.name }}" width="50" height="50">
+                                {% endfor %}
+                            </td>
+
+                        </tr>
+                    </table>
+
+                    {# </li> #}
                 {% endfor %}
             </td>
-            <td style="width: 250px">
+            <td valign="top" style="width: 250px">
                 {% for image in quests.images.all %}
                     <img src={{ image.get_absolute_url }} alt={{ image.name }} width="250" height="250">
                 {% endfor %}
