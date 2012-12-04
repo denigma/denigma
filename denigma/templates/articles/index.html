@@ -45,7 +45,7 @@
                     | <a href={% url 'connect' article.slug %}>Connect</a>
                 {% endif %}
                 </td>
-                <td align="right" valign="top" style="width: 200">
+                <td align="right" valign="top" style="width: 200px">
                     {% for image in article.images.all %}
                         <img src="{{ image.url }}" alt="{{ images.name }}" width="200" height="200">
                     {% endfor %}
