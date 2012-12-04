@@ -1,13 +1,29 @@
 {% extends "interactions/base.html" %}
 
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
+
 {% block hierarchy %}
     > <a href="/interactions/">Interactions</a>
-    > Index
 {% endblock hierarchy %}
 
-{% block subtitle %}Index{% endblock %}
-
 {% block content %}
+    <table width="100%">
+        <tr>
+            <td valign="top">
+                {% if entry.text %}
+                    {{ entry.content|markdown|hyper|recross|safe }}
+                {% endif %}
+            </td>
+            <td valign="top" align="right" style="width: 250">
+                {% for image in entry.images.all %}
+                    <img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250">
+                {% endfor %}
+            </td>
+
+        </tr>
+    </table>
     <a href="/admin/interactions">Interaction tables</a>
     <center><img src="http://dgallery.s3.amazonaws.com/building.png" alt="building initialized ..." width=200 height=200></center>
 {% endblock %}
