@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.models import User, AnonymousUser
 from django.utils.translation import ugettext as _
+from django.db.models import Q
 
 
 from data.models import Entry, Category, Relation
@@ -18,7 +19,7 @@ from meta.view import log
 
 def index(request):
     print("quests.index")
-    entries = Entry.objects.filter(parent__title="Quests")
+    entries = Entry.objects.filter(Q(parent__title="Quests") | Q(category__name="Quest"))
     quests = Entry.objects.get(title="Quests")
     return render(request, 'quests/index.html',
         {'entries': entries, 'quests': quests})
