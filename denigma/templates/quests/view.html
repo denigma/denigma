@@ -15,7 +15,7 @@
 {% block title %}{{ quest.title }}{% endblock %}
 
 {% block content %}
-    {{ quest.text|reST|markdown|hyper|recross|safe }}
+    {{ quest.text|markdown|hyper|recross|safe }}
     {% for image in quest.images.all %}
         <img src={{ image.get_absolute_url }} alt={{ image.name }}>
     {% endfor %}
