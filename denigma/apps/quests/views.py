@@ -19,7 +19,7 @@ from meta.view import log
 
 def index(request):
     print("quests.index")
-    entries = Entry.objects.filter(Q(parent__title="Quests") | Q(category__name="Quest"))
+    entries = Entry.objects.filter(Q(parent__title="Quests") | Q(categories__name="Quest"))
     quests = Entry.objects.get(title="Quests")
     return render(request, 'quests/index.html',
         {'entries': entries, 'quests': quests})
