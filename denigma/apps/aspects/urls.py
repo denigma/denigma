@@ -1,8 +1,10 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url
+from django.contrib.auth.decorators import login_required
 
-from models import Rank
 from views import (AchievementCreate, HierarchyCreate,
-                   RankCreate, GradeCreate, TitleCreate)
+                   RankCreate, GradeCreate, TitleCreate,
+                   RankUpdate, GradeUpdate, TitleUpdate)
+
 
 urlpatterns = patterns('aspects.views',
     # Professions:
@@ -10,7 +12,7 @@ urlpatterns = patterns('aspects.views',
     url(r'^professions/$', 'professions',name='professions'),
     url(r'^profession/(?P<name>\w+)', 'profession', name='profession'),
 
-    # Achievments:
+    # Achievements:
     url(r'^achievements/$', 'achievements', name='achievements'),
     url(r'^achievement/create/$',
         AchievementCreate.as_view(),
@@ -22,6 +24,16 @@ urlpatterns = patterns('aspects.views',
         name='create_grade'),
     url(r'^titles/create', TitleCreate.as_view(), {'name': 'titles'},
         name='create_title'),
+
+    url(r'^rank/update/(?P<pk>\d+)', login_required(RankUpdate.as_view()),
+        {'name': 'ranks'},
+        name='update-rank'),
+    url(r'^grade/update/(?P<pk>\d+)', login_required(GradeUpdate.as_view()),
+        {'name': 'grades'},
+        name='update-grade'),
+    url(r'^title/update/(?P<pk>\d+)', login_required(TitleUpdate.as_view()),
+        {'name': 'titles'},
+        name='update-title'),
 
     url(r'^(?P<name>\w+)/create', HierarchyCreate.as_view(),
         name='create_hierarchy'),

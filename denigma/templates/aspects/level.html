@@ -1,5 +1,8 @@
 {% extends "aspects/base.html" %}
 
+{% load url from future %}
+
+
 {% block head_title %}{% endblock %}
 
 {% block hierarchy %}
@@ -24,4 +27,6 @@
             <a href="/profiles/profile/{{ profile.name }}/">{{ profile.name }}</a>
         {% endfor %}
     {% endif %}
+    <hr>
+    <b><a href="{% url level.get_update_url level.pk %}">Update</a></b>
 {% endblock %}

@@ -1,7 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
+
 from django_tables2 import RequestConfig, SingleTableView
 
 from models import Hierarchy, HierarchyType, Rank, Grade, Title
@@ -51,7 +52,6 @@ class HierarchyCreate(CreateView):
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
-
 class RankCreate(HierarchyCreate):
     form_class = RankForm
     model = Rank
@@ -68,6 +68,47 @@ class TitleCreate(HierarchyCreate):
     form_class = TitleForm
     model = Title
     success_url = '/aspects/design/titles/'
+
+
+class HierarchyUpdate(UpdateView):
+    form_class = HierarchyForm
+    model = Hierarchy
+    template_name = 'aspects/hierarchy_form.html'
+
+    def dispatch(self, *args, **kwargs):
+        self.name = kwargs['name']
+        return super(HierarchyUpdate, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(HierarchyUpdate, self).get_context_data(*args, **kwargs)
+        context['action'] = 'Update'
+        context['hierarchy_name'] = self.name[:-1].title()
+        HierarchyCreate.success_url = '/aspects/%s/' % self.name
+        return context
+
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class RankUpdate(HierarchyUpdate):
+    form_class = RankForm
+    model = Rank
+    success_url = '/aspects/research/ranks/'
+
+
+class GradeUpdate(HierarchyUpdate):
+    form_class = GradeForm
+    model = Grade
+    success_url = '/aspects/programming/grade/'
+
+
+class TitleUpdate(HierarchyUpdate):
+    form_class = TitleForm
+    model = Title
+    success_url = '/aspects/design/title/'
 
 
 class RankList(SingleTableView): # Not used yet.

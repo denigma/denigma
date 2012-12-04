@@ -23,6 +23,9 @@ class Hierarchy(Abstract):
     def get_absolute_url(self):
         return u"/aspects/%s/%s" % (self.type.lower(), self.name.lower())
 
+    def get_update_url(self):
+        return "update-%s" % self.type.name.lower()
+
 
 class HierarchyType(Abstract):
     """Rank, Grade, Title, etc."""
