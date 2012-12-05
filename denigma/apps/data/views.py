@@ -80,7 +80,8 @@ def graph(request, template='data/graph.html'):
             data['nodes'].append(node(fr))
         if to.pk not in memo:
             data['nodes'].append(node(to))
-        data['edges'].append({'id': "%sto%s" % (fr.pk, to.pk), 'label': be.title, 'text': be.text, 'source': str(fr.pk), 'target': str(to.pk)})
+        data['edges'].append({'id': "%sto%s" % (fr.pk, to.pk), 'label': be.title, 'text': be.text,
+                              'source': str(fr.pk), 'target': str(to.pk), 'directed': True})
     network['data'] = data
 
     network_json = simplejson.dumps(network)
