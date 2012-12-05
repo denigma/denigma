@@ -3,7 +3,6 @@ A view is just a Python function that takes an HttpRequest as its parameter
 and returns an instance of HttpResponse.
 """
 from django.shortcuts import render_to_response
-from django.http import HttpResponse
 from django.template import RequestContext
 from django.db.models import Q
 
@@ -15,7 +14,7 @@ from django import forms
 
 
 class SearchForm(forms.Form):
-   text = forms.CharField(label="")#label="Site-wide search")
+   text = forms.CharField(label="") #label="Site-wide search")
 
 
 def home(request):
