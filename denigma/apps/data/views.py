@@ -19,6 +19,10 @@ from control import get
 from models import Entry, Change, Relation, Category
 from forms import EntryForm, RelationForm, CategoryForm, DeleteForm
 
+from templatetags.rendering import markdown
+from blog.templatetags.hyperlink import hyper
+from blog.templatetags.crosslink import recross
+
 
 def graph(request, template='data/graph.html'):
     """View that generates a data graph connecting data entries with relations."""
@@ -49,7 +53,7 @@ def graph(request, template='data/graph.html'):
     def node(entry):
         "Helper function to construct a node object."
         memo.append(entry.pk)
-        return {'id': str(entry.pk), 'label': entry.title, 'text': entry.text,
+        return {'id': str(entry.pk), 'label': entry.title, 'text': recross(hyper(markdown(entry.text))),
                 'links': '<a href="%s">View</a> | <a href="%s">Update</a>' %
                          (entry.get_absolute_url(), entry.get_update_url())}
 
@@ -64,7 +68,7 @@ def graph(request, template='data/graph.html'):
             data['nodes'].append(node(fr))
         if to.pk not in memo:
             data['nodes'].append(node(to))
-        data['edges'].append({'id': "%sto%s" % (fr.pk, to.pk), 'label': be.title, 'text': be.text,
+        data['edges'].append({'id': "%sto%s" % (fr.pk, to.pk), 'label': be.title, 'text': markdown(be.text),
                               'source': str(fr.pk), 'target': str(to.pk), 'directed': True,
                               'links': '<a href="%s">View</a> | <a href="%s">Update</a>' %
                                        (relation.get_absolute_url(), relation.get_update_url())})
