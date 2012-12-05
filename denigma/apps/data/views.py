@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response, redirect, render
 from django.template import RequestContext
 from django.views.generic import  ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib import messages
@@ -8,6 +8,7 @@ from django.contrib.auth.models import AnonymousUser, User
 from django.core.urlresolvers import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.utils import simplejson
 
 import reversion
 from taggit.models import Tag, TaggedItem
@@ -18,6 +19,72 @@ from control import get
 from models import Entry, Change, Relation, Category
 from forms import EntryForm, RelationForm, CategoryForm, DeleteForm
 
+
+def graph(request, template='data/graph.html'):
+    """View that generates a data graph connecting data entries with relations."""
+#    network = {
+#        'dataSchema': {
+#                        'nodes': [ { 'name': "label", 'type': "string" },
+#                                   { 'name': "foo", 'type': "string" }
+#                        ],
+#                        'edges': [ { 'name': "label", 'type': "string" },
+#                                   { 'name': "bar", 'type': "string" }
+#                        ]
+#                    },
+#        'data': {
+#            'nodes': [ { 'id': "1", 'label': "1", 'foo': "Is it real?" },
+#                       { 'id': "2", 'label': "2", 'foo': "Is it the matrix?" },
+#                       { 'id': "3", 'label': "3", 'foo': "Extra!" }
+#            ],
+#            'edges': [ { 'id': "2to1", 'target': "1", 'source': "2", 'label': "2 to 1", 'bar': "Enter the matrix" }
+#            ]
+#        }
+#    }
+
+    network = {
+        'dataSchema': {
+            'nodes': [
+                {'name': 'label', 'type': 'string'},
+                {'name': 'text', 'type': 'string'}
+            ],
+            'edges': [
+                {'name': 'label', 'type': 'string'},
+                {'name': 'text', 'type': 'string'}
+            ]
+        },
+        'data': {
+            'nodes': [
+                {'id': '1', 'label': 'Concepts', 'text':'Denigma Concepts'},
+                {'id': '2', 'label': 'Aspects', 'text':'Three aspects'}
+            ],
+            'edges': [
+                {'id': '2to1', 'label': 'belongs_to', 'text':'A belonging to relationship', 'target':'1', 'source': '2'}
+            ]
+
+        }
+    }
+    memo = []
+    def node(entry):
+        "Helper function to construct a node object."
+        memo.append(entry.pk)
+        return {'id': str(entry.pk), 'label': entry.title, 'text': entry.text}
+
+    # Getting the actually data:
+    data = {'nodes':[], 'edges':[]}
+    relations = Relation.objects.all()
+    for relation in relations:
+        fr = relation.fr
+        be = relation.be
+        to = relation.to
+        if fr.pk not in memo:
+            data['nodes'].append(node(fr))
+        if to.pk not in memo:
+            data['nodes'].append(node(to))
+        data['edges'].append({'id': "%sto%s" % (fr.pk, to.pk), 'label': be.title, 'text': be.text, 'source': str(fr.pk), 'target': str(to.pk)})
+    network['data'] = data
+
+    network_json = simplejson.dumps(network)
+    return render(request, template, {'network_json': network_json})
 
 def index(request):
     ctx = {'entry': get('Data App'),

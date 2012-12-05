@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from django.views.generic import  ListView, DetailView
+from django.views.generic import  ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 
@@ -93,4 +93,5 @@ urlpatterns = patterns('data.views',
     url(r'^category/create', CategoryCreate.as_view(), name='create-category'),
     url(r'^category/update/(?P<pk>\d+)', login_required(CategoryUpdate.as_view()), name='update-category'),
 
+    url(r'graph/$', 'graph', name='data-graph'),
 )#234567891123456789212345678931234567894123456789512345678961234567897123456789

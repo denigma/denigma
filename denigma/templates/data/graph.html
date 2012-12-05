@@ -1,0 +1,267 @@
+{% extends "data/base.html" %}
+{% load staticfiles %}
+
+{% block extra_script %}
+    <!-- JSON support for IE (needed to use JS API) -->
+    <script type="text/javascript" src="{% static "cytoscape/js/min/json2.min.js" %}"></script>
+
+    <!-- Flash embedding utility (needed to embed Cytoscape Web) -->
+    <script type="text/javascript" src="{% static "cytoscape/js/min/AC_OETags.min.js" %}"></script>
+
+    <!-- Cytoscape Web JS API (needed to reference org.cytoscapeweb.Visualization) -->
+    <script type="text/javascript" src="{% static "cytoscape/js/min/cytoscapeweb.min.js" %}"></script>
+
+    <script type="text/javascript">
+        window.onload=function() {
+            // id of Cytoscape Web container div
+            var div_id = "cytoscapeweb";
+
+            // you could also use other formats e.g. GraphML or grab the network data via AJAX
+            // Create a network model object
+
+            var network_json = {
+                // you need to specify a data schema for custom attributes!
+                dataSchema: {
+                    nodes: [ { name: "label", type: "string" },
+                        { name: "foo", type: "string" }
+                    ],
+                    edges: [ { name: "label", type: "string" },
+                        { name: "bar", type: "string" }
+                    ]
+                },
+                // NOTE the custom attributes on nodes and edges
+                data: {
+                    nodes: [ { id: "1", label: "1", foo: "Is it real?" },
+                        { id: "2", label: "2", foo: "Is it the matrix?" }
+                    ],
+                    edges: [ { id: "2to1", target: "1", source: "2", label: "2 to 1", bar: "Enter the matrix" }
+                    ]
+                }
+            };
+
+            var xml = '\
+                <graphml>\
+                  <key id="label" for="all" attr.name="label" attr.type="string"/>\
+                  <key id="weight" for="node" attr.name="weight" attr.type="double"/>\
+                  <graph edgedefault="directed">\
+                    <node id="1">\
+                        <data key="label">A</data>\
+                        <data key="weight">2.0</data>\
+                    </node>\
+                    <node id="2">\
+                        <data key="label">B</data>\
+                        <data key="weight">1.5</data>\
+                    </node>\
+                    <node id="3">\
+                        <data key="label">C</data>\
+                        <data key="weight">1.0</data>\
+                    </node>\
+                    <edge source="1" target="2">\
+                        <data key="label">A to B</data>\
+                    </edge>\
+                    <edge source="1" target="3">\
+                        <data key="label">A to C</data>\
+                    </edge>\
+                  </graph>\
+                </graphml>\
+                ';
+
+            var compound_network_json = {
+                // note the parent attribute:
+                data: {
+                    nodes: [ { id: "1" },
+                        { id: "2", parent: "1" },
+                        { id: "3", parent: "1" },
+                        { id: "4", parent: "2" },
+                        { id: "5", parent: "6" },
+                        { id: "6" },
+                        { id: "7" },
+                        { id: "8", parent: "1"}
+                    ],
+                    edges: [
+                        { target: "3", source: "5" },
+                        { target: "3", source: "8" },
+                        { target: "2", source: "7" }
+                    ]
+                }
+            };
+
+
+            function rand_color() {
+                function rand_channel() {
+                    return Math.round(Math.random() * 255);
+                }
+
+                function hex_string(num) {
+                    var ret = num.toString(16);
+
+                    if (ret.length < 2) {
+                        return "0" + ret;
+                    } else {
+                        return ret;
+                    }
+                }
+
+                var r = rand_channel()
+                var g = rand_channel();
+                var b = rand_channel();
+
+                return "#" + hex_string(r) + hex_string(g) + hex_string(b);
+            }
+
+            // visualize style we use
+            var visual_style = {
+                global: {
+                    backgroundColor: "#ABCFD6"
+                },
+                nodes: {
+                    shape: "OCTAGON",
+                    borderWith: 3,
+                    borderColor: "#ffffff",
+                    size: {
+                        defaultValue: 25,
+                        continuousMapper: { attrName: "weight", minValue: 25, maxValue: 75 }
+                    },
+                    color: {
+                        discreteMapper: {
+                            attrName: "id",
+                            entries: [
+                                { attrValue: 1, value: "#0B94B1" },
+                                { attrValue: 2, value: "#9A0B0B" },
+                                { attrValue: 3, value: "#dddd00" }
+                             ]
+                        }
+                    },
+                    labelHorizontalAnchor: "center"
+                },
+                edges: {
+                    width: 3,
+                    color: "#0B94B1"
+                }
+            };
+
+            // Note the "compound" prefix in some visual properties
+            var compound_visual_style = {
+                nodes: {
+                    shape: "DIAMOND",
+                    compoundShape: "RECTANGLE",
+                    label: { passthroughMapper: { attrName: "id" } },
+                    compoundLabel: { passthroughMapper: { attrName: "id" } },
+                    borderWidth: 2,
+                    compoundBorderWidth: 1,
+                    borderColor: "#666666",
+                    compoundBorderColor: "#999999",
+                    size: 25,
+                    color: "#ffffff",
+                    compoundColor: "#eaeaea"
+                }
+            };
+
+
+            // initialization options
+            var options = {
+                // where you have the Cytoscape Web SWF
+                swfPath: "{% static "cytoscape/swf/CytoscapeWeb" %}",
+                // where you have the Flash installer SWF
+                flashInstallerPath: "{% static "cytoscape/swf/playerProductInstall" %}"
+            };
+
+            // init and draw
+            var vis = new org.cytoscapeweb.Visualization(div_id, options);
+
+            // callback when Cytoscape Web has finished drawing
+            vis.ready(function() {
+
+                // set the style programmatically
+                document.getElementById("color").onclick = function(){
+                    visual_style.global.backgroundColor = rand_color();
+                    vis.layout("CompoundSpringEmbedder");
+                    vis.visualStyle(visual_style)
+
+                };
+
+                // add a listener for when nodes and edges are clicked
+                vis.addListener("click", "nodes", function(event) {
+                    handle_click(event);
+                })
+                        .addListener("click", "edges", function(event) {
+                            handle_click(event);
+                        });
+                function handle_click(event) {
+                    var target = event.target;
+
+                    clear();
+                    print("event.group = " + event.group);
+                    for (var i in target.data) {
+                        var variable_name = i;
+                        var variable_value = target.data[i];
+                        print("event.target.data." + variable_name + " = " + variable_value);
+                    }
+                }
+
+                function clear() {
+                    document.getElementById("note").innerHTML = "";
+                }
+
+                function print(msg) {
+                    document.getElementById("note").innerHTML += "<p>" + msg + "</p>";
+                }
+            });
+
+            {#  var network_data = JSON.parse("{ \"data\" : { \"nodes\": [{ \"id\" : \"1\" }, {\"id\" : \"2\"}, {\"id\" : \"3\"}], \"edges\": [{\"id\": \"2to1\",\"target\": \"1\",\"source\": \"2\" }]  }}"); #}
+            data = {{ network_json|safe }};
+            // draw options
+            var draw_options = {
+                // data goes here
+                network: data, //network_data, //compound_network_json, //xml,  //network_json, ////
+
+                // hide pan zoom
+                panZoomControlVisible: true,
+
+                // show edge labels too
+                edgeLabelsVisible: true,
+
+                // alternative layouts
+                layout: "CompoundSpringEmbedder", //"Preset",//"Radial",//"ForceDirected", //#"Tree",
+
+                // set the style at initialisation
+                visualStyle: visual_style//compound_visual_style
+            };
+
+            vis.draw(draw_options);
+        };
+
+    </script>
+{% endblock %}
+
+{% block extra_style %}
+    <style>
+        * { margin: 0; padding: 0; font-family: Helvetica, Arial, Verdana, sens-serif; }
+        html, body { height: 100%; width: 100%; padding: 5; margin: 5; }
+        body { line-height: 1.5; color: #000000; font-size: 14px; }
+            /* The Cytoscape Web container must have its dimensions set. */
+        #cytoscapeweb { width: 100%; height: 500px; }
+        #note { width: 100%; height: 50%; background-color: #f0f0f0; overflow: auto; }
+        p { padding: 0 0.5em; margin: 0; }
+        p:first-child { padding-top: 0.5em; }
+        .link { text-decoriation: underline; color: #0b94b1; cursor: pointer; }
+    </style>
+{% endblock %}
+
+{% block head_title %}Graph{% endblock %}
+
+{% block hierarchy %}
+    > Graph
+{% endblock %}
+
+{% block title %}Graph{% endblock %}
+
+{% block content %}
+    <div id="cytoscapeweb">
+        Cytoscape Web will replace the contents of this div with the graph.
+    </div>
+    <div id="note">
+        <p>Click nodes or edges.</p>
+    </div>
+    <span class="link" id="color">Change Background color at random.</span>
+{% endblock %}
