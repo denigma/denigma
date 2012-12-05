@@ -58,7 +58,7 @@ def tables(text):
         text = text.replace(table_name, "`%s`_" % table_number)
 
     #print text
-    return text+'\n.. fin\n'
+    return text+'\n\n'
 
 def create_table(data, title=None, legend=None, number=1, intend=" "*4):
     # Determine max row length of each column
