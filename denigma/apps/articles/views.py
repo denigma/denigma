@@ -37,9 +37,10 @@ def view(request, title):
         context_instance=RequestContext(request))
 
 
-def reference(request, slug, numbered=True):
+def reference(request, slug, numbered=False):
     article = Entry.objects.get(slug=slug)
-    article.text = referencing(article, linking=False, numbered=numbered)
+    article.text = footer(header(article.text+'\n', link(article.title, "http://denigma.de"+article.get_absolute_url())))
+    article.text = referencing(article, linking=True, numbered=numbered)
     #article.text = glossary(article.text)
     print("Word count = %s" % len(article.text.split(None)))
     return render_to_response('articles/view.html', {'article': article},
