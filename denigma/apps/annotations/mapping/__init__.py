@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from mapper import *
 from annotations.models import gene2ensembl, EnsemblEntrezGeneId
 
