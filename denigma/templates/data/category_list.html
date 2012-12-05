@@ -1,6 +1,7 @@
 {% extends "data/base.html" %}
 
 {% load url from future %}
+{% load parameters %}
 
 {% block head_title %}Categories{% endblock %}
 
@@ -14,7 +15,10 @@
 {% block content %}
     {% if object_list %}
         {% for category in object_list %}
-            <li><b><a href={{ category.get_absolute_url }}>{{ category }}</a></b>: {{ category.definition.text }} (<a href={% url 'update-category' category.pk %}>Update</a>)</li>
+            <li>
+                <b><a href={{ category.get_absolute_url }}>{{ category }}</a></b>: {{ category.definition|method:"brief(200)" }}
+                ( <a href="{{ category.definition.get_absolute_url }}">View</a> | <a href={% url 'update-category' category.pk %}>Update</a> )
+            </li>
         {% endfor %}
     {% else %}
         <p>No data categories.</p>

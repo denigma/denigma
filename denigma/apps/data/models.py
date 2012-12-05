@@ -87,7 +87,7 @@ class Content(Title):
             text = self.text.replace(match.group(0), '')
         else:
             text = self.text
-        return text[:limit].replace('Abstract\r\n========', '') + '...'
+        return text[:int(limit)].replace('Abstract\r\n========', '') + '...'
 
     class Meta:
         abstract = True
