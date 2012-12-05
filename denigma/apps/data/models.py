@@ -246,6 +246,9 @@ class Entry(Content):
         #    return reverse('article', args=[self.title.replace(' ', '_')])
         return self.url or reverse('detail-entry', args=[self.slug]) #return self.url or u"/data/entry/%s" % self.pk
 
+    def get_update_url(self):
+        return reverse('update-entry', args=[self.slug])
+
     def get_fields(self):
         """Displays only model fields that are non-empty."""
         return [(field.name, field.value_to_string(self)) for field in Entry._meta.fields if field.value_to_string(self) is not None]
@@ -498,6 +501,9 @@ class Relation(Relationship):
 
     def get_absolute_url(self):
         return reverse('relation', args=[self.pk])
+
+    def get_update_url(self):
+        return reverse('update-relation', args=[self.pk])
 
 
 class Alteration(models.Model):

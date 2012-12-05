@@ -22,37 +22,20 @@ from forms import EntryForm, RelationForm, CategoryForm, DeleteForm
 
 def graph(request, template='data/graph.html'):
     """View that generates a data graph connecting data entries with relations."""
-#    network = {
-#        'dataSchema': {
-#                        'nodes': [ { 'name': "label", 'type': "string" },
-#                                   { 'name': "foo", 'type': "string" }
-#                        ],
-#                        'edges': [ { 'name': "label", 'type': "string" },
-#                                   { 'name': "bar", 'type': "string" }
-#                        ]
-#                    },
-#        'data': {
-#            'nodes': [ { 'id': "1", 'label': "1", 'foo': "Is it real?" },
-#                       { 'id': "2", 'label': "2", 'foo': "Is it the matrix?" },
-#                       { 'id': "3", 'label': "3", 'foo': "Extra!" }
-#            ],
-#            'edges': [ { 'id': "2to1", 'target': "1", 'source': "2", 'label': "2 to 1", 'bar': "Enter the matrix" }
-#            ]
-#        }
-#    }
-
     network = {
         'dataSchema': {
             'nodes': [
                 {'name': 'label', 'type': 'string'},
-                {'name': 'text', 'type': 'string'}
+                {'name': 'text', 'type': 'string'},
+                {'name': 'links', 'type': 'string'}
             ],
             'edges': [
                 {'name': 'label', 'type': 'string'},
-                {'name': 'text', 'type': 'string'}
+                {'name': 'text', 'type': 'string'},
+                {'name': 'links', 'type': 'string'}
             ]
         },
-        'data': {
+        'data': { # Dummy data:
             'nodes': [
                 {'id': '1', 'label': 'Concepts', 'text':'Denigma Concepts'},
                 {'id': '2', 'label': 'Aspects', 'text':'Three aspects'}
@@ -60,14 +43,15 @@ def graph(request, template='data/graph.html'):
             'edges': [
                 {'id': '2to1', 'label': 'belongs_to', 'text':'A belonging to relationship', 'target':'1', 'source': '2'}
             ]
-
         }
     }
     memo = []
     def node(entry):
         "Helper function to construct a node object."
         memo.append(entry.pk)
-        return {'id': str(entry.pk), 'label': entry.title, 'text': entry.text}
+        return {'id': str(entry.pk), 'label': entry.title, 'text': entry.text,
+                'links': '<a href="%s">View</a> | <a href="%s">Update</a>' %
+                         (entry.get_absolute_url(), entry.get_update_url())}
 
     # Getting the actually data:
     data = {'nodes':[], 'edges':[]}
@@ -81,7 +65,9 @@ def graph(request, template='data/graph.html'):
         if to.pk not in memo:
             data['nodes'].append(node(to))
         data['edges'].append({'id': "%sto%s" % (fr.pk, to.pk), 'label': be.title, 'text': be.text,
-                              'source': str(fr.pk), 'target': str(to.pk), 'directed': True})
+                              'source': str(fr.pk), 'target': str(to.pk), 'directed': True,
+                              'links': '<a href="%s">View</a> | <a href="%s">Update</a>' %
+                                       (relation.get_absolute_url(), relation.get_update_url())})
     network['data'] = data
 
     network_json = simplejson.dumps(network)
