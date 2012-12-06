@@ -1,5 +1,6 @@
 {% extends "annotations/base.html" %}
 
+{% load url from future %}
 {% load mptt_tags %}
 {% load markup %}
 {% load crosslink %}
@@ -9,6 +10,7 @@
 
 {% block hierarchy %}
     > Classifications
+    | <a href={% url 'add_classification' %}>Add</a>
 {% endblock %}
 
 {% block title %}{{ entry.title }}{% endblock %}
@@ -18,6 +20,19 @@
         <tr>
             <td valign="top">
                 {{ entry.content|markdown|hyper|recross|safe }}
+                <hr>
+                <ul>
+                    {% recursetree nodes %}
+                        <li>
+                            <a href="/annotations/classification/{{ node.pk }}/">{{ node }}</a>
+                            {% if not node.is_leaf_node %}
+                                <ul class="children">
+                                    <a href="/annotations/classification/{{ node.pk }}/">{{ children }}</a>
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endrecursetree %}
+                </ul>
             </td>
             <td valign="top" align="right" style="width: 250px">
                 {% for image in entry.images.all %}
@@ -26,22 +41,9 @@
             </td>
         </tr>
     </table>
-    <ul>
-        {% recursetree nodes %}
-            <li>
-                <a href="/annotations/classification/{{ node.pk }}/">{{ node }}</a>
-                {% if not node.is_leaf_node %}
-                    <ul class="children">
-                        <a href="/annotations/classification/{{ node.pk }}/">{{ children }}</a>
-                    </ul>
-                {% endif %}
-            </li>
-        {% endrecursetree %}
-    </ul>
    <hr>
    <b><a href="/annotations/classification/add/">Add classification</a></b>
    (<a href="/admin/annotations/classification/add/">Admin</a>)
-
 {% endblock %}
 
 
