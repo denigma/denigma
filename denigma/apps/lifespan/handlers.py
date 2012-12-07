@@ -8,7 +8,7 @@ from datasets.models import Reference
 def changed_references(sender, instance, action, reverse, model, pk_set, **kwargs):
     #print("changed referenes: %s" % action)
     if action == "post_clear":
-        rc = re.compile(r'\d{8,}')
+        rc = re.compile(r'\W(?P<id>\d{8,})\W')
         if hasattr(instance, 'effect'): # isinstance(instance, Intervention):
             references = re.findall(rc, instance.effect)
         else: # if isinstance(instance, Factor):
