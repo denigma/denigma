@@ -8,7 +8,8 @@ register = template.Library()
 
 @register.filter
 def pubmed_links(value):
-    rc = re.compile('\W(?P<id>[1-9]\d{6,})\W')
+    rc = re.compile('(?P<pre>\W)(?P<id>[1-9]\d{6,})(?P<post>\W)')
     def translate(match):
-        return "<a href=http://www.ncbi.nlm.nih.gov/pubmed/%s>%s</a>" % (match.group(0), match.group(0))
+        return "%s<a href=http://www.ncbi.nlm.nih.gov/pubmed/%s>%s</a>%s" % \
+               (match.group('pre'), match.group('id'), match.group('id'), match.group('post'))
     return mark_safe(rc.sub(translate, value))
