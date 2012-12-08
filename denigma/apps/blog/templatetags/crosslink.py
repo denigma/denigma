@@ -56,5 +56,6 @@ def recross(text):
             for e in Entry.objects.all()])
     rc = re.compile('|'.join(map(re.escape, entries)))
     def translate(match):
-        return entries[match.group(0)]
+        if match.group(0) in entries:
+            return entries[match.group(0)]
     return rc.sub(translate, text)
