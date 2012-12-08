@@ -41,7 +41,7 @@ def crossing(text):
 
 @register.filter
 def crossed(text):
-    """Simple crosslinking replace algorithms, which might not work perfectly."""
+    """Simple cross-linking replace algorithms, which might not work perfectly."""
     entries = dict([(e.title, '<a href="/blog/{0}">{1}</a>'.format(e.id, e.title))\
             for e in Entry.objects.all()])
     for title in entries:
@@ -54,8 +54,11 @@ def recross(text):
     the associated cross-linked value, return the changed text."""
     entries = dict([(e.title, '<a href="{0}">{1}</a>'.format(e.get_absolute_url(), e.title))\
             for e in Entry.objects.all()])
-    rc = re.compile('|'.join(map(re.escape, entries)))
-    def translate(match):
-        if match.group(0) in entries:
+    if entries: # Check if whether database is non-empty (as it is by setting up).
+        rc = re.compile('|'.join(map(re.escape, entries)))
+        print entries
+        def translate(match):
             return entries[match.group(0)]
-    return rc.sub(translate, text)
+        return rc.sub(translate, text)
+    return text
+
