@@ -1,3 +1,5 @@
+from random import random
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect, render
 from django.template import RequestContext
@@ -31,12 +33,14 @@ def graph(request, template='data/graph.html'):
             'nodes': [
                 {'name': 'label', 'type': 'string'},
                 {'name': 'text', 'type': 'string'},
-                {'name': 'links', 'type': 'string'}
+                {'name': 'links', 'type': 'string'},
+                {'name': 'weight', 'type': 'number' }
             ],
             'edges': [
                 {'name': 'label', 'type': 'string'},
                 {'name': 'text', 'type': 'string'},
-                {'name': 'links', 'type': 'string'}
+                {'name': 'links', 'type': 'string'},
+                {'name': 'weight', 'type': 'number' }
             ]
         },
         'data': { # Dummy data:
@@ -55,7 +59,7 @@ def graph(request, template='data/graph.html'):
         memo.append(entry.pk)
         return {'id': str(entry.pk), 'label': entry.title, 'text': recross(hyper(markdown(entry.text))),
                 'links': '<a href="%s">View</a> | <a href="%s">Update</a>' %
-                         (entry.get_absolute_url(), entry.get_update_url())}
+                         (entry.get_absolute_url(), entry.get_update_url()), 'weight':random()}
 
     # Getting the actually data:
     data = {'nodes':[], 'edges':[]}
@@ -71,7 +75,7 @@ def graph(request, template='data/graph.html'):
         data['edges'].append({'id': "%sto%s" % (fr.pk, to.pk), 'label': be.title, 'text': markdown(be.text),
                               'source': str(fr.pk), 'target': str(to.pk), 'directed': True,
                               'links': '<a href="%s">View</a> | <a href="%s">Update</a>' %
-                                       (relation.get_absolute_url(), relation.get_update_url())})
+                                       (relation.get_absolute_url(), relation.get_update_url()), 'weight':random()})
     network['data'] = data
 
     network_json = simplejson.dumps(network)
@@ -246,6 +250,25 @@ class Create(CreateView):
             messages.add_message(self.request, messages.SUCCESS,
                 _(self.message % self.object))
             return HttpResponseRedirect(self.get_success_url())
+
+
+class Generate(Create):
+    """Enables th creation of data entry with initial values."""
+    comment = 'Generated entry.'
+    message = 'Successfully generated %s'
+    action = 'Generate'
+    def dispatch(self, request, *args, **kwargs):
+        if 'title' in kwargs:
+            self.title = kwargs['title']
+            del kwargs['title']
+        return super(Generate, self).dispatch(request, *args, **kwargs)
+
+    def get_initial(self):
+        initial = super(Generate, self).get_initial()
+        initial = initial.copy()
+        initial['title'] = self.title
+        del self.title
+        return initial
 
 
 class Update(UpdateView):

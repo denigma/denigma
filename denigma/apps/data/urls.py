@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from taggit.models import Tag
 
 from models import Entry, Change, Relation, Alteration,  Category
-from views import EntryList, EntryView,  EntryCreate, EntryUpdate, EntryDelete,\
+from views import EntryList, EntryView,  EntryCreate, EntryUpdate, EntryDelete, Generate,\
                   ChangeList, \
                   RelationCreate, RelationUpdate, \
                   CategoryCreate, CategoryUpdate, TagDetail
@@ -22,6 +22,7 @@ urlpatterns = patterns('data.views',
     url(r'^entry/(?P<pk>\d+)', DetailView.as_view(model=Entry), name='detail-entry'), # User generic class-based view # template_name='entry_detail.html' # use defaults
     url(r'^entry/view/(?P<slug>.+)', EntryView.as_view(), name='view-entry'),
     url(r'^entry/create/$', EntryCreate.as_view(), name='create-entry'),
+    url(r'^entry/generate/(?P<title>.+)', Generate.as_view(), name='generate-entry'),
     url(r'^entry/update/(?P<pk>\d+)', login_required(EntryUpdate.as_view()), name='update-entry'),
     url(r'^entry/update/(?P<slug>.+)', login_required(EntryUpdate.as_view()), name='update-entry'),
     url(r'^entry/delete/(?P<pk>\d+)', login_required(EntryDelete.as_view()), name='delete-entry'),
