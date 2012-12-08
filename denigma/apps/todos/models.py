@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 
 
 # Constrain choices
@@ -11,6 +12,7 @@ priorities = (
     ('C', 'Medium'),
     ('D', 'Low'),
 )
+
 
 class Todo(models.Model):
     title = models.CharField(max_length=200)
@@ -22,7 +24,7 @@ class Todo(models.Model):
     stop_date = models.DateField(blank=True, null=True)
     #finished = models.DateField(blank=True, null=True)
     done = models.BooleanField()
-    owner = models.ForeignKey(User, blank=True)
+    owner = models.ForeignKey(User, blank=True, verbose_name=_("Creator"))
     #deadlines?
     # email to inform people before deadlines end.
 
