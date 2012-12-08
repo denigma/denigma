@@ -2,7 +2,8 @@ import re
 
 from django import template
 
-hyperlink = re.compile("(http://.+?)[;\]]")
+
+hyperlink = re.compile("(https*://.+?)[;\]]")
 register = template.Library()
 
 @register.filter
