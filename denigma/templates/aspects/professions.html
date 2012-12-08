@@ -4,6 +4,7 @@
 {% load markup %}
 {% load hyperlink %}
 {% load crosslink %}
+{% load paragraphs %}
 
 {% block head_title %}Professions{% endblock %}
 
@@ -21,7 +22,7 @@
             <tr>
                 <td>
                     <a href={{ profession.get_absolute_url }}><h2>{{ profession.title }}</h2></a>
-                    {{ profession.content|markdown|hyper|recross|safe }}
+                    {{ profession.content|paraone|markdown|hyper|recross|safe }}
                     <b><a href="/aspects/profession/{{ profession.title|lower }}/">Read more</a></b>
                 </td>
                 <td align="right" style="width: 250px">
