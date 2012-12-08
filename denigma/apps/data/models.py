@@ -257,7 +257,7 @@ class Entry(Content):
         return reverse('detail-entry',args=[self.slug])
 
     def content(self):
-        return self.text + " <b><a href='/data/entry/update/%s'>o</a></b>" % self.slug
+        return self.text + "\n\n  <b><a href='/data/entry/update/%s'>o</a></b>" % self.slug
 
     def is_rest(self):
         """returns True if entry is tagged to be fully encoded in reStructuredText."""
