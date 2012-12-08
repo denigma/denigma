@@ -2,8 +2,7 @@
 A view is just a Python function that takes an HttpRequest as its parameter
 and returns an instance of HttpResponse.
 """
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 from django.db.models import Q
 
 from data import get
@@ -17,7 +16,7 @@ class SearchForm(forms.Form):
    text = forms.CharField(label="") #label="Site-wide search")
 
 
-def home(request):
+def home(request, template='homepage.html'):
     """The root source of all Denigmas URLs.
     Renders a dynamic home site with altered content."""
     searchform = SearchForm() # Depricated?
@@ -38,19 +37,16 @@ def home(request):
            'research': research,
            'programming': programming,
            'design': design}
-    return render_to_response('homepage.html', ctx,
-                              context_instance=RequestContext(request))
+    return render(request, template, ctx)
 
-def search(request, term):
+def search(request, term, template='search.html'):
     """Site-wide search functionality"""
     term = request.META['QUERY_STRING'].split('models=data&q=')[1]
-    return render_to_response('search.html', {'term': term},
-        context_instance=RequestContext(request))
+    return render(request, template, {'term': term})
 
-def google(request, term):
-    return render_to_response('google.html', term)
+def google(request, term, template='google.html'):
+    return render(request, template, term)
 
-def content(request):
+def content(request, template='content.html'):
     contents = get('Content'), get("Data App"), get("Denigma Blog"), get("Denigma's Wiki")
-    return render_to_response('content.html', {'contents': contents},
-        context_instance=RequestContext(request))
+    return render(request, template, {'contents': contents})

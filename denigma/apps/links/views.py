@@ -9,6 +9,7 @@ from django_tables2 import SingleTableView
 
 import django_filters
 
+from data import get
 from data.models import Entry
 from data.views import Create, Update
 
@@ -65,7 +66,7 @@ class Links(SingleTableView, FormView, LinkView):
 
     def get_context_data(self, **kwargs):
         context = super(Links, self).get_context_data(**kwargs)
-        context['entry'] = Entry.objects.get(title='Links')
+        context['entry'] = get("Links")
         context['form'] = FilterForm(initial={'filter': Links.query})
         context['categories'] = Category.objects.all()
         return context
