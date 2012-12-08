@@ -12,7 +12,13 @@
     | <a href={% url 'create-entry' %}>Create Entry</a>
 {% endblock %}
 
-{% block title %}<a href={% url 'detail-entry' entry.pk %}><h2>{{ entry.title }}</h2></a>{% endblock %}
+{% block title %}
+    {% if entry.pk %}
+        <a href={% url 'detail-entry' entry.pk %}><h2>{{ entry.title }}</h2></a>
+    {% else %}
+        Data App
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     <table>
