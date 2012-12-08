@@ -56,7 +56,6 @@ def recross(text):
             for e in Entry.objects.all()])
     if entries: # Check if whether database is non-empty (as it is by setting up).
         rc = re.compile('|'.join(map(re.escape, entries)))
-        print entries
         def translate(match):
             return entries[match.group(0)]
         return rc.sub(translate, text)
