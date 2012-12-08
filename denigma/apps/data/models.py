@@ -576,6 +576,12 @@ class EntryDummy(object):
         self.images = images
         self.urls = urls
 
+    def content(self):
+        return self.text or mark_safe('<a href="%s">o</a>' % self.generate())
+
+    def generate(self):
+        return reverse('generate-entry', args=[self.title])
+
 
 # Signals:
 #request_finished.connect(handlers.request_finished)
