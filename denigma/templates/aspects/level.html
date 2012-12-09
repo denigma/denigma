@@ -1,7 +1,9 @@
 {% extends "aspects/base.html" %}
 
 {% load url from future %}
-
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
 
 {% block head_title %}{% endblock %}
 
@@ -15,13 +17,13 @@
 {% block title %}{{ level }}{% endblock %}
 
 {% block content %}
-    {{ level.description }}
-    {{ level.requriement }}
+    {{ level.description|markdown|hyper|recross|safe }}
+    <b>Requirements</b>: {{ level.requirement|markdown|hyper|recross|safe }}
     {% if level.symbol %}
-        <img src="{{ level.symbol.url }}" alt={{ level.symbol.name }} />
+        <center><img src="{{ level.symbol.url }}" alt="{{ level.symbol.name }}"></center>
     {% endif %}
-    <hr>
     {% if profiles %}
+        <hr>
         <h3>{{ level.type.profession|title }}s with {{ level.type|lower }} {{ level }}:</h3>
         {% for profile in profiles %}
             <a href="/profiles/profile/{{ profile.name }}/">{{ profile.name }}</a>
