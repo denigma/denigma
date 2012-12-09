@@ -5,6 +5,7 @@
 {% load hyperlink %}
 {% load crosslink %}
 {% load pubmed_linker %}
+{% load negletion %}
 
 {% block head_title %}{{ quest.title }}{% endblock %}
 
@@ -16,7 +17,12 @@
 {% block title %}{{ quest.title }}{% endblock %}
 
 {% block content %}
-    {{ quest.text|markdown|hyper|recross|pubmed_links|safe }}
+    {% if quest.is_rest %}
+        {{ quest.content|negle|reST|neglete|markdown|hyper|recross|pubmed_links|safe }}
+    {% else %}
+        {{ quest.content|markdown|hyper|recross|pubmed_links|safe }}
+    {% endif %}
+
     {% for image in quest.images.all %}
         <img src={{ image.get_absolute_url }} alt={{ image.name }}>
     {% endfor %}
