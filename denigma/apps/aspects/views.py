@@ -103,13 +103,13 @@ class RankUpdate(HierarchyUpdate):
 class GradeUpdate(HierarchyUpdate):
     form_class = GradeForm
     model = Grade
-    success_url = '/aspects/programming/grade/'
+    success_url = '/aspects/programming/grades/'
 
 
 class TitleUpdate(HierarchyUpdate):
     form_class = TitleForm
     model = Title
-    success_url = '/aspects/design/title/'
+    success_url = '/aspects/design/titles/'
 
 
 class RankList(SingleTableView): # Not used yet.
