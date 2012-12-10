@@ -62,3 +62,6 @@ reportlab==2.5
 
 # Source code highlighting:
 pygments
+
+# Representative user images:
+-e git+https://github.com/guzru/django-avatar#egg=django-avatar
