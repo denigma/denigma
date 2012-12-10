@@ -291,6 +291,7 @@ INSTALLED_APPS = [
     'about',
     'aspects',
     'profiles',
+    'avatar',  # django-avatar: Representative user images
 
     'experts',
     'southtut',

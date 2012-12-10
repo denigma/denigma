@@ -1,0 +1,9 @@
+{% extends "site_base.html" %}
+
+{% load url from future %}
+
+{% block head_title %}Avatar{% endblock %}
+
+{% block base_hierarchy %}
+    > <a href="{% url 'avatar_change' %}">Avatars</a>
+{% endblock %}

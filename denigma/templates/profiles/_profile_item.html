@@ -1,21 +1,33 @@
+{% load url from future %}
 {% load account_tags %}
-<div class="profile-item">
-    <div class="name">
-        {% if profile.name %}
-            <a href="{% url profile_detail profile.user.username %}">{{ profile.name }} ({% user_display profile.user %})</a>
-        {% else %}
-            <a href="{% url profile_detail profile.user.username %}">{% user_display profile.user %}</a>
-        {% endif %}
-        {% if user.is_superuser %}
-            (Last list check:</b> {{ profile.last_list_check }})
-        {% endif %}
-    </div>
-    <div class="details">
-        {% if profile.location %}{{ profile.location }}{% endif %}
-        {% if profile.location and profile.website %}&bull;{% endif %}
-        {% if profile.website %}<a href="{{ profile.website }}">{{ profile.website }}</a>{% endif %}
+{% load avatar_tags %}
 
-    </div>
-    <div class="clear"></div>
-   <p></p>
-</div>
+<table width="50%">
+    <tr>
+        <td>
+            <div class="profile-item">
+                <div class="name">
+                    {% if profile.name %}
+                        <a href="{% url 'profile_detail' profile.user.username %}">{{ profile.name }} ({% user_display profile.user %})</a>
+                    {% else %}
+                        <a href="{% url 'profile_detail' profile.user.username %}">{% user_display profile.user %}</a>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                        (Last list check:</b> {{ profile.last_list_check }})
+                    {% endif %}
+                </div>
+                <div class="details">
+                    {% if profile.location %}{{ profile.location }}{% endif %}
+                    {% if profile.location and profile.website %}&bull;{% endif %}
+                    {% if profile.website %}<a href="{{ profile.website }}">{{ profile.website }}</a>{% endif %}
+                </div>
+                <div class="clear"></div>
+                <p></p>
+            </div>
+        </td>
+        <td align="right" valign="top">
+            {% avatar profile.user 40 %}
+        </td>
+    </tr>
+</table>
+

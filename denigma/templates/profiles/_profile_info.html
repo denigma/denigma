@@ -1,37 +1,63 @@
 {% load i18n %}
+{% load avatar_tags %}
+
 <div class="profile_info">
-    {% if profile.name %}<p><b>{% trans "Name" %}</b>: {{ profile.name }}</p>{% endif %}
-    {% if profile.about %}<p><b>{% trans "About" %}</b>: {{ profile.about }}</p>{% endif %}
-    {% if profile.location %}<p><b>{% trans "Location" %}</b>: {{ profile.location }}</p>{% endif %}
-    {% if profile.website %}<p><b>{% trans "Website" %}</b>: <a href="{{ profile.website }}">{{ profile.website }}</a></p>{% endif %}
-    <table>
-    <tr>
-    <td>
-    {% if profile.rank %}<p><b>{% trans "Rank" %}</b>: <a href="/aspects/research/rank/{{ profile.rank.name }}/">{{ profile.rank.name }}</a></p>
-        </td>
-        <td>
-        <img src={{ profile.rank.symbol.url }} alt={{ profile.rank.symbol }} width="50" height="50" />
-        </td>
-
+    <table width="100%">
+        <tr>
+            <td>
+                {% if profile.name %}<p><b>{% trans "Name" %}</b>: {{ profile.name }}</p>{% endif %}
+                {% if profile.about %}<p><b>{% trans "About" %}</b>: {{ profile.about }}</p>{% endif %}
+                {% if profile.location %}<p><b>{% trans "Location" %}</b>: {{ profile.location }}</p>{% endif %}
+                {% if profile.website %}<p><b>{% trans "Website" %}</b>: <a href="{{ profile.website }}">{{ profile.website }}</a></p>{% endif %}
+                <table>
+                    <tr>
+                        <td>
+                            {% if profile.rank %}<p><b>{% trans "Rank" %}</b>: <a href="/aspects/research/rank/{{ profile.rank.name }}/">{{ profile.rank.name }}</a></p>
+                        </td>
+                        <td>
+                            <img src="{{ profile.rank.symbol.url }}" alt="{{ profile.rank.symbol }}" width="50" height="50" />
+                        </td>
+                    </tr>
+                        {% endif %}
+                </table>
+                {% if profile.grades.all %}
+                        {% for grade in profile.grades.all %}
+                            <table>
+                                <tr>
+                                    <td>
+                                        <b>{% trans "Grade" %}</b>: <a href="/aspects/programming/grade/{{ grade.name }}/">{{ grade.name }}</a><br>
+                                    </td>
+                                    <td>
+                                        <img src="{{ grade.symbol.url }}" alt="{{ grade.symbol.name }}" width="50" height="50">
+                                    </td>
+                                </tr>
+                            </table>
+                        {% endfor %}
+                {% endif %}
+                {% if profile.title %}
+                    <table>
+                        <tr>
+                            <td>
+                                <b>{% trans "Title" %}</b>: <a href="/aspects/design/title/{{ profile.title.name }}">{{ profile.title.name }}</a>
+                            </td>
+                            <td>
+                                <img src="{{ profile.title.symbol.url }}" alt="{{ profile.title.symbol.name }}" width="50" height="50">
+                            </td>
+                        </tr>
+                    </table>
+                {% endif %}
+                {% if user.is_superuser %}
+                    <br>
+                    <p><b>Last list check</b>: {{ profile.last_list_check }}</p>
+                {% endif %}
+            </td>
+            <td align="right" valign="top">
+                {% avatar profile.user %}
+                <br>
+                {% if user == profile.user %}
+                    <a href="{% url avatar_change %}">Change avatar</a>
+                {% endif %}
+            </td>
         </tr>
-    {% endif %}
     </table>
-    {% if profile.grade %}<p><b>{% trans "Grade" %}</b>: <a href="/aspects/programming/grade/{{ profile.grade.name }}/">{{ profile.grade.name }}</a></p>
-       <img src="{{ profile.grade.symbol.url }}" alt={{ profile.grades.symbol}} width="50" height="50"/>
-    {% endif %}
-    {% if profile.grades.all %}<p><b>{% trans "Grades" %}</b>:
-        {% for grade in profile.grades.all %}
-            <a href="/aspects/programming/grade/{{ grade.name }}/">{{ grade.name }}</a></p>
-            {# {{ profile.grade.symbol }} #}
-        {% endfor %}
-    {% endif %}
-    {% if profile.title %}<p><b>{% trans "Title" %}</b>: <a href="/aspects/design/title/{{ profile.title.name }}">{{ profile.title.name }}</a>
-       {# {{ profile.title.symbol }} #}
-    {% endif %}
-
-    {% if user.is_superuser %}
-        <br>
-        <p><b>Last list check</b>: {{ profile.last_list_check }}</p>
-    {% endif %}
-    </p>
 </div>

@@ -13,6 +13,8 @@ from pinax.apps.account.openid_consumer import PinaxConsumer
 
 from sitemaps import SiteMap, SiteSiteMap
 
+#from haystack.views import SearchView
+#from forms import DateRangeSearchForm
 
 sitemaps = {
    'Denigma': SiteMap,
@@ -24,6 +26,7 @@ handler500 = "pinax.views.server_error"
 urlpatterns = patterns("denigma.views",
     url(r'^$', 'home', name="home"),
     url(r'^search/', include('haystack.urls')),
+    #url(r'^search/', SearchView(form_class=DateRangeSearchForm)),
     url(r'^content/', 'content', name='content'),
     url(r'^404/$', TemplateView.as_view(), {'template':'404.html'}, name='404'),
     url(r'^500/$', TemplateView.as_view(), {'template':'500.html'}, name='505'),
@@ -47,6 +50,7 @@ urlpatterns += patterns("",
     url(r'^openid/', include(PinaxConsumer().urls)),
     url(r'^notices/', include("notification.urls")),
     url(r'^announcements/', include("announcements.urls")),
+    url(r'^avatar/', include('avatar.urls')), # django-avatar: Representative user images
 
     url(r'^profiles/', include("idios.urls")),
     url(r'^aspects/', include('aspects.urls')),
