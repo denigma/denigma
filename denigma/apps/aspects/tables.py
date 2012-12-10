@@ -32,7 +32,7 @@ class GradeTable(Table):
         exclude = ('id', 'type', 'hierarchy_ptr')
 
 
-class TitleTable(tables.Table):
+class TitleTable(Table):
 
     def render_name(self, value, record):
         return mark_safe('<a href="/aspects/design/title/%s">%s</a>' % (record.name, value))
