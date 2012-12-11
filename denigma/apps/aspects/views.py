@@ -58,7 +58,7 @@ class RankCreate(HierarchyCreate):
     model = Rank
     success_url = '/aspects/research/ranks/'
 
-    def get_initial(self, form_class):
+    def get_initial(self):
         initials = super(RankCreate, self).get_initial()
         initials['type'] = HierarchyType.objects.get(name='Rank')
         return initials
