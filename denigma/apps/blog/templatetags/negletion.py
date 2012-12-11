@@ -20,19 +20,31 @@ register = template.Library()
 def negle(value):
     """Presevers image urls in combination with neglete wrapped around
     restructedtext."""
-    return value.replace('<http://', '#~#').replace('http://', "linkaging").replace('#~#', '<http://') #.replace('src="http://', 'linkimage').
+    print value.replace('<http://', '#~#')\
+    .replace('http://', "linkaging")\
+    .replace('#~#', '<http://')\
+    .replace("  <b><a href='/data/entry/update/", 'StArTcOnTeNt')\
+    .replace("'>o</a></b>", 'EnDcOnTeNt')
+    return value.replace('<http://', '#~#')\
+                .replace('http://', "linkaging")\
+                .replace('#~#', '<http://')\
+                .replace("<b><a href='/data/entry/update/", '\n\nStArTcOnTeNt')\
+                .replace("'>o</a></b>", 'EnDcOnTeNt')#.replace('src="http://', 'linkimage').
     # Leaving off the src enables urls in [] but disables plain urls.
     # Exchaning of the middle replace by the commented out leads to the opposite effect
-
 
 @register.filter
 def neglete(value):
     """Negletes the from ReStructured Text performed html demarkuping."""
+    print list(value)
     value = value.replace('&lt;', '<')\
          .replace('&quot;', '"')\
          .replace('&gt;', '>')\
-         .replace('linkaging', 'http://')#.replace('linkimage', 'src="http://')\
- 
+         .replace('linkaging', 'http://')\
+         .replace('\n\nStArTcOnTeNt', "<b><a href='/data/entry/update/", )\
+         .replace('</p>\n<p>StArTcOnTeNt', " <b><a href='/data/entry/update/")\
+         .replace('EnDcOnTeNt', "'>o</a></b>")  #.replace('linkimage', 'src="http://')\
+    print(value)
     value = header4.sub(r"<h4>\1</h4>", value)
     value = header3.sub(r"<h3>\1</h3><p>", value)
     value = header2.sub(r"<h2>\1</h2><p>", value)
@@ -42,7 +54,5 @@ def neglete(value):
     #value = h3.sub(r"<h4>\1</h4>", value)
     #value = h2.sub(r"<h3>\1</h3>", value)
     #value = h1.sub(r"<h2>\1</h2>", value)
-
-
 
     return value
