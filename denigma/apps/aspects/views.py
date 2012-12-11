@@ -58,17 +58,31 @@ class RankCreate(HierarchyCreate):
     model = Rank
     success_url = '/aspects/research/ranks/'
 
+    def get_initial(self, form_class):
+        initials = super(RankCreate, self).get_initial()
+        initials['type'] = HierarchyType.objects.get(name='Rank')
+        return initials
 
 class GradeCreate(HierarchyCreate):
     form_class = GradeForm
     model = Grade
     success_url = '/aspects/programming/grades/'
 
+    def get_initial(self):
+        initials = super(GradeCreate, self).get_initial()
+        initials['type'] = HierarchyType.objects.get(name='Grade')
+        return initials
+
 
 class TitleCreate(HierarchyCreate):
     form_class = TitleForm
     model = Title
     success_url = '/aspects/design/titles/'
+
+    def get_initial(self):
+        initials = super(TitleCreate, self).get_initial()
+        initials['type'] = HierarchyType.objects.get(name='Title')
+        return initials
 
 
 class HierarchyUpdate(UpdateView):
