@@ -4,6 +4,7 @@
 {% load rendering %}
 {% load hyperlink %}
 {% load crosslink%}
+{% load negletion %}
 
 {% block head_title %}Achievements{% endblock %}
 
@@ -16,7 +17,11 @@
 {% block title %}Achievements{% endblock %}
 
 {% block content %}
-    {{ entry.content|markdown|hyper|recross|safe }}
+    {% if entry.is_rest %}
+        {{ entry.content|negle|reST|neglete|markdown|hyper|recross|safe }}
+    {% else %}
+        {{ entry.content|markdown|hyper|recross|safe }}
+    {% endif %}
     {% for achievement in achievements %}
         <hr>
         <table width="100%">

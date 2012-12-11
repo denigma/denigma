@@ -2,9 +2,10 @@
 
 {% load staticfiles %}
 {% load render_table from django_tables2 %}
-{% load markup %}
+{% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
+{% load negletion %}
 
 {% block extra_style %}
     <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
@@ -24,7 +25,11 @@
     <table>
         <tr>
             <td valign="top">
-                {{ entry.content|markdown|hyper|recross|safe }}
+                {% if entry.is_rest %}
+                    {{ entry.content|negle|reST|neglete|markdown|hyper|recross|safe }}
+                {% else %}
+                    {{ entry.content|markdown|hyper|recross|safe }}
+                {% endif %}
             </td>
             <td style="width: 300px">
                 {% for image in entry.images.all %}
