@@ -10,7 +10,7 @@ from views import EntryList, EntryView,  EntryCreate, EntryUpdate, EntryDelete, 
                   ChangeList, \
                   RelationCreate, RelationUpdate, \
                   CategoryCreate, CategoryUpdate, TagDetail
-from feeds import EntryFeed
+from feeds import EntryFeed, ChangeFeed, RelationFeed, AlterationFeed, CategoryFeed
 
 
 urlpatterns = patterns('data.views',
@@ -27,12 +27,12 @@ urlpatterns = patterns('data.views',
     url(r'^entry/update/(?P<pk>\d+)', login_required(EntryUpdate.as_view()), name='update-entry'),
     url(r'^entry/update/(?P<slug>.+)', login_required(EntryUpdate.as_view()), name='update-entry'),
     url(r'^entry/delete/(?P<pk>\d+)', login_required(EntryDelete.as_view()), name='delete-entry'),
+    url(r'^entry/feed/$', EntryFeed(), name='data-entry-feed'),
     url(r'^entry/(?P<slug>.+)', EntryView.as_view(), name='detail-entry'), #  Alternative detail entry accepting slug.
     url(r'^hierarchy/list/$', EntryList.as_view(
         context_object_name='entries',
         template_name='data/hierarchy.html'),
         name='list-hierarchy'),
-    url(r'^feed/', EntryFeed(), name='data-feed'),
 
     ## Function-Views:
     url(r'^entries/$', 'entries', name='entries'),
@@ -54,8 +54,8 @@ urlpatterns = patterns('data.views',
     ## Function-Views:
     url(r'^changes/(?P<pk>\d*)', 'changes', name='changes'),
     url(r'^change/remove/(?P<slug>.+)/$', 'remove_change', name='remove_change'),
+    url(r'^change/feed/$', ChangeFeed(), name='data-change-feed'),
     url(r'^change/(?P<slug>.+)/$', 'change', name='change'),
-
 
     # Relations:
     ## Class-Views
@@ -66,6 +66,7 @@ urlpatterns = patterns('data.views',
     url(r'^relation/delete', login_required(DeleteView.as_view(model=Relation)), name='delete-relation'),
     ## Function-Views:
     url(r'^relations/$', 'relations', name='relations'),
+    url(r'relation/feed', RelationFeed(), name='data-relation-feed'),
     url(r'^relation/(?P<slug>.+)', 'relation', name='relation'),
     url(r'^relation/add/$', 'add_relation', name='add_relation'),
     url(r'^relation/edit', 'edit_relation', name='edit_relation'),
@@ -77,6 +78,7 @@ urlpatterns = patterns('data.views',
     url(r'^alteration/(?P<pk>\d+)', DetailView.as_view(model=Alteration), name='detail-alteration'),
     ## Function-Views
     url(r'^alterations/$', 'alterations', name='alterations'),
+    url(r'^alteration/feed/$', AlterationFeed(), name='data-alteration-feed'),
     url(r'^alteration/(?P<slug>d+)', 'alteration', name='alteration'),
 
     # Tags:
@@ -95,6 +97,7 @@ urlpatterns = patterns('data.views',
     #url(r'^category/detail/(?P<slug>.+)', DetailView.as_view)
     url(r'^category/create', CategoryCreate.as_view(), name='create-category'),
     url(r'^category/update/(?P<pk>\d+)', login_required(CategoryUpdate.as_view()), name='update-category'),
+    url(r'^category/feed/$', CategoryFeed(), name='data-category-feed'),
 
     url(r'graph/$', 'graph', name='data-graph'),
 )#234567891123456789212345678931234567894123456789512345678961234567897123456789

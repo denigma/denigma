@@ -528,7 +528,7 @@ class Alteration(models.Model):
             action = 'initialized'
         else:
             action = 'altered'
-        return "{0} {1} {2} by {3} at {4} {5}".format(self.fr, self.be, self.to, self.of, self.by, self.at,
+        return "{0} {1} {2} to {3} by {4} at {5}".format(self.fr, self.be, self.to, self.of, self.by, self.at,
                                                       action)
 
     def get_absolute_url(self):

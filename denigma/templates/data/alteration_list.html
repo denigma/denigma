@@ -6,6 +6,10 @@
     > Alteration List
 {% endblock %}
 
+{% block options %}
+    | <a href={% url 'data-alteration-feed' %}><img src="http://dgallery.s3.amazonaws.com/feed.png"></a>
+{% endblock %}
+
 {% block title %}Alteration List{% endblock %}
 
 {% block content %}

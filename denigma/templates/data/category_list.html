@@ -10,6 +10,10 @@
     | <a href={% url 'create-category' %}>Create</a>
 {% endblock %}
 
+{% block options %}
+    | <a href="{% url 'data-category-feed' %}"><img src="http://dgallery.s3.amazonaws.com/feed.png" alt="Feed"></a>
+{% endblock %}
+
 {% block title %}Categories{% endblock %}
 
 {% block content %}

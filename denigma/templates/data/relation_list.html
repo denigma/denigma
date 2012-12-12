@@ -10,6 +10,10 @@
     | <a href={%  url 'create-relation' %}>Create</a>
 {% endblock %}
 
+{% block options %}
+    | <a href={% url 'data-relation-feed' %}><img src="http://dgallery.s3.amazonaws.com/feed.png"></a>
+{% endblock %}
+
 {% block title %}Relation List{% endblock %}
 
 {% block content %}

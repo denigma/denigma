@@ -17,6 +17,10 @@
     | <a href={% url 'create-entry' %}>Create</a>
 {% endblock %}
 
+{% block options %}
+    | <a href={% url 'data-entry-feed' %}><img src="http://dgallery.s3.amazonaws.com/feed.png"></a>
+{% endblock %}
+
 {% block title %}Entry List{% endblock %}
 
 {% block content %}

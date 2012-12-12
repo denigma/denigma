@@ -109,10 +109,13 @@
                 return "#" + hex_string(r) + hex_string(g) + hex_string(b);
             }
 
+            // Mapper
+            var colorMapper = {attrName: "weight", minValue: "#ffff00", maxValue: "#00ff00", minAttrValue: 0.1, maxAttrValue: 1.0};
+
             // visualize style we use
             var visual_style = {
                 global: {
-                    backgroundColor: "#ABCFD6"
+                    backgroundColor: "#FFFFFF", //"#ABCFD6"
                 },
                 nodes: {
                     shape: "OCTAGON",
@@ -132,7 +135,10 @@
                              ]
                         }
                     },
+                    color: {continuousMapper: colorMapper},
+                    //color: rand_color(),// # "#FF66CC",
                     labelHorizontalAnchor: "center"
+
                 },
                 edges: {
                     width: 3,
