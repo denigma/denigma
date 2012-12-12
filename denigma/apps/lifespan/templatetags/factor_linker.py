@@ -34,7 +34,7 @@ def symbols(value):
     rc = re.compile('[*\w\d-]{3,}|\w+')
     links = ['\n']
 
-    factors = dict([(str(factor.symbol), factor.symbol) for factor in Factor.objects.all()])
+    factors = dict([(factor.symbol, factor.symbol) for factor in Factor.objects.all()])
     factors['TakeOut'] = u'to'
     factors['Shaker'] = u'Sh'
     del factors['to']
@@ -45,7 +45,7 @@ def symbols(value):
         factor = match.group(0)
         factor_name = factor.replace('*', '')
         if factor_name in factors and not factor.startswith('_') and not factor_name.endswith('_'):
-            target = '.. _%s: http://denigma.de/lifespan/factor/%s' % (factor_name, str(factors[factor_name]))
+            target = '.. _%s: http://denigma.de/lifespan/factor/%s' % (factor_name, factors[factor_name])
             if target not in value and target not in links:
                 links.append(target)
             return factor_name + '_'
