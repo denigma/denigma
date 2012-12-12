@@ -10,6 +10,7 @@ from views import EntryList, EntryView,  EntryCreate, EntryUpdate, EntryDelete, 
                   ChangeList, \
                   RelationCreate, RelationUpdate, \
                   CategoryCreate, CategoryUpdate, TagDetail
+from feeds import EntryFeed
 
 
 urlpatterns = patterns('data.views',
@@ -31,6 +32,7 @@ urlpatterns = patterns('data.views',
         context_object_name='entries',
         template_name='data/hierarchy.html'),
         name='list-hierarchy'),
+    url(r'^feed/', EntryFeed(), name='data-feed'),
 
     ## Function-Views:
     url(r'^entries/$', 'entries', name='entries'),
