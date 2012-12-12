@@ -2,7 +2,7 @@
 {% load account_tags %}
 {% load avatar_tags %}
 
-<table width="50%">
+<table width="50%" border=0>
     <tr>
         <td>
             <div class="profile-item">
@@ -24,6 +24,13 @@
                 <div class="clear"></div>
                 <p></p>
             </div>
+        </td>
+        <td valign="top">
+        <img src="{{ profile.rank.symbol.url }}" alt="{{ profile.rank.symbol.name }}" width="10">
+        {% for grade in profile.grades.all %}
+            <img src="{{ grade.symbol.url }}" alt="{{ grade.name }}" width="10">
+        {% endfor %}
+        <img src="{{ profile.title.symbol.url }}" alt="{{ profile.title.name }}" width="10">
         </td>
         <td align="right" valign="top">
             {% avatar profile.user 40 %}
