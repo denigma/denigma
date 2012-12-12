@@ -377,5 +377,6 @@ install_mysql
 setup_statics
 configure_local_settings
 activate_webserver
+install_mysql
 
 print_django_info
