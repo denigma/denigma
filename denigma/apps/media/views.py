@@ -49,7 +49,7 @@ def index(request, template='./gallery/index.html'):
         return render(request, template, ctx)
 
     f = UploadForm(request.POST, request.FILES)
-    if not f.is_valid():
+    if not f.is_valid() and not request.FILES['file'].name.endswith('.svg'):
         ctx = {'entry': entry, 'form': f, 'photos': photos}
         return render(request, template, ctx)
 
