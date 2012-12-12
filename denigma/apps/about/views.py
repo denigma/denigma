@@ -1,5 +1,4 @@
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 from django.contrib import messages
 from django.utils.translation import ugettext
 from django.contrib.auth.decorators import login_required
@@ -8,18 +7,22 @@ from django.contrib.auth.decorators import login_required
 from data import get
 
 
+def what_next(request, template='about/what_next.html'):
+    """Presents what's next to do after registration."""
+    entry = get("What's Next")
+    return render(request, template, {'entry': entry})
+
 @login_required
-def matrix(request, number):
+def matrix(request, number, template='about/matrix.html'):
     """Welcome in the matrix!"""
     try: 
        if int(number) == 0: 
           path = get("Paths of Truth")
     except:
        path = get(title__startswith="Path of Truth %s:" % number)
-    return render_to_response('about/matrix.html', {'path': path, 'number': number},
-                             context_instance=RequestContext(request))
+    return render(request, template, {'path': path, 'number': number})
 
-def choice(request, number, color):
+def choice(request, number, color, template='about/choice.html'):
     """The choice of a path."""
     if color == "red": 
        path = "Truth"
@@ -32,15 +35,19 @@ def choice(request, number, color):
     aspect = ASPECTS[number]
 
     if request.user.is_authenticated:
-        promoted = request.user.profile_set.all()[0].promote(aspect=aspect, level=1)
+        promoted = request.user.profile_set.all()[0].promote(aspect=aspect,
+                                                                        level=1)
         if promoted:
-            messages.add_message(request, messages.SUCCESS, ugettext("You got promoted!"))
+            messages.add_message(request,
+                messages.SUCCESS, ugettext("You got promoted!"))
         else:
-            messages.add_message(request, messages.WARNING, ugettext("You were not further promoted."))
+            messages.add_message(request,
+                messages.WARNING, ugettext("You were not further promoted."))
 
-    return render_to_response('about/choice.html', {'number': number,
-                                                    'color': color,
-                                                    'result': result,
-                                                    'promoted': promoted},
-                              context_instance=RequestContext(request))
+    ctx = {'number': number,
+           'color': color,
+           'result': result,
+           'promoted': promoted}
+    return render(request, template, ctx)
+
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
