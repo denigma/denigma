@@ -51,7 +51,12 @@ class TodoList(TableFilter):
     filterset = TodoFilterSet
     success_url = '/todos/index'
 
-#
+    def dispatch(self, request, *args, **kwargs):
+        profile = Profile.objects.get(user__username__exact=request.user.username)
+        profile.last_list_check = datetime.datetime.today()
+        profile.save()
+        return super(TodoList, self).dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
         qs = self.queryset
         if TodoList.query:
@@ -61,7 +66,6 @@ class TodoList(TableFilter):
                                Q(description__icontains=TodoList.query))
         self.filterset = TodoFilterSet(qs, self.request.GET)
         return self.filterset.qs
-
 
 
 def todo_index(request):
