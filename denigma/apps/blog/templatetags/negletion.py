@@ -32,7 +32,6 @@ def negle(value):
 @register.filter
 def neglete(value):
     """Negletes the from ReStructured Text performed html demarkuping."""
-    print list(value)
     value = value.replace('&lt;', '<')\
          .replace('&quot;', '"')\
          .replace('&gt;', '>')\
@@ -40,7 +39,6 @@ def neglete(value):
          .replace('\n\nStArTcOnTeNt', "<b><a href='/data/entry/update/", )\
          .replace('</p>\n<p>StArTcOnTeNt', " <b><a href='/data/entry/update/")\
          #.replace('EnDcOnTeNt', "'>o</a></b>")  #.replace('linkimage', 'src="http://')\
-    print(value)
     value = header4.sub(r"<h4>\1</h4>", value)
     value = header3.sub(r"<h3>\1</h3><p>", value)
     value = header2.sub(r"<h2>\1</h2><p>", value)
