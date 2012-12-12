@@ -1,5 +1,6 @@
 """Provides template tags that makes the use of both markdown and
 ReStructured Text compatible."""
+# -*- coding: utf-8 -*-
 import re
 from django import template
 
