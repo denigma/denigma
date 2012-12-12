@@ -38,7 +38,7 @@ def neglete(value):
          .replace('linkaging', 'http://')\
          .replace('\n\nStArTcOnTeNt', "<b><a href='/data/entry/update/", )\
          .replace('</p>\n<p>StArTcOnTeNt', " <b><a href='/data/entry/update/")\
-         #.replace('EnDcOnTeNt', "'>o</a></b>")  #.replace('linkimage', 'src="http://')\
+         .replace('EnDcOnTeNt', "'>o</a></b>")  #.replace('linkimage', 'src="http://')\
     value = header4.sub(r"<h4>\1</h4>", value)
     value = header3.sub(r"<h3>\1</h3><p>", value)
     value = header2.sub(r"<h2>\1</h2><p>", value)
