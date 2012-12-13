@@ -338,15 +338,22 @@ def tissue_hierarchy(request):
     """Builds up the hierarchy of tissues."""
     Tissue.objects.rebuild()
     tissues = Tissue.objects.all().order_by('identifier')
-    previous = {0: Tissue.objects.get(name="anatomical site")}
+    previous = None
     for tissue in tissues:
-        if not tissue.hierarchy: continue
-        #print("%s %s %s" % (tissue.identifier,tissue.hierarchy, tissue))
-        if previous[tissue.hierarchy-1].hierarchy < tissue.hierarchy:
-            tissue.parent = previous[tissue.hierarchy-1]
-            #print("parent is %s" % previous[tissue.hierarchy-1])
-            tissue.save()
-        previous[tissue.hierarchy] = tissue
+        print("%s %s %s" % (tissue.identifier,tissue.hierarchy, tissue))
+        if tissue.hierarchy == None: continue
+        elif not previous:
+            print("Setting tissue %s as previous" % tissue)
+            previous = {0:tissue}
+        else:
+            if tissue.hierarchy != 0:
+                tissue.parent = previous[tissue.hierarchy-1]
+                print("parent is %s" % previous[tissue.hierarchy-1])
+                tissue.save()
+            else:
+                Tissue.objects.rebuild()
+            previous[tissue.hierarchy] = tissue
+            previous_level = tissue.hierarchy
     msg = _("Successfully build hierarchy.")
     messages.add_message(request, messages.SUCCESS, msg)
     return redirect('/annotations/tissues/')
