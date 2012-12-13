@@ -18,7 +18,7 @@
         <p>Here are some things to do to get started with Denigma:</p>
         
         <dl class="what_next">
-            {% if not entry.text %}
+            {% if not entry.text or entry.text %}
                 <table>
                 <tr>
                     <td>
@@ -53,15 +53,33 @@
                         <dd> to accelerate reaching the singularity. Engage on tasks, todos and quests.</dd>
                         <dt> <a href="/about/matrix/0">Reveal the Matrix</a></dt>
                         <dd> and change your view of the world forever.</dd>
+
+                        <table width="100%" border=0>
+                            {#   %}<h3>Paths of Truth</h3>#}
+                            <tr>
+                                <td valign="top" align="center">
+                                    <a href="/about/matrix/I"><b>Become a Scientist</b><br>
+                                    <img src="http://dgallery.s3.amazonaws.com/luminating-dna.jpg" alt="Become a Scientist" width="200">
+                                    </a>
+                                </td>
+                                <td valign="top" align="center">
+                                    <a href="/about/matrix/II"><b>Become a Developer</b>
+                                    <img src="http://dgallery.s3.amazonaws.com/longevity_symbol_sticker.jpg" alt="Longevity Symbol" width="210">
+                                    </a>
+                                </td>
+                                <td valign="top" align="center">
+                                    <a href="/about/matrix/III"><b>Become an Artist</b>
+                                    <img src="http://dgallery.s3.amazonaws.com/design.jpg" alt="Design" width="270">
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                     <td valign="top">
                         <img src="http://dgallery.s3.amazonaws.com/Singularity3.jpg" alt="What's next?">
                     </td>
                 </tr>
                 </table>
-
-
-
             {% else %}
                 {{ entry.content|safe }}
             {% endif %}
