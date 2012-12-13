@@ -28,7 +28,18 @@
 
 {% block content %}
     {% if entry.text %}
-        {{ entry.content|markdown|hyper|recross|safe }}
+        <table>
+            <tr>
+                <td valign="top">
+                    {{ entry.content|markdown|hyper|recross|safe }}
+                </td>
+                <td valign="top" style="widht: 120px">
+                    {% for image in entry.images.all %}
+                        <img src="{{ image.url }}" alt="{{ image.name }}" width="120" height="120">
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
     {% else %}
         <p>These are all the tissues and cell types defined in an animal organism, hierarchical structured and fully described.</p>
     {% endif %}
