@@ -20,6 +20,8 @@ from control import get
 
 from models import Entry, Change, Relation, Category
 from forms import EntryForm, RelationForm, CategoryForm, DeleteForm
+from tables import EntryTable
+from filters import TableFilter
 
 from templatetags.rendering import markdown
 from blog.templatetags.hyperlink import hyper
@@ -416,3 +418,9 @@ class CategoryUpdate(Update):
     model = Category
     form_class = CategoryForm
     comment = 'Updated category.'
+
+
+class Entries(TableFilter):
+    table_class = EntryTable
+    model = Entry
+

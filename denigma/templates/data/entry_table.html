@@ -12,13 +12,24 @@
 {% block hierarchy %}
     > <a href={% url 'list-entries' %}>Entries</a>
     > Table
+    | <a href={% url 'create-entry' %}>Create</a>
 {% endblock %}
 
 {% block title %}Entry Table{% endblock %}
 
 {% block content %}
-    {% render_table object_list %}
-        {% if object_list %}
+    {# {% render_table object_list %} #}
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_table }}
+        {{ filter.form.as_p }}
+        <input type="submit" value="Apply" />
+        {{ filterset }}
+    </form>
+    {% render_table table %}
+
+    {% if object_list %}
     {% else %}
         <p>Table empty.</p>
     {% endif %}

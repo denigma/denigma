@@ -1,16 +1,27 @@
 from django.forms import Form, CharField
+from django.db.models import Q
 from django.views.generic.edit import FormView
 
 from django_tables2 import SingleTableView
+
+from django_easyfilters import FilterSet
+
+from models import Entry
 
 
 class FilterForm(Form):
     filter = CharField()
 
+class EntryFilterSet(FilterSet):
+    fields = ('categories', 'creator', 'created', 'updated')
+
+
 class TableFilter(SingleTableView, FormView):
     form_class = FilterForm
     query = None
     filterset = None
+    queryset = Entry.objects.filter(published=True).order_by('-created')
+    success_url = '/data/entry/table/'
     # Guess success_url: app_name/index
 
     def form_valid(self, form):
@@ -27,6 +38,16 @@ class TableFilter(SingleTableView, FormView):
         print self.filterset
         context['filterset'] = self.filterset
         return context
+
+    def get_queryset(self):
+        qs = self.queryset
+        if TableFilter.query:
+            terms = TableFilter.query.split(None)
+            for term in terms:
+                qs = qs.filter(Q(title__icontains=TableFilter.query) |
+                                Q(text__icontains=TableFilter.query))
+        self.filterset = EntryFilterSet(qs, self.request.GET)
+        return self.filterset.qs
 
 #    def get_queryset(self):
 #        """By default search all Char and Text fields."""

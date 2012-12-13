@@ -12,7 +12,7 @@
 {% block head_title %}Entry List{% endblock %}
 
 {% block hierarchy %}
-    > Entry
+    > <a href={% url 'entry-table' %}>Entries</a>
     > List
     | <a href={% url 'create-entry' %}>Create</a>
 {% endblock %}

@@ -33,7 +33,11 @@
             </td>
         </tr>
     </table>
-    <center><b><a href="{% url 'data-graph' %}">Graph</a></b></center>
+    <div class="line">
+        <span class="left"><a href="{% url 'list-entries' %}">List</a></span>
+        <span class="center"></span><b><a href="{% url 'data-graph' %}">Graph</a></b></span>
+        <span class="right"><a href="{% url 'entry-table' %}">Table</a></span>
+    </div>
     <hr>
     <div class="row">
         <div class="span4">

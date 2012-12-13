@@ -5,11 +5,12 @@ from django.contrib.auth.decorators import login_required
 
 from taggit.models import Tag
 
-from models import Entry, Change, Relation, Alteration,  Category
+from models import Entry, Change, Relation, Alteration, Category
 from views import EntryList, EntryView,  EntryCreate, EntryUpdate, EntryDelete, Generate,\
                   ChangeList, \
                   RelationCreate, RelationUpdate, \
-                  CategoryCreate, CategoryUpdate, TagDetail
+                  CategoryCreate, CategoryUpdate, TagDetail,\
+                  Entries
 from feeds import EntryFeed, ChangeFeed, RelationFeed, AlterationFeed, CategoryFeed
 
 
@@ -19,7 +20,9 @@ urlpatterns = patterns('data.views',
     # Entries:
     ## Class-Views
     url(r'^entries/list/$', EntryList.as_view(paginate_by=10), name='list-entries'),
-    url(r'^entry/table/$', EntryList.as_view(template_name='data/entry_table.html'), name='entry-table'),
+    url(r'^entry/table/$', Entries.as_view(template_name='data/entry_table.html'), name='entry-table'),
+
+    #url(r'^entry/table/$', EntryList.as_view(template_name='data/entry_table.html'), name='entry-table'),
     url(r'^entry/(?P<pk>\d+)', DetailView.as_view(model=Entry), name='detail-entry'), # User generic class-based view # template_name='entry_detail.html' # use defaults
     url(r'^entry/view/(?P<slug>.+)', EntryView.as_view(), name='view-entry'),
     url(r'^entry/create/$', EntryCreate.as_view(), name='create-entry'),
