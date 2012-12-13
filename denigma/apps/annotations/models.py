@@ -1,5 +1,6 @@
 """Annotation information majorly from external databases."""
 from django.db import models
+from django.core.urlresolvers import reverse
 
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -37,7 +38,10 @@ class Tissue(MPTTModel):
         return self.name
 
     def get_absolute_url(self):
-        return "/annotations/tissue/%i" % self.pk
+        return reverse('tissue', args=[self.pk])
+
+    def get_update_url(self):
+        return reverse('edit_tissue', args=[self.pk])
 
     class MPTTMeta:
         order_insertion_by = ['name']

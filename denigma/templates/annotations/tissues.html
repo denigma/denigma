@@ -1,10 +1,16 @@
 {% extends "annotations/base.html" %}
-{%  comment %}
-{% load markup %}
+
+{% load url from future %}
+{% load render_table from django_tables2 %}
+{% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
-{% endcomment %}
+
 {% block head_title %}Tissues{% endblock %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css"
+{% endblock %}
 
 {% block hierarchy %}
     > Tissues
@@ -21,33 +27,20 @@
 {% block title %}Tissues{% endblock %}
 
 {% block content %}
-<p>These are all the tissues and cell types defined in an animal organism.</p>
-
-    <table border="1">
-        <tr><td><b>Name</b></td>
-            <td><b>Description</b></td>
-            <td><b>Synonyms</b></td>
-            <td><b>Hierarchy</b></td>
-        </tr>
-        {% for tissue in tissues %}
-        <tr>
-            <td><a href="/annotations/tissue/{{ tissue.id }}">{{ tissue.name }}</td>
-            <td>{{ tissue.description }}</td> {#|markdown|hyper|recross|safe Too slow #}
-            <td>{{ tissue.synonyms }}</td>
-            <td>{{ tissue.hierarchy }}</td>
-        </tr>
-        
-       {% endfor %}
-    </table>
-
-
-    {% comment %}
-    <hr>
-    <h3>Add Tissue:</h3>
-    <form action="add_tissues" method="POST">{% csrf_token %}
-    <input type="text" name="tissues">
+    {% if entry.text %}
+        {{ entry.content|markdown|hyper|recross|safe }}
+    {% else %}
+        <p>These are all the tissues and cell types defined in an animal organism, hierarchical structured and fully described.</p>
+    {% endif %}
+    {% if user.is_superuser %}
+        <a href="{% url 'tissue_hierarchy' %}">Hierarchy</a>
+    {% endif %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_table }}
+        {{ filter.form.as_p }}
+        <input type="submit" value="Apply" />
+        {{ filterset }}
     </form>
-    {% endcomment %}
-
+    {% render_table table %}
 {% endblock %}
-

@@ -7,8 +7,9 @@ from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, AnonymousUser
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
 from django.views.generic.edit import CreateView, UpdateView
+from django.db.models import Q
+from django_tables2 import RequestConfig
 
 import reversion
 
@@ -16,7 +17,10 @@ from models import Classification, Tissue, Species, Taxonomy
 from forms import (ClassificationForm, DeleteClassificationForm,
                    TissueForm, DeleteTissueForm,
                    SpeciesForm)
+from tables import TissueTable
+from filters import  TissueFilterSet
 
+from data.filters import TableFilter
 from meta.view import log
 from data import get
 
@@ -200,11 +204,11 @@ class SpeciesCreate(SpeciesView, CreateView):
         return context
 
 
-def tissues(request):
+def tissues(request, template='annotations/tissues.html'):
     """Lists all the tissues with pagination (Pagination is not yet implemented)."""
     tissues = Tissue.objects.all()
-    return render_to_response('annotations/tissues.html', {'tissues': tissues},
-                              context_instance=RequestContext(request))
+    return render(request, template, {'tissues': tissues})
+
 
 def tissue(request, pk=None, name=None):
     """Gives a the details of a specific tissue/cell type."""
@@ -218,13 +222,12 @@ def tissue(request, pk=None, name=None):
     return render_to_response('annotations/tissue.html', {'tissue': tissue},
                               context_instance=RequestContext(request))
 
-def tissue_archive(request):
+def tissue_archive(request, template='annotations/tissue_archive.html'):
     """Generates a simple archive list of all the tissues
     (with and without pagination on click)."""
     tissues = Tissue.objects.all()
     ctx = {'tissues': tissues}
-    return render_to_response('annotations/tissue_archive.html', ctx,
-                              context_instance=RequestContext(request))
+    return render(request, template, ctx)
 
 def add_tissue(request):
     form = TissueForm(request.POST or None)
@@ -291,11 +294,61 @@ class TissueView(object):
     model = Tissue
 
 
+def tissue_table(request, template='annotations/tissue_list.html'):
+    table = TissueTable(Tissue.objects.all())
+    RequestConfig(request).configure(table)
+    return render(request, template, {'table': table})
+
+
+class TissueList(TableFilter):
+    model = Tissue
+    table_class = TissueTable
+    template_name = 'annotations/tissues.html'
+    queryset = Tissue.objects.all().order_by('identifier')
+    filterset = TissueFilterSet
+    success_url = '/annotations/tissues/'
+
+    def get_context_data(self, **kwargs):
+        context = super(TissueList, self).get_context_data(**kwargs)
+        context['entry'] = get('Tissues')
+        return context
+
+    def get_queryset(self):
+        qs = Tissue.objects.all()
+        if TissueList.query:
+            terms = TissueList.query.split(None)
+            for term in terms:
+                qs = qs.filter(Q(name__icontains=TissueList.query) |
+                               Q(description__icontains=TissueList.query) |
+                               Q(synonyms__icontains=TissueList.query) |
+                               Q(notes__icontains=TissueList.query))
+        self.filterset = TissueFilterSet(qs, self.request.GET)
+        return self.filterset.qs
+
+
 class TissueCreate(TissueView, CreateView):
     pass
 
 
 class TissueUpdate(TissueView, CreateView):
     pass
+
+
+def tissue_hierarchy(request):
+    """Builds up the hierarchy of tissues."""
+    Tissue.objects.rebuild()
+    tissues = Tissue.objects.all().order_by('identifier')
+    previous = {0: Tissue.objects.get(name="anatomical site")}
+    for tissue in tissues:
+        if not tissue.hierarchy: continue
+        #print("%s %s %s" % (tissue.identifier,tissue.hierarchy, tissue))
+        if previous[tissue.hierarchy-1].hierarchy < tissue.hierarchy:
+            tissue.parent = previous[tissue.hierarchy-1]
+            #print("parent is %s" % previous[tissue.hierarchy-1])
+            tissue.save()
+        previous[tissue.hierarchy] = tissue
+    msg = _("Successfully build hierarchy.")
+    messages.add_message(request, messages.SUCCESS, msg)
+    return redirect('/annotations/tissues/')
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789

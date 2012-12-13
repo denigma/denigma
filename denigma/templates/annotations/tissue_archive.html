@@ -1,5 +1,7 @@
 {% extends "annotations/base.html" %}
 
+{% load url from future %}
+
 {% block head_title %}Tissues{% endblock %}
 
 {% block hierarchy %}
@@ -8,39 +10,31 @@
 {% endblock %}
 
 {% block options %}
-    <a href="/annotations/tissues/">Tissues</a>
-    <a href="/annotations/tissue/archive/">Archive</a>
+    <a href="{% url 'tissues' %}">Tissues</a>
+    <a href="{% url 'tissue_archive' %}">Archive</a>
     </b>(<a href="/admin/annotations/tissue/">Admin</a>)<b></b> |
-    <a href="/annotations/tissue/add/">Add</a>
-    </b>(<a href="/admin/annotations/tissue/add">Admin</a>)<b>
+    <a href="{% url 'add_tissue' %}">Add</a>
+    </b>(<a href="{% url 'add_tissue' %}">Admin</a>)<b>
 {% endblock %}
 
 {% block title %}Tissue Archive{% endblock %}
 
 {% block content %}
-<p>These is an extensive archive of all the major tissues and cell types present in animal organism:</p>
-    <table border="0">
-        <tr><td><b>Name</b></td>
-            <td><b>Hierarchy</b></td>
-        </tr>
-        {% for tissue in tissues %}
-        <tr>
-            <td><a href="/annotations/tissue/{{ tissue.id }}">{{ tissue.name }}</td>
-            <td>{{ tissue.hierarchy }}</td>
-        </tr>
-        
-       {% endfor %}
-    </table>
+    <p>These is an extensive archive of all the major tissues and cell types present in animal organism:</p>
+    {% load mptt_tags %}
+    <ul>
+        {% recursetree tissues %}
+            <li>
+                <a href="{% url 'tissue' node.pk  %}">{{ node.name }}</a> {% if node.synonyms %}({{ node.synonyms }}){% endif %}
+                {% if not node.is_leaf_node %}
+                <ul class="children">
+                    {{ children }}
+                </ul>
+                {% endif %}
+            </li>
+        {% endrecursetree tissues %}
+    </ul>
     <br>
-    <p><b><a href="/admin/annotations/tissue/add">Add tissue</a></b></p>
-
-    {% comment %}
-    <hr>
-    <h3>Add Tissue:</h3>
-    <form action="add_tissues" method="POST">{% csrf_token %}
-    <input type="text" name="tissues">
-    </form>
-    {% endcomment %}
-
+    <p><b><a href="{% url 'add_tissue' %}">Add tissue</a></b></p>
 {% endblock %}
 

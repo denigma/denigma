@@ -1,29 +1,37 @@
 {% extends "annotations/base.html" %}
 
-{% load markup %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
 
 {% block hierarchy %}
     > Index
 {% endblock hierarchy %}
 
-{# {% block subtitle %}Index{% endblock %} #}
+{% block title %}{{ annotations.title }}{% endblock %}
 
 {% block content %}
-    {{ annotations.text|markdown|safe }}
-    <center>
-    {% for image in annotations.images.all %}
-        <img src="{{ image.url }}" alt="{{ image.name }}" width="500" height="500" />
-    {% endfor %}
-    </center>
+    <table>
+        <tr>
+            <td valign="top">
+                {{ annotations.content|markdown|hyper|recross|safe }}
+            </td>
+            <td valign="top" style="width: 250">
+                {% for image in annotations.images.all %}
+                    <img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250" />
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
     {% if user.is_authenticated %}
         <hr>
         <p>It is possible to bulk upload annotations.
         Specify the model and input the annotation data:</p>
         <form action="bulk_upload" method="POST">{% csrf_token %}
             <b>Model: </b><input type="text" name="model"><br>
-        <br>
+            <br>
             <b>Data: </b><textarea name="data"></textarea><br>
-        <input type="submit" value="Add"><br>
+            <input type="submit" value="Add"><br>
         </form>
     {% endif %}
 {% endblock %}

@@ -26,9 +26,9 @@
     {{ tissue.description|markdown|hyper|recross|safe }}
     {% if tissue.synonyms %}<p><b>Synonyms:</b> {{ tissue.synonyms }}</p>{% endif %}
     <p><b>Hierarchy:</b> {{ tissue.hierarchy }}</p>
+    <b>Parent:</b> <a href="{{ tissue.parent.get_absolute_url }}">{{ tissue.parent }}</a><br>
     {% if tissue.notes %}<p><b>Notes:</b> {{ tissue.notes }}</p>{% endif %}
     {% for image in tissue.images.all %}
         <img src={{ image.url }} alt={{ image.name }} />
     {% endfor %}
 {% endblock %}
-
