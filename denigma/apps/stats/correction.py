@@ -1,4 +1,5 @@
-"""p-value Corrections."""
+"""p-value Corrections for multiple testing.
+Equivalent of the R's p/adjust"""
 
 def bonferroni_adjustment(pvalues):
     """Correct a list of p-values using the Bonferroni adjustment
