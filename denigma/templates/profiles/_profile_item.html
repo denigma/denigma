@@ -26,14 +26,14 @@
             </div>
         </td>
         <td valign="top">
-        <img src="{{ profile.rank.symbol.url }}" alt="{{ profile.rank.symbol.name }}" width="10">
+        <a href="{{ profile.rank.get_absolute_url }}"><img src="{{ profile.rank.symbol.url }}" alt="{{ profile.rank.symbol.name }}" width="10"></a>
         {% for grade in profile.grades.all %}
-            <img src="{{ grade.symbol.url }}" alt="{{ grade.name }}" width="10">
+            <a href="{{ grade.get_absolute_url }}"><img src="{{ grade.symbol.url }}" alt="{{ grade.name }}" width="10"></a>
         {% endfor %}
-        <img src="{{ profile.title.symbol.url }}" alt="{{ profile.title.name }}" width="10">
+        <a href="{{ profile.title.get_absolute_url }}"><img src="{{ profile.title.symbol.url }}" alt="{{ profile.title.name }}" width="10"></a>
         </td>
         <td align="right" valign="top">
-            {% avatar profile.user 40 %}
+            <a href="{% url 'profile_detail' profile.user.username %}">{% avatar profile.user 40 %}</a>
         </td>
     </tr>
 </table>
