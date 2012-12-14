@@ -55,3 +55,11 @@ def print_multiplication_table(n):
             print("%s * %s = %s" % (i, j, i*j))
             j += 1
         i += 1
+
+def is_int(v):
+    """Tests whether a variable can be converted into an int or not."""
+    try:
+        int(v)
+        return True
+    except:
+        return False
