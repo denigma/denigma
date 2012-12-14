@@ -26,6 +26,7 @@ intermine # Provides yeastmine (SGD) API.
 # Alternative Admin designs:
 django-grappelli==2.3.8 # Alternative admin design with additional functionality.
 #-e git://github.com/divio/djangocms-admin-style.git#egg=djangocms_admin_style
+#-e git://github.com/riccardo-forina/django-admin-bootstrapped#egg=django-admin-bootstrapped
 
 # Searching:
 whoosh
