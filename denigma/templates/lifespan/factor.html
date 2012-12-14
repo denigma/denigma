@@ -4,7 +4,6 @@
 {% load pubmed_linker %}
 {% load rendering %}
 {% load hyperlink %}
-{% load crosslink %}
 
 {% block head_title %}Factor{% endblock %}
 
@@ -48,7 +47,7 @@
         {% endif %}
     {% endif %}<br>
     <br><b>Observation:</b><br>
-    {{ factor.observation|markdown|hyper|recross|pubmed_links|safe }}<br>
+    {{ factor.observation|markdown|hyper|pubmed_links|safe }}<br>
     {% if factor.intervention.all %}
         <br><b>Interventions:</b>
         {% for intervention in factor.intervention.all %}
