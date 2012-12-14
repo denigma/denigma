@@ -304,7 +304,7 @@ class TissueList(TableFilter):
     model = Tissue
     table_class = TissueTable
     template_name = 'annotations/tissues.html'
-    queryset = Tissue.objects.all().order_by('identifier')
+    queryset = Tissue.objects.all()
     filterset = TissueFilterSet
     success_url = '/annotations/tissues/'
 
@@ -323,7 +323,7 @@ class TissueList(TableFilter):
                                Q(synonyms__icontains=TissueList.query) |
                                Q(notes__icontains=TissueList.query))
         self.filterset = TissueFilterSet(qs, self.request.GET)
-        return self.filterset.qs
+        return self.filterset.qs.order_by('identifier')
 
 
 class TissueCreate(TissueView, CreateView):
