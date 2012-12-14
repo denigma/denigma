@@ -35,7 +35,6 @@ class TableFilter(SingleTableView, FormView):
     def get_context_data(self, **kwargs):
         context = super(TableFilter, self).get_context_data(**kwargs)
         context['form'] = FilterForm(initial={'filter': TableFilter.query})
-        print self.filterset
         context['filterset'] = self.filterset
         return context
 
