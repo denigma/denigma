@@ -2,17 +2,14 @@ from django.conf.urls import patterns, url
 
 
 urlpatterns = patterns("about.views",
+    url(r'^$', 'index', name='about'),
     url(r"^what_next/$", 'what_next', {"template": "about/what_next.html"},
         name="what_next"),
     url(r"^matrix/$", 'matrix', {'number':0}, name='matrix'),
     url(r"^matrix/(?P<number>[\w]+)/$", 'matrix'),
     url(r"^matrix/(?P<number>[\w]+)/choice/(?P<color>[\w]+)", 'choice'),
 )
-
 urlpatterns += patterns("",
-    url(r'^$', 'django.contrib.flatpages.views.flatpage',
-       kwargs={'url': '/about/'},
-       name='about'),
     url(r'^terms/$', 'django.contrib.flatpages.views.flatpage',
        kwargs={'url': '/about/terms/'},
        name='terms'),
@@ -20,6 +17,10 @@ urlpatterns += patterns("",
        kwargs={'url': '/about/privacy/'},
        name='privacy'),
 )
+
+#    url(r'^$', 'django.contrib.flatpages.views.flatpage',
+#       kwargs={'url': '/about/'},
+#       name='about'),
 
     #url(r"^$", direct_to_template, {"template": "about/index.html"}, 
     #    name="about"), # Depricated.

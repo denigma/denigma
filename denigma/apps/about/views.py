@@ -7,6 +7,10 @@ from django.contrib.auth.decorators import login_required
 from data import get
 
 
+def index(request, template='about/index.html'):
+    entry = get("Denigma")
+    return render(request, template, {'entry': entry})
+
 def what_next(request, template='about/what_next.html'):
     """Presents what's next to do after registration."""
     entry = get("What's Next")
@@ -49,5 +53,7 @@ def choice(request, number, color, template='about/choice.html'):
            'result': result,
            'promoted': promoted}
     return render(request, template, ctx)
+
+
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789

@@ -4,6 +4,10 @@
 
 {% block head_title %}About{% endblock %}
 
+{% block base_hierarchy %}
+    > <a href="{% url 'about' %}">About</a>
+{% endblock %}
+
 {% block options %}
     <a href="{% url 'about' %}">About</a> |
     <a href="{% url 'terms' %}">Terms</a> |

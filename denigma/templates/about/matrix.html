@@ -17,7 +17,7 @@
         <tr>
             <td>
                 {{ path.content|markdown|hyper|recross|safe }}
-                {% if number != "0" %}
+                {% if number != 0 and number != "0" %}
                     <center>
                     <b><a href="choice/red">Truth</a></b>
                     <img src="http://3.bp.blogspot.com/_ahOToy1EVkE/S1ssdEoVTSI/AAAAAAAAAtM/_xb1-kNwtIM/s400/Matrix.jpg" alt="chose a pill">
