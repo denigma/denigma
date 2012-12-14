@@ -209,6 +209,7 @@ INSTALLED_APPS = [
     # Alternative admin designs:
     #'grappelli',
     #'djangocms_admin_style',
+    #'django_admin_bootstrapped',
 
     # Django
     'django.contrib.admin',
