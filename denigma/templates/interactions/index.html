@@ -1,11 +1,12 @@
 {% extends "interactions/base.html" %}
 
+{% load url from future %}
 {% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
 
 {% block hierarchy %}
-    > <a href="/interactions/">Interactions</a>
+    > <a href="/interactions/">Index</a>
 {% endblock hierarchy %}
 
 {% block content %}
@@ -25,6 +26,13 @@
         </tr>
     </table>
     <a href="/admin/interactions">Interaction tables</a>
+    <hr>
+    {% if user.is_superuser %}
+        <br>
+        <a href="{% url 'update-interactions' 'BioGRID' %}">BioGRID</a>
+        <br>
+        <a href="{% url 'interaction-integrator' %}">Integrator</a>
+        <br>
+    {% endif %}
     <center><img src="http://dgallery.s3.amazonaws.com/building.png" alt="building initialized ..." width=200 height=200></center>
 {% endblock %}
-

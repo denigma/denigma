@@ -1,6 +1,22 @@
 from django.db import models
 
 
+class Interaction(models.Model):
+    id_a = models.IntegerField()
+    id_b = models.IntegerField()
+    alias_a = models.TextField() #CharField(max_length=300, blank=True)
+    alias_b = models.TextField() #CharField(max_length=300, blank=True)
+    system = models.CharField(max_length=38, blank=True)
+    type = models.CharField(max_length=259, blank=True) # Perhaps text field here.
+    method = models.CharField(max_length=240, blank=True)
+    modification = models.CharField(max_length=78, blank=True)
+    taxid_a = models.IntegerField()
+    taxid_b = models.IntegerField()
+    pmid = models.TextField(blank=True)#CharField(max_length=255, blank=True)
+    source = models.CharField(max_length=73)
+    score = models.IntegerField()
+
+
 ##class Biogrid(models.Model):
 ##    biogrid_interaction_id = models.IntegerField(primary_key=True)
 ##    entrez_gene_interactor_a = models.IntegerField()

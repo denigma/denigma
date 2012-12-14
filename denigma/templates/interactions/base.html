@@ -1,6 +1,16 @@
 {% extends "site_base.html" %}
 
+{% load url from future %}
+
 {% block head_title %}Interactions{% endblock %}
+
+{% block base_hierarchy %}
+    > <a href="{% url 'interactions' %}">Interactions</a>
+{% endblock %}
+
+{% block base_options %}
+    <a href="{% url 'interaction-table' %}">Table</a>
+{% endblock %}
 
 {% block title %}Interactions{% endblock %}
 

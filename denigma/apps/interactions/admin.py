@@ -5,9 +5,16 @@ import reversion
 from models import *
 
 
+class AdminInteraction(admin.ModelAdmin):
+    list_display = ('id_a', 'id_b', 'alias_a', 'alias_b', 'pmid')
+    search_fields = ('id_a', 'id_b', 'alias_a', 'alias_b')
+    list_filter = ('taxid_a', 'score')
+admin.site.register(Interaction, AdminInteraction)
+
 ##class ChoiceInline(admin.TabularInline): #StackedInline
 ##    model = Choice
 ##    extra = 3
+
 
 class Fly_TF_geneAdmin(admin.ModelAdmin): pass
 admin.site.register(Fly_TF_gene, Fly_TF_geneAdmin)
