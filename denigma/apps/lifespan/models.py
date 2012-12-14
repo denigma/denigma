@@ -587,7 +587,7 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
     classification = models.CharField(max_length=20, blank=True)
     classifications = models.ManyToManyField('annotations.Classification')
     regimen = models.ManyToManyField(Regimen, blank=True)
-    assay = models.ManyToManyField(Assay)
+    assay = models.ManyToManyField(Assay) # blank=True, null=True ?
     diet_regimen = models.CharField(max_length=250, blank=True)
     life_span = models.CharField("Tax ID", max_length=250, blank=True)
     taxid = models.IntegerField(null=True, blank=True)
