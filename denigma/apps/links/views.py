@@ -69,7 +69,10 @@ class Links(SingleTableView, FormView, LinkView):
         context['entry'] = get("Links")
         context['form'] = FilterForm(initial={'filter': Links.query})
         context['categories'] = Category.objects.all()
-        context['category'] = Category.objects.get(title=self.category)
+        if self.category:
+            context['category'] = Category.objects.get(title=self.category)
+        else:
+            context['category'] = None
         return context
 
     def get_queryset(self):
