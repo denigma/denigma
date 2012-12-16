@@ -15,7 +15,7 @@ from data.views import Create, Update
 
 from models import Link, Category
 from tables import LinkTable
-from forms import LinkForm, FilterForm
+from forms import LinkForm, CategoryForm, FilterForm
 
 
 def links_by_language(request):
@@ -69,6 +69,7 @@ class Links(SingleTableView, FormView, LinkView):
         context['entry'] = get("Links")
         context['form'] = FilterForm(initial={'filter': Links.query})
         context['categories'] = Category.objects.all()
+        context['category'] = Category.objects.get(title=self.category)
         return context
 
     def get_queryset(self):
@@ -98,7 +99,17 @@ class LinkCreate(LinkView, Create):
     form_class = LinkForm
     def form_invalid(self, form):
         #print form
-        print form.errors
-        print "invalid form."
-        print self.model
+        #print form.errors
+        #print "invalid form."
+        #print self.model
         return redirect('/links/')
+
+
+class CategoryCreate(Create):
+    model = Category
+    form_class = CategoryForm
+
+
+class CategoryUpdate(Update):
+    model = Category
+    form_class = CategoryForm

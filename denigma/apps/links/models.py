@@ -6,7 +6,7 @@ from django.db import models
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext as _
 from django.conf import settings
-
+from django.core.urlresolvers import reverse
 #from mptt.models import MPTTModel, TreeForeignKey
 
 from tagging.fields import TagField
@@ -31,6 +31,9 @@ class Category(models.Model): #MPTTModel
 
     def __unicode__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('links-category', args=[self.slug])
 
     class Meta:
         verbose_name = _('category')
@@ -63,8 +66,6 @@ class Link(models.Model):
     objects = models.Manager()
     published = LinkPublishedManager()
     tags = TagField()
-
-
 
     def __unicode__(self):
         return self.title

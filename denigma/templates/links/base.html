@@ -10,7 +10,9 @@
 {% endblock %}
 
 {% block options %}
-    <a href={% url 'sURL' %}>sURL</a>
+    <a href="{% url 'create-link-category' %}">Create Category</a>
+    | <a href={% url 'sURL' %}>sURL</a>
+    | <a href="/admin/links/">Admin</a>
     {# | <a href={% url 'link-list' %}>List</a> #}
 {% endblock %}
 

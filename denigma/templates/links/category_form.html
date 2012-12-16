@@ -1,0 +1,21 @@
+{% extends "links/base.html" %}
+
+{% load url from future %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ action }} Category{% endblock %}
+
+{% block hierarchy %}
+    > Category
+    > {{ action }}
+{% endblock %}
+
+{% block options %}
+    <a href="/admin/links/category/add/">Admin</a>
+{% endblock %}
+
+{% block title %}{{ action }} Category{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}
