@@ -16,6 +16,7 @@ from data.views import Create, Update
 from models import Link, Category
 from tables import LinkTable
 from forms import LinkForm, CategoryForm, FilterForm
+from filters import LinkFilterSet
 
 
 def links_by_language(request):
@@ -43,6 +44,7 @@ class Filter(django_filters.FilterSet):
         fields = ['title', 'description']
 
 
+
 class Links(SingleTableView, FormView, LinkView):
     table_class = LinkTable
     queryset = Link.objects.filter(site__domain='denigma.de')
@@ -68,6 +70,7 @@ class Links(SingleTableView, FormView, LinkView):
         context = super(Links, self).get_context_data(**kwargs)
         context['entry'] = get("Links")
         context['form'] = FilterForm(initial={'filter': Links.query})
+        context['filterset'] = self.filterset
         context['categories'] = Category.objects.all()
         if self.category:
             context['category'] = Category.objects.get(title=self.category)
@@ -76,16 +79,17 @@ class Links(SingleTableView, FormView, LinkView):
         return context
 
     def get_queryset(self):
-        print("links.Links.get_queryset: %s" % self.category)
+        #print("links.Links.get_queryset: %s" % self.category)
+        qs = self.queryset.order_by('-creation')
         if self.category:
-            return Link.objects.filter(category__title__exact=self.category)
+            qs = qs.filter(category__title__exact=self.category)
         if Links.query:
-            return Link.objects.filter(Q(title__icontains=Links.query) |
+            qs = qs.filter(Q(title__icontains=Links.query) |
                                        Q(description__icontains=Links.query) #|
                                        #Q(category__title=Links.query)
-                                      ).order_by('-creation')
-        else:
-            return Link.objects.all().order_by('-creation')
+                                      )
+        self.filterset = LinkFilterSet(qs, self.request.GET)
+        return self.filterset.qs
 
 
 class LinkList(ListView):

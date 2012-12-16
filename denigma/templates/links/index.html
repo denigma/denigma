@@ -46,7 +46,9 @@
         {% csrf_token %}
         {{ form.as_table }}
         {{ filter.form.as_p }}
-    <input type="submit" value="Apply" />
+        <input type="submit" value="Apply" />
+        {{ filterset }}
+    </form>
         <table width="100%">
             <tr>
                 <td valign="top">
