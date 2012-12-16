@@ -161,6 +161,7 @@ MIDDLEWARE_CLASSES = [
     'pagination.middleware.PaginationMiddleware',
     #'pinax.middleware.security.HideSensistiveFieldsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'track.middleware.VisitorTrackMiddleware'
 #    #CMS:
 #    "cms.middleware.multilingual.MultilingualURLMiddleware',
 ]
@@ -253,6 +254,7 @@ INSTALLED_APPS = [
     'django_filters',
     'mptt', # Hierarchy: Utilties for implementing a modified pre-order traversal tree.
     'pagedown', # Markdown preview editor
+    'track',
 #    'cms", # Content Management System.
 #    'sekizai", # For javascipt and css management.
     
@@ -364,3 +366,5 @@ try:
         ADMIN_MEDIA_PREFIX = STATIC_URL + 'grappelli/' # for grappelli 2.3.8 only.
 except ImportError:
    pass
+
+#BANISH_ENABLED = True

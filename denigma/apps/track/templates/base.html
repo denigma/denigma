@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Track - {% block title %}Welcome{% endblock %} </title>
+    <script type="text/javscript" src="{{ MEDIA_URL }}js/query-1.4.4.min.js"</script>
+    <style type="text/css">
+        #active-users-map {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+</head>
+<body>
+<h1><a href="/">Track</a></h1>
+{% block content %}{% endblock %}
+
+{% block footer %}
+    <p>CGI</p>
+{% endblock %}
+</body>
+</html>
