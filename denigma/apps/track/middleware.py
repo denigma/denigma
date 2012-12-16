@@ -104,11 +104,11 @@ class VisitorTrackMiddleware(object):
             )
 
             if len(visitors):
-                visitor = visitor[0]
+                visitor = visitors[0]
                 visitor.session_key = session_key
                 log.debug('Using existing visitor for IP %s / UA %s: %s' % (ip_address, user_agent, visitor.id))
             else:
-                # It's probaly safe to assume that the visitor is brand new
+                # It's probably safe to assume that the visitor is brand new
                 visitor = Visitor(**attrs)
                 log.debug('Created a new visitor: %s' % attrs)
 
