@@ -1,4 +1,6 @@
 {% load i18n %}
+{% load track_tags %}
+
 <div class="line" xmlns="http://www.w3.org/1999/html">
     <hr/>
     <span class="left">
@@ -24,6 +26,19 @@
            <img src="http://media.djangopony.com/img/small/badge.png" width="120" height="50" alt="pony powered"> {# width="210" height="65" #}
         </a>
     </span>
+
+    {% if user.is_authenticated %}
+        {% visitors_on_site as visitors %}
+        <p>
+            {{ visitors }} active user{{ visitor|pluralize }}
+        </p>
+        {%  visitors_on_page as same_page %}
+        <p>
+            {{ same_page }} of {{ visitors }} active user{{ visitor|pluralize }}
+            {{ same_page|pluralize:"is,are" }} reading this page
+        </p>
+    {% endif %}
+    {% comment %}    {% endcomment %}
 </div>
 
 
