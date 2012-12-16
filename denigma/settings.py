@@ -33,8 +33,11 @@ ADMINS = [
 
 CONTACT_EMAIL = 'hevok@denigma.de'
 DEFAULT_FROM_EMAIL = 'hevok@denigma.de'
+SERVER_EMAIL = 'hevok@denigma.de'
 
 MANAGERS = ADMINS
+
+SEND_BROKEN_LINK_EMAILS = True # Report 404 errors too.
 
 if os.path.exists(os.path.join(PROJECT_ROOT, 'local_settings.py')):
     BACKEND = 'mysql'
