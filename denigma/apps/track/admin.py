@@ -5,6 +5,7 @@ from models import Visitor, BannedIP, UntrackedUserAgent
 
 class VisitorAdmin(admin.ModelAdmin):
     list_display = ('session_key', 'ip_address', 'user', 'location', 'page_views', 'session_start', 'last_update')
+    ordering = ('-last_update',)
 
     def location(self, obj):
         return '<a href="%s">%s</a>' % (obj.url, obj.url)
