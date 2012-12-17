@@ -19,7 +19,19 @@
 {% block title %}References{% endblock %}
 
 {% block content %}
-    {{ entry.content|markdown|hyper|recross|safe }}
+    <table>
+        <tr>
+            <td valign="top">
+                {{ entry.content|markdown|hyper|recross|safe }}
+            </td>
+            <td>
+                {% for image in entry.images.all %}
+                    <a href="{% url 'detail-entry' entry.slug %}"><img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250"></a>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+
     <form action="" method="POST">
        {% csrf_token %}
         {{ form.as_table }}
