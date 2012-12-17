@@ -84,10 +84,12 @@ class Links(SingleTableView, FormView, LinkView):
         if self.category:
             qs = qs.filter(category__slug__exact=self.category)
         if Links.query:
-            qs = qs.filter(Q(title__icontains=Links.query) |
-                                       Q(description__icontains=Links.query) #|
-                                       #Q(category__title=Links.query)
-                                      )
+            terms = Links.query.split(None)
+            for term in terms:
+                qs = qs.filter(Q(title__icontains=term) |
+                               Q(description__icontains=term) |
+                               Q(url__icontains=term)
+                )
         self.filterset = LinkFilterSet(qs, self.request.GET)
         return self.filterset.qs
 
