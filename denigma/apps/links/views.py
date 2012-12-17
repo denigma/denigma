@@ -44,7 +44,6 @@ class Filter(django_filters.FilterSet):
         fields = ['title', 'description']
 
 
-
 class Links(SingleTableView, FormView, LinkView):
     table_class = LinkTable
     queryset = Link.objects.filter(site__domain='denigma.de')
@@ -58,12 +57,16 @@ class Links(SingleTableView, FormView, LinkView):
         Links.query = form.cleaned_data['filter']
         return super(Links, self).form_valid(form)
 
+    def form_invalid(self, form):
+        Links.query = None
+        return super(Links, self).form_valid(form)
+
     def dispatch(self, request, *args, **kwargs):
-        print("links.Links.dispatch")
+        #print("links.Links.dispatch")
         if 'category' in kwargs:
             self.category = kwargs['category']
         else:
-            self.category = None
+            self.category = ''
         return super(Links, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
