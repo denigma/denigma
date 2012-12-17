@@ -73,7 +73,7 @@ class Links(SingleTableView, FormView, LinkView):
         context['filterset'] = self.filterset
         context['categories'] = Category.objects.all()
         if self.category:
-            context['category'] = Category.objects.get(title=self.category)
+            context['category'] = Category.objects.get(slug=self.category)
         else:
             context['category'] = None
         return context
@@ -82,7 +82,7 @@ class Links(SingleTableView, FormView, LinkView):
         #print("links.Links.get_queryset: %s" % self.category)
         qs = self.queryset.order_by('-creation')
         if self.category:
-            qs = qs.filter(category__title__exact=self.category)
+            qs = qs.filter(category__slug__exact=self.category)
         if Links.query:
             qs = qs.filter(Q(title__icontains=Links.query) |
                                        Q(description__icontains=Links.query) #|

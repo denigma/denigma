@@ -57,7 +57,7 @@
                 <td align="right">
                     <b>Categories:</b><br>
                     {% for category in categories %}
-                        <a href={% url 'links-category' category.title %}>{{ category }}</a><br> {#  #}
+                        <a href={% url 'links-category' category.slug %}>{{ category }}</a><br> {#  #}
                     {% endfor %}
                 </td>
             </tr>
