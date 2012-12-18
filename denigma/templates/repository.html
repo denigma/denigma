@@ -11,6 +11,12 @@
     > Repository
 {% endblock %}
 
+{% block options %}
+    <a href="{% url 'create-entry' %}">Submit</a>
+    | <a href="/search/">Search</a>
+    | <a href="{% url 'detail-entry' 'site-structure' %}">Site</a>
+{% endblock %}
+
 {% block title %}{{ entry.title }}{% endblock %}
 
 {% block content %}
@@ -24,6 +30,7 @@
                     <a href="/search/" class="btn btn-secondary btn-large">Search</a>
                     <a href="{% url 'detail-entry' 'site-structure' %}" class="btn btn-danger btn-large">Site</a>
                 </div>
+                <h4>Data Entry | Database | Structure</h4>
             </td>
             <td style="width: 400px">
                 {% for image in entry.images.all %}
