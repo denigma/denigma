@@ -1,5 +1,6 @@
 {% extends "site_base.html" %}
 
+{% load url from future %}
 {% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
@@ -17,6 +18,22 @@
         <tr>
             <td valign="top">
                 {{ entry.content|markdown|hyper|recross|safe }}
+                <hr>
+                <div class="line">
+                    <span class="left">
+                        <h3><a href="{% url 'create-entry' %}" class="btn btn-primary btn-large">Submit</a></h3>
+                        <b>Data Entry</b>
+
+                    </span>
+
+                    <span class="center">
+                        <h3><a href="/search/" class="btn btn-secondary btn-large">Search</a></h3>
+                        <b>Denigma db</b>
+
+                    </span>
+
+
+                </div>
             </td>
             <td>
                 {% for image in entry.images.all %}
