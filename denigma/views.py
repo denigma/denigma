@@ -50,3 +50,8 @@ def google(request, term, template='google.html'):
 def content(request, template='content.html'):
     contents = get('Content'), get("Data App"), get("Denigma Blog"), get("Denigma's Wiki")
     return render(request, template, {'contents': contents})
+
+def repository(request, template='repository.html'):
+    """A biologist-friendly data repository."""
+    entry = get('Biology of Aging Repository')
+    return render(request, template, {'entry': entry})

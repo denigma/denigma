@@ -1,0 +1,28 @@
+{% extends "site_base.html" %}
+
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}{{ entry.title }}{% endblock %}
+
+{% block hierarchy %}
+    > Repository
+{% endblock %}
+
+{% block title %}{{ entry.title }}{% endblock %}
+
+{% block content %}
+    <table>
+        <tr>
+            <td valign="top">
+                {{ entry.content|markdown|hyper|recross|safe }}
+            </td>
+            <td>
+                {% for image in entry.images.all %}
+                    <img src="{{ image.url }}" alt="{{ image.name }}" width="400" height="400">
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+{% endblock %}

@@ -30,6 +30,7 @@ urlpatterns = patterns("denigma.views",
     url(r'^content/', 'content', name='content'),
     url(r'^404/$', TemplateView.as_view(), {'template':'404.html'}, name='404'),
     url(r'^500/$', TemplateView.as_view(), {'template':'500.html'}, name='505'),
+    url(r'^repository/$', 'repository', name='repository'),
     #url(r'^google(?P<term>\w+)', 'google'),
     #url(r'^search/(?P<term>.*)', 'search'), # Side-wide search
 #    url(r'^', include('cms.urls')),
