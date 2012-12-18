@@ -14,28 +14,18 @@
 {% block title %}{{ entry.title }}{% endblock %}
 
 {% block content %}
-    <table>
+    <table xmlns="http://www.w3.org/1999/html">
         <tr>
             <td valign="top">
                 {{ entry.content|markdown|hyper|recross|safe }}
                 <hr>
-                <div class="line">
-                    <span class="left">
-                        <h3><a href="{% url 'create-entry' %}" class="btn btn-primary btn-large">Submit</a></h3>
-                        <b>Data Entry</b>
-
-                    </span>
-
-                    <span class="center">
-                        <h3><a href="/search/" class="btn btn-secondary btn-large">Search</a></h3>
-                        <b>Denigma db</b>
-
-                    </span>
-
-
+                <div class="btn-group">
+                    <a href="{% url 'create-entry' %}" class="btn btn-primary btn-large">Submit</a>
+                    <a href="/search/" class="btn btn-secondary btn-large">Search</a>
+                    <a href="{% url 'detail-entry' 'site-structure' %}" class="btn btn-danger btn-large">Site</a>
                 </div>
             </td>
-            <td>
+            <td style="width: 400px">
                 {% for image in entry.images.all %}
                     <img src="{{ image.url }}" alt="{{ image.name }}" width="400" height="400">
                 {% endfor %}

@@ -54,4 +54,6 @@ def content(request, template='content.html'):
 def repository(request, template='repository.html'):
     """A biologist-friendly data repository."""
     entry = get('Biology of Aging Repository')
+
     return render(request, template, {'entry': entry})
+
