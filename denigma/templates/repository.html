@@ -29,8 +29,9 @@
                     <a href="{% url 'create-entry' %}" class="btn btn-primary btn-large">Submit</a>
                     <a href="/search/" class="btn btn-secondary btn-large">Search</a>
                     <a href="{% url 'detail-entry' 'site-structure' %}" class="btn btn-danger btn-large">Site</a>
+                    <a href='/about/what_next/' class="btn btn-warning btn-large">What's next</a>
                 </div>
-                <h4>Data Entry | Database | Structure</h4>
+                <h4>Data Entry | Database | Layout | About Denigma</h4>
             </td>
             <td style="width: 400px">
                 {% for image in entry.images.all %}
