@@ -695,6 +695,7 @@ class FactorList(SingleTableView, FormView):
         context = super(FactorList, self).get_context_data(*args, **kwargs)
         context['form'] = FilterForm(initial={'filter': FactorList.query})
         context['factorsfilter'] = self.factorsfilter
+        context['entry'] = get("Factor")
         return context
 
     def get_queryset(self):

@@ -2,6 +2,9 @@
 
 {% load staticfiles %}
 {% load render_table from django_tables2 %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
 
 {% block head_title %}Factors{% endblock %}
 
@@ -20,6 +23,19 @@
 {% block title %}Factors{% endblock %}
 
 {% block content %}
+    <table>
+        <tr>
+            <td>
+                {{ entry.content|markdown|hyper|recross|safe }}
+            </td>
+            <td>
+               {% for image in entry.images.all %}
+                   <img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250">
+               {% endfor %}
+            </td>
+        </tr>
+    </table>
+    <hr>
     <form action="" method="POST">
     {% csrf_token %}
         {{ form.as_table }}
