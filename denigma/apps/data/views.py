@@ -103,14 +103,14 @@ def edit_entry(): pass
 def remove_entry(): pass
 
 def breadcrump(request, slug):
-    print("Breadcrump: %s" % slug)
+    #print("Breadcrump: %s" % slug)
     entry = Entry.objects.get(slug=slug)
     return render_to_response('entry_view.html', {'entry': entry},
         context_instance=RequestContext(request))
 
 def changes(request, pk=None, template_name='data/change_list.html'):
     if pk:
-        print("pk = %s" % pk)
+        #print("pk = %s" % pk)
         query = Entry.objects.get(pk=int(pk))
         queryset = Change.objects.filter(of=query).order_by('-at')
         #queryset = query.updates.all()#.order_by('-created')
@@ -121,24 +121,32 @@ def changes(request, pk=None, template_name='data/change_list.html'):
         context_instance=RequestContext(request))
 
 def remove_change(request, slug):
-    print("remove_change: slug = %s" % slug)
+    #print("remove_change: slug = %s" % slug)
     change = Change.objects.get(slug=slug)
     change.delete()
     msg = 'Successfully removed change %s' % change.title
     messages.add_message(request, messages.SUCCESS, _(msg))
     return redirect('/data/changes/%s' % change.of.pk)
 
-def change(request, slug, template_name='data/change.html'):
-    print("data.views.change: slug = %s" % slug)
-    change = Change.objects.get(slug=slug)
-    changes = change.differences()
-    print "Change:", change
-    print "Changes:", changes.title
 
-    ctx = {'change': change, 'changes': changes}
+class ChangeView(DetailView):
+    pk = None
+    slug = None
 
-    return render_to_response(template_name, ctx,
-        context_instance=RequestContext(request))
+    def dispatch(self, request, *args, **kwargs):
+        if 'slug' in kwargs:
+            self.slug = kwargs['slug']
+        elif 'pk' in kwargs:
+            self.pk = kwargs['pk']
+        return super(ChangeView, self).dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        if self.slug:
+            objects = Change.objects.filter(slug=self.slug)
+        else:
+            objects = Change.objects.filter(pk=self.pk)
+        return objects
+
 
 def relations(): pass
 def relation(): pass
@@ -177,8 +185,8 @@ class TagDetail(ListView):
         else:
             tag = Tag.objects.get(pk=kwargs['pk'])
         items = TaggedItem.objects.filter(tag__pk=tag.pk)
-        for item in items:
-            print("Item: %s;" % vars(item))
+        #for item in items:
+        #    print("Item: %s;" % vars(item))
         ctx = {'object_list': items, 'object': tag}
         return render_to_response('data/tag_detail.html', ctx,
             context_instance=RequestContext(request))

@@ -7,7 +7,7 @@ from taggit.models import Tag
 
 from models import Entry, Change, Relation, Alteration, Category
 from views import EntryList, EntryView,  EntryCreate, EntryUpdate, EntryDelete, Generate,\
-                  ChangeList, \
+                  ChangeList, ChangeView, \
                   RelationCreate, RelationUpdate, \
                   CategoryCreate, CategoryUpdate, TagDetail,\
                   Entries
@@ -58,7 +58,8 @@ urlpatterns = patterns('data.views',
     url(r'^changes/(?P<pk>\d*)', 'changes', name='changes'),
     url(r'^change/remove/(?P<slug>.+)/$', 'remove_change', name='remove_change'),
     url(r'^change/feed/$', ChangeFeed(), name='data-change-feed'),
-    url(r'^change/(?P<slug>.+)/$', 'change', name='change'),
+    url(r'^change/(?P<pk>\d*)/$', ChangeView.as_view(), name='change'),
+    url(r'^change/(?P<slug>.+)/$', ChangeView.as_view(), name='change'),
 
     # Relations:
     ## Class-Views
