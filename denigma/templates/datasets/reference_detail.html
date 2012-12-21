@@ -23,6 +23,9 @@
     {% if object.issue %}<b>Issue</b>: {{ object.issue }}<br>{% endif %}
     {% if object.pages %}<b>Pages</b>: {{ object.pages }}<br>{% endif %}
     <b>Date</b>: {{ object.date }}<br>
+    {% if object.pmid %}
+        <b>PMID</b>: <a href="https://www.ncbi.nlm.nih.gov/pubmed/{{ object.pmid }}/">{{ object.pmid }}</a>
+    {% endif %}<br>
     <b>Notes</b>: {{ object.notes }}<br><br>
     <b>Citation</b>: {{ object.ref|markdown }}<br>
     {% if object.study_set.all %}
