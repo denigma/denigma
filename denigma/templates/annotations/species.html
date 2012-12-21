@@ -4,6 +4,7 @@
 {% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
+{% load paragraphs %}
 
 {% block hierarchy %}
     > Species
@@ -33,7 +34,7 @@
             <h4>{{ aspecies.common_name }}</h4>
             <i>{{ aspecies.latin_name }}</i> (id = {{ aspecies.taxid }})
             <br>
-            {{ aspecies.description }}
+            {{ aspecies.description|paraone|markdown|hyper|recross|safe }}
             <a href="/annotations/species/{{ aspecies.pk }}">Read more</a><br>
         </td>
         <td align="right" style="width: 150px">

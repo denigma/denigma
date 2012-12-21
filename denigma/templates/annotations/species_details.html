@@ -1,7 +1,12 @@
 {% extends "annotations/base.html" %}
 
+{% load url from future %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
+
 {% block hierarchy %}
-     > <a href="/annotations/species/">Species</a>
+     > <a href="{% url 'species' %}">Species</a>
      > <i>{{ species.short_latin_name }}</i>
 {% endblock %}
 
@@ -13,7 +18,7 @@
     <b>Common name:</b> {{ species.common_name }}<br>
     <b>Short name:</b> {{ species.short_name }}<br>
     <b>Number of genes:</b> {{ species.number_genes }}<br>
-    <b>Description:</b> {{ species.description }}<br>
+    <b>Description:</b> {{ species.description|markdown|hyper|recross|safe }}<br>
     {% for image in species.images.all %}
         <img src="{{ image.url }}" alt="{{ image.name }}">
     {% endfor %}
