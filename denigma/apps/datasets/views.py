@@ -1,18 +1,24 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext
+from django.views.generic import DetailView
 from django.views.generic.edit import FormView
 from django.db.models import Q
 
 from django_tables2 import SingleTableView
 
-from forms import  FilterForm, ReferenceForm
+from forms import  FilterForm, UploadForm, ReferenceForm
 from tables import ReferenceTable
 from filters import ReferenceFilterSet
 
 from datasets.models import Reference, Change
 from data import get
 from data.views import Create, Update
+
+from media.views import store_in_s3
+
+
+bucket = "darticles"
 
 
 def index(request):
@@ -32,7 +38,6 @@ class ReferenceUpdate(Update):
     model = Reference
     form_class = ReferenceForm
     comment = "Updated reference"
-
 
 
 
@@ -85,6 +90,20 @@ class ReferenceList(SingleTableView, FormView):
         self.filterset = ReferenceFilterSet(qs, self.request.GET)
         return self.filterset.qs
 
+
+def detail(request, pk, template="datasets/reference_detail.html"):
+    object = Reference.objects.get(pk=pk)
+    if not request.method == "POST":
+        form = UploadForm()
+    else:
+        print("post")
+        form = UploadForm(request.POST, request.FILES)
+        file = request.FILES['file']
+        store_in_s3(file.name, file.read(), bucket)
+        object.url = "http://%s.s3.amazonaws.com/%s" % (bucket, file.name)
+        object.save()
+    ctx = {'form': form, 'object': object}
+    return render(request, template, ctx)
 
 def references_archive(request):
     references = Reference.objects.all()

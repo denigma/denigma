@@ -1,4 +1,4 @@
-from django.forms import Form, ModelForm, CharField
+from django.forms import Form, ModelForm, CharField, FileField
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit
@@ -9,6 +9,10 @@ from models import Reference
 
 class FilterForm(Form):
     filter = CharField()
+
+
+class UploadForm(Form):
+    file = FileField(label='Select reference article to upload')
 
 
 class ReferenceForm(ModelForm):
@@ -28,3 +32,4 @@ class ReferenceForm(ModelForm):
     class Meta:
         model = Reference
         fields = ('pmid', 'title', 'notes')
+

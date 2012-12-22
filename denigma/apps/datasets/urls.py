@@ -1,10 +1,9 @@
 """Dataset urls."""
 from django.conf.urls import patterns, url
-from django.views.generic import DetailView
 from django.contrib.auth.decorators import login_required
 
 from models import Reference
-from views import ReferenceList, ReferenceCreate, ReferenceUpdate
+from views import ReferenceList, ReferenceCreate, ReferenceUpdate, ReferenceDetail
 
 
 
@@ -18,6 +17,6 @@ urlpatterns = patterns('datasets.views',
     url(r'^references/update', 'update_references'),
     url(r'^references/archive', 'references_archive', name='references_archive'),
     url(r'^references', ReferenceList.as_view(), name='references'),
-    url(r'reference/(?P<pk>\d+)', DetailView.as_view(model=Reference), name='detail-reference'),
+    url(r'reference/(?P<pk>\d+)', 'detail', name='detail-reference'),
     url(r'^changes', 'changes', name='changes'),
 )

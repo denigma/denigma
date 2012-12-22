@@ -12,6 +12,23 @@
 
 {% block title %}{{ object.title }}{% endblock %}
 
+{% block extra_style %}
+    <style>
+        .sidebar {
+            float:left;
+            widht:290px;
+            height:1000px;
+            margin-right:2em;
+            padding:1em;
+            background:white;
+        }
+    .form {
+        background: #cccccc;
+        padding: 0.5em;
+    }
+    </style>
+{% endblock %}
+
 {% block content %}
     <b>Authors</b>: {{ object.authors }}<br>
     <b>Abstract</b>: {{ object.abstract }}<br><br>
@@ -27,14 +44,31 @@
         <b>PMID</b>: <a href="https://www.ncbi.nlm.nih.gov/pubmed/{{ object.pmid }}/">{{ object.pmid }}</a>
     {% endif %}<br>
     <b>Notes</b>: {{ object.notes }}<br><br>
+    {% if object.url %}
+        {% if user.is_authenticated %}
+            <b>PDF</b>: <a href="{{ object.url }}">Download</a><br><br>
+        {% endif %}
+    {% endif %}
     <b>Citation</b>: {{ object.ref|markdown }}<br>
     {% if object.study_set.all %}
         {% for study in object.study_set.all %}
             <a href={{ study.get_absolute_url }}>Study</a>
         {% endfor %}
     {% endif %}
+    <div class="sidebar">
+        <div class="form">
+            <strong>{{ form.file.label }}</strong>
+            <form method="POST" action="/datasets/reference/{{ object.pk }}/" enctype="multipart/form-data">{% csrf_token %}
+                {{ form.file }}<br/>
+                <input type="submit" value="Upload Article" />
+            </form>
+        </div>
+    </div>
+    <hr>
     <br><br>
-    <b><a href={% url 'update-reference' object.pk %}>Update</a></b>
-    (<a href="/admin/datasets/reference/{{ object.pk }}/">Admin</a>)
-    | <b><a href={% url 'autoupdate_reference' object.pk %}>Auto-Update</a></b>
+    <div>
+        <b><a href={% url 'update-reference' object.pk %}>Update</a></b>
+        (<a href="/admin/datasets/reference/{{ object.pk }}/">Admin</a>)
+        | <b><a href={% url 'autoupdate_reference' object.pk %}>Auto-Update</a></b>
+    </div>
 {% endblock %}
