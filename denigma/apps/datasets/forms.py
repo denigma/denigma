@@ -16,8 +16,9 @@ class UploadForm(Form):
 
 
 class ReferenceForm(ModelForm):
+    notes = CharField(widget=Textarea, required=False)
     comment = CharField(required=False)
-    notes = CharField(widget=Textarea)
+
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
