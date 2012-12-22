@@ -18,7 +18,7 @@ title_re = re.compile('<title?(.*?)</title>')
 log = logging.getLogger('track.middleware')
 
 class VisitorTrackMiddleware(object):
-    print("""Keeps track of your active users.""")
+    """Keeps track of your active users."""
 
     @property
     def prefixes(self):

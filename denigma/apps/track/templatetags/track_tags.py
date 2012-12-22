@@ -10,17 +10,17 @@ class VisitorsOnSite(template.Node):
     Injects the number of active users on the site as an integer into the context.
     """
     def __init__(self, varname, same_page=False):
-        print("Visitor")
+        """Visitor"""
         self.varname = varname
         self.same_page = same_page
 
     def render(self, context):
-        print("VisitorOnSite.render")
+        """VisitorOnSite.render"""
         if self.same_page:
             try:
                 request = context['request']
                 count = Visitor.objects.active().filter(url=request.path).count()
-                print("self.same_page: %s" % count)
+                #print("self.same_page: %s" % count)
             except KeyError:
                 raise template.TemplateSyntaxError(
                     "Please add 'django.core.context_processers.request' to "
@@ -28,14 +28,14 @@ class VisitorsOnSite(template.Node):
                     "many users are ont he same page.")
         else:
             count = Visitor.objects.active().count()
-            print("self.same_page else: %s" % count)
+            #print("self.same_page else: %s" % count)
         context[self.varname] = count
-        print(count)
+        #print(count)
         return ''
 
 def visitors_on_site(parser, token):
-    print("""Determines the number of active users on the site and puts it into the
-    context.""")
+    """Determines the number of active users on the site and puts it into the
+    context."""
     try:
         tag, a, varname = token.split_contents()
     except ValueError:
@@ -45,8 +45,8 @@ def visitors_on_site(parser, token):
 register.tag(visitors_on_site)
 
 def visitors_on_page(parser, token):
-    print("""Determines the number of active users on the same page and puts it into
-    the context.""")
+    """Determines the number of active users on the same page and puts it into
+    the context."""
     try:
         tag, a, varname = token.split_contents()
     except ValueError:

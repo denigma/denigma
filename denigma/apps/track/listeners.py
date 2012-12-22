@@ -13,7 +13,7 @@ except ImportError:
 else:
 
     def refresh_untracked_user_agents(sender, instance, created=False, **kwargs):
-        print("""Updates the cache of user agents that we don't track.""")
+        """Updates the cache of user agents that we don't track."""
 
         log.debug('Updating untracked user agents cache')
         cache.set('_tracking_untracked_uas',
@@ -21,7 +21,7 @@ else:
             3600)
 
     def refresh_banned_ips(sender, instance, created=False, **kwargs):
-        print("""Updates the cache of banned IP addresses.""")
+        """Updates the cache of banned IP addresses."""
 
         log.debug('Updating banned IP cache')
         cache.set('_tracking_banned_ips',
