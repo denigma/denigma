@@ -2,8 +2,7 @@
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
-from models import Reference
-from views import ReferenceList, ReferenceCreate, ReferenceUpdate, ReferenceDetail
+from views import ReferenceList, ReferenceCreate, ReferenceUpdate
 
 
 

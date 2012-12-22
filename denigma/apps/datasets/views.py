@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext
-from django.views.generic import DetailView
 from django.views.generic.edit import FormView
 from django.db.models import Q
 
