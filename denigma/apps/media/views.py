@@ -29,19 +29,19 @@ class UploadForm(forms.Form):
 
 bucket = "dgallery"
 
+def store_in_s3(filename, content, bucket=bucket):
+    conn = S3Connection(settings.ACCESS_KEY, settings.PASS_KEY)
+    b = conn.create_bucket(bucket) # Bucket name
+    # if it doesn't exist it creates a new one, otherwise it retrieves it.
+    mime = mimetypes.guess_type(filename)[0] # Determines file type.
+    k = Key(b)
+    k.key = filename
+    k.set_metadata('Content-Type', mime)
+    k.set_contents_from_string(content)
+    k.set_acl('public-read')
+
 def index(request, template='./gallery/index.html'):
     entry = get("Gallery")
-    def store_in_s3(filename, content):
-        conn = S3Connection(settings.ACCESS_KEY, settings.PASS_KEY)
-        b = conn.create_bucket(bucket) # Bucket name
-        # if it doesn't exist it creates a new one, otherwise it retrieves it.
-        mime = mimetypes.guess_type(filename)[0] # Determines file type.
-        k = Key(b)
-        k.key = filename
-        k.set_metadata('Content-Type', mime)
-        k.set_contents_from_string(content)
-        k.set_acl('public-read')
-        
     photos = Image.objects.all().order_by('-uploaded')
     if not request.method == "POST":
         f = UploadForm()
