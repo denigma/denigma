@@ -2,6 +2,8 @@
 
 {% load url from future %}
 {% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
 
 {% block head_title %}{{ object.repr }}{% endblock %}
 
@@ -43,7 +45,13 @@
     {% if object.pmid %}
         <b>PMID</b>: <a href="https://www.ncbi.nlm.nih.gov/pubmed/{{ object.pmid }}/">{{ object.pmid }}</a>
     {% endif %}<br>
-    <b>Notes</b>: {{ object.notes }}<br><br>
+    {% if object.notes %}
+        <b>Notes</b>: {{ object.notes|markdown|hyper|recross|safe }}<br>
+    {% endif %}
+    {% if object.label %}
+        <b>Label</b>: {{ object.label|recross|safe }}<br>
+    {% endif %}
+    <br>
     {% if object.url %}
         {% if user.is_authenticated %}
             <b>PDF</b>: <a href="{{ object.url }}">Download</a><br><br>
