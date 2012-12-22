@@ -23,7 +23,7 @@ class ReferenceForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
         self.helper.layout = Layout(
-            Fieldset('', 'pmid', 'title', 'notes', 'label', 'comment'),
+            Fieldset('Either a PMID or a title is totally sufficient to create a reference.', 'pmid', 'title', 'notes', 'label', 'comment'),
             FormActions(
                 Submit('save', 'Save', css_class="btn-primary"),
                 Submit('cancel', 'Cancel')
