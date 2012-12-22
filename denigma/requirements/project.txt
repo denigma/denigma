@@ -65,4 +65,4 @@ reportlab==2.5
 pygments
 
 # Representative user images:
--e git+https://github.com/guzru/django-avatar#egg=django-avatar
+-e git://github.com/guzru/django-avatar#egg=django-avatar
