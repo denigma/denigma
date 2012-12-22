@@ -1,4 +1,4 @@
-from django.forms import Form, ModelForm, CharField, FileField
+from django.forms import Form, ModelForm, CharField, FileField, Textarea
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit
@@ -17,11 +17,12 @@ class UploadForm(Form):
 
 class ReferenceForm(ModelForm):
     comment = CharField(required=False)
+    notes = CharField(widget=Textarea)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
         self.helper.layout = Layout(
-            Fieldset('', 'pmid', 'title', 'notes', 'comment'),
+            Fieldset('', 'pmid', 'title', 'notes', 'label', 'comment'),
             FormActions(
                 Submit('save', 'Save', css_class="btn-primary"),
                 Submit('cancel', 'Cancel')
@@ -31,5 +32,5 @@ class ReferenceForm(ModelForm):
 
     class Meta:
         model = Reference
-        fields = ('pmid', 'title', 'notes')
+        fields = ('pmid', 'title', 'label', 'notes')
 
