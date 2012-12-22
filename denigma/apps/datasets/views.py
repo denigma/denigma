@@ -8,6 +8,7 @@ from django_tables2 import SingleTableView
 
 from forms import  FilterForm, ReferenceForm
 from tables import ReferenceTable
+from filters import ReferenceFilterSet
 
 from datasets.models import Reference, Change
 from data import get
@@ -33,6 +34,8 @@ class ReferenceUpdate(Update):
     comment = "Updated reference"
 
 
+
+
 class ReferenceList(SingleTableView, FormView):
     template_name = 'datasets/reference_table.html'
     context_object_name = 'references'
@@ -41,6 +44,7 @@ class ReferenceList(SingleTableView, FormView):
     success_url = '/datasets/references/'
     model = Reference
     query = None
+    queryset = Reference.objects.all().order_by('-id')
 
     def form_valid(self, form):
         ReferenceList.query = form.cleaned_data['filter']
@@ -54,32 +58,32 @@ class ReferenceList(SingleTableView, FormView):
         context = super(ReferenceList, self).get_context_data(*args, **kwargs)
         context['form'] = FilterForm(initial={'filter': ReferenceList.query})
         context['entry'] = get(title='References')
-        #context['referencesfilter'] = self.referencesfilter
+        context['filterset'] = self.filterset
         return context
 
     def get_queryset(self):
-        references = Reference.objects.all().order_by('id')
+        qs = self.queryset
         query = ReferenceList.query
         if query:
             terms = query.split(None)
             if len(terms) == 1:
                 try:
-                    references = references.filter(pmid=terms[0])
+                    qs = qs.filter(pmid=terms[0])
                 except Exception as e:
-                    references = references.filter(Q(title__icontains=terms[0]) |
+                    qs = qs.filter(Q(title__icontains=terms[0]) |
                                                    Q(authors__icontains=terms[0]) |
                                                    Q(abstract__icontains=terms[0]) |
                                                    Q(keywords__icontains=terms[0]) |
                                                    Q(notes__icontains=terms[0]))
             else:
                 for term in terms:
-                    references = references.filter(Q(title__icontains=term) |
+                    qs = qs.filter(Q(title__icontains=term) |
                                                       Q(authors__icontains=term) |
                                                       Q(abstract__icontains=term) |
                                                       Q(keywords__icontains=term) |
                                                       Q(notes__icontains=term))
-        #print references.count()
-        return references
+        self.filterset = ReferenceFilterSet(qs, self.request.GET)
+        return self.filterset.qs
 
 
 def references_archive(request):
