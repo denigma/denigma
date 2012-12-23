@@ -83,3 +83,8 @@ class Profile(models.Model): # User
 
     def get_absolute_url(self):
         return "/experts/%s/" % self.user_name.replace(' ', '_')
+
+    def save(self, *args, **kwargs):
+        if not self.user_name:
+            self.user_name = " ".join([self.first_name, self.last_name])
+        super(Profile, self).save(*args, **kwargs)

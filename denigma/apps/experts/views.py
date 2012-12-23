@@ -1,15 +1,21 @@
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.contrib import messages
+from django.contrib.auth.models import User, AnonymousUser
+from django.utils.translation import ugettext_lazy as _
 
 from models import Profile
 from filters import ProfileFilterSet
 from tables import ProfileTable
 from forms import ProfileForm
 
+import reversion
+
+
 from data.filters import TableFilter
 from data.views import Create, Update
-
+from meta.view import log
 
 def whoiswho(request):
     """Intended to synchronize Experts with the WhoisAge.""" 
@@ -75,6 +81,22 @@ class CreateProfile(Create):
     comment = "Created profile"
     message = 'Successfully created %s'
 
+    def form_valid(self, form):
+        with reversion.create_revision():
+            self.object = form.save(commit=False)
+            if isinstance(self.request.user, AnonymousUser):
+                self.request.user = User.objects.get(username='Anonymous')
+            comment = self.request.POST['comment'] or self.comment
+            reversion.set_comment(comment)
+            self.object.comment = comment
+            self.object.save()
+            log(self.request, self.object, comment, 1)
+            reversion.set_user(self.request.user)
+            form.save_m2m()
+            self.success_url = self.success_url or self.object.get_absolute_url()
+            messages.add_message(self.request, messages.SUCCESS,
+                _(self.message % self.object))
+            return HttpResponseRedirect(self.get_success_url())
 
 class UpdateProfile(Update):
     model = Profile
@@ -82,3 +104,21 @@ class UpdateProfile(Update):
     form_class = ProfileForm
     comment = "Updated profile"
     message = 'Successfully updated %s'
+
+    def form_valid(self, form):
+        with reversion.create_revision():
+            self.object = form.save(commit=False)
+            print("self.object: %s" % self.object)
+            if isinstance(self.request.user, AnonymousUser):
+                self.request.user = User.objects.get(username='Anonymous')
+            comment = self.request.POST['comment'] or self.comment
+            reversion.set_comment(comment)
+            self.object.comment = comment
+            self.object.save()
+            log(self.request, self.object, comment, 2)
+            reversion.set_user(self.request.user)
+            form.save_m2m()
+            self.success_url = self.success_url or self.object.get_absolute_url()
+            messages.add_message(self.request, messages.SUCCESS,
+                _(self.message % self.object))
+            return HttpResponseRedirect(self.get_success_url())
