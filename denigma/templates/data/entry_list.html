@@ -25,6 +25,13 @@
 
 {% block content %}
     {% if object_list %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form.as_table }}
+            {{ filter.form.as_p }}
+            <input type="submit" value="Apply" />
+            {{ filterset }}
+        </form>
         {% for entry in object_list %}
             <hr>
             <table width="100%">
