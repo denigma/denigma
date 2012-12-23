@@ -43,8 +43,8 @@ class TableFilter(SingleTableView, FormView):
         if TableFilter.query:
             terms = TableFilter.query.split(None)
             for term in terms:
-                qs = qs.filter(Q(title__icontains=TableFilter.query) |
-                                Q(text__icontains=TableFilter.query))
+                qs = qs.filter(Q(title__icontains=term) |
+                                Q(text__icontains=term))
         self.filterset = EntryFilterSet(qs, self.request.GET)
         return self.filterset.qs
 

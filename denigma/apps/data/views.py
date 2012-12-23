@@ -183,7 +183,7 @@ class EntryList(ListView, FormView):
 
     def get_context_data(self, **kwargs):
         context = super(EntryList, self).get_context_data(**kwargs)
-        context['form'] = FilterForm(initial={'filter': TableFilter.query})
+        context['form'] = FilterForm(initial={'filter': EntryList.query})
         context['filterset'] = self.filterset
         return context
 
