@@ -88,7 +88,7 @@ class Reference(models.Model):
     name_of_database = models.CharField(max_length=100, blank=True, null=True)
     database_provider = models.CharField(max_length=100, blank=True, null=True)
     language = models.CharField(max_length=100, blank=True, null=True)
-    email = models.EmailField(max_length=75, blank=True, null=True)        
+    email = models.EmailField(max_length=75, blank=True, null=True)
 
     def __unicode__(self):
         return u"{0} {1}".format(self.pmid, self.title)

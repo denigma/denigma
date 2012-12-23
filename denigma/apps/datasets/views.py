@@ -95,7 +95,7 @@ def detail(request, pk, template="datasets/reference_detail.html"):
         object = Reference.objects.get(pk=pk)
     except Reference.DoesNotExist:
         try:
-            object = Reference.objects.get(pmid=pk)
+            object = Reference.objects.get(pmid=pk) #, created  get_or_create +/- reversion. return redirect('/datasets/reference/create/')
         except:
             return redirect('https://www.ncbi.nlm.nih.gov/pubmed/%s' % pk)
     if not request.method == "POST":
