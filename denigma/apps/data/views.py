@@ -1,5 +1,6 @@
 from random import random
 
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect, render
 from django.template import RequestContext
@@ -169,15 +170,30 @@ def category(): pass
 class EntryList(ListView, FormView):
     queryset = Entry.objects.filter(published=True).order_by('-created')
     form_class = FilterForm
+    query = None
+    success_url = "/data/entries/list/"
+
+    def form_valid(self, form):
+        EntryList.query = form.cleaned_data['filter']
+        return super(EntryList, self).form_valid(form)
+
+    def form_invalid(self, form):
+        EntryList.query = None
+        return super(EntryList, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(EntryList, self).get_context_data(**kwargs)
-        context['form'] = FilterForm()
+        context['form'] = FilterForm(initial={'filter': TableFilter.query})
         context['filterset'] = self.filterset
         return context
 
     def get_queryset(self):
         qs = self.queryset
+        if EntryList.query:
+            terms = EntryList.query.split(None)
+            for term in terms:
+                qs = qs.filter(Q(title__icontains=term) |
+                               Q(text__icontains=term))
         self.filterset = EntryFilterSet(qs, self.request.GET)
         return self.filterset.qs
 
