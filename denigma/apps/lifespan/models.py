@@ -92,11 +92,11 @@ class Study(models.Model):
            kwargs['link'] = self.link
         if self.pmid: 
            reference, created = Reference.objects.get_or_create(pmid=self.pmid, defaults=kwargs)
-           print "models.Study.save() if self.pmid:", reference, created
+           #print "models.Study.save() if self.pmid:", reference, created
            self.reference_was_created = created
         elif self.title:
            try:
-               print "TRRRRRRRRRRRRRRRYL reference, creating"
+               #print "TRRRRRRRRRRRRRRRYL reference, creating"
                try:
                    reference, created = Reference.objects.get_or_create(title__icontains=self.title, defaults=kwargs)
                except MultipleObjectsReturned as e:
@@ -107,8 +107,8 @@ class Study(models.Model):
                    created = False
                except Exception as e:
                    print e
-               print "TRRRRRRRRRRRRRRRYL reference, created", created
-               print reference, created
+               #print "TRRRRRRRRRRRRRRRYL reference, created", created
+               #print reference, created
                self.reference_was_created = created
                #print "self.reference_was_created", self.reference_was_created
                self.reference = reference
