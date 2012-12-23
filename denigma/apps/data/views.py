@@ -3,7 +3,7 @@ from random import random
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect, render
 from django.template import RequestContext
-from django.views.generic import  ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import  ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AnonymousUser, User
@@ -21,7 +21,7 @@ from control import get
 from models import Entry, Change, Relation, Category
 from forms import EntryForm, RelationForm, CategoryForm, DeleteForm
 from tables import EntryTable
-from filters import TableFilter
+from filters import TableFilter, EntryFilterSet, FilterForm
 
 from templatetags.rendering import markdown
 from blog.templatetags.hyperlink import hyper
@@ -166,8 +166,20 @@ def categories(): pass
 def category(): pass
 
 
-class EntryList(ListView):
-    queryset=Entry.objects.filter(published=True).order_by('-created')
+class EntryList(ListView, FormView):
+    queryset = Entry.objects.filter(published=True).order_by('-created')
+    form_class = FilterForm
+
+    def get_context_data(self, **kwargs):
+        context = super(EntryList, self).get_context_data(**kwargs)
+        context['form'] = FilterForm()
+        context['filterset'] = self.filterset
+        return context
+
+    def get_queryset(self):
+        qs = self.queryset
+        self.filterset = EntryFilterSet(qs, self.request.GET)
+        return self.filterset.qs
 
 
 class ChangeList(ListView): # Not functional.

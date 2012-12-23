@@ -19,7 +19,7 @@ urlpatterns = patterns('data.views',
 
     # Entries:
     ## Class-Views
-    url(r'^entries/list/$', EntryList.as_view(paginate_by=10), name='list-entries'),
+    url(r'^entries/list/$', EntryList.as_view(paginate_by=20), name='list-entries'),
     url(r'^entry/table/$', Entries.as_view(template_name='data/entry_table.html'), name='entry-table'),
 
     #url(r'^entry/table/$', EntryList.as_view(template_name='data/entry_table.html'), name='entry-table'),
