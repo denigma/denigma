@@ -49,9 +49,9 @@ def update(request, db="BioGRID"):
     main()
     return redirect('/interactions/')
 
-def integrator(request, header=False):
+def integrator(request, memory=True, header=False):
 
-    #main(header=header)
+    main(memory=memory, header=header)
     pathToFile = os.path.join(settings.PROJECT_ROOT, 'apps', 'interactions', 'merged.txt')
     fields = ('id_a', 'id_b',
               'alias_a', 'alias_b',
@@ -64,9 +64,6 @@ def integrator(request, header=False):
      "lines terminated by '\n'(%s);"\
           % (pathToFile,'interactions','interaction'"", ", ".join(fields))
 
-    print sql
-#    query = Interaction.objects.raw(sql)
-#    print query
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
 
@@ -75,6 +72,10 @@ def integrator(request, header=False):
     cursor.execute(sql)
     #row = cursor.fetchone()
     #print row
+
+    print sql
+    query = Interaction.objects.raw(sql)
+    #    print query
 
 
     # Reading and inserting via Django ORM (works, but is too slow):
