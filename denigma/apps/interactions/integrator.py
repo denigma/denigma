@@ -36,7 +36,7 @@ def file_len(fname): # http://stackoverflow.com/questions/845058/how-to-get-line
     return i + 1
 
 def main(memory=True, header=True):
-    print("Integrating interaction information...")
+    """Integrating interaction information..."""
     remove = ['AfCS'] #'STRING'
     for i in remove:
         if i in databases:
@@ -82,15 +82,15 @@ def main(memory=True, header=True):
                     if alias_b not in GeneList[taxid_b]: GeneList[taxid_b][alias_b] = ''
 
     # Map:              
-        print '\n'
-    for taxid, genes in GeneList.items():
-        print taxid, len(genes)
-    print('')
+    #    print '\n'
+    #for taxid, genes in GeneList.items():
+    #    print taxid, len(genes)
+    #print('')
 
     UniqueIDs = {}
     for taxid, aliases in GeneList.items():
         #Ma = M(taxid)   # Alter Map to convert int to string!
-        print taxid, len(GeneList[taxid])
+        #print taxid, len(GeneList[taxid])
 
         L = len(GeneList[taxid]); n = 0; PB = 0 #Start Counter
         
@@ -101,7 +101,7 @@ def main(memory=True, header=True):
             PB = PA
 
             GeneList[taxid][alias] = m(alias.split('; '), taxid)[0]
-        print('')
+        #print('')
 
     for database in databases:
         data_file = os.path.join(path, database, 'interactions.txt')
@@ -121,7 +121,7 @@ def main(memory=True, header=True):
             if PA != PB: print PA,
             PB = PA
         
-            if i != '':
+            if i != '' and i != '\n':
                 s = i.split('\t')
                 if s[6] != "" and s[6] == s[7] and int(s[6])  in taxid_list and int(s[7]) in taxid_list:
                     alias_a, taxid_a = s[0], int(s[6])
