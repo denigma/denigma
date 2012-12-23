@@ -1,5 +1,6 @@
 {% extends "banner_base.html" %}
 
+{% load url from future %}
 {% load i18n %}
 {% load ifsetting_tag %}
 {% load markup %}
@@ -19,7 +20,9 @@
         </td>
         <td style="width: 500px">
             <div>
-                <img src="http://dgallery.s3.amazonaws.com/denigma_pos.png" alt="Denigma - The Digital Enigma" height="500" width="500" style="float:right">
+                <a href="{% url 'detail-entry' 'denigmas-logo' %}">
+                    <img src="http://dgallery.s3.amazonaws.com/denigma_pos.png" alt="Denigma - The Digital Enigma" height="500" width="500" style="float:right">
+                </a>
             </div>
         </td>
     </tr>
