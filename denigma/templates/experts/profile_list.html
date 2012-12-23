@@ -1,0 +1,25 @@
+{% extends "experts/base.html" %}
+
+{% load url from future %}
+{% load render_table from django_tables2 %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+{% endblock %}
+
+{% block title %}Experts{% endblock %}
+
+{% block options %}
+    <a href="{% url 'create-expert-profile' %}">Create</a>
+{% endblock %}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_table }}
+        {{ filter.form.as_p }}
+        <input type="submit" value="Apply" />
+        {{ filterset }}
+    </form>
+    {% render_table table %}
+{% endblock %}

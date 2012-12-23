@@ -1,9 +1,7 @@
-{% extends "site_base.html" %}
+{% extends "experts/base.html" %}
 
 {% block hierarchy %}
-<a href="/admin">{{ SITE_NAME }} db</a> >
-Experts >
-List {% comment %}Consider to rename the view to index for consistence{% endcomment %}
+    > List
 {% endblock %}
 
 {% block title %}List of Experts{% endblock %}

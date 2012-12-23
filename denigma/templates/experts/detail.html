@@ -1,35 +1,45 @@
-{% extends "site_base.html" %}
+{% extends "experts/base.html" %}
+
+{% load url from future %}
 
 {% block hierarchy %}
-<div class="line">
-    <span class="left">
-        <a href="/admin">{{ SITE_NAME }} db</a> >
-        <a href="/experts">Experts</a> >
-        Expert =
-        <a href="{{ expert.get_absolute_url }}">{{ expert.user_name }}</a>
-    <span>
-</div>
+    > Expert
+    = <a href="{{ expert.get_absolute_url }}">{{ expert.user_name }}</a>
 {% endblock %}
+
+{% block options %}
+    <a href="{% url 'update-expert-profile' expert.pk %}">Update</a>
+{% endblock %}
+
 
 {% block title %}Expert{% endblock %}
 
 {% block subtitle %}{{ expert.user_name }}{% endblock %}
 
-{% load obfuscation %}
+{# {% load obfuscation %}  #}
 
 {% block content %}
 
-<p>First name:<b> {{ expert.first_name }}</b></p>
-<p>Last name:<b> {{ expert.last_name }}</b></p>
-<p>Email:<b> {{ expert.email|obfuscate }}</b></p>
-<p>Gender:<b> {{ expert.gender }}</b></p>
-<p>Affliation: <b> {{ expert.affliation }}</b></p>
-<p>Street: <b> {{ expert.street }}</b></p>
-<p>State: <b> {{ expert.state }}</b></p>
-<p>Zip code: <b> {{ expert.zip_code }}</b></p>
-<p>Country: <b> {{ expert.country }}</b></p>
-<p>Work: <b> {{ expert.work }}</b></p>
-<p><a href="{{ expert.website }}">Website</a></p> 
+{% if expert.first_name %}<p><b>First name: </b>{{ expert.first_name }}</p>{% endif %}
+{% if expert.last_name %}<p><b>Last name: </b>{{ expert.last_name }}</p>{% endif %}
+{% if expert.email %}<p><b>Email: </b><a href="mailto:{{ expert.email }}">{{ expert.email }}</a></p>{% endif %} {# #|obfuscate  #}
+{% if expert.gender %}
+    <p><b>Gender: </b>
+        {% if expert.gender == 1 %}Male
+        {% elif expert.gender == 2 %}Female
+        {% endif %}
+    </p>
+{% endif %}
+{% if expert.affliation %}<p><b>Affliation: </b>{{ expert.affliation }}</p>{% endif %}
+{% if expert.street %}<p><b> Street: </b>{{ expert.street }}</p>{% endif %}
+{% if expert.state %}<p><b>State: </b>{{ expert.state }}</p>{% endif %}
+{% if expert.zip_code %}<p><b>Zip code: </b>{{ expert.zip_code }}</p>{% endif %}
+{% if expert.country %}<p><b>Country:  </b>{{ expert.country }}</p>{% endif %}
+{% if expert.work %}<p><b>Work: </b>{{ expert.work }}</p>{% endif %}
+{% if expert.website %}<p><a href="{{ expert.website }}">Website</a></p>{% endif %}
+    <hr>
+
+    <b><a href="{% url 'update-expert-profile' expert.pk %}">Update</a></b>
 <p>{% endblock %}</p>
 
 

@@ -42,6 +42,7 @@ class Institute(models.Model):
     name = models.CharField(max_length=250)
 
 
+
 class Profile(models.Model): # User
     """The profile of a user.
     dude = int(User.objects.get(username='godric').pk)
@@ -56,7 +57,7 @@ class Profile(models.Model): # User
     user = models.ForeignKey(User, blank=True, null=True, unique=True, # user = models.OneToOneField(User, unique=True)
                              verbose_name=_('user'),
                              related_name='data')
-    user_name = models.CharField(_('username'), max_length=30, unique=True, blank=True) #
+    user_name = models.CharField(_('Name'), max_length=30, unique=True, blank=True) #
     password = models.CharField(max_length=128, blank=True)
     first_name = models.CharField(_('first_name'), max_length=30) # models.TextField(max_length=50)
     last_name = models.CharField(_('last name'),max_length=30, blank=True) # models.TextField(max_length=50)
@@ -77,9 +78,8 @@ class Profile(models.Model): # User
     work = models.TextField(blank=True, null=True)
     website = models.URLField(_('website'), blank=True) # verify_exists=True Deprecated in 1.5
     
-    def __unicode(self):
-        name = self.first_name + self.last_name
-        return name
+    def __unicode__(self):
+        return " ".join([self.first_name, self.last_name])
 
     def get_absolute_url(self):
         return "/experts/%s/" % self.user_name.replace(' ', '_')

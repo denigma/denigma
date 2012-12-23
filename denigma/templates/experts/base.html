@@ -1,0 +1,11 @@
+{% extends "site_base.html" %}
+
+{% load url from future %}
+
+{% block head_title %}Experts{% endblock %}
+
+{% block base_hierarchy %}
+    > <a href="{% url 'experts' %}">Experts</a>
+{% endblock %}
+
+{% block title %}Experts{% endblock %}
