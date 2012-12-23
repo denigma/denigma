@@ -8,7 +8,7 @@ import datetime
 from files import File, Folder
 
 
-def main():
+def main(generator=False):
     os.chdir(path)
     # Version:
     url = 'http://thebiogrid.org/'
@@ -31,6 +31,7 @@ def main():
     # Files:
     folder = Folder()
     folder.get([tab2url, mitaburl])
+
     tab2 = folder.contains('tab2')[0].parse(printing=False, seperator=None)
     mitab = folder.contains('mitab')[0].parse(printing=False, seperator=None)
 
