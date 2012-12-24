@@ -37,6 +37,13 @@
 {% if expert.country %}<p><b>Country:  </b>{{ expert.country }}</p>{% endif %}
 {% if expert.work %}<p><b>Work: </b>{{ expert.work }}</p>{% endif %}
 {% if expert.website %}<p><a href="{{ expert.website }}">Website</a></p>{% endif %}
+{% if expert.collaboration %}<p><b>Requires collaboration</p>{% endif %}
+{% if expert.entries.all %}
+    <b>Type of collaboration:</b>
+    {% for entry in expert.entries.all %}
+        <li><a href="{% url 'detail-entry' entry.slug %}">{{ entry.title }}</a></li>
+    {% endfor %}
+{% endif %}
     <hr>
 
     <b><a href="{% url 'update-expert-profile' expert.pk %}">Update</a></b>

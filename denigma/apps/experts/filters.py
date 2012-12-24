@@ -2,4 +2,4 @@ from django_easyfilters import FilterSet
 
 
 class ProfileFilterSet(FilterSet):
-    fields = ('country', 'gender')
+    fields = ('country', 'entries') # 'gender''collaboration'

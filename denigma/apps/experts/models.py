@@ -77,6 +77,8 @@ class Profile(models.Model): # User
     business_hours = models.ManyToManyField(BusinessHour, blank=True)
     work = models.TextField(blank=True, null=True)
     website = models.URLField(_('website'), blank=True) # verify_exists=True Deprecated in 1.5
+    collaboration = models.BooleanField(default=False)
+    entries = models.ManyToManyField('data.Entry', blank=True, null=True, verbose_name="Type of collaboration")
     
     def __unicode__(self):
         return " ".join([self.first_name, self.last_name])

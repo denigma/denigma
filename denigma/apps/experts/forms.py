@@ -28,6 +28,8 @@ class ProfileForm(ModelForm):
                 'birthday',
                 'gender',
                 'work',
+                'collaboration',
+                'entries',
                 'comment'
             ),
             FormActions(
