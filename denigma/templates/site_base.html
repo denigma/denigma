@@ -26,7 +26,7 @@
         <li id="tab nav"> <a href="/tutorials/">Tutorials</a> </li>
         <li id="tab_nav"> <a href="{% url 'repository' %}">{% trans "Repository" %}</a></li>
         <li id="tab nav">
-            <form class="navbar_search" action="/search/"> {% comment %} Replace this with haystack/Whoosh {% endcomment %}
+            <form class="navbar-search" action="/search/"> {% comment %} Replace this with haystack/Whoosh {% endcomment %}
                  <input type="hidden" name="models" value="data.entry">
                  <input type="text" class="search-query span1" name="q" placeholder="Search" value="">
             </form>
