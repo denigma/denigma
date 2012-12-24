@@ -1,6 +1,9 @@
 {% extends "experts/base.html" %}
 
 {% load url from future %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
 
 {% block hierarchy %}
     > Expert
@@ -35,9 +38,9 @@
 {% if expert.state %}<p><b>State: </b>{{ expert.state }}</p>{% endif %}
 {% if expert.zip_code %}<p><b>Zip code: </b>{{ expert.zip_code }}</p>{% endif %}
 {% if expert.country %}<p><b>Country:  </b>{{ expert.country }}</p>{% endif %}
-{% if expert.work %}<p><b>Work: </b>{{ expert.work }}</p>{% endif %}
+{% if expert.work %}<p><b>Work: </b>{{ expert.work|markdown|hyper|recross|safe }}</p>{% endif %}
 {% if expert.website %}<p><a href="{{ expert.website }}">Website</a></p>{% endif %}
-{% if expert.collaboration %}<p><b>Requires collaboration</p>{% endif %}
+{% if expert.collaboration %}<p><b>Requires collaboration</b></p>{% endif %}
 {% if expert.entries.all %}
     <b>Type of collaboration:</b>
     {% for entry in expert.entries.all %}
