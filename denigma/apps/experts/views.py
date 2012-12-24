@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -59,7 +60,6 @@ class ProfileList(TableFilter):
 
     def get_queryset(self):
         qs = self.queryset
-        print ProfileList.query
         if ProfileList.query:
             terms = ProfileList.query.split(None)
             for term in terms:
@@ -68,9 +68,7 @@ class ProfileList(TableFilter):
                                Q(email__icontains=term) |
                                Q(affliation__icontains=term) |
                                Q(work__icontains=term))
-                print term, qs.count()
         self.filterset = ProfileFilterSet(qs, self.request.GET)
-        print self.filterset.qs.count()
         return self.filterset.qs
 
 
