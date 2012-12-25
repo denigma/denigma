@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext, ugettext_lazy as _
 
 from manager import VisitorManager
+from location import locate
+
 
 log = logging.getLogger(__file__)
 
@@ -66,6 +68,10 @@ class Visitor(models.Model):
         """The session has ended due to an explicit logout."""
         return bool(self.end_time)
     session_ended.boolean = True
+
+    @property
+    def country(self):
+        return locate(self.ip_address)
 
     def __unicode__(self):
         return u"%s %s %s" % (self.ip_address, self.url, self.page_views)
