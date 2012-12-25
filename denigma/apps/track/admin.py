@@ -24,7 +24,7 @@ class VisitorAdmin(admin.ModelAdmin):
     #country.allow_tags = True
 
 class ActivityAdmin(admin.ModelAdmin):
-    list_display = ('visitor', 'link', 'url', 'view_time')
+    list_display = ('visitor', 'link', 'location', 'view_time')
     ordering = ('-id',)
     #list_filter = ('visitor', 'url')
 
@@ -32,6 +32,9 @@ class ActivityAdmin(admin.ModelAdmin):
         return '<a href="/admin/track/activity/%s/">%s</a>' % (obj.visitor.pk, obj.visitor.user_agent)
     link.allow_tags = True
 
+    def location(self, obj):
+        return '<b><a href="%s">%s</a></b>' % (obj.url, obj.url)
+    location.allow_tags = True
 
 admin.site.register(Visitor, VisitorAdmin)
 admin.site.register(BannedIP)
