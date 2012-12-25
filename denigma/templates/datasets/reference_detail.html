@@ -34,7 +34,7 @@
 {% block content %}
     <b>Authors</b>: {{ object.authors }}<br>
     <b>Abstract</b>: {{ object.abstract }}<br><br>
-    <b>Keywords</b>: {{ object.keywords }}<br>
+    {% if object.keywords %}<b>Keywords</b>: {{ object.keywords }}<br>{% endif %}
     <br>
     <b>Journal</b>: {{ object.journal }}<br>
     {% if objects.year %}<b>Year</b>: {{ object.year }}<br>{% endif %}
@@ -46,6 +46,7 @@
         <b>PMID</b>: <a href="https://www.ncbi.nlm.nih.gov/pubmed/{{ object.pmid }}/">{{ object.pmid }}</a>
     {% endif %}<br>
     {% if object.notes %}
+        <br>
         <b>Notes</b>: {{ object.notes|markdown|hyper|recross|safe }}<br>
     {% endif %}
     {% if object.label %}
