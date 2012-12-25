@@ -152,6 +152,7 @@ class VisitorTrackMiddleware(object):
         #print("time_on_site %s (%s)" % (time_on_site, visitor.time_on_site))
         #visitor.time_on_site = time_on_site
 
+        SAVE_ACTIVITY = False
         if TRACK_ACTIVITIES and ACTIVITY:
             # Match against `path_info` to not include the SCRIPT_NAME
             path = request.path_info.lstrip('/')
@@ -159,8 +160,7 @@ class VisitorTrackMiddleware(object):
                 if url.match(path):
                     break
             else:
-                activity = Activity(visitor=visitor, url=request.path, view_time=now)
-                activity.save()
+                SAVE_ACTIVITY = True
 
                 visitor.page_views += 1
         else:
@@ -171,11 +171,14 @@ class VisitorTrackMiddleware(object):
             else:
                 visitor.page_views += 1
 
-
         try:
             visitor.save()
         except DatabaseError:
             log.error('There was a problem saving visitor information:\n%s\n\n%s' % (traceback.format_exc(), locals()))
+
+        if SAVE_ACTIVITY:
+            activity = Activity(visitor=visitor, url=request.path, view_time=now)
+            activity.save()
 
 
 class VisitorCleanUpMiddleware:
