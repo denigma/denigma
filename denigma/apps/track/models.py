@@ -28,7 +28,7 @@ class Visitor(models.Model):
     start_time = models.DateTimeField(default=datetime.now())
     expiry_age = models.IntegerField(null=True)
     expiry_time = models.DateTimeField(null=True)
-    time_on_site = models.IntegerField(null=True)
+    time_on_site = models.IntegerField(null=True) # Overridden by method.
     end_time = models.DateTimeField(null=True)
 
     objects = VisitorManager()
@@ -48,6 +48,12 @@ class Visitor(models.Model):
         else:
             return ugettext(u'unknown')
     time_on_site = property(_time_on_site)
+
+    def _inactive_time(self):
+        return datetime.now() - self.last_update
+
+    #seconds = (self.datetime.now - self.last_update).se
+    inactive_time = property(_inactive_time)
 
     def session_expired(self):
         """The session has ended due to session expiration."""
@@ -70,13 +76,18 @@ class Activity(models.Model):
     url = models.CharField(max_length=255)
     view_time = models.DateTimeField()
 
+    def __unicode__(self):
+        return self.visitor.ip_address
+
     class Meta(object):
         ordering = ('-view_time',)
+        verbose_name_plural = _('Activities')
 
 
 class UntrackedUserAgent(models.Model):
     keyword = models.CharField(_('keyword'), max_length=100,
         help_text='Part or all of a user-agent string.')
+    activity = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.keyword

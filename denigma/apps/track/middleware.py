@@ -11,8 +11,10 @@ from django.db.utils import DatabaseError
 from django.http import Http404
 
 import utils
-from models import Visitor, UntrackedUserAgent, BannedIP
+from settings import TRACK_ACTIVITIES, TRACK_IGNORE_URLS
+from models import Visitor, UntrackedUserAgent, BannedIP, Activity
 
+TRACK_IGNORE_URLS = map(lambda x: re.compile(x), TRACK_IGNORE_URLS)
 
 title_re = re.compile('<title?(.*?)</title>')
 log = logging.getLogger('track.middleware')
@@ -61,11 +63,15 @@ class VisitorTrackMiddleware(object):
             cache.set(ua_key, untracked, 3600)
 
         # See if the user agent is not supposed to be tracked.
+        ACTIVITY = True
         for ua in untracked:
             # if the keyword is found in the user agent, stop tracking
             if user_agent.find(ua.keyword) != -1:
-                log.debug('Not tracking UA "%s" because of keyword: %s' % (user_agent, ua.keyword))
-                return
+                if not ua.activity:
+                    log.debug('Not tracking UA "%s" because of keyword: %s' % (user_agent, ua.keyword))
+                    return
+                else:
+                    ACTIVITY = False
 
         if hasattr(request, 'session') and request.session.session_key:
             # Use the current session key if we can
@@ -135,8 +141,37 @@ class VisitorTrackMiddleware(object):
             visitor.session_start = now
 
         visitor.url = request.path
-        visitor.page_views += 1
+
         visitor.last_update = now
+
+
+        # Tracking
+        #time_on_site = 0
+        #if visitor.start_time:
+        #    time_on_site = (now - visitor.start_time).seconds
+        #print("time_on_site %s (%s)" % (time_on_site, visitor.time_on_site))
+        #visitor.time_on_site = time_on_site
+
+        if TRACK_ACTIVITIES and ACTIVITY:
+            # Match against `path_info` to not include the SCRIPT_NAME
+            path = request.path_info.lstrip('/')
+            for url in TRACK_IGNORE_URLS:
+                if url.match(path):
+                    break
+            else:
+                activity = Activity(visitor=visitor, url=request.path, view_time=now)
+                activity.save()
+
+                visitor.page_views += 1
+        else:
+            path = request.path_info.lstrip('/')
+            for url in TRACK_IGNORE_URLS:
+                if url.match(path):
+                    break
+            else:
+                visitor.page_views += 1
+
+
         try:
             visitor.save()
         except DatabaseError:
@@ -153,6 +188,7 @@ class VisitorCleanUpMiddleware:
             log.debug('Cleaning up visitors older than %s hours' % timeout)
             timeout = datetime.now() - timedelta(hours=int(timeout))
             Visitor.objects.filter(last_update__lte=timeout).delete()
+
 
 class BannedIPMiddleware:
     """Raises an Http404 error for any page request form a banned IP."""
