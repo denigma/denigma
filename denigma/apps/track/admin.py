@@ -1,10 +1,11 @@
 from django.contrib import admin
 
 from models import Visitor, BannedIP, UntrackedUserAgent, Activity
+from location import locate
 
 
 class VisitorAdmin(admin.ModelAdmin):
-    list_display = ('session_key', 'ip_address', 'user', 'location', 'activities', 'session_start', 'last_update', 'time_on_site', 'inactive_time')
+    list_display = ('session_key', 'ip_address', 'user', 'country', 'location', 'activities', 'session_start', 'last_update', 'time_on_site', 'inactive_time')
     ordering = ('-last_update',)
 
     def location(self, obj):
@@ -16,6 +17,9 @@ class VisitorAdmin(admin.ModelAdmin):
         return '<a href="/admin/track/activity/?visitor__id__exact=%s">%s</a>' % (obj.pk, obj.page_views)
     activities.allow_tags = True
 
+    def country(self, obj):
+        return locate(obj.ip_address)
+    country.allow_tags = True
 
 class ActivityAdmin(admin.ModelAdmin):
     list_display = ('visitor', 'link', 'url', 'view_time')
