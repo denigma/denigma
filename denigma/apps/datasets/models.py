@@ -77,7 +77,7 @@ class Reference(models.Model):
     accession_number = models.IntegerField(blank=True, null=True)
     call_number = models.IntegerField(blank=True, null=True)
     label = models.CharField(max_length=100, blank=True, null=True)
-    notes = models.CharField(max_length=100, blank=True, null=True)    # Make it to a ManyToManyField.
+    notes = models.TextField(blank=True, null=True)    # Make it to a ManyToManyField. max_length=100,
     research_notes = models.CharField(max_length=100, blank=True, null=True) # dito.
     #file_attachment = models.FileField(blank=True)
     author_address = models.CharField(max_length=150, blank=True, null=True)
