@@ -18,9 +18,11 @@
     <p>created on {{ object.of.created }} by <a href={% url 'profile_detail' object.of.creator %}>{{ object.of.creator }}</a>
     & updated on {{ object.at }} by <a href={% url 'profile_detail' object.by %}>{{ object.by }}</a></p>
     {{ object.text|markdown|hyper|recross|safe }}
+    <center>
     {% for image in object.images.all %}
-        <img src="{{ image.url }}" alt="{{ image.name }}" />
+        <img src="{{ image.url }}" alt="{{ image.name }}">
     {% endfor %}
+    </center>
     <br>
     <div class="tags">
         <b>Tags</b>:
@@ -47,8 +49,10 @@
             <b>Comment</b>: {{ object.comment }}
         </div>
     {% endif %}
+    <hr>
     <b><a href={% url 'detail-entry' object.of.pk %}>See entry</a></b>
     | <a href="/admin/data/change/{{ object.pk }}">Admin</a>
+    {% include "comments/wrapper.html" %}
 {% endblock %}
 
 

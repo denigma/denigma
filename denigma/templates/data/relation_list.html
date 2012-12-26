@@ -1,6 +1,9 @@
 {% extends "data/base.html" %}
 
 {% load url from future %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
 
 {% block head_title %}Relation List{% endblock %}
 
@@ -17,6 +20,19 @@
 {% block title %}Relation List{% endblock %}
 
 {% block content %}
+    <table width="100%" border="0">
+        <tr>
+            <td valign="top">
+                {{ entry.content|markdown|hyper|recross|safe }}
+            </td>
+            <td valign="top" style="width: 250px">
+                {% for image in entry.images.all %}
+                    <a href="{% url 'detail-entry' entry.slug %}"><img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250"></a>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+    <hr>
     <div>
         {% for relation in object_list %}
             <b><a href={{ relation.get_absolute_url }}>o
@@ -34,4 +50,7 @@
         <b><a href={% url 'create-relation' %}>Create relation</a></b>
         (<a href="/admin/data/relation/add/">Admin</a>)
     </div>
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

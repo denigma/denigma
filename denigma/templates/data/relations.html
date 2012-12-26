@@ -1,3 +1,7 @@
-{% for relation in relations %}
-    <blockquote><a href={{ relation.get_absolute_url }}>{{ relation }}</a></blockquote>
-{% endfor %}
+{% if relations %}
+    <hr>
+    <h3>Relations</h3><br>
+    {% for relation in relations %}
+        <blockquote><a href={{ relation.get_absolute_url }}>{{ relation }}</a></blockquote>
+    {% endfor %}
+{% endif %}

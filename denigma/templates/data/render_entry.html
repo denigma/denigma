@@ -1,0 +1,18 @@
+{% load url from future %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
+
+<table width="100%">
+    <tr>
+        <td valign="top">
+            {{ entry.content|markdown|hyper|recross|safe }}
+        </td>
+        <td valign="top" style="width: 250px">
+            {% for image in entry.images.all %}
+                <a href="{% url 'detail-entry' entry.slug %}"><img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250"></a>
+            {% endfor %}
+        </td>
+    </tr>
+</table>
+<hr>

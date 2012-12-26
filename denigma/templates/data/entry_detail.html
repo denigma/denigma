@@ -10,6 +10,7 @@
 {% load commentaries %}
 {% load pubmed_linker %}
 
+
 {% block head_title %}{{ object.title }}{% endblock %}
 
 {% block hierarchy %}
@@ -43,7 +44,7 @@
         {{ object.text|markdown|hyper|recross|pubmed_links|safe }}
     {% endif %}
     {% for image in object.images.all %}
-        <img src="{{ image.url }}" alt="{{ image.name }}" />
+        <center><img src="{{ image.url }}" alt="{{ image.name }}" /></center>
     {% endfor %}
     <br>
     <b>Tags</b>:
@@ -53,14 +54,19 @@
     {% if object.categories.all %}
         <b>Categories</b>:
         {% for category in object.categories.all %}
-            <a href={{ category.get_absolute_url }}>{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+            <a href={{ category.get_absolute_url }}>{{ category.name }}</a>{% if not forloop.last %}, {% endif %}<br>
         {% endfor %}
     {% endif %}
     {% if object.parent %}
-        <p>
-            <b>Parent</b>:
-            <a href="{{ object.parent.get_absolute_url }}">{{ object.parent.title }}</a>
-        </p>
+        <b>Parent</b>:
+        <a href="{{ object.parent.get_absolute_url }}">{{ object.parent.title }}</a><br>
+    {% endif %}
+    {% if object.get_children %}
+        <b>Children</b>:
+        {% for child in object.get_children %}
+            <a href="{{ child.get_absolute_url }}">{{ child.title}}</a>{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    <br>
     {% endif %}
     {% if object.url %}
         <p>
@@ -76,8 +82,11 @@
     {% if user.is_superuser %}
         | <b><a href={% url 'delete-entry' object.pk %}>Delete</a></b>
     {% endif %}
-    <hr>
+
     {% display_relations object.pk %}
-    <hr>
+
     {% display_commentaries object.pk %}
+
+    {% include "comments/wrapper.html" %}
+
 {% endblock %}

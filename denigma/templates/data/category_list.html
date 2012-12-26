@@ -17,6 +17,7 @@
 {% block title %}Categories{% endblock %}
 
 {% block content %}
+    {% include "data/render_entry.html" %}
     {% if object_list %}
         {% for category in object_list %}
             <li>
@@ -27,4 +28,7 @@
     {% else %}
         <p>No data categories.</p>
     {% endif %}
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

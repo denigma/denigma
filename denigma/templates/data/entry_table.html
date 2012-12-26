@@ -2,6 +2,9 @@
 
 {% load url from future %}
 {% load render_table from django_tables2 %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
 
 {% block head_title %}Entry Table{% endblock %}
 
@@ -18,15 +21,27 @@
 {% block title %}Entry Table{% endblock %}
 
 {% block content %}
-    {# {% render_table object_list %} #}
+   <table size="100%">
+    <tr>
+        <td>
+            {{ entry.content|hyper|recross|safe }}
+            <hr>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="submit" value="Filter" />{{ form.filter }}
+                {{ filter.form.as_p }}
+                {{ filterset }}
+            </form>
+        </td>
+        <td valign="top" style="widht: 250px">
+            {% for image in entry.images.all %}
+                <img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250">
+            {% endfor %}
+        </td>
+    </tr>
+   </table>
 
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{ form.as_table }}
-        {{ filter.form.as_p }}
-        <input type="submit" value="Apply" />
-        {{ filterset }}
-    </form>
+
     {% render_table table %}
 
     {% if object_list %}

@@ -12,6 +12,7 @@
 {% block title %}Hierarchy{% endblock %}
 
 {% block content %}
+    {% include "data/render_entry.html" %}
     <ul>
         {% recursetree entries %}
             <li>
@@ -25,4 +26,7 @@
             </li>
         {% endrecursetree %}
     </ul>
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

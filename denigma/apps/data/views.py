@@ -19,7 +19,7 @@ from taggit.models import Tag, TaggedItem
 from meta.view import log
 from control import get
 
-from models import Entry, Change, Relation, Category
+from models import Entry, Change, Relation, Alteration, Category
 from forms import EntryForm, RelationForm, CategoryForm, DeleteForm
 from tables import EntryTable
 from filters import TableFilter, EntryFilterSet, FilterForm
@@ -92,10 +92,10 @@ def index(request):
     return render_to_response('data/index.html', ctx,
         context_instance=RequestContext(request))
 
-def hierarchy(request, template_name='data/hierarchy.html'):
-    ctx =  {'entries': Entry.objects.filter(published=True)}
-    return render_to_response(template_name, ctx,
-        context_instance=RequestContext(request))
+def hierarchy(request, template='data/hierarchy.html'):
+    ctx = {'entry': get('Data Hierarchy'),
+           'entries': Entry.objects.filter(published=True)}
+    return render(request, template, ctx)
 
 def entries(request): pass
 def entry(): pass
@@ -121,6 +121,12 @@ def changes(request, pk=None, template_name='data/change_list.html'):
     return render_to_response(template_name, ctx,
         context_instance=RequestContext(request))
 
+def change(request, slug, template='data/change.html'):
+    change = Change.objects.get(slug=slug)
+    changes = change.differences()
+    ctx = {'change': change, 'changes': changes}
+    return render(template, ctx)
+
 def remove_change(request, slug):
     #print("remove_change: slug = %s" % slug)
     change = Change.objects.get(slug=slug)
@@ -133,6 +139,8 @@ def remove_change(request, slug):
 class ChangeView(DetailView):
     pk = None
     slug = None
+    template_name = 'data/change.html'
+    object_name = 'change'
 
     def dispatch(self, request, *args, **kwargs):
         if 'slug' in kwargs:
@@ -140,6 +148,11 @@ class ChangeView(DetailView):
         elif 'pk' in kwargs:
             self.pk = kwargs['pk']
         return super(ChangeView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ChangeView, self).get_context_data(**kwargs)
+        context['changes'] = self.object.differences()
+        return context
 
     def get_queryset(self):
         if self.slug:
@@ -185,6 +198,8 @@ class EntryList(ListView, FormView):
         context = super(EntryList, self).get_context_data(**kwargs)
         context['form'] = FilterForm(initial={'filter': EntryList.query})
         context['filterset'] = self.filterset
+        context['entry'] = get('Data Entries')
+        context['count'] = self.count
         return context
 
     def get_queryset(self):
@@ -195,12 +210,18 @@ class EntryList(ListView, FormView):
                 qs = qs.filter(Q(title__icontains=term) |
                                Q(text__icontains=term))
         self.filterset = EntryFilterSet(qs, self.request.GET)
+        self.count = self.filterset.qs.count()
         return self.filterset.qs
 
 
-class ChangeList(ListView): # Not functional.
-    def dispatch(self, *args, **kwargs):
-        return render_to_response('data/change_list.html')
+class ChangeList(ListView):
+    queryset = Change.objects.filter(of__published=True).order_by('-at')
+    paginate_by = 50
+
+    def get_context_data(self, **kwargs):
+        context = super(ChangeList, self).get_context_data(**kwargs)
+        context['entry'] = get('Changes')
+        return context
 
 
 class TagDetail(ListView):
@@ -456,7 +477,52 @@ class CategoryUpdate(Update):
     comment = 'Updated category.'
 
 
+class CategoryList(ListView):
+    queryset = Category.objects.all()
+    def get_context_data(self, **kwargs):
+        context = super(CategoryList, self).get_context_data(**kwargs)
+        context['entry'] = get('Data Categories')
+        return context
+
 class Entries(TableFilter):
     table_class = EntryTable
     model = Entry
 
+    def get_context_data(self, **kwargs):
+        context = super(Entries, self).get_context_data(**kwargs)
+        context['entry'] = get('Data Entries')
+        return context
+
+
+class RelationList(ListView):
+    queryset = Relation.objects.all()
+    def get_context_data(self, **kwargs):
+        context = super(RelationList, self).get_context_data(**kwargs)
+        context['entry'] = get('Relations')
+        return context
+
+
+class AlterationList(ListView):
+    queryset = Alteration.objects.all().order_by('-at')
+    def get_context_data(self, **kwargs):
+        context = super(AlterationList, self).get_context_data(**kwargs)
+        context['entry'] = get('Alterations')
+        return context
+
+
+class TagList(ListView):
+    queryset = Tag.objects.all()
+    template_name = "data/tag_list.html"
+    def get_context_data(self, **kwargs):
+        context = super(TagList, self).get_context_data(**kwargs)
+        context['entry'] = get('Data Tags')
+        return context
+
+
+class HierarchyList(EntryList):
+    context_object_name = 'entries'
+    template_name = 'data/hierarchy.html'
+    def get_context_data(self, **kwargs):
+        context = super(HierarchyList, self).get_context_data(**kwargs)
+        context['entry'] = get('Data Hierarchy')
+        return context

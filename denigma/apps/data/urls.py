@@ -6,11 +6,13 @@ from django.contrib.auth.decorators import login_required
 from taggit.models import Tag
 
 from models import Entry, Change, Relation, Alteration, Category
-from views import EntryList, EntryView,  EntryCreate, EntryUpdate, EntryDelete, Generate,\
+from views import Entries, EntryList, EntryView,  EntryCreate, EntryUpdate, EntryDelete, Generate,\
                   ChangeList, ChangeView, \
-                  RelationCreate, RelationUpdate, \
-                  CategoryCreate, CategoryUpdate, TagDetail,\
-                  Entries
+                  RelationCreate, RelationUpdate, RelationList, \
+                  AlterationList,\
+                  CategoryCreate, CategoryUpdate, CategoryList, \
+                  TagDetail, TagList, \
+                  HierarchyList
 from feeds import EntryFeed, ChangeFeed, RelationFeed, AlterationFeed, CategoryFeed
 
 
@@ -32,10 +34,7 @@ urlpatterns = patterns('data.views',
     url(r'^entry/delete/(?P<pk>\d+)', login_required(EntryDelete.as_view()), name='delete-entry'),
     url(r'^entry/feed/$', EntryFeed(), name='data-entry-feed'),
     url(r'^entry/(?P<slug>.+)', EntryView.as_view(), name='detail-entry'), #  Alternative detail entry accepting slug.
-    url(r'^hierarchy/list/$', EntryList.as_view(
-        context_object_name='entries',
-        template_name='data/hierarchy.html'),
-        name='list-hierarchy'),
+    url(r'^hierarchy/list/$', HierarchyList.as_view(), name='list-hierarchy'),
 
     ## Function-Views:
     url(r'^entries/$', 'entries', name='entries'),
@@ -48,10 +47,7 @@ urlpatterns = patterns('data.views',
 
     # Changes:
     ## Class-Views
-    url(r'^changes/list/$', ListView.as_view(
-            queryset=Change.objects.filter(of__published=True).order_by('-at'),
-            paginate_by=30),
-        name='list-changes'),
+    url(r'^changes/list/$', ChangeList.as_view(), name='list-changes'),
     url(r'^change/details/(?P<pk>\d+)', DetailView.as_view(model=Change), name='detail-change'), #detail-change
     url(r'^change/delete/(?P<pk>\d+)', DeleteView.as_view(model=Change), name='delete-change'),
     ## Function-Views:
@@ -63,7 +59,7 @@ urlpatterns = patterns('data.views',
 
     # Relations:
     ## Class-Views
-    url(r'^relations/list', ListView.as_view(queryset=Relation.objects.all()), name='list-relations'),
+    url(r'^relations/list', RelationList.as_view(), name='list-relations'),
     url(r'^relation/(?P<pk>\d+)', DetailView.as_view(model=Relation), name='relation-details'),
     url(r'^relation/create', RelationCreate.as_view(), name='create-relation'),
     url(r'^relation/update/(?P<pk>\d+)', login_required(RelationUpdate.as_view()), name='update-relation'),
@@ -78,7 +74,7 @@ urlpatterns = patterns('data.views',
 
     # Alterations:
     ## Class-Views
-    url(r'^alterations/list/$', ListView.as_view(queryset=Alteration.objects.all().order_by('-at')), name='list-alterations'),
+    url(r'^alterations/list/$', AlterationList.as_view(), name='list-alterations'),
     url(r'^alteration/(?P<pk>\d+)', DetailView.as_view(model=Alteration), name='detail-alteration'),
     ## Function-Views
     url(r'^alterations/$', 'alterations', name='alterations'),
@@ -87,8 +83,7 @@ urlpatterns = patterns('data.views',
 
     # Tags:
     ## Class-Views
-    url(r'^tags/list/$', ListView.as_view(queryset=Tag.objects.all(),
-        template_name='data/tag_list.html'), name='list-entry-tags'), # Shows number of tagged entries.
+    url(r'^tags/list/$',TagList.as_view(), name='list-entry-tags'), # Shows number of tagged entries.
     url(r'^tag/(?P<pk>\d+)', TagDetail.as_view(), name='entry-tag-detail'), # Shows list of tagged entries.
     url(r'^tag/(?P<slug>.+)', TagDetail.as_view(), name='entry-tag'),
     ## Function-Views
@@ -96,7 +91,7 @@ urlpatterns = patterns('data.views',
     #url(r'^tag/(?P<slug>.+)', 'tag', name='entry-tag'),
 
     # Categories:
-    url(r'^categories/list/$', ListView.as_view(queryset=Category.objects.all()), name='list-categories'),
+    url(r'^categories/list/$', CategoryList.as_view(), name='list-categories'),
     url(r'^category/detail/(?P<pk>\d+)', DetailView.as_view(model=Category), name='detail-category'),
     #url(r'^category/detail/(?P<slug>.+)', DetailView.as_view)
     url(r'^category/create', CategoryCreate.as_view(), name='create-category'),

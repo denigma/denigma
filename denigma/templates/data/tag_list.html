@@ -1,6 +1,9 @@
 {% extends "data/base.html" %}
 
 {% load url from future %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
 
 {% block head_title %}Tags{% endblock %}
 
@@ -11,6 +14,19 @@
 {% block title %}Tags{% endblock %}
 
 {% block content %}
+    <table width="100%">
+        <tr>
+            <td valign="top">
+                {{ entry.content|markdown|hyper|recross|safe }}
+            </td>
+            <td valign="top" style="width: 250px">
+                {% for image in entry.images.all %}
+                    <a href="{% url 'detail-entry' entry.slug %}"><img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250"></a>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+    <hr>
     {% if object_list %}
         {% for tag in object_list %}
             <li><a href={% url 'entry-tag' tag.pk %}>{{ tag }}</a></li>
@@ -18,4 +34,7 @@
     {% else %}
         <p>No Tags.</p>
     {% endif %}
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

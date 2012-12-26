@@ -135,8 +135,8 @@
                 (<a href="/admin/data/entry/{{ object.to.pk }}">Admin</a>) |
                 <b><a href={% url 'detail-entry' object.to.pk %}>View</a></b></p>
             {% endblock %}
-            <hr>
         </div>
     </div>
+    {% include "comments/wrapper.html" %}
 {% endblock %}
 

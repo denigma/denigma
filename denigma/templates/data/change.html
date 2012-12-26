@@ -9,7 +9,7 @@
 {% block head_title %}Change {{ change.title }}{% endblock %}
 
 {% block hierarchy %}
-    > <a href={% url 'changes' %}>Changes</a>
+    > <a href={% url 'list-changes' %}>Changes</a>
     > {{ change.title }}
 {% endblock %}
 
@@ -122,4 +122,7 @@
         <b><a href={% url 'delete-change' change.pk %}>Delete</a></b> /
         <b><a href={% url 'remove_change' change.slug %}>Remove</a></b> (i.e. accepting change)
     {% endif %}
+    {% with change as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock content %}

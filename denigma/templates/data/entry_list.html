@@ -24,14 +24,27 @@
 {% block title %}Entry List{% endblock %}
 
 {% block content %}
+    <table width="100%" border="0">
+        <tr>
+            <td valign="top">
+                {{ entry.content|markdown|hyper|recross|safe }}
+                <hr>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Filter" />{{ form.filter }} {{ count }} data entries
+                    {{ filter.form.filter }}
+                    {{ filterset }}
+                </form>
+            </td>
+            <td valign="top" style="width: 250px">
+                {% for image in entry.images.all %}
+                    <a href="{% url 'detail-entry' entry.slug %}"><img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250"></a>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
     {% if object_list %}
-        <form action="" method="POST">
-            {% csrf_token %}
-            {{ form.as_table }}
-            {{ filter.form.as_p }}
-            <input type="submit" value="Apply" />
-            {{ filterset }}
-        </form>
+
         {% for entry in object_list %}
             <hr>
             <table width="100%">
@@ -79,5 +92,7 @@
     {% endif %}
     {% include "pagination.html" %}
     <b><a href={% url 'create-entry' %}>Create entry</a></b> (<a href="/admin/data/entry/add/">Admin</a>)
-
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

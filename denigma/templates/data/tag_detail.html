@@ -18,6 +18,7 @@
             <a href={% url 'detail-entry' object.object_id %}>{{ object}}</a>
             {# ({{ object.updated|date:"Y-m-d" }}) #}</li>
         {% endfor %}
+    {% include "comments/wrapper.html" %}
 {% endblock %}
     {% comment %}
     {% if object.entry_set.all %}

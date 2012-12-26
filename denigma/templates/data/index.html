@@ -69,16 +69,8 @@
         </div>
     </div>
 
-
-    {% if user.is_superuser %}
-        <hr>
-        <a href={% url 'entry-table' %}>Entry Table</a>
-        <br>
-        <a href={% url 'list-entry-tags' %}>Tags</a>
-        <br>
-        <a href={% url 'list-categories' %}>Categories</a>
-        <br>
-        <a href={% url 'hierarchy' %}>Hierarchy</a> <a href={% url 'list-hierarchy' %}>List</a>
-    {% endif %}
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 
 {% endblock %}

@@ -28,7 +28,7 @@ class EntryForm(ModelForm):
             Fieldset('', 'title','text', 'tags', 'categories', 'parent', 'url',
                     'images', 'published', 'comment'),
             FormActions(Submit('save', 'Save', css_class="btn-primary"),
-                        Submit('cancel', 'Cancel')
+                        Submit('cancel', 'Cancel', css_class="btn-danger")
             )
         )
         super(EntryForm, self).__init__(*args, **kwargs)
@@ -47,7 +47,7 @@ class RelationForm(ModelForm):
         self.helper.layout = Layout(
             Fieldset('', 'fr', 'be', 'to', 'comment'),
             FormActions(Submit('save', 'Save', css_class="btn-primary"),
-                Submit('cancel', 'Cancel'))
+                Submit('cancel', 'Cancel', css_class="btn-danger"))
         )
         super(RelationForm, self).__init__(*args, **kwargs)
 
@@ -64,7 +64,7 @@ class CategoryForm(ModelForm):
         self.helper.layout = Layout(
             Fieldset('', 'name', 'definition', 'synonyms', 'comment'),
             FormActions(Submit('save', 'Save', css_class='btn-primary'),
-                Submit('cancel', 'Cancel'))
+                Submit('cancel', 'Cancel', css_class="btn-danger"))
         )
         super(CategoryForm, self).__init__(*args, **kwargs)
 
@@ -73,7 +73,7 @@ class CategoryForm(ModelForm):
 
 
 class DeleteForm(Form):
-    comment = CharField(help_text='Provide a reason why it is obsolute.',
+    comment = CharField(help_text='Provide a reason why it is obsolete.',
         required=False)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
@@ -81,7 +81,7 @@ class DeleteForm(Form):
         self.helper.layout = Layout(
             Fieldset('', 'comment'),
             FormActions(Submit('delete', 'Delete', css_class="btn-primary"),
-                        Submit('cancel', 'Cancel'))
+                        Submit('cancel', 'Cancel', css_class="btn-danger"))
         )
         super(DeleteForm, self).__init__(*args, **kwargs)
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
