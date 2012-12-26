@@ -23,7 +23,11 @@
         <img src="{{ image.url }}" alt="{{ image.name }}">
     {% endfor %}
     <br>
+    <br>
     <b><a href="/annotations/species/edit/{{ species.pk }}">Edit species</a></b>
        (<a href="/admin/annotations/species/{{ species.pk }}">Admin</a>)
+    {% with species as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}
 

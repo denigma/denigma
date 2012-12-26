@@ -44,6 +44,11 @@
    <hr>
    <b><a href="/annotations/classification/add/">Add classification</a></b>
    (<a href="/admin/annotations/classification/add/">Admin</a>)
+
+{% with entry as object %}
+    {% include "comments/wrapper.html" %}
+{% endwith %}
+
 {% endblock %}
 
 

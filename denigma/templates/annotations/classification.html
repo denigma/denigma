@@ -18,5 +18,10 @@
    <br>
    <b><a href="/annotations/classification/edit/{{ classification.pk }}">Edit class</a></b> (<a href="/admin/annotations/classification/{{ classification.pk }}/">Admin</a>)
    / <b><a href="/annotations/classification/delete/{{ classification.pk }}/">Delete</a></b>
+
+    {% with classification as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
+
 {% endblock %}
 

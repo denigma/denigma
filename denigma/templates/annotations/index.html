@@ -34,6 +34,11 @@
             <input type="submit" value="Add"><br>
         </form>
     {% endif %}
+
+    {% with annotations as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
+
 {% endblock %}
 
 

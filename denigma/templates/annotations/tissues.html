@@ -54,4 +54,10 @@
         {{ filterset }}
     </form>
     {% render_table table %}
+
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
+
+
 {% endblock %}

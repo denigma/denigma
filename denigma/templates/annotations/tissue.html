@@ -31,4 +31,9 @@
     {% for image in tissue.images.all %}
         <img src={{ image.url }} alt={{ image.name }} />
     {% endfor %}
+
+{% with tissue as object %}
+       {% include "comments/wrapper.html" %}
+{% endwith %}
+
 {% endblock %}
