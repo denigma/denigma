@@ -75,4 +75,7 @@
     </div>
 </body>
 </html>
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}
