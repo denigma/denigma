@@ -22,5 +22,8 @@
             </td>
         </tr>
     </table>
+    {% with datasets as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}
 

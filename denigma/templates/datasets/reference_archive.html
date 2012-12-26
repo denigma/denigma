@@ -44,7 +44,10 @@
             <b><a href={% url 'duplicates' %}>Duplicates</a></b> |
             <a href="/datasets/references/update">Update the references information with Entrez EUtils</a>
     {% endif %}
-{% else %}
-    <p>There are no references in the database.</p>
-{% endif %}
+    {% else %}
+        <p>There are no references in the database.</p>
+    {% endif %}
+    {% with references_entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

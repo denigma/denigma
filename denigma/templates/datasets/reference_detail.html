@@ -14,37 +14,36 @@
 
 {% block title %}{{ object.title }}{% endblock %}
 
-{% block extra_style %}
-    <style>
-        .sidebar {
-            float:left;
-            widht:290px;
-            height:1000px;
-            margin-right:2em;
-            padding:1em;
-            background:white;
-        }
-    .form {
-        background: #cccccc;
-        padding: 0.5em;
-    }
-    </style>
-{% endblock %}
-
 {% block content %}
-    <b>Authors</b>: {{ object.authors }}<br>
-    <b>Abstract</b>: {{ object.abstract }}<br><br>
+    <p><b>Authors</b>: {{ object.authors }}/p>
+    <p><b>Abstract</b>: {{ object.abstract }}</p>
     {% if object.keywords %}<b>Keywords</b>: {{ object.keywords }}<br>{% endif %}
-    <br>
-    <b>Journal</b>: {{ object.journal }}<br>
-    {% if objects.year %}<b>Year</b>: {{ object.year }}<br>{% endif %}
-    {% if object.volume %}<b>Volume</b>: {{ object.volume }}<br>{% endif %}
-    {% if object.issue %}<b>Issue</b>: {{ object.issue }}<br>{% endif %}
-    {% if object.pages %}<b>Pages</b>: {{ object.pages }}<br>{% endif %}
-    <b>Date</b>: {{ object.date }}<br>
-    {% if object.pmid %}
-        <b>PMID</b>: <a href="https://www.ncbi.nlm.nih.gov/pubmed/{{ object.pmid }}/">{{ object.pmid }}</a>
-    {% endif %}<br>
+    <table width="100%">
+        <tr>
+            <td valign="top">
+                <b>Journal</b>: {{ object.journal }}<br>
+                {% if objects.year %}<b>Year</b>: {{ object.year }}<br>{% endif %}
+                {% if object.volume %}<b>Volume</b>: {{ object.volume }}<br>{% endif %}
+                {% if object.issue %}<b>Issue</b>: {{ object.issue }}<br>{% endif %}
+                {% if object.pages %}<b>Pages</b>: {{ object.pages }}<br>{% endif %}
+                <b>Date</b>: {{ object.date }}<br>
+                {% if object.pmid %}
+                    <b>PMID</b>: <a href="https://www.ncbi.nlm.nih.gov/pubmed/{{ object.pmid }}/">{{ object.pmid }}</a>
+                {% endif %}<br>
+            </td>
+            <td align="right" width="30%">
+                <div class="bar">
+                    <div class="form">
+                        <strong>{{ form.file.label }}</strong>
+                        <form method="POST" action="/datasets/reference/{{ object.pk }}/" enctype="multipart/form-data">{% csrf_token %}
+                            {{ form.file }}<br/>
+                            <input type="submit" value="Upload Article" />
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
     {% if object.notes %}
         <br>
         <b>Notes</b>: {{ object.notes|markdown|hyper|recross|safe }}<br>
@@ -64,20 +63,11 @@
             <a href={{ study.get_absolute_url }}>Study</a>
         {% endfor %}
     {% endif %}
-    <div class="sidebar">
-        <div class="form">
-            <strong>{{ form.file.label }}</strong>
-            <form method="POST" action="/datasets/reference/{{ object.pk }}/" enctype="multipart/form-data">{% csrf_token %}
-                {{ form.file }}<br/>
-                <input type="submit" value="Upload Article" />
-            </form>
-        </div>
-    </div>
     <hr>
-    <br><br>
     <div>
         <b><a href={% url 'update-reference' object.pk %}>Update</a></b>
         (<a href="/admin/datasets/reference/{{ object.pk }}/">Admin</a>)
         | <b><a href={% url 'autoupdate_reference' object.pk %}>Auto-Update</a></b>
     </div>
+    {% include "comments/wrapper.html" %}
 {% endblock %}

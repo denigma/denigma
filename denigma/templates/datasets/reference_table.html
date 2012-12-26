@@ -44,6 +44,7 @@
                 </td>
             </tr>
     </form>
-
-
+    {% with entry as object %}
+         {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

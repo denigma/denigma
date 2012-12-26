@@ -23,4 +23,7 @@
     {{ changes_description.content|markdown|hyper|recross|safe }}
     {% render_table changes %}<br>
     <b><a href="/admin/datasets/change/add">Add change</a></b>
+    {% with changes_description as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

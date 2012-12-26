@@ -17,5 +17,5 @@ urlpatterns = patterns('datasets.views',
     url(r'^references/archive', 'references_archive', name='references_archive'),
     url(r'^references', ReferenceList.as_view(), name='references'),
     url(r'reference/(?P<pk>\d+)', 'detail', name='detail-reference'),
-    url(r'^changes', 'changes', name='changes'),
+    url(r'^changes', 'changes', name='changes'), # Rename to "deltas"
 )
