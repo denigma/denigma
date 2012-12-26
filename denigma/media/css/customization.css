@@ -34,7 +34,7 @@ label input, label textarea, label select {
 .navbar .brand {
     float: left;
     display: block;
-    padding: 8px 20px 12px; /* padding: 8px 20px 2px; */
+    padding: 8px 20px 2px; /* padding: 8px 20px 2px; */
     margin-left: -20px;
     font-size: 20px;
     font-weight: 200;
