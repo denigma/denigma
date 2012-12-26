@@ -53,9 +53,9 @@
             <li><a href="/data/change/{{ change.slug }}/">{{ change }}</a></li>
     {% endfor %}
     {% endif %}
-
-
-
+    {% with article as object %}
+        {% include 'comments/wrapper.html' %}
+    {% endwith %}
 {% endblock %}
 
 

@@ -1,9 +1,10 @@
 {% extends "articles/base.html" %}
 
 {% load url from future %}
-{% load markup %}
+{% load rendering %}
 {% load abstraction %}
 {% load hyperlink %}
+{% load crosslink %}
 {% load sets %}
 
 {% block hierarchy %}
@@ -11,10 +12,24 @@
 {% endblock %}
 
 {% block options %}
-    <b><a href={% url 'create-entry' %}>Create</a></b> (<a href="/admin/data/entry/add/">Admin</a>)
+    <a href={% url 'create-entry' %}>Create</a> </b>(<a href="/admin/data/entry/add/">Admin</a>)<b>
 {% endblock %}
 
+{% block title %}<a href="{% url 'detail-entry' entry.slug %}"><h2>{{ entry.title }}</h2></a>{% endblock %}
+
 {% block content %}
+    <table>
+        <tr>
+            <td valign="top">
+                {{ entry.content|markdown|hyper|recross|safe }}
+            </td>
+            <td valign="top" style="width: 250">
+                {% for image in entry.images.all %}
+                    <a href="{% url 'detail-entry' entry.slug %}"><img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250"></a>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
     {% for article in object_list %}
         <hr>
         <table border="0" color="white" width="100%">
@@ -55,5 +70,8 @@
     {% endfor %}
     <hr>
     <b><a href={% url 'create-entry' %}>Create</a></b> (<a href="/admin/blog/post/add/">Admin</a>)
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}
 

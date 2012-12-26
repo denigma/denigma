@@ -3,9 +3,11 @@ import os
 import re
 
 from django.conf import settings
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
+from django.views.generic import ListView
+from django.db.models import Q
 
+from data import get
 from data.models import Entry, Change
 
 from manager import referencing
@@ -27,34 +29,42 @@ except ImportError:
     print("No library available.")
 
 
-def view(request, title):
+class ArticleList(ListView):
+    queryset = Entry.objects.filter(
+        Q(tagged__name="article") |
+        Q(categories__name="Article")).order_by("-created", "-id").distinct()
+    template_name = "articles/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticleList, self).get_context_data(**kwargs)
+        context['entry'] = get('Articles')
+        return context
+
+def view(request, title, template='articles/view.html'):
     """Viewing article by title."""
     article = Entry.objects.get(title=title.replace('_', ' ')) # Deslugify.
     changes = Change.objects.filter(of=article).order_by('-at')
     ctx = {'article': article, 'changes':changes}
     print("Word count = %s" % len(article.text.split(None)))
-    return render_to_response('articles/view.html', ctx,
-        context_instance=RequestContext(request))
+    return render(request, template, ctx)
 
 
-def reference(request, slug, numbered=False):
+def reference(request, slug, numbered=False, template='articles/view.html'):
     article = Entry.objects.get(slug=slug)
     article.text = footer(header(article.text+'\n', link(article.title, "http://denigma.de"+article.get_absolute_url())))
     article.text = referencing(article, linking=True, numbered=numbered)
     #article.text = glossary(article.text)
     print("Word count = %s" % len(article.text.split(None)))
-    return render_to_response('articles/view.html', {'article': article},
-        context_instance=RequestContext(request))
+    return render(request, template, {'article': article})
 
 
-def presentation(request, slug):
+def presentation(request, slug, template='articles/view.html'):
     article = Entry.objects.get(slug=slug)
     article.text = present(referencing(article))
     output = open('presentation.rst', 'w')
     output.write(article.text)
     output.close()
-    return render_to_response('articles/view.html', {'article': article},
-        context_instance=RequestContext(request))
+    return render(request, template, {'article': article})
 
 
 def output(request, pk):
@@ -64,7 +74,7 @@ def output(request, pk):
     pass
 
 
-def connect(request, slug, references=True):
+def connect(request, slug, references=True, template='articles/connected.html'):
     """Takes an data entry that collectively connects other data entries.
     Can be used to produce for instance to produce a thesis or a book."""
     connector = Entry.objects.get(slug=slug)
@@ -138,5 +148,5 @@ def connect(request, slug, references=True):
     output.close()
     print("Word count = %s" % len(connector.text.split(None)))
     connector.text = connector.text.replace(".. class:: center\n\n", "| ")#.replace(".. raw:: pdf", '..')
-    return render_to_response('articles/connected.html', {'article': connector},
-        context_instance=RequestContext(request))
+    return render(request, template, {'article': connector})
+

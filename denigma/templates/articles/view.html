@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block options %}
-    <a href={% url 'update-entry' article.pk %}>Update</a> (<a href="/admin/data/entry/{{ article.pk }}/">Admin</a>)
+    <a href={% url 'update-entry' article.pk %}>Update</a> </b>(<a href="/admin/data/entry/{{ article.pk }}/">Admin</a>)<b>
 {% endblock %}
 
 {#{% block title %}{{ article.title }}{% endblock %}  #}
@@ -52,13 +52,16 @@
     {% if user.is_superuser %}
         | <b><a href={% url 'reference' article.slug %}>Reference</a></b>
     {% endif %}
-    <hr>
     {% if changes %}
-        <h3>Changes:</h3>
+        <hr>
+        <h3>Revisions</h3>
         {% for change in changes %}
             <li><a href="/data/change/{{ change.slug }}/">{{ change }}</a> {{ change.comment }}</li>
         {% endfor %}
     {% endif %}
+    {% with article as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}
 
 
