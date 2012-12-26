@@ -49,16 +49,15 @@
 
         <hr>
         Note: <a href="/tutorials/development/">Operation system-specific consideration for Development</a>
-
         {% for tutorial in tutorials %}
             <hr>
-            <table>
+            <table width="100%">
                 <tr>
-                    <td>
+                    <td valign="top">
                         <h3><a href="/tutorials/{{ tutorial.id }}/view">{{ tutorial.title }}</a></h3>
                         {{ tutorial.brief|markdown|hyper|safe }}
                     </td>
-                    <td>
+                    <td valign="top" align="right" style="width: 100">
                         {% for image in tutorial.images.all %}
                            <img src={{ image.url }} alt={{ image.name }} width="100" height="100">
                         {% endfor %}
@@ -66,5 +65,7 @@
                 </tr>
             </table>
         {% endfor %}
-
+    {% with tutorials_entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

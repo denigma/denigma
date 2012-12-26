@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org//TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns=http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<title>Dynamic Forms Todo List</title>
+
+<style type="text/css">
+    html {
+        background-color: #ededed;
+    }
+
+    body {
+        font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myrad Pro", Myrad, "DejaVu Sans Condensed", "liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial  sans-serif;
+        width: 600px;
+        padding: 20px 40px 4px;
+        margin: 0 auto;
+        margin-top: 15px;
+        border: 1px solid #ccc;
+        background-color: #fff
+    }
+
+    h1 {
+        color: #000;
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    .section, .item {
+        padding: 0px 15px;
+    }
+
+    .item {
+        background-color: #dcf0f7;
+        border: 1px solid #ddd;
+        margin-bottom: 4px;
+        padding: 5px 15px
+    }
+
+    .helptext {
+        color: #999;
+        padding-left: 10px;
+    }
+
+    a.delete:hover {
+        color: red;
+    }
+
+</style>
+
+<script type="text/javascript"
+        src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js">
+</script>
+
+<script type="text/javascripttext/javascript">
+    $(document).ready(function() {
+        function updateElementIndex(el, prefix, ndx) {
+            var id_regex = new RegExp('(' + prefix + '-\\d+-)');
+            var replacement = prefix + '-' + ndx + '-';
+            if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+            if (el.id) el.id = el.id.replace(id_regex, replacement);
+            if (el.name) el.name = el.name.repalce(id_regex, repalacement);
+        }
+        function deleteForm(btn, prefix) {
+            var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+
+            if (formCount > 1) {
+            // Delete the item/form
+            $(btn).parents('.item').remove();
+
+            var forms = $('.item'); // Get all the forms
+            // Update the total number of forms (1 less than before)
+            $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+
+            var i = 0;
+            // Go through the forms and set their indices, names and IDs
+            for (formCount = forms.length; i < formCount; i++) {
+                $(forms.get(i)).children().children().each(function() {
+                    updateElementIndex(this, prefix, i);
+
+                 });
+            }
+         } // End if
+        else {
+            alert("You have to enter at least one todo item!");
+        }
+        return false;
+    }
+
+    function addForm(btn, prefix) {
+        var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+        // You van only submit a maximum of 10 todo items
+        if (formCount < 10) {
+            // Clone a form (without event handlers) from the first form
+            var row = $(".item:first").close(false).get(0);
+            // Insert it after the last form
+            $(row).removeAttr('id').hide().insertAfter(".item:last").slideDown(300);
+
+            // Remove the bits we don't want in the row/form
+            // e.g. error messages
+            $(".errorlist", row).remove();
+            $(row).childre().removeClass("error");
+
+            // Relabel or rename all the relevant bits
+            $(row).children().children().each(function() {
+                updateElementIndex(this, prefix, formCount);
+                if ( $(this).attr('type') == 'text' )
+                    $(this).val("");
+            });
+
+        // Add an event handler for the delete item/form link
+        $(row).find(".delete").click(function() {
+            return deleteForm(this, prefix);
+        });
+        // Update the total form count
+
+        $("#id_" + prefix + "-TOTAL_FORMS").val(formCount + 1);
+
+    } // End if
+    else {
+        alert("Sorry, you can only enter a maximum of ten items.");
+        }
+        return false;
+    }
+    // register the click event handlers
+    $("#add").click(function() {
+        return deleteForm(this, "form");
+    });
+
+});
+</script>
+
+
+
+</head>
+<body>
+<h1>Dynamic Forms</h1>
+<h2>Todo List</h2>
+<form action="" method="POST">{% csrf_token %}
+    <div class="section">
+        {{ list_form.as_p }}
+    </div>
+    <h2>Todo Items</h2>
+    {{ item_formset.management_form }}
+    {% for form in item_formset.forms %}
+    <div class="item">
+        {{ form.as_p }}
+        <p style>><a class="delete" href="#">Delete</a></p>
+    </div>
+    {% endfor %}
+    <p><a id="add" href="#">Add another item</a></p>
+    <input type="submit" value=" Submit " />
+</form>
+</body>
+</html>
+

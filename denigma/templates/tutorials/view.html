@@ -30,4 +30,7 @@
     {% comment %}<a href="/tutorials/{{tutorial.id }}/edit">Edit?</a>{% endcomment %}
     <br>
     <b><a href={% url 'update-entry' tutorial.pk %}>Edit tutorial</a></b>
+    {% with tutorial as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

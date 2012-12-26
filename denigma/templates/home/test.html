@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Testing</title>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="http://jquery.com/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript">
+
+        $("#foo").on("change", function() {
+            var foo = $(this).val();
+            $.get('/text/'+'?foo='+foo, function(data){
+                $('#SomeData').val(data);
+            });
+        });
+
+    </script>
+</head>
+<body>
+<form action="/home/test" method="GET">
+    <input type="text" id="foo" />
+    <input type="text" id="SomeData" value="something" />
+</form>
+{{ dataFromPage }}
+</body>
+</html>

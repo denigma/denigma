@@ -23,34 +23,35 @@
 
 {% block content %}
 
-{% if expert.first_name %}<p><b>First name: </b>{{ expert.first_name }}</p>{% endif %}
-{% if expert.last_name %}<p><b>Last name: </b>{{ expert.last_name }}</p>{% endif %}
-{% if expert.email %}<p><b>Email: </b><a href="mailto:{{ expert.email }}">{{ expert.email }}</a></p>{% endif %} {# #|obfuscate  #}
-{% if expert.gender %}
-    <p><b>Gender: </b>
-        {% if expert.gender == 1 %}Male
-        {% elif expert.gender == 2 %}Female
-        {% endif %}
-    </p>
-{% endif %}
-{% if expert.affliation %}<p><b>Affliation: </b>{{ expert.affliation }}</p>{% endif %}
-{% if expert.street %}<p><b> Street: </b>{{ expert.street }}</p>{% endif %}
-{% if expert.state %}<p><b>State: </b>{{ expert.state }}</p>{% endif %}
-{% if expert.zip_code %}<p><b>Zip code: </b>{{ expert.zip_code }}</p>{% endif %}
-{% if expert.country %}<p><b>Country:  </b>{{ expert.country }}</p>{% endif %}
-{% if expert.work %}<p><b>Work: </b>{{ expert.work|markdown|hyper|recross|safe }}</p>{% endif %}
-{% if expert.website %}<p><a href="{{ expert.website }}">Website</a></p>{% endif %}
-{% if expert.collaboration %}<p><b>Requires collaboration</b></p>{% endif %}
-{% if expert.entries.all %}
-    <b>Type of collaboration:</b>
-    {% for entry in expert.entries.all %}
-        <li><a href="{% url 'detail-entry' entry.slug %}">{{ entry.title }}</a></li>
-    {% endfor %}
-{% endif %}
+    {% if expert.first_name %}<p><b>First name: </b>{{ expert.first_name }}</p>{% endif %}
+    {% if expert.last_name %}<p><b>Last name: </b>{{ expert.last_name }}</p>{% endif %}
+    {% if expert.email %}<p><b>Email: </b><a href="mailto:{{ expert.email }}">{{ expert.email }}</a></p>{% endif %} {# #|obfuscate  #}
+    {% if expert.gender %}
+        <p><b>Gender: </b>
+            {% if expert.gender == 1 %}Male
+            {% elif expert.gender == 2 %}Female
+            {% endif %}
+        </p>
+    {% endif %}
+    {% if expert.affliation %}<p><b>Affliation: </b>{{ expert.affliation }}</p>{% endif %}
+    {% if expert.street %}<p><b> Street: </b>{{ expert.street }}</p>{% endif %}
+    {% if expert.state %}<p><b>State: </b>{{ expert.state }}</p>{% endif %}
+    {% if expert.zip_code %}<p><b>Zip code: </b>{{ expert.zip_code }}</p>{% endif %}
+    {% if expert.country %}<p><b>Country:  </b>{{ expert.country }}</p>{% endif %}
+    {% if expert.work %}<p><b>Work: </b>{{ expert.work|markdown|hyper|recross|safe }}</p>{% endif %}
+    {% if expert.website %}<p><a href="{{ expert.website }}">Website</a></p>{% endif %}
+    {% if expert.collaboration %}<p><b>Requires collaboration</b></p>{% endif %}
+    {% if expert.entries.all %}
+        <b>Type of collaboration:</b>
+        {% for entry in expert.entries.all %}
+            <li><a href="{% url 'detail-entry' entry.slug %}">{{ entry.title }}</a></li>
+        {% endfor %}
+    {% endif %}
     <hr>
-
     <b><a href="{% url 'update-expert-profile' expert.pk %}">Update</a></b>
-<p>{% endblock %}</p>
-
+    {% with expert as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
+{% endblock %}
 
 
