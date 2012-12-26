@@ -23,7 +23,7 @@ class LinkForm(ModelForm):
                 ),
             FormActions(
                 Submit('save', 'Save', css_class="btn-primary"),
-                Submit('cancel', 'Cancel')
+                Submit('cancel', 'Cancel', css_class="btn-danger")
             )
         )
         super(LinkForm, self).__init__(*args, **kwargs)
@@ -48,7 +48,8 @@ class CategoryForm(ModelForm):
             ),
             FormActions(
                 Submit('save', 'Save', css_class="btn-primary"),
-                Submit('cancel', 'Cancel')
+                Submit('cancel', 'Cancel', css_class="btn-danger"
+                                                     "")
             )
         )
         super(CategoryForm, self).__init__(*args, **kwargs)
