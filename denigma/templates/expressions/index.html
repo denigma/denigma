@@ -38,5 +38,7 @@
         <a href="/expressions/signatures/delete/">Delete signatures</a><br>
         <a href="/expressions/transcripts/delete/">Delete transcripts</a><br>
     {% endif %}
-
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

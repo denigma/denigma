@@ -24,8 +24,12 @@
         <div class="hero-unit well">
              <h2>{{ dashboard.title }}</h2>
             {{ dashboard.content|markdown|hyper|recross|safe }}
+            {% comment %}{% with dashboard as object %}
+                {% include "comments/wrapper.html" %}
+            {% endwith %} {% endcomment %}
         </div>
         <hr>
+
 
         <h2>The Three Aspects of Denigma</h2>
         <br>

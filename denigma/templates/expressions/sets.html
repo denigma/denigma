@@ -21,7 +21,7 @@
 
 {% block content %}
     {% if entry %}
-        {{ entry.text|markdown|hyper|recross|safe }}
+        {{ entry.content|markdown|hyper|recross|safe }}
     {% endif %}
     <table width="100%">
         <tr>
@@ -40,7 +40,6 @@
         </tr>
     </table>
 
-
     {% if sets %}
         <hr>
         {% for set in sets %}
@@ -54,4 +53,7 @@
     {% endif %}
 
     <b><a href="/expressions/signatures/set/create">Create set</a></b>
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

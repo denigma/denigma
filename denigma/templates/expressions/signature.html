@@ -78,4 +78,7 @@
         {% endif %}
     </span>
     {% include "expressions/annotation.html" %}
+    {% with signature as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

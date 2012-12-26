@@ -15,7 +15,7 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    {{ entry.text|markdown|hyper|recross|safe }}
+    {{ entry.content|markdown|hyper|recross|safe }}
     <center>
     {% for image in entry.images.all %}
         <img src="{{ image.url }}" alt="{{ image.name }}" />
@@ -95,8 +95,6 @@
 
   {{ table|tables|reST|safe }}
   <a href="/expressions/intersections/table/{{ ratio }}/{{ pvalue }}/{{ fold_change }}/{{ exp }}/{{ set.pk }}/{{ benjamini }}">Intersections table</a> {# #}
-
-  <hr>
     {% comment %}
 
              <td><center><b>A&B</b></center></td>
@@ -120,4 +118,7 @@
     {% endfor %}
 
    {% endcomment %}
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

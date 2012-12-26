@@ -21,7 +21,7 @@
     <table>
         <tr>
             <td valign="top">
-                {{ entry.text|markdown|hyper|recross|safe }}
+                {{ entry.content|markdown|hyper|recross|safe }}
             </td>
             <td valign="top" style="width: 250px">
                 {% for image in entry.images.all %}
@@ -93,5 +93,7 @@
     </span>
 
     {% include "expressions/annotation.html" %}
-
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

@@ -18,7 +18,7 @@
     <table>
         <tr>
             <td valign="top">
-                {{ entry.text|markdown|hyper|recross|safe }}
+                {{ entry.content|markdown|hyper|recross|safe }}
             </td>
             <td style="width: 200px">
                 {% for image in entry.images.all %}
@@ -55,4 +55,7 @@
         | <b><a href={% url 'benjaminis' %}>Benjaminis</a></b>
         | <b><a href={% url 'map_signatures' %}>Map</a></b>
     {% endif %}
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

@@ -13,7 +13,7 @@
 {% block title %}Profiles{% endblock title %}
 
 {% block content %}
-    {{ entry.text|markdown|hyper|recross|safe }}
+    {{ entry.content|markdown|hyper|recross|safe }}
     {% for image in entry.images.all %}
         <center><img src="{{ image.url }}" alt="{{ image.name }}" /></center>
     {% endfor %}
@@ -39,4 +39,7 @@
     {% endif %}
     <hr>
     <b><a href="/expressions/profile/add/">Add</a> / <a href="/expressions/profile/create/">Create</a></b>
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock content %}
