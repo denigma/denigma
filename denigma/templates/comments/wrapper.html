@@ -4,11 +4,11 @@
 {% load representation %}
 
 {% block extra_style %}
-    <link rel="stylesheet" type="text/css" href="{% static "fluent_comments/css/ajaxcomments.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}fluent_comments/css/ajaxcomments.css" />
 {% endblock %}
 
 {% block extra_script %}
-    <script type="text/javascript" src="{% static "fluent_comments/js/ajaxcomments.js" %}"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}fluent_comments/js/ajaxcomments.js"></script>
 {% endblock %}
 
 <hr
