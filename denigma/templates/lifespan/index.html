@@ -50,7 +50,7 @@
         <a href={% url 'integrity' %}>Integrity</a><br>
         <a href="{% url 'correct_classes' %}">Correct Classes</a>
     {% endif %}
-    {% with factor as object %}
+    {% with lifespan as object %}
         {% include "comments/wrapper.html" %}
     {% endwith %}
 {% endblock %}
