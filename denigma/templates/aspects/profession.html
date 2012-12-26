@@ -1,13 +1,14 @@
 {% extends "aspects/base.html" %}
 
-{% load markup %}
+{% load url from future %}
+{% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
 
 {% block head_title %}{{ profession.title }}{% endblock %}
 
 {% block hierarchy %}
-    > <a href="/aspects/professions/">Professions</a>
+    > <a href="{% url 'professions' %}">Professions</a>
     > {{ profession.title }}
 {% endblock %}
 
@@ -15,7 +16,12 @@
 
 {% block content %}
     {{ profession.content|markdown|hyper|recross|safe }}
+    <center>
     {% for image in profession.images.all %}
-        <img src="{{ image.url }}", alt="{{ image.name }}" />
+        <a href="{% url 'detail-entry' profession.slug %}"><img src="{{ image.url }}" alt="{{ image.name }}" ></a>
     {% endfor %}
+    </center>
+    {% with profession as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

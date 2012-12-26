@@ -31,4 +31,7 @@
     {% endif %}
     <hr>
     <b><a href="{% url level.get_update_url level.pk %}">Update</a></b>
+    {% with level as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

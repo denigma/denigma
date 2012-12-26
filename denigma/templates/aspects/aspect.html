@@ -17,4 +17,7 @@
     {% for image in aspect.images.all %}
         <img src={{ image.url }} alt={{ image.name }} />
     {% endfor %}
+    {% with aspect as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

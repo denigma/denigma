@@ -20,7 +20,7 @@
         <hr>
         <table>
             <tr>
-                <td>
+                <td valign="top">
                     <a href={{ aspect.get_absolute_url }}><h3>{{ aspect.title }}</h3></a>
                     {{ aspect.content|markdown|hyper|recross|safe }}
                     <b><a href="/aspects/{{ aspect.title|lower }}">Read more</a></b>
@@ -33,6 +33,8 @@
             </tr>
         </table>
     {% endfor %}
-    <hr>
+    {% with aspects_entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}
 

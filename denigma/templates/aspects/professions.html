@@ -18,12 +18,12 @@
     {{ professions_entry.content|markdown|hyper|recross|safe }}
     {% for profession in professions %}
         <hr>
-        <table>
+        <table width="100%">
             <tr>
-                <td>
-                    <a href={{ profession.get_absolute_url }}><h2>{{ profession.title }}</h2></a>
+                <td valign="top">
+                    <a href={{ profession.get_absolute_url }}><h3>{{ profession.title }}</h3></a>
                     {{ profession.content_link|paraone|markdown|hyper|recross|safe }}
-                    <b><a href="/aspects/profession/{{ profession.title|lower }}/">Read more</a></b>
+                    <b><a href="{% url 'profession' profession.title|lower %}">Read more</a></b>
                 </td>
                 <td align="right" style="width: 250px">
                     {% for image in profession.images.all %}
@@ -33,4 +33,7 @@
             </tr>
         </table>
     {% endfor %}
+    {% with professions_entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}
