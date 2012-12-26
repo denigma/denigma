@@ -10,14 +10,14 @@
 {% endblock %}
 
 {% block content %}
-    <table>
+    <table width="100%">
         <tr>
             <td valign="top">
-                {{ entry.text|markdown|hyper|recross|safe }}
+                {{ entry.content|markdown|hyper|recross|safe }}
             </td>
-            <td style="width: 250">
+            <td valign="top" align="right" style="width: 250">
                 {% for image in entry.images.all %}
-                    <img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250" />
+                    <a href="{% url 'detail-entry' entry.slug %}"><img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250" /></a>
                 {% endfor %}
             </td>
         </tr>
@@ -48,7 +48,6 @@
            </tr>
        </table>
        <hr>
-
    {% endfor %}
 
    {% if page.has_previous %}
@@ -60,5 +59,8 @@
    {% if page.has_next %}
        <a href="?page={{ page.next_page_number }}">next</a>
    {% endif %}
-   
+
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}
