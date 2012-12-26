@@ -26,6 +26,7 @@ def matrix(request, number, template='about/matrix.html'):
        path = get(title__startswith="Path of Truth %s:" % number)
     return render(request, template, {'path': path, 'number': number})
 
+@login_required
 def choice(request, number, color, template='about/choice.html'):
     """The choice of a path."""
     if color == "red": 
