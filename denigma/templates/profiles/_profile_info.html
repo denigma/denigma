@@ -60,4 +60,7 @@
             </td>
         </tr>
     </table>
+    {% with profile as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 </div>
