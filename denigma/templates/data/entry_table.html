@@ -48,4 +48,7 @@
     {% else %}
         <p>Table empty.</p>
     {% endif %}
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}
