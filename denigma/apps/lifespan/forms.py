@@ -48,7 +48,7 @@ class EditStudyForm(ModelForm):
             #ButtonHolder(Submit('submit', 'Submit', css_class='button white'),),
             FormActions(
                 Submit('save_changes', 'Save changes', css_class="btn-primary"),
-                Submit('cancel', 'Cancel'),
+                Submit('cancel', 'Cancel', css_class="btn-danger"),
             )
         )
 
@@ -70,8 +70,8 @@ class DeleteStudyForm(ModelForm):
                 'comment'),
             Field('text_input', css_class='input-xlarge'),
             FormActions(
-                Submit('delete_study', 'Delete study'),
-                Submit('delete_reference', 'Delete study & reference'),
+                Submit('delete_study', 'Delete study', css_class="btn-warning"),
+                Submit('delete_reference', 'Delete study & reference', css_class="btn-danger"),
                 Submit('cancel', 'Cancel', css_class="btn-primary")
                 )
         )
@@ -93,7 +93,7 @@ class DeleteInterventionForm(ModelForm):
                 'comment'),
             Field('text_input', css_class='input-xlarge'),
             FormActions(
-                Submit('delete', 'Delete'),
+                Submit('delete', 'Delete', css_class="btn-danger"),
                 Submit('cancel', 'Cancel', css_class="btn-primary")
                 )
         )
@@ -114,8 +114,8 @@ class DeleteExperimentForm(ModelForm):
                 'comment'),
             Field('tet_input', css_class='input-xlarge'),
             FormActions(
-                Submit('delete_experiment', 'Delete experiment', css_class="btn"),
-                Submit('cancel', 'Cancel', css_class="btn btn-primary")
+                Submit('delete_experiment', 'Delete experiment', css_class="btn-danger"),
+                Submit('cancel', 'Cancel', css_class="btn-primary")
             )
         )
         super(DeleteExperimentForm, self).__init__(*args, **kwargs)
@@ -148,8 +148,8 @@ mutant DR 20 25 30 50 1 >0.05
         self.helper.layout = Layout(
             Fieldset('', 'name', 'data', 'study', 'species', 'assay', 'comment'),
             FormActions(
-                Submit('submit', 'Submit', css_class="btn btn-primary"),
-                Submit('cancel', 'Cancel', css_class="btn")
+                Submit('submit', 'Submit', css_class="btn-primary"),
+                Submit('cancel', 'Cancel', css_class="btn-danger")
             )
         )
         if 'pk' in kwargs:
@@ -192,7 +192,7 @@ class ComparisonForm(ModelForm):
             ),
             FormActions(
                 Submit('save', 'Save', css_class="btn-primary"),
-                Submit('cancel', 'Cancel')
+                Submit('cancel', 'Cancel', css_class="btn-danger")
             )
         )
         super(ComparisonForm, self).__init__(*args, **kwargs)
@@ -230,7 +230,7 @@ class InterventionForm(ModelForm):
             ),
             FormActions(
                 Submit('save', 'Save', css_class="btn-primary"),
-                Submit('cancel', 'Cancel')
+                Submit('cancel', 'Cancel', css_class="btn-danger")
             )
         )
         super(InterventionForm, self).__init__(*args, **kwargs)
@@ -279,7 +279,7 @@ class FactorForm(ModelForm):
             ),
             FormActions(
                 Submit('save', 'Save', css_class="btn-primary"),
-                Submit('cancel', 'Cancel')
+                Submit('cancel', 'Cancel', css_class="btn-danger")
             )
         )
         super(FactorForm, self).__init__(*args, **kwargs)
@@ -316,7 +316,7 @@ class StrainForm(ModelForm):
             ),
             FormActions(
                 Submit('save', 'Save', css_class="btn-primary"),
-                Submit('cancel', 'Cancel')
+                Submit('cancel', 'Cancel', css_class="btn-danger")
             )
         )
         super(StrainForm, self).__init__(*args, **kwargs)

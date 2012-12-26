@@ -22,4 +22,7 @@
     {% endif %}
     <hr>
     <b><a href={% url 'update-strain' strain.pk %}>Update strain</a></b>
+    {% with strain as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

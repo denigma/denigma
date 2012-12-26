@@ -89,5 +89,7 @@
         (<a href="/admin/lifespan/factor/{{ factor.pk }}">Admin</a>) |
     <b><a href="/lifespan/factor/delete/{{ factor.pk }}">Delete</a></b>
 
-
+    {% with factor as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

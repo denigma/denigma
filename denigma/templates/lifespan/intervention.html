@@ -70,7 +70,7 @@
     <b><a href="/lifespan/intervention/update/{{ intervention.pk }}">Update</a></b>
         (<a href="/admin/lifespan/intervention/{{ intervention.pk }}">Admin)</a> |
     <b><a href="/lifespan/intervention/delete/{{ intervention.pk }}">Delete</a></b>
-
-    {# {% crispy form %} #}
-
+    {% with intervention as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

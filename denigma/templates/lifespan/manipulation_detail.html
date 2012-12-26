@@ -19,4 +19,7 @@
     {% for intervention in manipulation.intervention_set.all %}
         <li><a href={% url 'intervention' intervention.pk %}>{{ intervention }}</a></li>
     {% endfor %}
+    {% with manipulation as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

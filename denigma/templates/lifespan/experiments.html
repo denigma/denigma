@@ -1,6 +1,6 @@
 {% extends "lifespan/base.html" %}
 
-{% load markup %}
+{% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
 
@@ -27,4 +27,9 @@
         <b>Data: </b>{{ experiment.data }}<br>
         <hr>
     {% endfor %}
+    {% if experiments_entry.content %}
+        {% with experiments_entry as object %}
+            {% include "comments/wrapper.html" %}
+        {% endwith %}
+    {% endif %}
 {% endblock %}

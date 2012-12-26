@@ -268,7 +268,7 @@ def studies_archive(request):
 
 def experiments(request):
     experiments = Experiment.objects.all()
-    try: experiments_entry = Post.objects.get(title="Experiments")
+    try: experiments_entry = Entry.objects.get(title="Experiments")
     except: experiments_entry = {'text': "Lifespan experiments."}
     ctx = {'experiments': experiments, 'experiments_entry': experiments_entry}
     return render_to_response('lifespan/experiments.html',ctx,

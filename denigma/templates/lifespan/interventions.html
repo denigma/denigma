@@ -21,8 +21,7 @@
 {% block content %}
     <form action="" method="POST">
         {% csrf_token %}
-        {{ form.as_table }}
-    <input type="submit" value="Apply" />
+        <input type="submit" value="Filter" />{{ form.filter }}
         {{ interventionsfilter }}
         <table width="100%">
             <tr>
@@ -32,4 +31,9 @@
             </tr>
         </table>
     </form>
+    {% if interventions.content %}
+        {% with interventions as object %}
+            {% include "comments/wrapper.html" %}
+        {% endwith %}
+    {% endif %}
 {% endblock %}

@@ -26,4 +26,7 @@
     <b>Maximum lifespan change: </b>{{ comparison.max }}<br>
     {% if comparison.pvalue %}<b>p-value: </b> {{ comparison.pvalue }}{% endif %}
     {% crispy form %}
+    {% with comparison as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

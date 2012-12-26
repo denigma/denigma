@@ -11,4 +11,7 @@
 
 {% block content %}
     {{ assay }}
+    {% with assay as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

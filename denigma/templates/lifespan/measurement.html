@@ -35,4 +35,7 @@
     <br>
     <br>
     <b><a href="/lifespan/measurement/edit/{{ measurement.pk }}">Edit measurement</a></b> (<a href="/admin/lifespan/measurement/{{ measurement.pk }}">Admin</a>)
+    {% with measurement as object %}
+        {% include "comments/wrapper.html"%}
+    {% endwith %}
 {% endblock %}

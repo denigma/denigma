@@ -64,4 +64,7 @@
     <b><a href="/lifespan/experiment/add/{{ study.pk }}">Add experiment to study</a></b> (<a href="/admin/lifespan/experiment/add/">Admin</a>)
      |
     <b><a href="/lifespan/study/delete/{{ study.pk }}">Delete study</a></b>
+    {% with study as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}
