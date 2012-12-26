@@ -1,0 +1,44 @@
+{% load url from future %}
+{% load staticfiles %}
+{% load i18n comments fluent_comments_tags %}
+{% load representation %}
+
+{% block extra_style %}
+    <link rel="stylesheet" type="text/css" href="{% static "fluent_comments/css/ajaxcomments.css" %}" />
+{% endblock %}
+
+{% block extra_script %}
+    <script type="text/javascript" src="{% static "fluent_comments/js/ajaxcomments.js" %}"></script>
+{% endblock %}
+
+<hr
+
+<div id="comments-wrapper">
+    {% get_comment_count for object as comments_count %}
+    {% comment %}<h3>Comments ({{ comments_count }})</h3><br>{% endcomment %}
+    {% if comments_count %}
+        <h3 class="has-comments-title">
+            {% blocktrans with entry_title=object|unicode count comments_count=comments_count %}
+                {{ comments_count }} Comment to {{ entry_title }}{% plural %}{{ comments_count }} comments to {{ entry_title }}
+            {% endblocktrans %}
+        </h3>
+        {% render_comment_list for object %}
+        {% if not object|comments_are_open %}
+            <p class="comments-closed">{% trans "Comments Are Closed" %}</p>
+        {% endif %}
+    {% else %}
+        {# No comments yet, invite #}
+        {% if object|comments_are_open %}
+            <h3 class="no-comments-title">{% trans "Comment on This" %} <a href={% url 'detail-entry' 'data-unit' %}>Data Unit</a> </h3><br>
+            {# include the empty list, so the <div> is there for Ajax code #}
+            {% render_comment_list for object %}
+        {% endif %}
+    {% endif %}
+    {% if object|comments_are_open %}
+        <div class="hero-unit well">
+            <div id="comments-form-wrapper">
+                {% render_comment_form for object %}
+            </div>
+        </div>
+    {% endif %}
+</div>

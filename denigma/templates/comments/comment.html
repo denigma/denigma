@@ -1,0 +1,26 @@
+{% load i18n %}
+{% load rendering %}
+{% load comments %}
+
+<div{% if preview %} id="comment-preview"{% else %} id="c{{ comment.id }}"{% endif %} class="comment-item"
+                                                                                      xmlns="http://www.w3.org/1999/html">
+    {% if preview %}<h3>{% trans "Preview of your comment" %}</h3>{% endif %}
+    {% spaceless %}
+    <h4>
+        {% if comment.url %}<a href="{{ comment.url }}" rel="nofollow">{% endif %}
+        {% if comment.name %}{{ comment.name }}
+        {% if comment.user %}(<a href="{{ comment.user.get_absolute_url }}">{{ comment.user }}</a>){% endif %}
+        {% else %}{% trans "Anonymous" %}{% endif %}{% comment %}
+        {% endcomment %}{% if comment.url %}</a>{% endif %}<span>&nbsp;</span>
+        <span class="comment-date">{% blocktrans with submit_date=comment.submit_date %}on {{ submit_date }}{% endblocktrans %}</span>
+        {% if not comment.is_public %}<span class="comment-moderated-flag">({% trans "moderated" %})</span>{% endif %}
+    </h4>
+    {% endspaceless %}
+    <blockquote>
+        <div class="comment-text">{{ comment.comment|markdown|linebreaks }}</div>
+        <a href="{% get_comment_permalink comment %}">permalink for comment {{ forloop.counter }}</a>
+    </blockquote>
+</div>
+
+
+
