@@ -42,8 +42,6 @@
         <a href="/about/matrix/0/"><img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250" /></a>
     {% endfor %}
     </center>
-
-
 {% comment %}
 <h3>Add a poll:</h2>
 <form action="add" method="POST">{% csrf_token %}
@@ -54,6 +52,8 @@
     <input type="submit" value="Add">
 </form>
 {% endcomment %}
-
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}
 

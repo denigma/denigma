@@ -17,4 +17,7 @@
 </ul>
 
 <b><a href="/polls/{{ poll.id }}/">Vote again?</a></b>
+    {% with poll as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}

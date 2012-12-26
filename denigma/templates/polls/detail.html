@@ -19,4 +19,8 @@
 {% endfor %}
 <input type="submit" value="Vote" />
 </form>
-</div></div></div>{% endblock %}
+</div></div></div>
+    {% with poll as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
+{% endblock %}
