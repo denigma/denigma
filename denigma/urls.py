@@ -53,6 +53,9 @@ urlpatterns += patterns("",
     url(r'^announcements/', include("announcements.urls")),
     url(r'^avatar/', include('avatar.urls')), # django-avatar: Representative user images
 
+    # Comments
+    url(r'^comments/', include('fluent_comments.urls')), #django.contrib.comments.urls')),
+
     url(r'^profiles/', include("idios.urls")),
     url(r'^aspects/', include('aspects.urls')),
 

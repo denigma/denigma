@@ -225,7 +225,8 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'django.contrib.messages',
     'django.contrib.humanize',
-    'django.contrib.markup', 
+    'django.contrib.markup',
+
     
     'pinax.templatetags',
     
@@ -253,11 +254,15 @@ INSTALLED_APPS = [
     'reversion',# Revision-control for models.
     'haystack', # Searching
     'django_tables2',
-    'crispy_forms',
+
     'django_filters',
     'mptt', # Hierarchy: Utilties for implementing a modified pre-order traversal tree.
     'pagedown', # Markdown preview editor
-    'track',
+
+    # Comments and forms:
+    'fluent_comments',
+    'crispy_forms',
+    'django.contrib.comments',
 #    'cms", # Content Management System.
 #    'sekizai", # For javascipt and css management.
     
@@ -298,6 +303,7 @@ INSTALLED_APPS = [
     'aspects',
     'profiles',
     'avatar',  # django-avatar: Representative user images
+    'track',
 
     'experts',
     'southtut',

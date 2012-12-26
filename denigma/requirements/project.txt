@@ -66,3 +66,6 @@ pygments
 
 # Representative user images:
 -e git://github.com/guzru/django-avatar#egg=django-avatar
+
+# Comments:
+-e git://github.com/edoburu/django-fluent-comments.git#egg=django-fluent-comments
