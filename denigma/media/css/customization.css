@@ -1,0 +1,55 @@
+label {
+    /* display: block; */
+    margin-bottom: 1px;
+    color: #333333;
+}
+
+/*
+input,
+textarea,
+select,
+.uneditable-input {
+    display: inline-block;
+    width: 660px; #210
+height: 18px;
+    padding: 4px;
+    margin-bottom: 9px;
+    font-size: 13px;
+    line-height: 18px;
+    color: #555555;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.uneditable-textarea {
+    width: auto;
+    height: auto;
+}
+*/
+label input, label textarea, label select {
+    /* display: block; */
+}
+
+.navbar .brand {
+    float: left;
+    display: block;
+    padding: 8px 20px 12px; /* padding: 8px 20px 2px; */
+    margin-left: -20px;
+    font-size: 20px;
+    font-weight: 200;
+    line-height: 1;
+    color: #ffffff;
+}
+
+.hero-unit {
+    padding: 6px; /* 60 */
+    margin-bottom: 30px; /* 3 */
+    background-color: #f5f5f5; /* f5f5f5; 993399 FF99CC FFEEEE ffeeff */
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+#id_honeypot { display: none; label: none}
+#div_id_honeypot  {display: none}
