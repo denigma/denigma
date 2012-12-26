@@ -32,4 +32,7 @@
             </td>
         </tr>
     </table>
+    {% with path as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}
