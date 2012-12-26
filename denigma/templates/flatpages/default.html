@@ -6,4 +6,7 @@
 
 {% block content %}
     {{ flatpage.content }}
+    {% with flatpage as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}
