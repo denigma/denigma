@@ -35,4 +35,7 @@
     <hr>
     <b><a href={% url 'update-entry' quest.slug %}>Update</a></b> |
     <b><a href={% url 'engage-quest' quest.slug %}>Engage</a></b>
+    {% with quest as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 {% endblock %}
