@@ -60,17 +60,20 @@ class Profile(models.Model): # User
                              related_name='data')
     user_name = models.CharField(_('Name'), max_length=30, unique=True, blank=True) #
     password = models.CharField(max_length=128, blank=True)
-    first_name = models.CharField(_('first_name'), max_length=30) # models.TextField(max_length=50)
+    first_name = models.CharField(_('first name'), max_length=30) # models.TextField(max_length=50)
+    middle_name = models.CharField(_('middle name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'),max_length=30, blank=True) # models.TextField(max_length=50)
     gender = models.PositiveSmallIntegerField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
     mobile = models.CharField(max_length=15, blank=True)
     email = models.EmailField(max_length=60, blank=True) #primary_email = models.EmailField(max_length=60, blank=True)
-    msn = models.EmailField(max_length=60, blank=True) 
+    msn = models.EmailField(max_length=60, blank=True)
+    city = models.CharField(max_length=30, blank=True)
+    phone = models.IntegerField(blank=True, null=True)
     
     birthday = models.DateField(_('birth date'), blank=True, null=True)
 
     # For professional Account
-    affliation = models.CharField(max_length=250, blank=True, null=True) #instituition_name
+    affiliation = models.CharField(max_length=250, blank=True, null=True) #instituition_name
     street = models.CharField(max_length=75, blank=True, null=True)
     state = models.CharField(max_length=30, blank=True, null=True)
     zip_code = models.IntegerField(max_length=7, blank=True, null=True)
@@ -80,6 +83,7 @@ class Profile(models.Model): # User
     website = models.URLField(_('website'), blank=True) # verify_exists=True Deprecated in 1.5
     collaboration = models.BooleanField(default=False)
     entries = models.ManyToManyField('data.Entry', blank=True, null=True, verbose_name="Type of collaboration")
+    publications = models.ManyToManyField('datasets.Reference', blank=True, null=True)
     
     def __unicode__(self):
         return " ".join([self.first_name, self.last_name])
@@ -91,3 +95,6 @@ class Profile(models.Model): # User
         if not self.user_name:
             self.user_name = " ".join([self.first_name, self.last_name])
         super(Profile, self).save(*args, **kwargs)
+
+    def ad_dict(self):
+        return {'name': self.user_name, 'birthday': self.birthday.strftime("%B of %Y")}

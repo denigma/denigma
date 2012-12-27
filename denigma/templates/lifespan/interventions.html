@@ -4,11 +4,10 @@
 {% load render_table from django_tables2 %}
 
 {% block hierarchy %}
-    > Interventions
+    > <a href="/lifespan/interventions/">Interventions</a>
 {% endblock %}
 
 {% block options %}
-    <a href="/lifespan/interventions/">Interventions</a> |
     <a href="/lifespan/intervention/add">Add</a> /
     <a href="/lifespan/intervention/create/">Create</a> |
     <a href="/lifespan/interventions/archive">Archive</a>
