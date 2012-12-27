@@ -18,6 +18,6 @@ class ProfileTable(tables.Table):
     class Meta:
         model = Profile
         attrs = {'class': 'paleblue'}
-        fields = ('user_name', 'affliation', 'country', 'email', 'website', 'collaboration')
+        fields = ('user_name', 'affiliation', 'country', 'email', 'website', 'collaboration')
         exclude = ('id', 'user', 'gender', 'password', 'first_name', 'last_name',
                    'work', 'mobile', 'msn', 'street', 'state', 'zip_code', 'birthday')
