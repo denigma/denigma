@@ -35,8 +35,8 @@ class InstituteAdmin(admin.ModelAdmin):
 
 class ProfileAdmin(reversion.VersionAdmin): #User
     """The profile of a user."""
-    list_display = ('first_name', 'last_name', 'affliation', 'country', 'email', 'link')
-    search_fields = ('user_name', 'email',  'affliation', 'work')
+    list_display = ('first_name', 'last_name', 'affiliation', 'country', 'email', 'link')
+    search_fields = ('user_name', 'email',  'affiliation', 'work')
     list_filter = ('country',)
     def link(self, obj):
         return '<a href="%s">%s</a>' % (obj.website, obj.website)

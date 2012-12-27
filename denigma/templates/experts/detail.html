@@ -19,13 +19,16 @@
 
 {% block subtitle %}{{ expert.user_name }}{% endblock %}
 
-{# {% load obfuscation %}  #}
+{% load obfuscation %}
 
 {% block content %}
 
     {% if expert.first_name %}<p><b>First name: </b>{{ expert.first_name }}</p>{% endif %}
     {% if expert.last_name %}<p><b>Last name: </b>{{ expert.last_name }}</p>{% endif %}
-    {% if expert.email %}<p><b>Email: </b><a href="mailto:{{ expert.email }}">{{ expert.email }}</a></p>{% endif %} {# #|obfuscate  #}
+    {% if expert.middel_name %}<p><b>Middle name:</b>{{ expert.middle_name }}</p>{% endif %}
+    {% if expert.email %}<p><b>Email: </b><a href="mailto:{{ expert.email }}">{{ expert.email|obfuscate }}</a></p>{% endif %} {# # #}
+    {% if expert.phone %}<p><b>Phone: </b>{{ expert.phone }}</p>{% endif %}
+    {% if expert.mobile %}<p><b>Mobile: </b>{{ expert.mobile }}</p>{% endif %}
     {% if expert.gender %}
         <p><b>Gender: </b>
             {% if expert.gender == 1 %}Male
@@ -33,13 +36,20 @@
             {% endif %}
         </p>
     {% endif %}
-    {% if expert.affliation %}<p><b>Affliation: </b>{{ expert.affliation }}</p>{% endif %}
+    {% if expert.affiliation %}<p><b>Affiliation: </b>{{ expert.affiliation }}</p>{% endif %}
     {% if expert.street %}<p><b> Street: </b>{{ expert.street }}</p>{% endif %}
+    {% if expert.city %}<p><b> City: </b>{{ expert.city }}</p>{% endif %}
     {% if expert.state %}<p><b>State: </b>{{ expert.state }}</p>{% endif %}
     {% if expert.zip_code %}<p><b>Zip code: </b>{{ expert.zip_code }}</p>{% endif %}
     {% if expert.country %}<p><b>Country:  </b>{{ expert.country }}</p>{% endif %}
-    {% if expert.work %}<p><b>Work: </b>{{ expert.work|markdown|hyper|recross|safe }}</p>{% endif %}
+    {% if expert.work %}<p><b>Work: </b><ul>{{ expert.work|markdown|hyper|recross|safe }}</ul></p>{% endif %}
     {% if expert.website %}<p><a href="{{ expert.website }}">Website</a></p>{% endif %}
+    {% if expert.publications.all %}
+        <b>Publications</b>:
+        {% for publication in expert.publications.all %}
+            <a href="{{ publication.get_absolute.url }}">{{ publication }}</a>
+        {% endfor %}
+    {% endif %}
     {% if expert.collaboration %}<p><b>Requires collaboration</b></p>{% endif %}
     {% if expert.entries.all %}
         <b>Type of collaboration:</b>
