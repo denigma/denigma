@@ -22,6 +22,7 @@ class LinkForm(ModelForm):
                 'description',
                 'url',
                 'category',
+                'language',
                 'comment',
                 ),
             FormActions(
@@ -33,7 +34,7 @@ class LinkForm(ModelForm):
 
     class Meta():
         model = Link
-        fields = ('title', 'description', 'url', 'category', 'comment')
+        fields = ('title', 'description', 'url', 'category', 'language', 'comment')
 
 
 class CategoryForm(ModelForm):
