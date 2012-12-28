@@ -1,14 +1,17 @@
-from django.forms import Form, ModelForm, CharField
+from django.forms import Form, ModelForm, CharField, ModelMultipleChoiceField
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit
 from crispy_forms.bootstrap import FormActions
+
+from add.forms import MultipleSelectWithPop
 
 from models import Link, Category
 
 
 class LinkForm(ModelForm):
     comment = CharField(required=False)
+    category = ModelMultipleChoiceField(Category.objects, required=False, widget=MultipleSelectWithPop)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
@@ -56,6 +59,7 @@ class CategoryForm(ModelForm):
     class Meta():
         model = Category
         fields = ('title', 'slug', 'description', 'comment')
+
 
 class FilterForm(Form):
     filter = CharField()

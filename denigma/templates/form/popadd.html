@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% load adminmedia %}
+<html>
+    <head>
+        <title>Add {{ field }}</title>
+        <script type="text/javascript" src="{% admin_media_prefix %}js/admin/RelatedObjectLookups.js"></script>
+    </head>
+    <body>
+        <h1>Add {{ field }}</h1>
+        <form method="POST" action="/add/{{ field }}">{% csrf_token %}
+            <table>
+                {{ form }}
+            </table>
+            <p><input type="submit" /> | <a href="javascript:window.close()">Cancel</a></p>
+        </form>
+    </body>
+</html>

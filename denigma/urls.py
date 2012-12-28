@@ -56,6 +56,10 @@ urlpatterns += patterns("",
     # Comments
     url(r'^comments/', include('fluent_comments.urls')), #django.contrib.comments.urls')),
 
+    # Filtering
+    #url(r'^ajax_filtered_fields/', include('ajax_filtered_fields.urls')),
+    #url(r'^dynamic-media/jsi18n/$', 'django.views.i18n.javascript_catalog'),
+
     url(r'^profiles/', include("idios.urls")),
     url(r'^aspects/', include('aspects.urls')),
 
@@ -104,7 +108,9 @@ urlpatterns += patterns("",
     url(r'^books/', include('books.urls')),
     url(r'^time/', include('chrono.urls')),
     url(r'^meta/', include('meta.urls')),
+    url(r'^add/', include('add.urls')),
     url(r'^eva/', include('eva.urls')),
+
 )
 if settings.SERVE_MEDIA:
     urlpatterns += patterns("",

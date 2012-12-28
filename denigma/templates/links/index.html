@@ -44,9 +44,9 @@
     <hr>
     <form action="" method="POST">
         {% csrf_token %}
-        {{ form.as_table }}
+        <input type="submit" value="Filter" />{{ form.filter }}
         {{ filter.form.as_p }}
-        <input type="submit" value="Apply" />
+
         {{ filterset }}
     </form>
         <table width="100%">

@@ -2,4 +2,4 @@ from django_easyfilters import FilterSet
 
 
 class LinkFilterSet(FilterSet):
-    fields = ('language', 'creation')
+    fields = ('language', 'creation', 'category')

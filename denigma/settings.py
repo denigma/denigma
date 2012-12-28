@@ -256,6 +256,7 @@ INSTALLED_APPS = [
     'django_tables2',
 
     'django_filters',
+    #'ajax_filtered_fields',
     'mptt', # Hierarchy: Utilties for implementing a modified pre-order traversal tree.
     'pagedown', # Markdown preview editor
 
@@ -314,6 +315,7 @@ INSTALLED_APPS = [
 
     'stats',
     'utils',
+    'add',
 ]
 
 FIXTURE_DIRS = [

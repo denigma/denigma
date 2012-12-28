@@ -1,8 +1,13 @@
 {% extends 'links/base.html' %}
 
 {% load crispy_forms_tags %}
+{% load adminmedia %}
 
 {% block head_title %}{{ action }} Link{% endblock %}
+
+{% block extra_script %}
+    <script type="text/javascript" src="{% admin_media_prefix %}js/admin/RelatedObjectLookups.js"></script>
+{% endblock %}
 
 {% block hierarchy %}
     > Link

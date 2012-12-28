@@ -13,6 +13,8 @@ from data import get
 from data.models import Entry
 from data.views import Create, Update
 
+from add.forms import handlePopAdd
+
 from models import Link, Category
 from tables import LinkTable
 from forms import LinkForm, CategoryForm, FilterForm
@@ -125,3 +127,7 @@ class CategoryCreate(Create):
 class CategoryUpdate(Update):
     model = Category
     form_class = CategoryForm
+
+
+def newCategory(request):
+    return handlePopAdd(request, CategoryForm, 'category')

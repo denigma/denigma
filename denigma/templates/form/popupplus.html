@@ -1,0 +1,19 @@
+{% load adminmedia %}
+
+<script type="text/javascript" src="{% admin_media_prefix %}js/admin/RelatedObjectLookups.js"></script>
+
+<a
+    href="/add/{{ field }}"
+    class="add-another"
+    id="add_id_{{ field }}"
+    onclick="return showAddAnotherPopup(this);">
+    <img src="{% admin_media_prefix %}img/icon_addlink.gif" width="10" height="10" alt="Add Another"/>
+</a>
+
+{% if multiple %}
+    <script type="text/javascript">
+        addEvent(window, "load", function(e) {
+            SelectFilter.init("id_{{ field }}","{{ field }}", 0, "/media/");
+        })
+        </script>
+{% endif %}
