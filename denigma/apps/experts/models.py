@@ -93,7 +93,7 @@ class Profile(models.Model): # User
 
     def save(self, *args, **kwargs):
         if not self.user_name:
-            self.user_name = " ".join([self.first_name, self.last_name])
+            self.user_name = " ".join([self.first_name or '', self.middle_name or '', self.last_name or ''])
         super(Profile, self).save(*args, **kwargs)
 
     def ad_dict(self):

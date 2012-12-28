@@ -41,7 +41,7 @@ class ProfileAdmin(reversion.VersionAdmin): #User
     def link(self, obj):
         return '<a href="%s">%s</a>' % (obj.website, obj.website)
     link.allow_tags =True
-
+    filter_horizontal = ['entries', 'publications']
 
 admin.site.register(Day, DayAdmin)
 admin.site.register(BusinessHour, BusinessHourAdmin)

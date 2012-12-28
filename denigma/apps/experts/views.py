@@ -120,3 +120,5 @@ class UpdateProfile(Update):
             messages.add_message(self.request, messages.SUCCESS,
                 _(self.message % self.object))
             return HttpResponseRedirect(self.get_success_url())
+
+
