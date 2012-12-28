@@ -66,7 +66,7 @@ class ProfileList(TableFilter):
                 qs = qs.filter(Q(first_name__contains=term) |
                                Q(last_name__icontains=term) |
                                Q(email__icontains=term) |
-                               Q(affliation__icontains=term) |
+                               Q(affiliation__icontains=term) |
                                Q(work__icontains=term))
         self.filterset = ProfileFilterSet(qs, self.request.GET)
         return self.filterset.qs
