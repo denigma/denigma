@@ -45,7 +45,6 @@ class CategoryForm(ModelForm):
             Fieldset(
                 '',
                 'title',
-                'slug',
                 'description',
                 'comment',
             ),
@@ -58,7 +57,7 @@ class CategoryForm(ModelForm):
 
     class Meta():
         model = Category
-        fields = ('title', 'slug', 'description', 'comment')
+        fields = ('title', 'description', 'comment')
 
 
 class FilterForm(Form):

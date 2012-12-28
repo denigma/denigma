@@ -7,6 +7,8 @@ from django.contrib.sites.models import Site
 from django.utils.translation import ugettext as _
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.template.defaultfilters import slugify
+
 #from mptt.models import MPTTModel, TreeForeignKey
 
 from tagging.fields import TagField
@@ -39,6 +41,12 @@ class Category(models.Model): #MPTTModel
         verbose_name = _('category')
         verbose_name_plural = _('categories')
         ordering = ('title',)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            if not self.slug:
+                self.slug = slugify(self.title)
+        return super(Category, self).save(*args,**kwargs)
 
 #    class MPTTMeta:
 #        order_insertion_by = ['title']
