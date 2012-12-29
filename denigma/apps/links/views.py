@@ -79,12 +79,18 @@ class Links(SingleTableView, FormView, LinkView):
         context['categories'] = Category.objects.all()
         if self.category:
             context['category'] = Category.objects.get(slug=self.category)
+        elif "category=" in self.request.META['QUERY_STRING']:
+            category = self.request.META['QUERY_STRING'].split('category=')[-1]
+            if "&" in category:
+                category = category.split('&')[0]
+            context['category'] = Category.objects.get(pk=category)
         else:
             context['category'] = None
         return context
 
     def get_queryset(self):
         #print("links.Links.get_queryset: %s" % self.category)
+        #print self.request
         qs = self.queryset.order_by('title')
         if self.category:
             qs = qs.filter(category__slug__exact=self.category)
