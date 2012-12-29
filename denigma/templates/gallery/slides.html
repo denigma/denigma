@@ -1,0 +1,63 @@
+{% extends "gallery/base.html" %}
+
+{% load url from future %}
+
+{% block head_title %}Slides{% endblock %}
+
+{% block extra_script %}
+    <script type="text/javascript"
+            src="http://slideshow.triptracker.net/slide.js"></script>
+    <script type="text/javascript">
+        <!--
+        var viewer = new PhotoViewer();
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide1.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide2.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide3.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide4.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide5.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide6.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide7.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide8.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide9.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide10.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide11.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide12.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide13.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide14.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide15.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide16.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide17.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide18.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide19.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide20.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide21.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide22.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide23.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide24.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide25.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide26.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide27.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide28.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide29.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide30.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide31.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide32.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide33.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide34.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide35.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide36.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide37.JPG');
+        viewer.add('https://s3-eu-west-1.amazonaws.com/hevok/slide38.JPG');
+        //--></script>
+{% endblock %}
+
+{% block hierarchy %}
+    > <a href="{% url 'media' %}">Media</a>
+    > Slides
+{% endblock %}
+
+{% block title %}Slides{% endblock %}
+
+{% block content %}
+    <a href="javascript:void(viewer.show(0))">Show</a>
+{% endblock %}
