@@ -61,7 +61,7 @@ class ProfileList(TableFilter):
     table_class = ProfileTable
 
     def get_queryset(self):
-        qs = self.queryset
+        qs = self.queryset.order_by('user_name')
         if ProfileList.query:
             terms = ProfileList.query.split(None)
             for term in terms:
