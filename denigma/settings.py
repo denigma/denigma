@@ -250,7 +250,7 @@ INSTALLED_APPS = [
     'metron',
     'south',   # Intelligent schema and data migrations.
     'taggit',
-    #'tagging',
+    'tagging',
     'reversion',# Revision-control for models.
     'haystack', # Searching
     'django_tables2',

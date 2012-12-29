@@ -10,9 +10,12 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 
 #from mptt.models import MPTTModel, TreeForeignKey
-
+import tagging
 from tagging.fields import TagField
 from tagging.models import Tag
+
+#from south.modelinspector import add_introspection_rules
+#add_introspection_rules([])
 
 
 class LinkPublishedManager(models.Manager):
@@ -54,6 +57,7 @@ class Category(models.Model): #MPTTModel
 def get_site():
     return Site.objects.get(domain='denigma.de')
 
+
 class Link(models.Model):
     """Link Model."""
     title = models.CharField(_('title'), max_length=150, default=None)
@@ -63,6 +67,8 @@ class Link(models.Model):
     description = models.TextField(_('description'), blank=True)
     category = models.ManyToManyField(Category, verbose_name=_('category'),
                                       null=True)
+    countries = models.ManyToManyField('Country', verbose_name=_("Countries of residence"),
+        blank=True, null=True)
     visibility = models.BooleanField(_('visibility'), default=True)
     ordering = models.IntegerField(_('ordering'), default=100)
     creation = models.DateTimeField(_('creation date'), auto_now_add=True)
@@ -71,8 +77,11 @@ class Link(models.Model):
     publication_end = models.DateTimeField(_('publication end'),
                                            default=datetime(2042, 3, 15))
     site = models.ForeignKey(Site, verbose_name=_('site'), default=get_site) # Can also be ManyToMany()
+    #sites = models.ManyToManyField(Site, default=get_site)
     objects = models.Manager()
     published = LinkPublishedManager()
+    contacts = models.ManyToManyField('experts.Profile', blank=True, null=True)
+    contact = models.CharField(max_length=100, blank=True, null=True)
     tags = TagField()
 
     def __unicode__(self):
@@ -88,5 +97,13 @@ class Link(models.Model):
         verbose_name = _('link')
         verbose_name_plural = _('links')
         ordering = ('title',)
-        
+
+
+class Country(models.Model):
+    abbreviation = models.CharField(max_length=10)
+    name = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return self.abbreviation
+
 #tagging.register(Link)

@@ -13,10 +13,12 @@ from forms import ProfileForm
 
 import reversion
 
+from add.forms import handlePopAdd
 
 from data.filters import TableFilter
 from data.views import Create, Update
 from meta.view import log
+
 
 def whoiswho(request):
     """Intended to synchronize Experts with the WhoisAge.""" 
@@ -96,6 +98,7 @@ class CreateProfile(Create):
                 _(self.message % self.object))
             return HttpResponseRedirect(self.get_success_url())
 
+
 class UpdateProfile(Update):
     model = Profile
     success_url = '/experts/'
@@ -122,3 +125,5 @@ class UpdateProfile(Update):
             return HttpResponseRedirect(self.get_success_url())
 
 
+def newProfile(request):
+    return handlePopAdd(request, ProfileForm, 'contacts')

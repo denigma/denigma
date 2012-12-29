@@ -17,7 +17,7 @@ from add.forms import handlePopAdd
 
 from models import Link, Category
 from tables import LinkTable
-from forms import LinkForm, CategoryForm, FilterForm
+from forms import LinkForm, CategoryForm, CountryForm, FilterForm
 from filters import LinkFilterSet
 
 
@@ -85,7 +85,7 @@ class Links(SingleTableView, FormView, LinkView):
 
     def get_queryset(self):
         #print("links.Links.get_queryset: %s" % self.category)
-        qs = self.queryset.order_by('-creation')
+        qs = self.queryset.order_by('-title')
         if self.category:
             qs = qs.filter(category__slug__exact=self.category)
         if Links.query:
@@ -131,3 +131,6 @@ class CategoryUpdate(Update):
 
 def newCategory(request):
     return handlePopAdd(request, CategoryForm, 'category')
+
+def newCountry(request):
+    return handlePopAdd(request, CountryForm, 'countries')
