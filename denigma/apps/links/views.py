@@ -85,7 +85,7 @@ class Links(SingleTableView, FormView, LinkView):
 
     def get_queryset(self):
         #print("links.Links.get_queryset: %s" % self.category)
-        qs = self.queryset.order_by('-title')
+        qs = self.queryset.order_by('title')
         if self.category:
             qs = qs.filter(category__slug__exact=self.category)
         if Links.query:
