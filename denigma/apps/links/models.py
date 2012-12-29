@@ -65,7 +65,7 @@ class Link(models.Model):
                                 choices=settings.LANGUAGES, default='en')
     url = models.URLField(_('url'), default=None)
     description = models.TextField(_('description'), blank=True)
-    category = models.ManyToManyField(Category, verbose_name=_('category'),
+    category = models.ManyToManyField(Category, verbose_name=_('categories'),
                                       null=True)
     countries = models.ManyToManyField('Country', verbose_name=_("Countries of residence"),
         blank=True, null=True)
@@ -81,7 +81,7 @@ class Link(models.Model):
     objects = models.Manager()
     published = LinkPublishedManager()
     contacts = models.ManyToManyField('experts.Profile', blank=True, null=True)
-    contact = models.CharField(max_length=100, blank=True, null=True)
+    contact = models.CharField(max_length=255, blank=True, null=True)
     tags = TagField()
 
     def __unicode__(self):
