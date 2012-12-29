@@ -48,7 +48,7 @@ class Filter(django_filters.FilterSet):
 
 class Links(SingleTableView, FormView, LinkView):
     table_class = LinkTable
-    queryset = Link.objects.filter(site__domain='denigma.de')
+    queryset = Link.objects.filter(Q(site__domain='denigma.de') | Q(site__domain='longevityalliance.org'))
     form_class = FilterForm
     success_url = '/links/'
     query = None
