@@ -107,6 +107,6 @@ class Country(models.Model):
     name = models.CharField(max_length=50)
 
     def __unicode__(self):
-        return "%s (%s)" % (self.name,self.abbreviation)
+        return self.name  # , "%s" % ((%s) self.abbreviation
 
 #tagging.register(Link)
