@@ -1,0 +1,48 @@
+{% extends "links/base.html" %}
+
+{% load url from future %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
+{% load contacting %}
+
+{% block head_title %}{{ object.title }}{% endblock %}
+
+{% block hierarchy %}
+    > Link
+    = {% if object.title|length < 35 %}
+          <a href="{{ object.url }}">{{ object.title }}</a>
+      {% else %}
+          <a href="{{ object.url }}">{{ object.title|slice:":35" }}...<a/>
+      {% endif %}
+{% endblock %}
+
+{% block options %}
+    <a href="{% url 'update-link' object.pk %}">Update</a>
+{% endblock %}
+
+{% block title %}<a href="{{ object.url }}">{{ object.title }}</a>{% endblock %}
+
+{% block content %}
+    Created on {{ object.creation }}<br>
+    <b>Language</b>: {{ object.language }}<br>
+    {# {{ object.site }}<br> #}
+    <b>Description</b>:<ul>{{ object.description|markdown|hyper|recross|safe }}</ul>
+    <b>URL</b>: <a href="{{ object.url }}">{{ object.url }}</a><br>
+    {% if object.category.all %}
+        <b>Categories</b>:
+        {% for category in object.category.all %}
+            <a href="{% url 'links-category' category.slug %}">{{ category }}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    {% endif %}<br>
+    {% if object.contact %}<b>Contact</b>: {{ object.contact|contact|safe }}{% endif %}<br>
+    {% if objects.contacts.all %}
+        <b>Contacts</b>
+        {% for contact in objects.contacts.all %}
+            {{ contact }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    {% endif %}
+    <hr>
+    <b><a href="{% url 'update-link' object.pk %}">Update</a></b>
+    {% include "comments/wrapper.html" %}
+{% endblock %}

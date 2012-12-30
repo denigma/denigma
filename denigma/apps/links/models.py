@@ -71,7 +71,7 @@ class Link(models.Model):
         blank=True, null=True)
     visibility = models.BooleanField(_('visibility'), default=True)
     ordering = models.IntegerField(_('ordering'), default=100)
-    creation = models.DateTimeField(_('creation date'), auto_now_add=True)
+    creation = models.DateTimeField(_('created'), auto_now_add=True)
     publication_start = models.DateTimeField(_('publication start'),
                                              default=datetime.now)
     publication_end = models.DateTimeField(_('publication end'),
@@ -93,6 +93,9 @@ class Link(models.Model):
 #    def get_tags(self, tags):
 #        return Tag.objects.get_for_object(self, tags)
 
+    def get_absolute_url(self):
+        return reverse('link', args=[self.pk])
+
     class Meta:
         verbose_name = _('link')
         verbose_name_plural = _('links')
@@ -104,6 +107,6 @@ class Country(models.Model):
     name = models.CharField(max_length=50)
 
     def __unicode__(self):
-        return self.abbreviation
+        return "%s (%s)" % (self.name,self.abbreviation)
 
 #tagging.register(Link)

@@ -2,9 +2,11 @@
 """Urls for links."""
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
+from django.views.generic import DetailView
 
-from views import  Links, LinkList, LinkUpdate, LinkCreate #links_by_language
-from views import  CategoryCreate, CategoryUpdate
+from views import Links, LinkList, LinkUpdate, LinkCreate #links_by_language
+from views import CategoryCreate, CategoryUpdate
+from models import Link
 
 
 urlpatterns = patterns('',
@@ -18,5 +20,6 @@ urlpatterns = patterns('',
     url(r'^category/update/(?P<slug>.+)/$', login_required(CategoryUpdate.as_view()),
         name='update-link-category'),
     url(r'^category/(?P<category>.+)/$', Links.as_view(), name='links-category'),
+    url(r'^(?P<pk>\d+)', DetailView.as_view(model=Link), name="link")
 )
 

@@ -5,6 +5,7 @@
 {% load markup %}
 {% load hyperlink %}
 {% load crosslink %}
+{% load paragraphs %}
 
 {% block extra_style %}
     <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css"
@@ -32,7 +33,7 @@
             </td>
             <td valign="top">
                 {% if category %}
-                    {% if category.description %}
+                    {% if category.description|paraone %}
                         <b>{{ category.title }}</b>: {{ category.description }}
                     {% endif %}
                     <b><a href="{% url 'update-link-category' category.slug %}">o</a></b>
