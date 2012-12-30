@@ -13,5 +13,9 @@ def paraone(text, num=0):
 
     It also retains the last element which is often the update link."""
     paragraphs = text.replace('\r', '').split('\n\n')
-    print paragraphs
     return paragraphs[num]+paragraphs[-1]
+
+@register.filter()
+def firstpara(text):
+    """Returns the first paragraph of a string."""
+    return text.replace('\r', '').split('\n\n')[0]
