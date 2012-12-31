@@ -40,6 +40,12 @@
     {% if expert.country %}<p><b>Country:  </b>{{ expert.country }}</p>{% endif %}
     {% if expert.work %}<p><b>Work: </b><ul>{{ expert.work|markdown|hyper|recross|safe }}</ul></p>{% endif %}
     {% if expert.website %}<p><a href="{{ expert.website }}">Website</a></p>{% endif %}
+    {% if expert.link_set.all %}
+        <b>Organisations</b>:
+        {% for link in expert.link_set.all %}
+           <li><a href="{{ link.get_absolute.url }}">{{ link}}</a></li>
+        {% endfor %}
+    {% endif %}
     {% if expert.publications.all %}
         <b>Publications</b>:
         {% for publication in expert.publications.all %}
