@@ -53,9 +53,12 @@ class ProfileForm(ModelForm):
 
 class CollaborationForm(ModelForm):
     comment = CharField(required=False)
-    project = ModelChoiceField(Entry.objects, required=True, widget=SelectWithPop)
-    labs = ModelMultipleChoiceField(Link.objects.filter(category__title__icontains='Research'), required=True, widget=MultipleSelectWithPop)
-    members = ModelMultipleChoiceField(Profile.objects, required=True, widget=MultipleSelectWithPop)
+    project = ModelChoiceField(Entry.objects, required=False, widget=SelectWithPop)
+    labs = ModelMultipleChoiceField(
+        Link.objects.filter(category__title__icontains='Research').distinct(),
+        required=False, widget=MultipleSelectWithPop)
+    members = ModelMultipleChoiceField(Profile.objects, required=False,
+        widget=MultipleSelectWithPop)
 
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
@@ -71,3 +74,4 @@ class CollaborationForm(ModelForm):
     class Meta:
         model = Collaboration
         fields = ('project', 'labs', 'members')
+#234567891123456789212345678931234567894123456789512345678961234567897123456789
