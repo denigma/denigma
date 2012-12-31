@@ -53,6 +53,12 @@
             <li><a href="{% url 'detail-entry' entry.slug %}">{{ entry.title }}</a></li>
         {% endfor %}
     {% endif %}
+    {% if references %}
+        <b>References</b>:
+        {% for reference in references %}
+            <li><a href="{% url 'detail-reference' reference.pk %}">{{ reference }}</a></li>
+        {% endfor %}
+    {% endif %}
     <hr>
     <b><a href="{% url 'update-expert-profile' expert.pk %}">Update</a></b>
     {% with expert as object %}

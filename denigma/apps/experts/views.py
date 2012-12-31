@@ -16,6 +16,7 @@ from data.views import Create, Update
 from meta.view import log
 from data import get
 from links.models import Link
+from datasets.models import Reference
 
 from models import Profile, Collaboration
 from filters import ProfileFilterSet
@@ -58,7 +59,8 @@ def detail(request, expertname, template='experts/detail.html'):
         expert = Profile.objects.get(user_name=expertname.replace('_', ' '))
     except Profile.DoesNotExist:
         expert = Profile.objects.get(pk=expertname)
-    return render(request, template, {'expert': expert})
+    references = Reference.objects.filter(authors__icontains=expert.last_name)
+    return render(request, template, {'expert': expert, 'references': references})
 
 
 class ProfileList(TableFilter):
