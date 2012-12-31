@@ -9,23 +9,24 @@
     | <a href="{% url 'update-collaboration' object.pk %}">Update</a>
 {% endblock %}
 
-{% block title %}Collaboration {{ objects.title }}{% endblock %}
+{% block title %}Collaboration <a href="{{ object.project.get_absolute_url }}">{{ object.project.title }}</a>{% endblock %}
 
 {% block content %}
-    <b>Title</b>: <a href="{{ object.project.get_absolute_url }}">{{ object.project.title }}</a><br>
-    <b>Description</b>: {{ object.project.text }}<br>
     {% if object.labs.all %}
-        <b>Labs ({{ object.labs.all|length }})</b>:
+        <b>Involved Labs/Organisations ({{ object.labs.all|length }})</b>:
         {% for lab in object.labs.all %}
             <a href="{{ lab.get_absolute_url }}">{{ lab }}</a>{% if not forloop.last %}, {% endif %}
         {% endfor %}<br>
     {% endif %}
     {% if object.members.all %}
-        <b>Members ({{ object.labs.all|length }})</b>:
+        <b>Participating Members ({{ object.labs.all|length }})</b>:
         {% for member in object.members.all %}
             <a href="{{ project.get_absolute_url }}">{{ member}}</a>{% if not forloop.last %}, {% endif %}
-        {% endfor %}
+        {% endfor %}<br><br>
     {% endif %}
+        {% with object.project as entry %}
+            {% include "data/render_entry.html" %}
+        {% endwith %}<br>
     <hr>
     <b><a href="{% url 'update-collaboration' object.pk %}">Update</a></b>
     {% include "comments/wrapper.html" %}
