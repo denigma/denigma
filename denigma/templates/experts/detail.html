@@ -43,13 +43,13 @@
     {% if expert.link_set.all %}
         <b>Organisations</b>:
         {% for link in expert.link_set.all %}
-           <li><a href="{{ link.get_absolute.url }}">{{ link}}</a></li>
+           <li><a href="{{ link.get_absolute_url }}">{{ link }}</a></li>
         {% endfor %}
     {% endif %}
     {% if expert.publications.all %}
         <b>Publications</b>:
         {% for publication in expert.publications.all %}
-            <a href="{{ publication.get_absolute.url }}">{{ publication }}</a>
+            <a href="{{ publication.get_absolute_url }}">{{ publication }}</a>
         {% endfor %}
     {% endif %}
     {% if expert.collaboration %}<p><b>Requires collaboration</b></p>{% endif %}
