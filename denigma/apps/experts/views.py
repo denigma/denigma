@@ -5,11 +5,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.models import User, AnonymousUser
 from django.utils.translation import ugettext_lazy as _
-
-from models import Profile
-from filters import ProfileFilterSet
-from tables import ProfileTable
-from forms import ProfileForm
+from django.core.urlresolvers import reverse
 
 import reversion
 
@@ -18,6 +14,13 @@ from add.forms import handlePopAdd
 from data.filters import TableFilter
 from data.views import Create, Update
 from meta.view import log
+from data import get
+from links.models import Link
+
+from models import Profile, Collaboration
+from filters import ProfileFilterSet
+from tables import ProfileTable, CollaborationTable
+from forms import ProfileForm, CollaborationForm
 
 
 def whoiswho(request):
@@ -39,8 +42,12 @@ def whoiswho(request):
             Profile.objects.filter(user_name=expert['user_name']).update(**expert)
             
     return HttpResponse("WhoIsWho completed (%s experts)" % len(experts))
- 
+
 def index(request, template='experts/index.html'):
+    entry = get('Experts')
+    return render(request, template, {'entry': entry})
+
+def archive(request, template='experts/profiles.html'):
     """Lists all experts."""
     experts = Profile.objects.all()
     return render(request, template, {'experts':experts})
@@ -56,9 +63,14 @@ def detail(request, expertname, template='experts/detail.html'):
 
 class ProfileList(TableFilter):
     queryset = Profile.objects.all()
-    success_url = '/experts/'
+    success_url = '/experts/profiles/'
     model = Profile
     table_class = ProfileTable
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProfileList, self).get_context_data(*args, **kwargs)
+        context['entry'] = get('Expert')
+        return context
 
     def get_queryset(self):
         qs = self.queryset.order_by('user_name')
@@ -76,7 +88,6 @@ class ProfileList(TableFilter):
 
 class CreateProfile(Create):
     model = Profile
-    success_url = '/experts/'
     form_class = ProfileForm
     comment = "Created profile"
     message = 'Successfully created %s'
@@ -101,7 +112,6 @@ class CreateProfile(Create):
 
 class UpdateProfile(Update):
     model = Profile
-    success_url = '/experts/'
     form_class = ProfileForm
     comment = "Updated profile"
     message = 'Successfully updated %s'
@@ -127,3 +137,41 @@ class UpdateProfile(Update):
 
 def newProfile(request):
     return handlePopAdd(request, ProfileForm, 'contacts')
+
+
+class CreateCollaboration(Create):
+    model = Collaboration
+    success_url = '/experts/collaborations/'
+    form_class = CollaborationForm
+    comment = "Created Collaboration"
+    message = "Successfully created collaboration"
+
+
+class UpdateCollaboration(Update):
+    model = Collaboration
+    success_url = '/experts/collaborations/'
+    form_class = CollaborationForm
+    comment = "Updated Collaboration"
+    message = "Successfully updated Collaboration"
+
+
+class CollaborationList(TableFilter):
+    table_class = CollaborationTable
+    model = Collaboration
+    queryset = Collaboration.objects.all()
+    success_url = '/experts/collaborations/'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(CollaborationList, self).get_context_data(*args, **kwargs)
+        context['entry'] = get('Collaboration')
+        return context
+
+    def get_queryset(self):
+        qs = self.queryset
+        if CollaborationList.query:
+            terms = self.term.split(None)
+            for term in terms:
+                qs = qs.filter(Q(project__title__icontains=term) |
+                               Q(labs__title__icontains=term) |
+                               Q(members__user_name__icontains=term))
+        return qs

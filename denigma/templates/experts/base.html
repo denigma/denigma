@@ -8,4 +8,9 @@
     > <a href="{% url 'experts' %}">Experts</a>
 {% endblock %}
 
+{% block options %}
+    <a href="{% url 'experts-profiles' %}">Profiles</a>
+    | <a href="{% url 'collaborations' %}">Collaborations</a>
+{% endblock %}
+
 {% block title %}Experts{% endblock %}

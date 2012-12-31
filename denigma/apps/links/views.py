@@ -134,9 +134,12 @@ class CategoryUpdate(Update):
     model = Category
     form_class = CategoryForm
 
+def newLink(request):
+    return handlePopAdd(request, LinkForm, 'link')
 
 def newCategory(request):
     return handlePopAdd(request, CategoryForm, 'category')
 
 def newCountry(request):
     return handlePopAdd(request, CountryForm, 'countries')
+

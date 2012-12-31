@@ -1,0 +1,41 @@
+{% extends "experts/base.html" %}
+
+{% block hierarchy %}
+    > List
+{% endblock %}
+
+{% block title %}List of Experts{% endblock %}
+
+{% block content %}
+
+    {% load obfuscation %}
+
+    {% if experts %}
+        <p>These are the experts on one of the most fundamental questions in biology: Why do we age? This list is synchronized with the <a href="http://whoswho.senescence.info/">WhosAge</a> database created by Joao Pedro de Magalhaes.</p>
+        <table border="1">
+            <tr>
+                <td><b>Name</b></td>
+                <td><b>Affliation</b></td>
+                <td><b>Website</b></td>
+                <td><b>E-mail address</b></td>
+                <td><b>Work</b></td>
+            </tr>
+            {% for e in experts %}
+                <tr>
+                    <td><a href="{{ e.get_absolute_url }}">{{ e.user_name }}</a></td>
+                    <td>{{ e.affliation }}</td>
+                    <td><a href="{{ e.website }}">lab</a></td>
+                    {% if user.is_authenticated %}
+                        <td><a href="mailto:{{ e.email }}">{{ e.email|obfuscate }}</a></td>
+                    {% else %}
+                        <td><a href="/account/login/">{{ e.email|obfuscate }}</a></td>
+                    {% endif %}
+                    <td>{{ e.work }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No experts available.</p>
+    {% endif %}
+
+{% endblock %}

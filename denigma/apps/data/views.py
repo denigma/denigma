@@ -18,15 +18,15 @@ from taggit.models import Tag, TaggedItem
 
 from meta.view import log
 from control import get
+from add.forms import handlePopAdd
+from blog.templatetags.hyperlink import hyper
+from blog.templatetags.crosslink import recross
 
 from models import Entry, Change, Relation, Alteration, Category
 from forms import EntryForm, RelationForm, CategoryForm, DeleteForm
 from tables import EntryTable
 from filters import TableFilter, EntryFilterSet, FilterForm
-
 from templatetags.rendering import markdown
-from blog.templatetags.hyperlink import hyper
-from blog.templatetags.crosslink import recross
 
 
 def graph(request, template='data/graph.html'):
@@ -526,3 +526,7 @@ class HierarchyList(EntryList):
         context = super(HierarchyList, self).get_context_data(**kwargs)
         context['entry'] = get('Data Hierarchy')
         return context
+
+
+def newEntry(request):
+    return handlePopAdd(request, EntryForm, 'entry')

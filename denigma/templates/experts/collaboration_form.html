@@ -1,0 +1,22 @@
+{% extends "experts/base.html" %}
+
+{% load url from future %}
+{% load crispy_forms_tags %}
+{% load adminmedia %}
+
+{% block extrascript %}
+    <script type="text/javascript" src="{% admin_media_prefix %}js/admin/RelatedObjectLookups.js"></script>
+{% endblock %}
+
+{% block head_title %}{{ action }} Collaboration {% endblock %}
+{% block title %}{{ action }} Collaboration{% endblock %}
+
+{% block hierarchy %}
+    > <a href="{% url 'collaborations' %}">Collaborations</a>
+    > Collaboration
+    > {{ action }}
+{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

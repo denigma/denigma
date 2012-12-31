@@ -7,22 +7,20 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
 {% endblock %}
 
+{% block head_title %}Collaborations{% endblock %}
+
 {% block hierarchy %}
-    > <a href="{% url 'experts-profiles' %}">Profiles</a>
-    | <a href="{% url 'create-expert-profile' %}">Create</a>
+    > <a href="{% url 'collaborations' %}">Collaborations</a>
+    | <a href={% url 'create-collaboration' %}>Create</a>
 {% endblock %}
 
-{% block title %}Profiles{% endblock %}
+{% block title %}Collaborations{% endblock %}
 
 {% block content %}
     {% include "data/render_entry.html" %}
-    <form action="" method="POST">
-        {% csrf_token %}
-        <input type="submit" value="Filter" />{{ form.filter }}
-        {{ filter.form.as_p }}
-        {{ filterset }}
-    </form>
     {% render_table table %}
+    <hr>
+    <b><a href="{% url 'create-collaboration' %}">Create</a></b>
     {% if entry.text %}
         {% with entry as object %}
             {% include "comments/wrapper.html" %}

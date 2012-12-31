@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
 
 
 class Day(models.Model): #sOfWeek:
@@ -68,7 +69,7 @@ class Profile(models.Model): # User
     email = models.EmailField(max_length=60, blank=True) #primary_email = models.EmailField(max_length=60, blank=True)
     msn = models.EmailField(max_length=60, blank=True)
     city = models.CharField(max_length=30, blank=True)
-    phone = models.IntegerField(blank=True, null=True)
+    phone = models.CharField(max_length=15, blank=True, null=True)
     
     birthday = models.DateField(_('birth date'), blank=True, null=True)
 
@@ -84,12 +85,12 @@ class Profile(models.Model): # User
     collaboration = models.BooleanField(default=False)
     entries = models.ManyToManyField('data.Entry', blank=True, null=True, verbose_name="Type of collaboration")
     publications = models.ManyToManyField('datasets.Reference', blank=True, null=True)
-    
+
     def __unicode__(self):
         return " ".join([self.first_name, self.last_name])
 
     def get_absolute_url(self):
-        return "/experts/%s/" % self.user_name.replace(' ', '_')
+        return reverse('experts-profile', args=[self.user_name.replace(' ', '_')])
 
     def save(self, *args, **kwargs):
         if not self.user_name:
@@ -98,3 +99,15 @@ class Profile(models.Model): # User
 
     def ad_dict(self):
         return {'name': self.user_name, 'birthday': self.birthday.strftime("%B of %Y")}
+
+
+class Collaboration(models.Model):
+    project = models.ForeignKey('data.Entry')
+    labs = models.ManyToManyField('links.Link')
+    members = models.ManyToManyField('experts.Profile', related_name="collaborations")
+
+    def __unicode__(self):
+        return self.project.title
+
+    def get_absolute_url(self):
+        return reverse('collaboration', args=[self.pk])
