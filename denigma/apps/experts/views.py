@@ -19,7 +19,7 @@ from links.models import Link
 from datasets.models import Reference
 
 from models import Profile, Collaboration
-from filters import ProfileFilterSet
+from filters import ProfileFilterSet, CollaborationFilterSet
 from tables import ProfileTable, CollaborationTable
 from forms import ProfileForm, CollaborationForm
 
@@ -87,6 +87,27 @@ class ProfileList(TableFilter):
         self.filterset = ProfileFilterSet(qs, self.request.GET)
         return self.filterset.qs
 
+class CollaborationList(TableFilter):
+    table_class = CollaborationTable
+    model = Collaboration
+    queryset = Collaboration.objects.all()
+    success_url = '/experts/collaborations/'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(CollaborationList, self).get_context_data(*args, **kwargs)
+        context['entry'] = get('Collaboration')
+        return context
+
+    def get_queryset(self):
+        qs = self.queryset
+        if CollaborationList.query:
+            terms = CollaborationList.query.split(None)
+            for term in terms:
+                qs = qs.filter(Q(project__title__icontains=term) |
+                               Q(labs__title__icontains=term) |
+                               Q(members__user_name__icontains=term))
+        self.filterset = CollaborationFilterSet(qs, self.request.GET)
+        return self.filterset.qs
 
 class CreateProfile(Create):
     model = Profile
@@ -157,23 +178,3 @@ class UpdateCollaboration(Update):
     message = "Successfully updated Collaboration"
 
 
-class CollaborationList(TableFilter):
-    table_class = CollaborationTable
-    model = Collaboration
-    queryset = Collaboration.objects.all()
-    success_url = '/experts/collaborations/'
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(CollaborationList, self).get_context_data(*args, **kwargs)
-        context['entry'] = get('Collaboration')
-        return context
-
-    def get_queryset(self):
-        qs = self.queryset
-        if CollaborationList.query:
-            terms = self.term.split(None)
-            for term in terms:
-                qs = qs.filter(Q(project__title__icontains=term) |
-                               Q(labs__title__icontains=term) |
-                               Q(members__user_name__icontains=term))
-        return qs
