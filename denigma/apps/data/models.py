@@ -72,7 +72,7 @@ class Content(Title):
     images = models.ManyToManyField('media.Image', blank=True, verbose_name=_('images'))
 
     def save(self, *args, **kwargs):
-        print("%s content model save() called" % self.__class__)
+        #print("%s content model save() called" % self.__class__)
         super(Title, self).save(*args, **kwargs)
 
     def __unicode__(self):
@@ -264,7 +264,7 @@ class Entry(Content):
 
     def is_rest(self):
         """returns True if entry is tagged to be fully encoded in reStructuredText."""
-        if "rest" in [tag.name for tag in self.tags.all()]:
+        if "rest" in [tag.name for tag in self.tags.all()] or "reST" in [category.name for category in self.categories.all()]:
             return True
         return False
 
