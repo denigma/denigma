@@ -11,7 +11,7 @@
     <script type="text/javascript" src="{{ STATIC_URL }}fluent_comments/js/ajaxcomments.js"></script>
 {% endblock %}
 
-<hr
+<hr>
 
 <div id="comments-wrapper">
     {% get_comment_count for object as comments_count %}
@@ -29,7 +29,7 @@
     {% else %}
         {# No comments yet, invite #}
         {% if object|comments_are_open %}
-            <h3 class="no-comments-title">{% trans "Comment on This" %} <a href={% url 'detail-entry' 'data-unit' %}>Data Unit</a> </h3><br>
+            <h3 class="no-comments-title"><a href="{% url 'detail-entry' 'comment' %}">Comment</a>{% trans " on This" %} <a href={% url 'detail-entry' 'data-unit' %}>Data Unit</a> </h3><br>
             {# include the empty list, so the <div> is there for Ajax code #}
             {% render_comment_list for object %}
         {% endif %}
