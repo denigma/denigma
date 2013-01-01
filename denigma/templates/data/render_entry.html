@@ -2,11 +2,18 @@
 {% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
+{% load negletion %}
+{% load pubmed_linker %}
+
 
 <table width="100%">
     <tr>
         <td valign="top">
-            {{ entry.content|markdown|hyper|recross|safe }}
+            {% if entry.is_rest %}
+                {{ entry.content|hyper|negle|reST|neglete|markdown|recross|pubmed_links|safe }} {# {{ object.text|reST|safe }} {# restructuredtext }} #}
+            {% else %}
+                {{ entry.content|markdown|hyper|recross|pubmed_links|safe }}
+            {% endif %}
         </td>
         <td valign="top" style="width: 250px">
             {% for image in entry.images.all %}
