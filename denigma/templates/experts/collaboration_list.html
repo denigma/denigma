@@ -18,6 +18,12 @@
 
 {% block content %}
     {% include "data/render_entry.html" %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Filter" />{{ form.filter }}
+        {{ filter.form.as_p }}
+        {{ filterset }}
+    </form>
     {% render_table table %}
     <hr>
     <b><a href="{% url 'create-collaboration' %}">Create</a></b>
