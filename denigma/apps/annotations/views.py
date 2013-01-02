@@ -108,7 +108,7 @@ def add_classification(request, template='annotations/classification_form.html')
             messages.add_message(request, messages.SUCCESS, _(msg))
             return redirect('/annotations/classification/%s' %
                             classification.pk)
-    return render(request, template, {'form': form})
+    return render(request, template, {'form': form, 'action': 'Add'})
 
 
 @login_required
