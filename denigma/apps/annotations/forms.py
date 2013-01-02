@@ -22,7 +22,7 @@ class ClassificationForm(ModelForm):
             ),
             FormActions(
                 Submit('save', 'Save', css_class="btn-primary"),
-                Submit('cancel', 'Cancel')
+                Submit('cancel', 'Cancel', css_class="btn-danger")
             )
         )
         super(ClassificationForm, self).__init__(*args, **kwargs)
@@ -63,7 +63,7 @@ class DeleteTissueForm(ModelForm):
                 DELETE_INFO_TEXT, _('comment')
             ),
             FormActions(
-                Submit('delete', _('Delete')),
+                Submit('delete', _('Delete'), css_class="btn-danger"),
                 Submit('cancel', _('Cancel'), css_class="btn-primary")
             )
         )
@@ -84,7 +84,7 @@ class DeleteClassificationForm(ModelForm):
                 DELETE_INFO_TEXT, _('comment')
             ),
             FormActions(
-                Submit('delete', _('Delete')),
+                Submit('delete', _('Delete'), css_class="btn-danger"),
                 Submit('cancel', _('Cancel'), css_class="btn-primary")
             )
         )
@@ -118,7 +118,7 @@ class SpeciesForm(ModelForm):
             ),
             FormActions(
                 Submit('save_species', 'Save', css_class="btn-primary"),
-                Submit('cancel', 'Cancel')
+                Submit('cancel', 'Cancel', css_class="btn-danger")
             )
         )
         super(SpeciesForm, self).__init__(*args, **kwargs)
