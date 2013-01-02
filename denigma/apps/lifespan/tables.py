@@ -30,6 +30,11 @@ class FactorTable(tables.Table):
     def render_symbol(self, value, record):
         return mark_safe('''<a href=/lifespan/factor/%s>%s</a>''' % (record.id, value))
 
+    def render_name(self, value, record):
+        if not record.symbol:
+            return mark_safe('''<a href=/lifespan/factor/%s>%s</a>''' % (record.id, value))
+        return value
+
     def render_observation(self, value, record):
         return pubmed_links(value)
 
