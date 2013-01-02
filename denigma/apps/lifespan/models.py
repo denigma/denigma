@@ -268,7 +268,7 @@ class Experiment(models.Model):
                 #elif attr.endswith("_extension"):
                 elif attr == "treatment" and value:
                     if "(" in value:
-                        gene, treatment = value.replace('(', ' ').replace(')', '').split(' ')
+                        gene, treatment = value.replace('(', '###').replace(')', '').split('###')
                         if not measurement.genotype:
                             measurement.genotype, created = Strain.objects.get_or_create(name=gene, species=self.species)
                         else:
