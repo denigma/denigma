@@ -87,7 +87,10 @@ class Profile(models.Model): # User
     publications = models.ManyToManyField('datasets.Reference', blank=True, null=True)
 
     def __unicode__(self):
-        return " ".join([self.first_name, self.last_name])
+        if not self.middle_name:
+            return self.user_name
+        else:
+            return " ".join([self.first_name, self.middle_name, self.last_name])
 
     def get_absolute_url(self):
         return reverse('experts-profile', args=[self.user_name.replace(' ', '_')])
