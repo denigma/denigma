@@ -26,7 +26,7 @@ class ReferenceForm(ModelForm):
             Fieldset('Either a PMID or a title is totally sufficient to create a reference.', 'pmid', 'title', 'notes', 'label', 'comment'),
             FormActions(
                 Submit('save', 'Save', css_class="btn-primary"),
-                Submit('cancel', 'Cancel')
+                Submit('cancel', 'Cancel', cass_class="btn-danger")
             )
         )
         super(ReferenceForm, self).__init__(*args, **kwargs)
