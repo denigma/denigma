@@ -1,11 +1,12 @@
 {% extends "gallery/base.html" %}
 
+{% load url from future %}
 {% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
 
 {% block content %}
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Web Album using Django and AWS</title>
     <style>
@@ -76,7 +77,7 @@
     <div> <class="container">
         <div style="padding:1em;">
     {% for photo in photos %}
-        <img class="photo" src="{{ photo.url }}" />
+        <a href="{% url 'detail-image' photo.pk %}"><img class="photo" src="{{ photo.url }}" /></a>
     {% endfor %}
         </div>
     </div>

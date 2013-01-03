@@ -7,6 +7,7 @@ TODO:
   See: http://docs.amazonwebservices.com/AmazonS3/latest/dev/UsingAuthAccess.html
 """
 from django.contrib.auth.models import User, AnonymousUser
+from django.views.generic.edit import UpdateView
 from django.shortcuts import render
 from django.conf import settings
 
@@ -24,7 +25,7 @@ from data.views import View
 from add.forms import handlePopAdd
 
 from models import Image
-from forms import UploadForm, ArtistForm
+from forms import UploadForm, ArtistForm, ImageForm
 
 
 bucket = "dgallery"
@@ -83,6 +84,11 @@ def index(request, template='./gallery/index.html'):
     ctx = {'entry': entry, 'form': f, 'photos': photos, 'artist': af}
     return render(request, template, ctx)
 
+
+class ImageView(UpdateView):
+    model = Image
+    template_name = 'gallery/image_detail.html'
+    form_class = ImageForm
 
 
 class Slides(View):

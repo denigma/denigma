@@ -1,0 +1,23 @@
+{% extends "gallery/base.html" %}
+
+{% load url from future %}
+{% load crispy_forms_tags %}
+{% block head_title %}Media Image {{ image.name }}{% endblock %}
+
+{% block hierarchy %}
+    > <a href="{% url 'media' %}">Media</a>
+    > <a href="{% url 'media' %}">Gallery</a>
+    > Image
+    > {{ image.name }}
+{% endblock %}
+
+{% block title %}Image {{ image.name }}{% endblock %}
+
+{% block content %}
+    <b>Url</b>: <a href="{{ image.url }}">{{ image.url }}</a>
+    <center><a href="{{ image.url }}"><img src="{{ image.url }}" alt="{{ image.name }}"></a></center>
+    {% if user == image.user %}
+        {% crispy form %}
+        {% include "comments/wrapper.html" %}
+    {% endif %}
+{% endblock %}
