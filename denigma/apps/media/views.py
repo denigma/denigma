@@ -10,6 +10,8 @@ from django.contrib.auth.models import User, AnonymousUser
 from django.views.generic.edit import UpdateView
 from django.shortcuts import render
 from django.conf import settings
+from django.utils.html import escape
+from django.http import HttpResponse
 
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
@@ -72,7 +74,7 @@ def index(request, template='./gallery/index.html'):
     #content = file['content']
     store_in_s3(file.name, file.read())
     p = Image(url="http://%s.s3.amazonaws.com/%s" % (bucket, file.name))
-    print request.user, type(request.user)
+
     if isinstance(request.user, AnonymousUser):
          p.user = User.objects.get(username="Anonymous")
     else:
@@ -84,6 +86,39 @@ def index(request, template='./gallery/index.html'):
     ctx = {'entry': entry, 'form': f, 'photos': photos, 'artist': af}
     return render(request, template, ctx)
 
+def handleImagePopAdd(request, addForm, field, template="form/popmediaadd.html"):
+    if not request.method == "POST":
+        f = UploadForm()
+        ctx = {'form': f, 'field': field}
+        return render(request, template, ctx)
+
+    f = UploadForm(request.POST, request.FILES)
+
+    if not f.is_valid() and not request.FILES['file'].name.endswith('.svg'):
+        ctx = {'form': f, 'field': field}
+        return render(request, template, ctx)
+    file = request.FILES['file']
+    store_in_s3(file.name, file.read())
+    p = Image(url="http://%s.s3.amazonaws.com/%s" % (bucket, file.name))
+
+    if isinstance(request.user, AnonymousUser):
+        p.user = User.objects.get(username="Anonymous")
+    else:
+        p.user = User.objects.get(username=request.user)
+    if f.cleaned_data['artist']:
+        p.artist = User.objects.get(username=f.cleaned_data['artist'])
+    p.save()
+    newObject = p
+
+    # Self destruction:
+    if newObject:
+        return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %\
+            (escape(newObject._get_pk_val()), escape(newObject)))
+
+
+def newImage(request):
+    return handleImagePopAdd(request, ImageForm, 'images')
+
 
 class ImageView(UpdateView):
     model = Image
@@ -93,14 +128,13 @@ class ImageView(UpdateView):
     def get_success_url(self):
         return self.object.get_absolute_url()
 
+
 class Slides(View):
     def get_context_data(self, **kwargs):
         context = super(Slides, self).get_context_data(**kwargs)
         import re
         #context['slides'] = re.find
 
-def newImage(request):
-    return handlePopAdd(request, UploadForm,  'images')
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
 

@@ -28,25 +28,42 @@
         <p>Create and customize your creature from the five main species of Denigma: tiny yeast, elegant nematode, gracious fruit fly, ingenious mice, or the ferocious rats.</p>
     {% endif %}
     {% for aspecies in species %}
-    <hr>
-    <table width="100%">
-        <td> 
-            <h4>{{ aspecies.common_name }}</h4>
-            <i>{{ aspecies.latin_name }}</i> (id = {{ aspecies.taxid }})
-            <br>
-            {{ aspecies.description|paraone|markdown|hyper|recross|safe }}
-            <a href="/annotations/species/{{ aspecies.pk }}">Read more</a><br>
-        </td>
-        <td align="right" style="width: 150px">
-            {% for image in aspecies.images.all %}
-               <img src={{ image.url }} alt={{ image.name }} width="150" height="150">
-            {% endfor %}
-        </td>
-    </table>
+        <hr>
+        <table width="100%">
+            <td>
+                <a href="{{ aspecies.get_absolute_url }}"><h3>{{ aspecies.common_name }}</h3></a>
+                <i>{{ aspecies.latin_name }}</i> (id = {{ aspecies.taxid }})
+                <br>
+                {{ aspecies.description|paraone|markdown|hyper|recross|safe }}
+                <b><a href="{{ aspecies.get_absolute_url }}">Read more</a></b><br>
+            </td>
+            <td align="right" style="width: 150px">
+                {% for image in aspecies.images.all %}
+                   <a href="{{ image.get_absolute_url }}"></a><img src="{{ image.url }}" alt="{{ image.name }}" width="150" height="150"></a>
+                {% endfor %}
+            </td>
+        </table>
+    {% endfor %}
     <br>
+    <hr>
+    <h3>Other Species</h3>
+    <p>In <a href="/admin/">Denigma db</a> are many more species. Some others are included below. Check also out the <a href="/annotations/species/archive/">archive</a>.
+    {% for species in others %}
+        <hr>
+        <table width="100%">
+            <td>
+                <a href="{{ species.get_absolute_url }}"></a><h4>{{ species.common_name }}</h4>
+                <i>{{ species.latin_name }}</i> (id = {{ species.taxid }})
+                {{ species.description|paraone|markdown|hyper|recross|safe }}
+                <b><a href="{{ species.get_absolute_url }}">Read more</a></b><br>
+            </td>
+            <td align="right" style="width: 150px">
+            {% for image in species.images.all %}
+                <a href="{{ image.get_absolute_url }}"><img src="{{ image.url }}" alt="{{ image.name }}" width="150" height="150"></a>
+            {% endfor %}
+            </td>
+        </table>
     {% endfor %}
     <hr>
-    <p>In <a href="/admin/">Denigma db</a> are many more species catographied. Check out the <a href="/annotations/species/archive/">archive</a>.
     <p><b><a href="/annotations/species/add/">Add species</a></b></p>
-
 {% endblock %}

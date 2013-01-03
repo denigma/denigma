@@ -13,16 +13,17 @@ from django_tables2 import RequestConfig
 
 import reversion
 
-from models import Classification, Tissue, Species, Taxonomy
-from forms import (ClassificationForm, DeleteClassificationForm,
-                   TissueForm, DeleteTissueForm,
-                   SpeciesForm)
-from tables import TissueTable
-from filters import  TissueFilterSet
-
 from data.filters import TableFilter
 from meta.view import log
 from data import get
+from add.forms import handlePopAdd
+
+from models import Classification, Tissue, Species, Taxonomy
+from forms import (ClassificationForm, DeleteClassificationForm,
+                   TissueForm, DeleteTissueForm,
+                   SpeciesForm, AnimalForm)
+from tables import TissueTable
+from filters import  TissueFilterSet
 
 
 def index(request, template='annotations/index.html'):
@@ -135,7 +136,8 @@ def delete_classification(request, pk):
 def species(request, template='annotations/species.html'):
     entry = get("Species")
     species = Species.objects.filter(main_model=True).order_by('complexity')
-    return render(request, template, {'entry': entry, 'species': species})
+    others = Species.objects.filter(main_model=False)
+    return render(request, template, {'entry': entry, 'species': species, 'others': others})
 
 def species_details(request, pk):
     species = Species.objects.get(pk=pk)
@@ -161,7 +163,7 @@ def species_detailed(request, pk):
     species = Taxonomy.objects.get(pk=pk)
     attributes = dict([(attr, value) for (attr, value) in vars(species).items()\
                       if value and not attr.startswith('_')])
-    print attributes
+    #print attributes
     ctx = {'species': species, 'attributes': attributes}
     return render_to_response('annotations/species_detailed.html', ctx,
                               context_instance=RequestContext(request))
@@ -276,7 +278,7 @@ def delete_tissue(request, pk):
         if "cancel" in request.POST:
             return redirect('/annotations/tissue/%s' % pk)
         elif "delete" in request.POST:
-            print tissue, form.is_valid()
+            #print tissue, form.is_valid()
             with reversion.create_revision():
                 tissue.delete()
                 reversion.set_user(request.user)
@@ -340,15 +342,15 @@ def tissue_hierarchy(request):
     tissues = Tissue.objects.all().order_by('identifier')
     previous = None
     for tissue in tissues:
-        print("%s %s %s" % (tissue.identifier,tissue.hierarchy, tissue))
+        #print("%s %s %s" % (tissue.identifier,tissue.hierarchy, tissue))
         if tissue.hierarchy == None: continue
         elif not previous:
-            print("Setting tissue %s as previous" % tissue)
+            #print("Setting tissue %s as previous" % tissue)
             previous = {0:tissue}
         else:
             if tissue.hierarchy != 0:
                 tissue.parent = previous[tissue.hierarchy-1]
-                print("parent is %s" % previous[tissue.hierarchy-1])
+                #print("parent is %s" % previous[tissue.hierarchy-1])
                 tissue.save()
             else:
                 Tissue.objects.rebuild()
@@ -357,5 +359,9 @@ def tissue_hierarchy(request):
     msg = _("Successfully build hierarchy.")
     messages.add_message(request, messages.SUCCESS, msg)
     return redirect('/annotations/tissues/')
+
+
+def newAnimal(request):
+    return handlePopAdd(request, AnimalForm, 'alternative_names')
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789

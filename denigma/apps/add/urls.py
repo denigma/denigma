@@ -8,5 +8,7 @@ urlpatterns = patterns('',
     url(r'^contacts/?', 'experts.views.newProfile', name="new-profile"),
     url(r'^members/?', 'experts.views.newProfile', name='new-member'),
     url(r'^project/?', 'data.views.newEntry', name='new-entry'),
-    url(r'intervention/?', 'lifespan.views.newIntervention', name='new-intervention')
+    url(r'intervention/?', 'lifespan.views.newIntervention', name='new-intervention'),
+    url(r'alternative_names/?', 'annotations.views.newAnimal', name="new-animal"),
+    url(r'images/?', 'media.views.newImage', name="new-images")
 )

@@ -1,11 +1,14 @@
-from django.forms import ModelForm, CharField, Textarea
+from django.forms import ModelForm, CharField, Textarea, ModelMultipleChoiceField
 from django.utils.translation import ugettext_lazy as _
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit
 from crispy_forms.bootstrap import FormActions
 
-from models import Classification, Tissue, Species
+from add.forms import MultipleSelectWithPop
+from media.models import Image
+
+from models import Classification, Tissue, Species, Animal
 
 
 DELETE_INFO_TEXT = _('Please confirm deletion and comment on the reason why it is obsolete')
@@ -99,6 +102,8 @@ class DeleteClassificationForm(ModelForm):
 class SpeciesForm(ModelForm):
     comment = CharField(required=False)
     description = CharField(widget=Textarea(attrs={'cols': 10,'rows': 5}))
+    alternative_names = ModelMultipleChoiceField(Animal.objects.all(), required=False, widget=MultipleSelectWithPop)
+    images = ModelMultipleChoiceField(Image.objects.all(), required=False, widget=MultipleSelectWithPop)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
@@ -128,3 +133,7 @@ class SpeciesForm(ModelForm):
         exclude = ('number_genes', 'gendr_genes', 'gendr_paralogs', 'gendr_orthologs',
                     'short_latin_name')
 
+class AnimalForm(ModelForm):
+    comment = CharField(required=False)
+    class Meta:
+        model = Animal

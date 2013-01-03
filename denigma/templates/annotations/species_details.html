@@ -20,7 +20,7 @@
     <b>Number of genes:</b> {{ species.number_genes }}<br>
     <b>Description:</b> {{ species.description|markdown|hyper|recross|safe }}<br>
     {% for image in species.images.all %}
-        <img src="{{ image.url }}" alt="{{ image.name }}">
+        <a href="{{ image.get_absolute_url }}"><img src="{{ image.url }}" alt="{{ image.name }}"></a>
     {% endfor %}
     <br>
     <br>

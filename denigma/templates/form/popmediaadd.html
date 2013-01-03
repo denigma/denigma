@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% load adminmedia %}
+<html>
+    <head>
+        <title>Add {{ field }}</title>
+        <script type="text/javascript" src="{% admin_media_prefix %}js/admin/RelatedObjectLookups.js"></script>
+    </head>
+    <body>
+        <h1>Add {{ field }}</h1>
+        <form method="POST" action="/add/{{ field }}" enctype="multipart/form-data">{% csrf_token %}
+            {{ form.file }}<br/>
+
+            <b>Artist: </b> {{ form.artist }}<br/>
+            <input type="submit" value="Upload Photo"/>
+        </form>
+    </body>
+</html>

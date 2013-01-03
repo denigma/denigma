@@ -1,6 +1,7 @@
 """Annotation information majorly from external databases."""
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
 
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -157,7 +158,7 @@ class Taxonomy(models.Model):
         
 
 class Animal(models.Model):
-    alternative_names = models.CharField(max_length=21, blank=True) # Field name made lowercase.
+    alternative_names = models.CharField(verbose_name=_("Name"), max_length=21, blank=True) # Field name made lowercase.
     taxid = models.IntegerField(null=True, blank=True) # Field name made lowercase.
 
     def __unicode__(self):
