@@ -7,5 +7,6 @@ urlpatterns = patterns('',
     url(r'^countries/?$', 'links.views.newCountry', name="new-country"),
     url(r'^contacts/?', 'experts.views.newProfile', name="new-profile"),
     url(r'^members/?', 'experts.views.newProfile', name='new-member'),
-    url(r'^project/?', 'data.views.newEntry', name='new-entry')
+    url(r'^project/?', 'data.views.newEntry', name='new-entry'),
+    url(r'intervention/?', 'lifespan.views.newIntervention', name='new-intervention')
 )

@@ -6,11 +6,13 @@ from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 
 from django_easyfilters import FilterSet
 
+from annotations.models import Species
+from datasets.models import Reference
+from add.forms import MultipleSelectWithPop
+
 from models import (Study, Experiment, Measurement, Comparison, Intervention, Factor,\
                    Strain, Epistasis, Regimen, Assay, Manipulation)
 
-from annotations.models import Species
-from datasets.models import Reference
 
 # Main:
 class StudyForm(ModelForm):
@@ -251,6 +253,7 @@ class FactorForm(ModelForm):
     species = ModelChoiceField(queryset=Species.objects.all().order_by('-main_model', 'complexity'),
         required=False)
     comment = CharField(required=False)
+    intervention = ModelMultipleChoiceField(Intervention.objects, required=False, widget=MultipleSelectWithPop)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'

@@ -19,6 +19,14 @@ import reversion
 
 from django_tables2 import SingleTableView, RequestConfig
 
+from blog.models import Post
+from annotations.models import Species
+from add.forms import handlePopAdd
+from meta.view import log
+from home.views import LoginRequiredMixin
+from data.views import Create, Update, Delete
+from data import get
+
 from models import (Study, Experiment, Measurement, Comparison, Intervention, Factor, Regimen, Strain,
                    Manipulation)
 from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
@@ -28,14 +36,6 @@ from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
                    FactorForm, StrainForm,
                    FilterForm, FactorFilterSet)
 from tables import ComparisonTable, InterventionTable, FactorTable
-
-from blog.models import Post
-from annotations.models import Species
-
-from meta.view import log
-from home.views import LoginRequiredMixin
-from data.views import Create, Update, Delete
-from data import get
 
 
 def index(request):
@@ -765,6 +765,9 @@ class UpdateStrain(Update):
     form_class = StrainForm
     comment = 'Updated strain.'
 
+
+def newIntervention(request):
+    return handlePopAdd(request, InterventionForm, 'intervention')
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
 
