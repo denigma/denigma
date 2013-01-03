@@ -47,7 +47,7 @@
             <strong>{{ form.file.label }}</strong>
             <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
                 {{ form.file }}<br/>
-                {{ form.artist }}<br/>
+                <b>Artist: </b> {{ form.artist }}<br/>
                 <input type="submit" value="Upload Photo"/>
             </form>
         </div>
