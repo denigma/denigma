@@ -4,6 +4,10 @@ from django.http import HttpResponse
 from django.utils.html import escape
 from django.shortcuts import render
 
+import reversion
+
+from meta.view import log
+
 
 class SelectWithPop(forms.Select):
     def render(self, name, *args, **kwargs):
@@ -26,7 +30,12 @@ def handlePopAdd(request, addForm, field, template="form/popadd.html"):
         form = addForm(request.POST)
         if form.is_valid():
             try:
-                newObject = form.save()
+                with reversion.create_revision():
+                    newObject = form.save()
+                    reversion.set_user(request.user)
+                    comment = request.POST['comment'] or 'Added.'
+                    reversion.set_comment(comment)
+                    log(request, newObject, comment)
             except forms.ValidationError, error:
                 newObject = None
             if newObject:
