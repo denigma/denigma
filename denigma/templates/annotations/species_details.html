@@ -17,6 +17,11 @@
     <b>Taxonomy ID:</b> {{ species.taxid }}<br>
     <b>Common name:</b> {{ species.common_name }}<br>
     <b>Short name:</b> {{ species.short_name }}<br>
+    {% if species.alternative_names.all %}<b>Alternative names</b>:
+        {% for alternative in species.alternative_names.all %}
+            {{ alternative.alternative_names }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}<br>
+    {% endif %}
     <b>Number of genes:</b> {{ species.number_genes }}<br>
     <b>Description:</b> {{ species.description|markdown|hyper|recross|safe }}<br>
     {% for image in species.images.all %}
