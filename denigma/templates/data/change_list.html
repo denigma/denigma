@@ -23,11 +23,11 @@
     <table width="100%">
         <tr>
             <td valign="top">
-                {{ entry.content|markdown|hyper|recross|safe }}
+                {{ object.content|markdown|hyper|recross|safe }}
             </td>
             <td valign="top" style="width: 250px">
-                {% for image in entry.images.all %}
-                    <a href="{% url 'detail-entry' entry.slug %}"><img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250"></a>
+                {% for image in object.images.all %}
+                    <a href="{% url 'detail-entry' object.slug %}"><img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250"></a>
                 {% endfor %}
             </td>
         </tr>
@@ -53,9 +53,7 @@
     {% else %}
         <p>No data changes.</p>
     {% endif %}
-    {% with entry as object %}
-        {% include "comments/wrapper.html" %}
-    {% endwith %}
+    {% include "comments/wrapper.html" %}
 {% endblock content %}
 
 
