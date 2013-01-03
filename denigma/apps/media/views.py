@@ -79,8 +79,8 @@ def index(request, template='./gallery/index.html'):
          p.user = User.objects.get(username="Anonymous")
     else:
         p.user = User.objects.get(username=request.user)
-    if f.cleaned_data['artist']:
-        p.artist = User.objects.get(username=f.cleaned_data['artist'])
+    if request.POST['artist']:
+        p.artist = User.objects.get(pk=request.POST['artist'])
     p.save()
     photos = Image.objects.all().order_by('-uploaded')
     ctx = {'entry': entry, 'form': f, 'photos': photos, 'artist': af}
@@ -105,8 +105,8 @@ def handleImagePopAdd(request, addForm, field, template="form/popmediaadd.html")
         p.user = User.objects.get(username="Anonymous")
     else:
         p.user = User.objects.get(username=request.user)
-    if f.cleaned_data['artist']:
-        p.artist = User.objects.get(username=f.cleaned_data['artist'])
+    if request.POST['artist']:
+        p.artist = User.objects.get(pk=request.POST['artist'])
     p.save()
     newObject = p
 
