@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 class Image(models.Model):
     url = models.CharField(max_length=128)
     uploaded = models.DateTimeField()
-    user = models.ForeignKey(User, default=1, related_name='uploader')
+    user = models.ForeignKey(User, default=2, related_name='uploader')
     artist = models.ForeignKey(User, null=True, blank=True)
     
     def save(self):

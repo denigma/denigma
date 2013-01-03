@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'Image.user'
         db.add_column('media_image', 'user',
-                      self.gf('django.db.models.fields.related.ForeignKey')(default=1, related_name='uploader', to=orm['auth.User']),
+                      self.gf('django.db.models.fields.related.ForeignKey')(default=2, related_name='uploader', to=orm['auth.User']),
                       keep_default=False)
 
         # Adding field 'Image.artist'
@@ -70,7 +70,7 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'uploaded': ('django.db.models.fields.DateTimeField', [], {}),
             'url': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'default': '1', 'related_name': "'uploader'", 'to': "orm['auth.User']"})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'default': '2', 'related_name': "'uploader'", 'to': "orm['auth.User']"})
         }
     }
 
