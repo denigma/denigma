@@ -10,16 +10,15 @@
 {% load commentaries %}
 {% load pubmed_linker %}
 
-
 {% block head_title %}{{ object.title }}{% endblock %}
 
 {% block hierarchy %}
-    > <a href={% url 'list-entries' %}>Entries</a>
-    >     {% if object.title|length < 35 %}
-    {{ object.title }}
-    {% else %}
-    {{ object.title|slice:":35" }}...
-{% endif %}
+    > <a href={% url 'list-entries' %} xmlns="http://www.w3.org/1999/html">Entries</a>
+    > {% if object.title|length < 35 %}
+            {{ object.title }}
+      {% else %}
+            {{ object.title|slice:":35" }}...
+      {% endif %}
 {% endblock %}
 
 {% block title %}
@@ -44,7 +43,7 @@
         {{ object.text|markdown|hyper|recross|pubmed_links|safe }}
     {% endif %}
     {% for image in object.images.all %}
-        <center><img src="{{ image.url }}" alt="{{ image.name }}" /></center>
+        <center><a href="{{ image.get_absolute_url }}"><img src="{{ image.url }}" alt="{{ image.name }}" /></a></center>
     {% endfor %}
     <br>
     <b>Tags</b>:

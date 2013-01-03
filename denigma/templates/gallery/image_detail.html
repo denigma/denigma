@@ -23,9 +23,16 @@
     {% else %}
         NA
     {% endif %}<br>
+    {% if image.entry_set.all %}
+        <b>Data
+        {% if image.entry_set.all|length == 1 %} entry{% else %} entries{% endif %}</b>:
+        {% for entry in image.entry_set.all %}
+            <a href="{{ entry.get_absolute_url }}">{{ entry }}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}<br>
+    {% endif %}
     <center><a href="{{ image.url }}"><img src="{{ image.url }}" alt="{{ image.name }}"></a></center>
     {% if user == image.user %}
         {% crispy form %}
-        {% include "comments/wrapper.html" %}
     {% endif %}
+    {% include "comments/wrapper.html" %}
 {% endblock %}
