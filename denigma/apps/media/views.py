@@ -90,6 +90,8 @@ class ImageView(UpdateView):
     template_name = 'gallery/image_detail.html'
     form_class = ImageForm
 
+    def get_success_url(self):
+        return self.object.get_absolute_url()
 
 class Slides(View):
     def get_context_data(self, **kwargs):

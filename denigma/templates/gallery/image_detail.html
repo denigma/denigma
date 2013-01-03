@@ -18,7 +18,7 @@
     <b>Uploaded</b>: {{ image.uploaded }}<br>
     <b>Uploader</b>: <a href="{{ image.user.get_absolute_url }}">{{ image.user }}</a><br>
     <b>Artist</b>:
-    {% if image.artist %}>
+    {% if image.artist %}
         <a href="{{ image.artist.get_absolute_url }}">{{ image.artist }}</a>
     {% else %}
         NA

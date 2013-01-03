@@ -3,6 +3,7 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
 
 
 class Image(models.Model):
@@ -11,15 +12,18 @@ class Image(models.Model):
     user = models.ForeignKey(User, default=2, related_name='uploader')
     artist = models.ForeignKey(User, null=True, blank=True)
     
-    def save(self):
-        self.uploaded = datetime.now()
-        models.Model.save(self)
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.uploaded = datetime.now()
+            models.Model.save(self)
+        else:
+            super(Image, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.url.split('/')[-1]
 
     def get_absolute_url(self):
-        return self.url
+        return reverse('detail-image', args=[self.pk])
 
     def name(self):
         return self.url.split('/')[-1].split('/')[0]
