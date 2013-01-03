@@ -14,7 +14,15 @@
 {% block title %}Image {{ image.name }}{% endblock %}
 
 {% block content %}
-    <b>Url</b>: <a href="{{ image.url }}">{{ image.url }}</a>
+    <b>Url</b>: <a href="{{ image.url }}">{{ image.url }}</a><br>
+    <b>Uploaded</b>: {{ image.uploaded }}<br>
+    <b>Uploader</b>: <a href="{{ image.user.get_absolute_url }}">{{ image.user }}</a><br>
+    <b>Artist</b>:
+    {% if image.artist %}>
+        <a href="{{ image.artist.get_absolute_url }}">{{ image.artist }}</a>
+    {% else %}
+        NA
+    {% endif %}<br>
     <center><a href="{{ image.url }}"><img src="{{ image.url }}" alt="{{ image.name }}"></a></center>
     {% if user == image.user %}
         {% crispy form %}
