@@ -50,7 +50,7 @@ def index(request, template='./gallery/index.html'):
     else:
         photos = Image.objects.all().order_by('-uploaded')
 
-    if not request.method == "POST" or ('gallery' in request.POST and request.POST['gallery']):
+    if not request.method == "POST" or ('gallery' in request.POST):
         f = UploadForm()
         af = ArtistForm(request.POST)
         ctx = {'entry': entry, 'form': f, 'photos': photos, 'artist': af}
