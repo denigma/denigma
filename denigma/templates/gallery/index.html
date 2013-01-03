@@ -36,11 +36,18 @@
     </style>
 </head>
 <body>
+    <div class="form">
+        <strong></strong>
+        <form method="POST" action=".">{% csrf_token %}
+            <input type="submit" value="Artist"/>{{ artist.gallery }}
+        </form>
+    </div>
     <div class="sidebar">
         <div class="form">
             <strong>{{ form.file.label }}</strong>
             <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
                 {{ form.file }}<br/>
+                {{ form.artist }}<br/>
                 <input type="submit" value="Upload Photo"/>
             </form>
         </div>
@@ -68,14 +75,17 @@
     </div>
     <div> <class="container">
         <div style="padding:1em;">
-{% for photo in photos %}
-    <img class="photo" src="{{photo.url}}" />
-{% endfor %}
+    {% for photo in photos %}
+        <img class="photo" src="{{ photo.url }}" />
+    {% endfor %}
         </div>
     </div>
+    {% if not artist.gallery %}
+        {% with entry as object %}
+            {% include "comments/wrapper.html" %}
+        {% endwith %}
+    {% endif %}
+{% endblock %}
 </body>
 </html>
-    {% with entry as object %}
-        {% include "comments/wrapper.html" %}
-    {% endwith %}
-{% endblock %}
+

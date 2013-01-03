@@ -25,4 +25,4 @@ class Migration(DataMigration):
             }
         }
 
-complete_apps = ['media']
+    complete_apps = ['media']

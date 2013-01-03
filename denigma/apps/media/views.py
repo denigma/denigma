@@ -6,7 +6,7 @@ TODO:
 - Access control: Granting different users with different access.
   See: http://docs.amazonwebservices.com/AmazonS3/latest/dev/UsingAuthAccess.html
 """
-from django import forms
+from django.contrib.auth.models import User, AnonymousUser
 from django.shortcuts import render
 from django.conf import settings
 
@@ -15,16 +15,16 @@ from boto.s3.key import Key
 
 import mimetypes
 
-from models import Image
-
 try:
     from data import get
 except ImportError:
     pass
 
+from data.views import View
+from add.forms import handlePopAdd
 
-class UploadForm(forms.Form):
-    file = forms.ImageField(label='Select photo to upload')
+from models import Image
+from forms import UploadForm, ArtistForm
 
 
 bucket = "dgallery"
@@ -42,15 +42,25 @@ def store_in_s3(filename, content, bucket=bucket):
 
 def index(request, template='./gallery/index.html'):
     entry = get("Gallery")
-    photos = Image.objects.all().order_by('-uploaded')
-    if not request.method == "POST":
+
+    if 'gallery' in request.POST and request.POST['gallery']:
+        artist = User.objects.get(pk=request.POST['gallery'])
+        photos = Image.objects.filter(artist=artist).order_by('-uploaded')
+    else:
+        photos = Image.objects.all().order_by('-uploaded')
+
+    if not request.method == "POST" or ('gallery' in request.POST and request.POST['gallery']):
         f = UploadForm()
-        ctx = {'entry': entry, 'form': f, 'photos': photos}
+        af = ArtistForm(request.POST)
+        ctx = {'entry': entry, 'form': f, 'photos': photos, 'artist': af}
         return render(request, template, ctx)
 
     f = UploadForm(request.POST, request.FILES)
+    af = ArtistForm(request.POST)
+
+
     if not f.is_valid() and not request.FILES['file'].name.endswith('.svg'):
-        ctx = {'entry': entry, 'form': f, 'photos': photos}
+        ctx = {'entry': entry, 'form': f, 'photos': photos, 'artist': af}
         return render(request, template, ctx)
 
     file = request.FILES['file']
@@ -61,10 +71,28 @@ def index(request, template='./gallery/index.html'):
     #content = file['content']
     store_in_s3(file.name, file.read())
     p = Image(url="http://%s.s3.amazonaws.com/%s" % (bucket, file.name))
+    print request.user, type(request.user)
+    if isinstance(request.user, AnonymousUser):
+         p.user = User.objects.get(username="Anonymous")
+    else:
+        p.user = User.objects.get(username=request.user)
+    if f.cleaned_data['artist']:
+        p.artist = User.objects.get(username=f.cleaned_data['artist'])
     p.save()
     photos = Image.objects.all().order_by('-uploaded')
-    ctx = {'entry': entry, 'form': f, 'photos': photos}
+    ctx = {'entry': entry, 'form': f, 'photos': photos, 'artist': af}
     return render(request, template, ctx)
+
+
+
+class Slides(View):
+    def get_context_data(self, **kwargs):
+        context = super(Slides, self).get_context_data(**kwargs)
+        import re
+        #context['slides'] = re.find
+
+def newImage(request):
+    return handlePopAdd(request, UploadForm,  'images')
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
 
