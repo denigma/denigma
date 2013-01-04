@@ -14,7 +14,7 @@ class LinkForm(ModelForm):
     comment = CharField(required=False)
     category = ModelMultipleChoiceField(Category.objects, required=False, widget=MultipleSelectWithPop)
     countries = ModelMultipleChoiceField(Country.objects, required=False, widget=MultipleSelectWithPop)
-    contacts = ModelMultipleChoiceField(Profile.objects, required=False, widget=MultipleSelectWithPop)
+    contacts = ModelMultipleChoiceField(Profile.objects.all().order_by('user_name'), required=False, widget=MultipleSelectWithPop)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
