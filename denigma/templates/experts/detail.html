@@ -7,7 +7,7 @@
 {% load publications %}
 
 {% block hierarchy %}
-    > Expert
+    > <a href="{% url 'experts-profiles' %}">Profiles</a>
     = <a href="{{ expert.get_absolute_url }}">{{ expert.user_name }}</a>
     |     <a href="{% url 'update-expert-profile' expert.pk %}">Update</a>
 {% endblock %}
