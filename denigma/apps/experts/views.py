@@ -59,7 +59,7 @@ def detail(request, expertname, template='experts/detail.html'):
         expert = Profile.objects.get(user_name=expertname.replace('_', ' '))
     except Profile.DoesNotExist:
         expert = Profile.objects.get(pk=expertname)
-    references = Reference.objects.filter(authors__icontains=expert.last_name)
+    references = Reference.objects.filter(authors__icontains=expert.name_initials)
     return render(request, template, {'expert': expert, 'references': references})
 
 
