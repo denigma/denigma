@@ -103,6 +103,10 @@ class Profile(models.Model): # User
     def ad_dict(self):
         return {'name': self.user_name, 'birthday': self.birthday.strftime("%B of %Y")}
 
+    @property
+    def name_initials(self):
+        """Returns the last name plus initials."""
+        return " ".join([self.last_name, self.first_name[0]])
 
 class Collaboration(models.Model):
     project = models.ForeignKey('data.Entry')
