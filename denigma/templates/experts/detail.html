@@ -4,6 +4,7 @@
 {% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
+{% load publications %}
 
 {% block hierarchy %}
     > Expert
@@ -18,7 +19,6 @@
 {% load obfuscation %}
 
 {% block content %}
-
     {% if expert.first_name %}<p><b>First name: </b>{{ expert.first_name }}</p>{% endif %}
     {% if expert.last_name %}<p><b>Last name: </b>{{ expert.last_name }}</p>{% endif %}
     {% if expert.middel_name %}<p><b>Middle name:</b>{{ expert.middle_name }}</p>{% endif %}
@@ -64,7 +64,13 @@
         {% for reference in references %}
             <li><a href="{% url 'detail-reference' reference.pk %}">{{ reference }}</a></li>
         {% endfor %}
-    {% endif %}
+    {% endif %}<br>
+    <b>Publications</b>:
+    {% with expert|medline as publications %}
+        {% for key, value in publications.items %}
+            <li><a href="{% url 'detail-reference' key %}">{{ key }}: {{ value }}</a></li>
+        {% endfor %}
+    {% endwith %}
     <hr>
     <b><a href="{% url 'update-expert-profile' expert.pk %}">Update</a></b>
     {% with expert as object %}
