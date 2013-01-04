@@ -4,6 +4,7 @@
 {% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
+{% load publications %}
 
 {% block head_title %}{{ object.repr }}{% endblock %}
 
@@ -15,7 +16,7 @@
 {% block title %}{{ object.title }}{% endblock %}
 
 {% block content %}
-    <p><b>Authors</b>: {{ object.authors }}</p>
+    <p><b>Authors</b>: {{ object.authors|authors }}</p>
     <p><b>Abstract</b>: {{ object.abstract }}</p>
     {% if object.keywords %}<b>Keywords</b>: {{ object.keywords }}<br>{% endif %}
     <table width="100%">

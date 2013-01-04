@@ -44,7 +44,7 @@
         <b>Organisations</b>:
         {% for link in expert.link_set.all %}
            <li><a href="{{ link.get_absolute_url }}">{{ link }}</a></li>
-        {% endfor %}
+        {% endfor %}<br>
     {% endif %}
     {% if expert.publications.all %}
         <b>Publications</b>:
@@ -68,7 +68,7 @@
     <b>Publications</b>:
     {% with expert|medline as publications %}
         {% for key, value in publications.items %}
-            <li><a href="{% url 'detail-reference' key %}">{{ key }}: {{ value }}</a></li>
+            <li><a href="{% url 'detail-reference' key %}">{{ key }} {{ value }}</a></li>
         {% endfor %}
     {% endwith %}
     <hr>
