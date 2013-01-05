@@ -60,7 +60,8 @@ def detail(request, expertname, template='experts/detail.html'):
     except Profile.DoesNotExist:
         expert = Profile.objects.get(pk=expertname)
     references = Reference.objects.filter(authors__icontains=expert.name_initials)
-    return render(request, template, {'expert': expert, 'references': references})
+    pmids = [reference.pmid for reference in references]
+    return render(request, template, {'expert': expert, 'references': references, 'pmids': pmids})
 
 
 class ProfileList(TableFilter):
