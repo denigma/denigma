@@ -49,4 +49,5 @@ admin.site.register(WorkingHour, WorkingHourAdmin)
 admin.site.register(OpeningTime, OpeningTimeAdmin)
 admin.site.register(Institute, InstituteAdmin)
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Collaboration)
 
