@@ -13,11 +13,11 @@ register = Library()
 def medline(author):
     """Fetches all publications of an author using the name."""
     results = {}
-    name = "-".join([author.last_name, author.first_name[0]])
+    name = " ".join([author.last_name, author.first_name[0]])
     r = Entrez.read(Entrez.esearch(db='pubmed', term=name))
     records = Entrez.read(Entrez.esummary(db="pubmed", id=",".join(r['IdList'])))
     for r in records:
-        results[r['Id']] = r['Title']
+        results[int(r['Id'])] = r['Title']
     return results
 
 @register.filter

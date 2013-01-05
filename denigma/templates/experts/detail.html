@@ -68,7 +68,9 @@
     <b>Publications</b>:
     {% with expert|medline as publications %}
         {% for key, value in publications.items %}
-            <li><a href="{% url 'detail-reference' key %}">{{ key }} {{ value }}</a></li>
+            {% if key not in pmids %}
+                <li><a href="{% url 'detail-reference' key %}">{{ key }} {{ value }}</a></li>
+            {% endif %}
         {% endfor %}
     {% endwith %}
     <hr>
