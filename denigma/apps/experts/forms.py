@@ -21,7 +21,6 @@ class ProfileForm(ModelForm):
                 'first_name',
                 'middle_name',
                 'last_name',
-                'user_name',
                 'email',
                 'affiliation',
                 'country',
@@ -49,16 +48,16 @@ class ProfileForm(ModelForm):
 
     class Meta:
         model = Profile
-        exclude = ('working_hours', 'business_hours', 'user', 'password')
+        exclude = ('working_hours', 'business_hours', 'user', 'password', 'user_name',)
 
 
 class CollaborationForm(ModelForm):
     comment = CharField(required=False)
     project = ModelChoiceField(Entry.objects, required=False, widget=SelectWithPop)
     labs = ModelMultipleChoiceField(
-        Link.objects.filter(category__title__icontains='Research').distinct(),
+        Link.objects.filter(category__title__icontains='Research').distinct().order_by('title'),
         required=False, widget=MultipleSelectWithPop)
-    members = ModelMultipleChoiceField(Profile.objects, required=False,
+    members = ModelMultipleChoiceField(Profile.objects.all().order_by('user_name'), required=False,
         widget=MultipleSelectWithPop)
 
     def __init__(self, *args, **kwargs):
