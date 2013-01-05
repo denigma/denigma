@@ -5,4 +5,4 @@ class ProfileFilterSet(FilterSet):
     fields = ('country', 'entries') # 'gender''collaboration'
 
 class CollaborationFilterSet(FilterSet):
-    fields = ('project', 'labs', 'members')
+    fields = ('labs', 'members')# 'project',

@@ -15,6 +15,7 @@ class ProfileTable(tables.Table):
     def render_email(self, record, value):
         return mark_safe('<a href="mailto:%s">%s</a>' % (value, obfuscate(value)))
 
+
     class Meta:
         model = Profile
         attrs = {'class': 'paleblue'}
@@ -34,8 +35,11 @@ class CollaborationTable(tables.Table):
     def render_members(self, record, value):
         return mark_safe('<a href="%s">%s</a>' % (record.get_absolute_url(), value.count()))
 
+    def render_id(self, record, value):
+        return mark_safe("; ".join(['<a href="%s">%s</a>' % (member.get_absolute_url(), member.last_name) for member in record.members.all()]))
+
     class Meta:
         model = Collaboration
         attrs = {'class': 'paleblue'}
-        exclude = ('id',)
-        fields = ('project', 'labs', 'members')
+        #exclude = ('id',)
+        fields = ('project', 'labs', 'members', 'id')
