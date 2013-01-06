@@ -21,6 +21,8 @@ class ProfileForm(ModelForm):
                 'first_name',
                 'middle_name',
                 'last_name',
+                'user_name',
+                'password',
                 'email',
                 'affiliation',
                 'country',
@@ -48,7 +50,7 @@ class ProfileForm(ModelForm):
 
     class Meta:
         model = Profile
-        exclude = ('working_hours', 'business_hours', 'user', 'password', 'user_name',)
+        exclude = ('working_hours', 'business_hours', 'user')#, 'password')#, 'user_name',)
 
 
 class CollaborationForm(ModelForm):
