@@ -101,7 +101,7 @@ class Profile(models.Model): # User
     def get_url(self):
         """Enables to get the absolute urls only of non-pseudo names."""
         if self.password:
-            return 'http://en.wikipedia.org/wiki/%s' % self.user_name
+            return 'http://en.wikipedia.org/wiki/%s' % self.password
         return self.get_absolute_url()
 
     def save(self, *args, **kwargs):
