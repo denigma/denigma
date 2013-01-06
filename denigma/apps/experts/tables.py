@@ -36,7 +36,7 @@ class CollaborationTable(tables.Table):
         return mark_safe('<a href="%s">%s</a>' % (record.get_absolute_url(), value.count()))
 
     def render_id(self, record, value):
-        return mark_safe("; ".join(['<a href="%s">%s</a>' % (member.get_absolute_url(), member.last_name) for member in record.members.all()]))
+        return mark_safe("; ".join(['<a href="%s">%s</a>' % (member.get_absolute_url(), member.user_name.split(' ')[-1]) for member in record.members.all()]))
 
     class Meta:
         model = Collaboration

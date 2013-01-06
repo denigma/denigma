@@ -60,7 +60,7 @@ class Profile(models.Model): # User
                              verbose_name=_('user'),
                              related_name='data')
     user_name = models.CharField(_('Name'), max_length=30, unique=True, blank=True) #
-    password = models.CharField(max_length=128, blank=True)
+    password = models.CharField("Pseudonym", max_length=128, blank=True)
     first_name = models.CharField(_('first name'), max_length=30) # models.TextField(max_length=50)
     middle_name = models.CharField(_('middle name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'),max_length=30, blank=True) # models.TextField(max_length=50)
@@ -97,6 +97,12 @@ class Profile(models.Model): # User
 
     def get_absolute_url(self):
         return reverse('experts-profile', args=[self.user_name.replace(' ', '_')])
+
+    def get_url(self):
+        """Enables to get the absolute urls only of non-pseudo names."""
+        if self.password:
+            return 'http://en.wikipedia.org/wiki/%s' % self.user_name
+        return self.get_absolute_url()
 
     def save(self, *args, **kwargs):
         if not self.user_name:
