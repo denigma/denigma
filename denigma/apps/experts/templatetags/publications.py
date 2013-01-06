@@ -1,6 +1,7 @@
 """Provides template tags for author reference mappings."""
 from django.template import Library
 from django.utils.safestring import mark_safe
+from django.contrib.auth.decorators import login_required
 
 from Bio import Entrez
 Entrez.email = 'age@liv.ac.uk'
@@ -27,5 +28,5 @@ def authors(names):
     experts = dict([(p.name_initials, p) for p in Profile.objects.all()])
     for index, name in enumerate(names):
         if name in experts:
-            names[index] = '<a href="%s">%s</a>' % (experts[name].get_absolute_url(), name)
+            names[index] = '<a href="%s">%s</a>' % ('#', name) # experts[name].get_absolute_url()
     return mark_safe("; ".join(names))
