@@ -90,7 +90,10 @@ class Profile(models.Model): # User
         if not self.middle_name:
             return self.user_name
         else:
-            return " ".join([self.first_name, self.middle_name, self.last_name])
+            if self.middle_name:
+                return " ".join([self.first_name, self.middle_name, self.last_name])
+            else:
+                return " ".join([self.first_name, self.last_name])
 
     def get_absolute_url(self):
         return reverse('experts-profile', args=[self.user_name.replace(' ', '_')])
