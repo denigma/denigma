@@ -3,10 +3,10 @@ from django.utils.safestring import mark_safe
 
 from django_tables2 import tables
 
-from data.templatetags.rendering import markdown
+#from data.templatetags.rendering import markdown
 
 from models import Profile, Collaboration
-from templatetags.obfuscation import obfuscate
+#from templatetags.obfuscation import obfuscate
 
 
 class ProfileTable(tables.Table):
@@ -45,8 +45,8 @@ class CollaborationTable(tables.Table):
     def render_people(self, record, value):
         return mark_safe("; ".join(['<a href="%s">%s</a>' % (member.get_url(), member.password or member.last_name) for member in record.members.all()]))
 
-    def render_description(self, record, value):
-        return markdown(value)
+#    def render_description(self, record, value):
+#        return markdown(value)
 
     class Meta:
         model = Collaboration
