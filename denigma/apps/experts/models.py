@@ -122,8 +122,21 @@ class Collaboration(models.Model):
     labs = models.ManyToManyField('links.Link')
     members = models.ManyToManyField('experts.Profile', related_name="collaborations")
 
+    @property
+    def description(self):
+        return self.project.brief()
+
+    def people(self):
+        return self.members.all()
+
     def __unicode__(self):
         return self.project.title
 
     def get_absolute_url(self):
         return reverse('collaboration', args=[self.pk])
+
+#class CollaborationMember(models.Model):
+#    collaboration = models.ForeignKey('Collaboration')
+#    profile = models.ForeignKey('Profile')
+#    pseudonym = models.CharField
+# through='CollaborationMember'

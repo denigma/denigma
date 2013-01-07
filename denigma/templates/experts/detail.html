@@ -22,7 +22,9 @@
     {% if expert.first_name %}<p><b>First name: </b>{{ expert.first_name }}</p>{% endif %}
     {% if expert.middle_name %}<p><b>Middle name:</b> {{ expert.middle_name }}</p>{% endif %}
     {% if expert.last_name %}<p><b>Last name: </b>{{ expert.last_name }}</p>{% endif %}
-    {% if expert.email %}<p><b>Email: </b><a href="mailto:{{ expert.email }}">{{ expert.email|obfuscate }}</a></p>{% endif %} {# # #}
+    {% if user.is_authenticated %}
+        {% if expert.email %}<p><b>Email: </b><a href="mailto:{{ expert.email }}">{{ expert.email|obfuscate }}</a></p>{% endif %}
+    {% endif %}
     {% if expert.phone %}<p><b>Phone: </b>{{ expert.phone }}</p>{% endif %}
     {% if expert.mobile %}<p><b>Mobile: </b>{{ expert.mobile }}</p>{% endif %}
     {% if expert.gender %}

@@ -12,16 +12,21 @@ class ProfileTable(tables.Table):
     def render_user_name(self, record, value):
         return mark_safe('<a href="%s">%s</a>' % (record.get_absolute_url(), value))
 
-    def render_email(self, record, value):
-        return mark_safe('<a href="mailto:%s">%s</a>' % (value, obfuscate(value)))
+    def render_work(self, record, value):
+        if value:
+            return value #[:50] + '...'
+        return value
+
+    #def render_email(self, record, value):
+    #    return mark_safe('<a href="mailto:%s">%s</a>' % (value, obfuscate(value)))
 
 
     class Meta:
         model = Profile
         attrs = {'class': 'paleblue'}
-        fields = ('user_name', 'affiliation', 'country', 'email', 'website', 'collaboration')
+        fields = ('user_name', 'affiliation', 'country', 'work', 'collaboration') #'email'
         exclude = ('id', 'user', 'gender', 'password', 'first_name', 'last_name',
-                   'work', 'mobile', 'msn', 'street', 'state', 'zip_code', 'birthday')
+                    'mobile', 'msn', 'street', 'state', 'zip_code', 'birthday', 'website', )
 
 
 class CollaborationTable(tables.Table):
@@ -33,13 +38,16 @@ class CollaborationTable(tables.Table):
         return mark_safe('<a href="%s">%s</a>' % (record.get_absolute_url(), value.count()))
 
     def render_members(self, record, value):
-        return mark_safe('<a href="%s">%s</a>' % (record.get_absolute_url(), value.count()))
+        return mark_safe('<a href="%s">%s</a>' % (record.get_absolute_url(), record.members.count()))
 
-    def render_id(self, record, value):
+    def render_people(self, record, value):
         return mark_safe("; ".join(['<a href="%s">%s</a>' % (member.get_url(), member.password or member.last_name) for member in record.members.all()]))
+
+#    def render_description(self, record, value):
+#        return
 
     class Meta:
         model = Collaboration
         attrs = {'class': 'paleblue'}
-        #exclude = ('id',)
-        fields = ('project', 'labs', 'members', 'id')
+        exclude = ('id',)
+        fields = ('project', 'labs', 'members', 'people', 'description')
