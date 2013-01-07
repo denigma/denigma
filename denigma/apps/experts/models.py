@@ -119,7 +119,7 @@ class Profile(models.Model): # User
 
 class Collaboration(models.Model):
     project = models.ForeignKey('data.Entry')
-    labs = models.ManyToManyField('links.Link')
+    labs = models.ManyToManyField('links.Link', verbose_name='Organizations')
     members = models.ManyToManyField('experts.Profile', related_name="collaborations")
 
     @property
