@@ -4,6 +4,7 @@
 {% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
+{% load pubmed_linker %}
 
 {% block hierarchy %}
      > <a href="{% url 'species' %}">Species</a>
@@ -23,7 +24,7 @@
         {% endfor %}<br>
     {% endif %}
     <b>Number of genes:</b> {{ species.number_genes }}<br>
-    <b>Description:</b> <ul>{{ species.description|markdown|hyper|recross|safe }}</ul><br>
+    <b>Description:</b> <ul>{{ species.description|markdown|hyper|recross|pubmed_links|safe }}</ul><br>
     {% for image in species.images.all %}
         <a href="{{ image.get_absolute_url }}"><img src="{{ image.url }}" alt="{{ image.name }}"></a>
     {% endfor %}
