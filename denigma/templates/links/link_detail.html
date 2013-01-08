@@ -48,7 +48,7 @@
     {% if object.contacts.all %}
         <b>Contacts</b>
         {% for contact in object.contacts.all %}
-            {{ contact }}{% if not forloop.last %}, {% endif %}
+            <a href="{{ contact.get_absolute_url }}">{{ contact }}</a>{% if not forloop.last %}, {% endif %}
         {% endfor %}
     {% endif %}
     <hr>
