@@ -16,6 +16,8 @@ from tagging.models import Tag
 
 #from south.modelinspector import add_introspection_rules
 #add_introspection_rules([])
+from managers import ResearchManager
+
 
 
 class LinkPublishedManager(models.Manager):
@@ -65,8 +67,9 @@ class Link(models.Model):
                                 choices=settings.LANGUAGES, default='en')
     url = models.URLField(_('url'), default=None)
     description = models.TextField(_('description'), blank=True)
-    category = models.ManyToManyField(Category, verbose_name=_('categories'),
+    category = models.ManyToManyField(Category, verbose_name=_('category'),
                                       null=True)
+    categories = models.ManyToManyField('data.Entry',  related_name='links', blank=True, null=True)
     countries = models.ManyToManyField('Country', verbose_name=_("Countries of residence"),
         blank=True, null=True)
     visibility = models.BooleanField(_('visibility'), default=True)
@@ -84,8 +87,11 @@ class Link(models.Model):
     contact = models.CharField(max_length=255, blank=True, null=True)
     tags = TagField()
 
+    #research = ResearchManager()
+
     def __unicode__(self):
         return self.title
+
 
 #    def set_tags(self, tags):
 #        Tag.objects.update_tags(self, tags)
@@ -95,6 +101,10 @@ class Link(models.Model):
 
     def get_absolute_url(self):
         return reverse('link', args=[self.pk])
+
+    def save(self, *args, **kwargs):
+        self.url = self.url.strip() # Strips away leading and trailing spaces.
+        super(Link, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = _('link')
