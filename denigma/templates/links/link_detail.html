@@ -44,7 +44,7 @@
         <b>Categories</b>:
         {% for category in object.categories.all %}
             <a href={{ category.get_absolute_url }}>{{ category }}</a>{% if not forloop.last %}, {% endif %}
-        {% endfor %}
+        {% endfor %}<br>
     {% endif %}
     {# {{ object.site }}<br> #}
     <b>Description</b>:<ul>{{ object.description|markdown|hyper|recross|safe }}</ul>
