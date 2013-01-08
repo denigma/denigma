@@ -1,9 +1,11 @@
-from django.forms import Form, ModelForm, CharField, FileField, Textarea
+from django.forms import Form, ModelForm, CharField, FileField, Textarea, ModelMultipleChoiceField
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit
 from crispy_forms.bootstrap import FormActions
 
+from data.models import Entry
+from add.forms import MultipleSelectWithPop
 from models import Reference
 
 
@@ -17,6 +19,7 @@ class UploadForm(Form):
 
 class ReferenceForm(ModelForm):
     notes = CharField(widget=Textarea, required=False)
+    categories = ModelMultipleChoiceField(Entry.objects.all().order_by('title'), required=False, widget=MultipleSelectWithPop)
     comment = CharField(required=False)
 
     def __init__(self, *args, **kwargs):
