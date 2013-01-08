@@ -5,6 +5,8 @@ from django import forms
 import reversion
 from pagedown.widgets import AdminPagedownWidget
 
+from datasets.models import Reference
+
 from models import Entry, Change, Relation, Alteration, Category, Tag
 
 
@@ -30,6 +32,13 @@ class EntryAdminForm(forms.ModelForm):
         help_text='<a href="http://docutils.sourceforge.net/docs/user/rst/'
                   'quickref.html">reStructuredText Quick Reference</a>'
     )
+    references = forms.ModelMultipleChoiceField(
+        label= 'References',
+        queryset=Reference.objects.all(),
+        required=False,
+        help_text='References to the literature.',
+        widget=admin.widgets.FilteredSelectMultiple('references', False)
+    )
 
 
 class EntryAdmin(reversion.VersionAdmin):
@@ -40,11 +49,23 @@ class EntryAdmin(reversion.VersionAdmin):
     #inlines = [RelationInline]
     form = EntryAdminForm
 
+
     def save_model(self, request, obj, form, change):
         print("EntryAdmin.save_model here!")
         obj.user = request.user
         obj.request = request
         obj.save()
+
+        obj.references.clear()
+        for reference in form.cleaned_data['references']:
+            obj.references.add(reference)
+
+    def get_form(self, request, obj=None, **kwargs):
+        if obj:
+            self.form.base_fields['references'].initial = [o.pk for o in obj.references.all()]
+        else:
+            self.form.base_fields['references'].intial = []
+        return super(EntryAdmin, self).get_form(request, obj, **kwargs)
 
 
 class RelationAdmin(reversion.VersionAdmin):

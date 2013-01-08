@@ -90,6 +90,8 @@ class Reference(models.Model):
     language = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(max_length=75, blank=True, null=True)
 
+    categories = models.ManyToManyField('data.Entry', blank=True, null=True, related_name='references')
+
     def __unicode__(self):
         return u"{0} {1}".format(self.pmid, self.title)
 
@@ -360,10 +362,12 @@ class Gendr(models.Model):
 class Change(models.Model):
     name = models.CharField(max_length=250)
     taxid = models.IntegerField(null=True, blank=True)
+    #species = models.ForeignKey('annotations.Species', null=True, blank=True)
     reference = models.CharField(max_length=250, null=True, blank=True)
     pmid = models.IntegerField(null=True, blank=True)
     tissue = models.CharField(max_length=250, null=True, blank=True)
-    comparision = models.CharField(max_length=250, null=True, blank=True)
+    #tissue = models.ForeignKey('annotations.Tissue', null=True, blank=True)
+    comparision = models.CharField(max_length=250, null=True, blank=True) # Rename comparison either (age, mutant or diet)
     start = models.CharField(max_length=250, null=True, blank=True) # experimental (exp)
     stop = models.CharField(max_length=250, null=True, blank=True) # control (ctr)
     gender = models.CharField(max_length=25, blank=True)

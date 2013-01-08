@@ -23,15 +23,16 @@ class ReferenceForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
         self.helper.layout = Layout(
-            Fieldset('Either a PMID or a title is totally sufficient to create a reference.', 'pmid', 'title', 'notes', 'label', 'comment'),
+            Fieldset('Either a PMID or a title is totally sufficient to create a reference.',
+                'pmid', 'title', 'notes', 'label', 'categories', 'comment'),
             FormActions(
                 Submit('save', 'Save', css_class="btn-primary"),
-                Submit('cancel', 'Cancel', cass_class="btn-danger")
+                Submit('cancel', 'Cancel', css_class="btn-danger")
             )
         )
         super(ReferenceForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Reference
-        fields = ('pmid', 'title', 'label', 'notes')
+        fields = ('pmid', 'title', 'notes', 'label', 'categories')
 
