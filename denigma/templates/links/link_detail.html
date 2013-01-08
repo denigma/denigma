@@ -35,11 +35,16 @@
         {% endfor %}
     {% endif %}
     {% if object.category.all %}
-        <b>Categories</b>:
+        <b>Category</b>:
         {% for category in object.category.all %}
             <a href="{% url 'links-category' category.slug %}">{{ category }}</a>{% if not forloop.last %}, {% endif %}
         {% endfor %}
     {% endif %}<br>
+    {% if objects.categories.all %}
+        {% for category in object.categories.all %}
+            <a href={{ category.get_absolute_url }}>{{ category }}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    {% endif %}
     {# {{ object.site }}<br> #}
     <b>Description</b>:<ul>{{ object.description|markdown|hyper|recross|safe }}</ul>
     <b>URL</b>: <a href="{{ object.url }}">{{ object.url }}</a><br>
