@@ -8,6 +8,7 @@ Entrez.email = 'age@liv.ac.uk'
 
 from experts.models import Profile
 
+
 register = Library()
 
 @register.filter
@@ -28,5 +29,5 @@ def authors(names):
     experts = dict([(p.name_initials, p) for p in Profile.objects.all()])
     for index, name in enumerate(names):
         if name in experts:
-            names[index] = '<a href="%s">%s</a>' % ('#', name) # experts[name].get_absolute_url()
+            names[index] = '<a href="%s">%s</a>' % (experts[name].get_absolute_url(), name)
     return mark_safe("; ".join(names))
