@@ -21,7 +21,7 @@
     {% if object.members.all %}
         <b>Participating Members ({{ object.members.all|length }})</b>:
         {% for member in object.members.all %}
-            <a href="{{ project.get_absolute_url }}">{{ member}}</a>{% if not forloop.last %}, {% endif %}
+            <a href="{{ member.get_absolute_url }}">{{ member}}</a>{% if not forloop.last %}, {% endif %}
         {% endfor %}<br><br>
     {% endif %}
         {% with object.project as entry %}
