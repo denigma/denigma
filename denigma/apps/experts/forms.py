@@ -13,8 +13,7 @@ from models import Profile, Collaboration, Country
 
 class ProfileForm(ModelForm):
     comment = CharField(required=False)
-    nation = ModelChoiceField(Country.objects.all(), required=False,
-        widget=MultipleSelectWithPop)
+    nation = ModelChoiceField(Country.objects.all(), required=False, widget=SelectWithPop)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
