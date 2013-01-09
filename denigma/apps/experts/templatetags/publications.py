@@ -17,9 +17,10 @@ def medline(author):
     results = {}
     name = " ".join([author.last_name, author.first_name[0]+(author.middle_name or [''])[0]])
     r = Entrez.read(Entrez.esearch(db='pubmed', term=name))
-    records = Entrez.read(Entrez.esummary(db="pubmed", id=",".join(r['IdList'])))
-    for r in records:
-        results[int(r['Id'])] = r['Title']
+    if r['IdList']:
+        records = Entrez.read(Entrez.esummary(db="pubmed", id=",".join(r['IdList'])))
+        for r in records:
+            results[int(r['Id'])] = r['Title']
     return results
 
 @register.filter
