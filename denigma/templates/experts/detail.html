@@ -67,13 +67,15 @@
             <li><a href="{% url 'detail-reference' reference.pk %}">{{ reference }}</a></li>
         {% endfor %}
     {% endif %}<br>
-    <b>Publications</b>:
     {% with expert|medline as publications %}
-        {% for key, value in publications.items %}
-            {% if key not in pmids %}
-                <li><a href="{% url 'detail-reference' key %}">{{ key }} {{ value }}</a></li>
-            {% endif %}
-        {% endfor %}
+        {% if publications %}
+            <b>Publications</b>:
+            {% for key, value in publications.items %}
+                {% if key not in pmids %}
+                    <li><a href="{% url 'detail-reference' key %}">{{ key }} {{ value }}</a></li>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     {% endwith %}
     <hr>
     <b><a href="{% url 'update-expert-profile' expert.pk %}">Update</a></b>
