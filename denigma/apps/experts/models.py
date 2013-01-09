@@ -67,7 +67,7 @@ class Profile(models.Model): # User
     user = models.ForeignKey(User, blank=True, null=True, unique=True, # user = models.OneToOneField(User, unique=True)
                              verbose_name=_('user'),
                              related_name='data')
-    user_name = models.CharField(_('Name'), max_length=30, unique=True, blank=True) #
+    user_name = models.CharField(_('Name'), max_length=40, unique=True, blank=True) #
     password = models.CharField("Pseudonym", max_length=128, blank=True)
     first_name = models.CharField(_('first name'), max_length=30) # models.TextField(max_length=50)
     middle_name = models.CharField(_('middle name'), max_length=30, blank=True)
