@@ -72,6 +72,7 @@ class CategoryForm(ModelForm):
 
 
 class CountryForm(ModelForm):
+    comment = CharField(required=False)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
