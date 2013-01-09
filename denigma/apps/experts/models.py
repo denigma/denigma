@@ -4,6 +4,14 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
+try:
+    from links.models import Country
+except:
+    class Country(models.Model):
+        abbreviation = models.CharField(max_length=10)
+        name = models.CharField(max_length=50)
+
+
 
 class Day(models.Model): #sOfWeek:
     """The day of the week."""
@@ -79,6 +87,7 @@ class Profile(models.Model): # User
     state = models.CharField(max_length=30, blank=True, null=True)
     zip_code = models.IntegerField(max_length=7, blank=True, null=True)
     country = models.CharField(max_length=30, blank=True)
+    nation = models.ForeignKey(Country, blank=True, null=True)
     business_hours = models.ManyToManyField(BusinessHour, blank=True)
     work = models.TextField(blank=True, null=True)
     website = models.URLField(_('website'), blank=True) # verify_exists=True Deprecated in 1.5
@@ -117,10 +126,13 @@ class Profile(models.Model): # User
         """Returns the last name plus initials."""
         return " ".join([self.last_name, self.first_name[0]])
 
+
+
 class Collaboration(models.Model):
     project = models.ForeignKey('data.Entry')
     labs = models.ManyToManyField('links.Link', verbose_name='Organizations')
     members = models.ManyToManyField('experts.Profile', related_name="collaborations")
+    #leader = models.ForeignKey('experts.Profile', related_name='contact')
 
     @property
     def description(self):

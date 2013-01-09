@@ -8,11 +8,13 @@ from add.forms import SelectWithPop, MultipleSelectWithPop
 from data.models import Entry
 from links.models import Link
 
-from models import Profile, Collaboration
+from models import Profile, Collaboration, Country
 
 
 class ProfileForm(ModelForm):
     comment = CharField(required=False)
+    nation = ModelChoiceField(Country.objects.all(), required=False,
+        widget=MultipleSelectWithPop)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
@@ -26,6 +28,7 @@ class ProfileForm(ModelForm):
                 'email',
                 'affiliation',
                 'country',
+                'nation',
                 'state',
                 'city',
                 'street',
