@@ -53,7 +53,9 @@
     {% else %}
         <p>No data changes.</p>
     {% endif %}
-    {% include "comments/wrapper.html" %}
+    {% if object.text %}
+        {% include "comments/wrapper.html" %}
+    {% endif %}
 {% endblock content %}
 
 
