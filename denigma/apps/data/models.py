@@ -7,7 +7,7 @@ from django.db import models, IntegrityError, transaction
 from django.db.models import Q
 from django.core.signals import request_finished
 from django.db.models.signals import pre_save, post_save, m2m_changed
-from managers import EntryManager
+#from managers import EntryManager
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
@@ -114,7 +114,7 @@ class Entry(Content):
     tagged_changed = []
     comment = ''
 
-    objects = EntryManager()
+    #objects = EntryManager()
 
     def __init__(self, *args, **kwargs):
         """Keeps a copy of its original state."""
