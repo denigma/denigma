@@ -26,7 +26,7 @@
                 {{ entry.content|markdown|hyper|recross|safe }}
             </td>
             <td valign="top" style="width: 250px">
-                {% for image in entryimages.all %}
+                {% for image in entry.images.all %}
                     <a href="{% url 'detail-entry' entry.slug %}"><img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250"></a>
                 {% endfor %}
             </td>
