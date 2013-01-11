@@ -1,6 +1,7 @@
 {% extends "pastebin/base.html" %}
 
-{% load i18n %}	
+{% load i18n %}
+{% load hyperlink %}
 
 {% block hierarchy %}
     > <a href="/pastebin">Paste Bin Messaging</a>
@@ -12,7 +13,7 @@
 {% block content %}
 {% comment %}<h1>Pasted Item</h1>{% endcomment %}
 <pre>
-<p>{{ object.text }}</p>
+<p>{{ object.text|hyper|safe }}</p>
 </pre>
 <div id="basic-form">
 <fieldset>
