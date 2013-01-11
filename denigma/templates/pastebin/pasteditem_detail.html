@@ -1,6 +1,8 @@
 {% extends "pastebin/base.html" %}
 
 {% load i18n %}
+{% load rendering %}
+{% load crosslink %}
 {% load hyperlink %}
 
 {% block hierarchy %}
@@ -13,7 +15,7 @@
 {% block content %}
 {% comment %}<h1>Pasted Item</h1>{% endcomment %}
 <pre>
-<p>{{ object.text|hyper|safe }}</p>
+<p>{{ object.text|hyper|recross|safe }}</p>
 </pre>
 <div id="basic-form">
 <fieldset>
