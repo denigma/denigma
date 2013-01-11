@@ -106,7 +106,7 @@ class CollaborationList(TableFilter):
             for term in terms:
                 qs = qs.filter(Q(project__title__icontains=term) |
                                Q(labs__title__icontains=term) |
-                               Q(members__user_name__icontains=term))
+                               Q(members__user_name__icontains=term)).distinct()
         self.filterset = CollaborationFilterSet(qs, self.request.GET)
         return self.filterset.qs
 
