@@ -219,7 +219,7 @@ class Entrez(models.Model):
     taxid = models.IntegerField()
 
     def __unicode__(self):
-        return self.symbol
+        return self.gene_symbol
 
     class Meta:
          verbose_name_plural = u"entrez"
