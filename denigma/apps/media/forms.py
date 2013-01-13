@@ -4,6 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit
 from crispy_forms.bootstrap import FormActions
 
+
 from django import forms
 from models import Image
 
@@ -17,6 +18,7 @@ class UploadForm(forms.Form):
 
 
 class ArtistForm(forms.Form):
+
     gallery = forms.ModelChoiceField(User.objects.all())
 
     class Meta:
