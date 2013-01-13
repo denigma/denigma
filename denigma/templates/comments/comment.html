@@ -1,6 +1,8 @@
 {% load i18n %}
 {% load rendering %}
 {% load comments %}
+{% load hyperlink %}
+{% load crosslink %}
 
 <div{% if preview %} id="comment-preview"{% else %} id="c{{ comment.id }}"{% endif %} class="comment-item"
                                                                                       xmlns="http://www.w3.org/1999/html">
@@ -17,7 +19,7 @@
     </h4>
     {% endspaceless %}
     <blockquote>
-        <div class="comment-text">{{ comment.comment|markdown|linebreaks }}</div>
+        <div class="comment-text">{{ comment.comment|hyper|recross|markdown|linebreaks }}</div> {# safe #}
         <a href="{% get_comment_permalink comment %}">permalink for comment {{ forloop.counter }}</a>
     </blockquote>
 </div>
