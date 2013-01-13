@@ -17,6 +17,7 @@ class TranscriptAdmin(admin.ModelAdmin):
     list_filter = ('signature',)
     search_fields = ('seq_id', 'symbol')
 
+
 class GeneAdmin(admin.ModelAdmin):
     list_filter = ('signature',)
 
@@ -30,6 +31,7 @@ admin.site.register(Replicate)
 admin.site.register(Contrast)
 admin.site.register(Array)
 admin.site.register(Probe)
+
 
 ##class ChoiceInline(admin.TabularInline): #StackedInline
 ##    model = Choice
@@ -203,18 +205,18 @@ admin.site.register(Probe)
 #    list_filter = ['mapping', 'cycling']
 #admin.site.register(Cc3, Cc3Admin)
 #
-#class CdAdmin(admin.ModelAdmin):
-#    list_display = ('gene_symbol',
-#                    'scn', 'liv', 'kid', 'aor', 'skm', 'hat', 'adg', 'bat',
-#                    'wat', 'bon', 'wat', 'pfr', 'wb', 'atr', 'ven',
-#                    'num_tissue',
-#                    'range_p',
-#                    'peak_mean',
-#                    'entrez_gene_id',
-#                    'mapping', )
-#    search_fields = ['gene_symbol', 'mapping', 'entrez_gene_id']
-#    list_filter = ['mapping']
-#admin.site.register(Cd, CdAdmin)
+class CdAdmin(admin.ModelAdmin):
+    list_display = ('gene_symbol',
+                    'scn', 'liv', 'kid', 'aor', 'skm', 'hat', 'adg', 'bat',
+                    'wat', 'bon', 'wat', 'pfr', 'wb', 'atr', 'ven',
+                    'num_tissue',
+                    'range_p',
+                    'peak_mean',
+                    'entrez_gene_id',
+                    'mapping', )
+    search_fields = ['gene_symbol', 'mapping', 'entrez_gene_id']
+    list_filter = ['mapping']
+admin.site.register(Cd, CdAdmin)
 #
 #class CrSignatureAdmin(admin.ModelAdmin):
 #    list_display = ('gene_symbol', 'gene_name', 'total', 'overexp', 'underexp', 'classification', 'entrez_gene_id', 'mapping')
