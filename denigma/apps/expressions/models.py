@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Q
 
+
 class Replicate(models.Model):
     #probe = models.ForeignKey('Probe')
     probe_id = models.CharField(max_length=255)
