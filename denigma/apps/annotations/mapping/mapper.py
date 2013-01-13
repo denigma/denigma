@@ -21,13 +21,16 @@ from operator import itemgetter, attrgetter
 
 if os.name == 'posix':
     try:
-        import annotations
-        PATH = annotations.__path__[0]
-    except Exception as e:
-        print("annotations.mapper: Could not set path. %s" % e)
-        #PATH = '/media/SDATA1/annotations'
-        #PATH = '/home/daniel/denigma/denigma/apps/annotations'
-        PATH = '/home/denigma/denigma/apps/annotations'
+        import development
+        PATH = '/media/SDATA1/annotations'
+    except:
+        try:
+            import annotations
+            PATH = annotations.__path__[0]
+        except Exception as e:
+            print("annotations.mapper: Could not set path. %s" % e)
+            #PATH = '/home/daniel/denigma/denigma/apps/annotations'
+            PATH = '/home/denigma/denigma/apps/annotations'
 
     import sys
     sys.path.append('/media/SDATA1')
