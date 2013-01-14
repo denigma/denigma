@@ -12,7 +12,7 @@ from django.shortcuts import render
 from django.conf import settings
 from django.utils.html import escape
 from django.http import HttpResponse
-
+from django.core.urlresolvers import reverse_lazy
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 
@@ -23,7 +23,8 @@ try:
 except ImportError:
     pass
 
-from data.views import View
+from data.views import View, Delete
+from data.forms import DeleteForm
 from add.forms import handlePopAdd
 
 from models import Image
@@ -135,6 +136,13 @@ class Slides(View):
         import re
         #context['slides'] = re.find
 
+
+class DeleteImage(Delete):
+    model = Image
+    form = DeleteForm
+    comment = 'Deleted image'
+    success_url = reverse_lazy('media')
+    template_name = 'gallery/image_confirm_delete.html'
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
 

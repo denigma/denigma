@@ -1,0 +1,17 @@
+{% extends 'gallery/base.html' %}
+
+{% load url from future %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ action }} {{ object.name }}{% endblock %}
+
+{% block hierarchy %}
+    » <a href="{{ object.url }}">{{ object.name }}</a>
+    » Delete
+{% endblock %}
+
+{% block title %}{{ action }} {{ object.name }}{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}
