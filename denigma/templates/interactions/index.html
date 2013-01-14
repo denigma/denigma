@@ -17,7 +17,7 @@
                     {{ entry.content|markdown|hyper|recross|safe }}
                 {% endif %}
             </td>
-            <td valign="top" align="right" style="width: 250">
+            <td valign="top" align="right" style="width: 250px">
                 {% for image in entry.images.all %}
                     <img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250">
                 {% endfor %}
