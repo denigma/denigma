@@ -27,7 +27,20 @@
         {% with object.project as entry %}
             {% include "data/render_entry.html" %}
         {% endwith %}<br>
+    {% if object.project.references.all %}
+        <b>References</b>:
+        {% for reference in object.project.references.all %}
+            <li><a href="{{ reference.get_absolute_url }}">{{ reference }}</a></li>
+        {% endfor %}<br>
+    {% endif %}
+    {% if object.project.links.all %}
+        <b>Links</b>:
+        {% for link in object.project.links.all %}
+            <li><a href="{{ link.get_absolute_url }}">{{ link }}</li>
+        {% endfor %}<br>
+    {% endif %}
     <hr>
     <b><a href="{% url 'update-collaboration' object.pk %}">Update</a></b>
     {% include "comments/wrapper.html" %}
+
 {% endblock %}
