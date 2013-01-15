@@ -38,9 +38,9 @@
         {% endif %}
     </p>
     {% if object.is_rest %}
-        {{ object.text|hyper|negle|reST|neglete|markdown|recross|pubmed_links|safe }} {# {{ object.text|reST|safe }} {# restructuredtext }} #}
+        {{ object.text|hyper|negle|reST|neglete|markdown|recross|generate|pubmed_links|safe }} {# {{ object.text|reST|safe }} {# restructuredtext }} #}
     {% else %}
-        {{ object.text|markdown|hyper|recross|pubmed_links|safe }}
+        {{ object.text|markdown|hyper|recross|generate|pubmed_links|safe }}
     {% endif %}
     {% for image in object.images.all %}
         <center><a href="{{ image.get_absolute_url }}"><img src="{{ image.url }}" alt="{{ image.name }}" /></a></center>
