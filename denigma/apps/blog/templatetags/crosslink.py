@@ -1,4 +1,5 @@
-"""A diverse set of crossling algorithms to cross-link blog posts witheach other."""
+# -*- coding: utf-8 -*-
+"""A diverse set of crosslinking algorithms to cross-link blog posts witheach other."""
 
 import re
 
@@ -54,7 +55,7 @@ def crossed(text):
 def recross(text):
     """Takes a text and replaces words that match a key in the posts dictionary with
     the associated cross-linked value, return the changed text."""
-    entries = dict([(e.title, '<a href="{0}">{1}</a>'.format(e.get_absolute_url(), e.title))\
+    entries = dict([(e.title, u'<a href="{0}">{1}</a>'.format(e.get_absolute_url(), e.title))\
             for e in Entry.objects.all()])
     if entries: # Check if whether database is non-empty (as it is by setting up).
         rc = re.compile('|'.join(map(re.escape, entries)))
