@@ -347,9 +347,12 @@ class GenerateRelation(Create):
 
     def get_initial(self):
         initial = super(GenerateRelation, self).get_initial()
-        initial['fr'] = Entry.objects.get(title__icontains=self.source.replace('_', ' ')).pk
-        initial['be'] = Entry.objects.get(title__icontains=self.type.replace('_', ' ')).pk
-        initial['to'] = Entry.objects.get(title__icontains=self.target.replace('_', ' ')).pk
+        try: initial['fr'] = Entry.objects.get(title__icontains=self.source.replace('_', ' ')).pk
+        except: pass
+        try: initial['be'] = Entry.objects.get(title__icontains=self.type.replace('_', ' ')).pk
+        except: pass
+        try: initial['to'] = Entry.objects.get(title__icontains=self.target.replace('_', ' ')).pk
+        except: pass
         del self.source
         del self.type
         del self.target
