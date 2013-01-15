@@ -29,7 +29,7 @@ class DataList(EntryList):
 
 class ProjectView(ListView):
     template_name = "alliance/project_list.html"
-    queryset = Collaboration.objects.filter(labs__title__istartswith="Inte")
+    queryset = Collaboration.objects.filter(labs__title="International Longevity Alliance")
 
 
 class ProjectDetail(DetailView):
