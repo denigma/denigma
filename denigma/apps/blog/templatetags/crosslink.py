@@ -66,6 +66,6 @@ def generate(text):
     rc = re.compile(r'\[\[(?P<title>.+)\]\]')
     def translate(match):
         title = match.group(1)
-        return '<a href="http://denigma.de/generate/%s" style="color: #CC0000">%s</a>' % (title, title)
+        return '<a href="http://denigma.de/data/entry/generate/%s" style="color: #CC0000">%s</a>' % (title, title)
     return rc.sub(translate, text).replace('[[', '').replace(']]', '')
 
