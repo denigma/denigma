@@ -5,7 +5,7 @@
 {% block head_title %}Collaboration {{ object.title }}{% endblock %}
 
 {% block hierarchy %}
-    > {{ object.title }}
+    » <a href="{{ object.project.get_absolute_url }}">{{ object.project.title }}</a>
     | <a href="{% url 'update-collaboration' object.pk %}">Update</a>
 {% endblock %}
 
