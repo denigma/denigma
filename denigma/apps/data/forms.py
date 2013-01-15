@@ -32,7 +32,7 @@ class EntryForm(ModelForm):
                #'class':'wmd-input', 'id': 'wmd-input'
         }),
         help_text='<a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">reStructuredText Quick Reference</a>\
-     | <a href="daringfireball.net/projects/markdown/basics">Markdown Basics</a></p>')
+     | <a href="http://daringfireball.net/projects/markdown/basics">Markdown Basics</a></p>')
     comment = CharField(help_text='Optional, used for revision control.',
         required=False)
 #    references = ModelMultipleChoiceField(
