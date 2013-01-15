@@ -1,0 +1,36 @@
+{% extends "alliance/site_base.html" %}
+
+{% load url from future %}
+
+{% block head_title %}Projects{% endblock %}
+
+{% block hierarchy %}
+    » Projects
+{% endblock %}
+
+{% block title %}Projects{% endblock %}
+
+{% block content %}
+    <hr>
+    {% for object in object_list %}
+        <table width="100%">
+            <tr>
+                <td valign="top" style="width: 250px" width="50%">
+                    {% for image in object.project.images.all %}
+                        {% if forloop.first %}
+                            <a href="{{ object.get_absolute_url }}"></a><img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250"</a>
+                        {% endif %}
+                    {% endfor %}<br>
+                </td>
+                <td valign="top">
+                    <a href="{% url 'alliance-project' object.pk %}"><h3>{{ object.project.title }}</h3></a>
+                    {% for member in object.members.all %}
+                        <a href="{{ member.get_absolute_url }}">{{ member.user_name }}</a>{% if not forloop.last %},{% endif %}
+                    {% endfor %}<br>
+                    {{ object.project.brief }} <b><a href="{% url 'alliance-project' object.pk %}">Read more</a></b>
+                </td>
+            </tr>
+        </table>
+        <hr>
+    {% endfor %}
+{% endblock %}

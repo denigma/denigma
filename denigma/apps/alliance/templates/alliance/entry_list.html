@@ -1,0 +1,99 @@
+{% extends "alliance/site_base.html" %}
+
+{% load url from future %}
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+{% load sets %}
+
+{% load render_table from django_tables2 %}
+
+
+{% block head_title %}Entry List{% endblock %}
+
+{% block hierarchy %}
+    » <a href={% url 'alliance-data' %}>Data</a>
+    » List
+    | <a href={% url 'create-entry' %}>Create</a>
+{% endblock %}
+
+{% block options %}
+    | <a href={% url 'data-entry-feed' %}><img src="http://dgallery.s3.amazonaws.com/feed.png"></a>
+{% endblock %}
+
+{% block title %}Data List{% endblock %}
+
+{% block content %}
+    <table width="100%" border="0">
+        <tr>
+            <td valign="top">
+                {{ entry.content|markdown|hyper|recross|safe }}
+                <hr>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Filter" />{{ form.filter }} {{ count }} data entries
+                    {{ filter.form.filter }}
+                    {{ filterset }}
+                </form>
+            </td>
+            <td valign="top" style="width: 250px">
+                {% for image in entry.images.all %}
+                    <a href="{% url 'alliance-entry' entry.slug %}"><img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250"></a>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+    {% if object_list %}
+
+        {% for entry in object_list %}
+            <hr>
+            <table width="100%">
+                <tr>
+                    <td valign="top">
+                        <a href={% url 'alliance-entry' entry.slug %}><h2>{{ entry.title }}</h2></a>
+
+                        Created on {{ entry.created }} by <a href={% url 'profile_detail' entry.creator.username %}> {{ entry.creator.username }}</a>
+                        {% if entry.updates.all|unique|length > 1 %}
+                            & updated by
+                            {% for updater in entry.updates.all|unique %}
+                                {% if updater != entry.creator %}<a href={{ updater.get_absolute_url }}>{{ updater }} </a>{% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {#  Published on {{ entry.pub_date }} by {{ entry.publisher }} #}
+
+                        {{ entry.brief|markdown|hyper|recross|safe }}
+
+                        <b>Tags</b>:
+                        {% for tag in entry.tags.all %}
+                            <a href={% url 'entry-tag' tag.slug %}>{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    <div class="categories">
+                        {% if entry.categories.all %}
+                            <b>Categories</b>:
+                            {% for category in entry.categories.all %}
+                                <a href={{ category.get_absolute_url }}>{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="parent">
+                        {% if entry.parent %}
+                            <b>Parent</b>: <a href={{ entry.parent.get_absolute_url }}>{{ entry.parent.title }}</a>
+                        {% endif %}
+                    </div>
+                    </td>
+                    <td align="right">
+                        {% for image in entry.images.all %}
+                            <a href={% url 'alliance-entry
+                            ' entry.slug %}><img src={{ image.url }} alt={{ image.name }} width=250 height=250 /></a>
+                        {% endfor %}
+                    </td>
+                </tr>
+            </table>
+        {% endfor %}
+    {% endif %}
+    {% include "pagination.html" %}
+    <b><a href={% url 'create-entry' %}>Create entry</a></b> (<a href="/admin/data/entry/add/">Admin</a>)
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
+{% endblock %}

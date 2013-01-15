@@ -1,0 +1,125 @@
+{% extends "alliance/theme_base.html" %}
+
+{% load url from future %}
+{% load metron_tags %}
+{% load i18n %}
+
+{% block nav %}
+    <ul class="nav" xmlns="http://www.w3.org/1999/html">
+		<li id="tab_nav"> <a href="{% url 'alliance-home' %}">Home</a></li>
+        <li id="tab_nav"> <a href="{% url 'alliance-data' %}">Data</a></li>
+        <li id="tab_nav"> <a href="{% url 'alliance-about' %}">About</a></li>
+        <li id="tab nav"> <a href="{% url 'alliance-manifesto' %}">ILA Manifesto</a></li>
+        <li id="tab_nav"> <a href="{% url 'alliance-take-action' %}">Take Action</a></li>
+        <li id="tab_nav"> <a href="{% url 'alliance-projects' %}">Projects</a></li>
+        {# Simple hover drowdown menu: #}
+        <style>
+            ul.nav li.dropdown:hover ul.dropdown-menu{
+                display: block;
+                margin: 0;
+            }
+        </style>
+
+    {% comment %}
+
+                 <li id="tab_third" class="dropdown">
+                 <a href="/aspects/" class="dropdown-toggle" data-toggle="dropdown">
+                     Aspects
+                     <b class="caret"></b>
+                 </a>
+                 <ul class="dropdown-menu">
+                     <li><a href="/aspects/research/">Research</a></li>
+                     <li><a href="/aspects/programming/">Programming</a></li>
+                     <li><a href="/aspects/design">Design</a></li>
+                     <li class="divider"</li>
+                     <li><b><h3><a href="/aspects/professions/">Professions</a></h3></b></li>
+                     <li><a href="/aspects/profession/scientist/">Scientist</a></li>
+                     <li><a href="/aspects/profession/developer/">Developer</a></li>
+                     <li><a href="/aspects/profession/artist/">Artist</a></li>
+                 </ul>
+             </li>
+
+                     <li><a href="/aspects/research/">Research/Scientist</a></li>
+                     <li><a href="/aspects/programming/">Programming/Developer</a></li>
+                     <li><a href="/aspects/design">Design/Artist</a></li>
+                     {%  endcomment %}
+
+
+    <style>body { overflow:scroll; }</style> {# This adds a scrollbar to all pages and prevents jumping of the header by switching #}
+
+    {% comment %}
+<style>
+ul.nav li.dropdown:hover ul.dropdown-menu{
+    display: block;
+    margin-top: 0px;
+}
+</style>
+
+<div style="z-index: 5;" class="topbar-wrapper">
+
+      <div class="topbar-inner">
+        <div class="container">
+          <h3><a href="#">Project Name</a></h3>
+          <ul class="nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" href="#">Dropdown</a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Secondary link</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Another link</a></li>
+              </ul>
+            </li>
+          </ul>
+          <form action="" class="pull-left">
+            <input type="text" placeholder="Search">
+          </form>
+          <ul class="nav secondary-nav">
+            <li class="dropdown">
+              <a class="dropdown-toggle" href="#">Dropdown</a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Secondary link</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Another link</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div><!-- /topbar-inner -->
+    </div><!-- /topbar -->
+  </div>
+
+{% endcomment %}
+
+
+{% endblock %}
+
+{% comment %} A menu right below the navigation.
+{% block menu %}
+   <a href="/polls">Polls</a> |
+   <a href="/shorty">URL</a> |
+   <a href="/wiki/page/Start/">Wiki</a> |
+   <a href="/media/">Gallery</a> |
+   <a href="/meta">Meta</a> |
+   <a href="/blog/">Blog</a> |
+   <a href="/contact/">Contact</a> |
+   <a href="/todos/">Todo</a> |
+   <a href="/experts/">Experts</a> |
+   <a href="/time/">Time</a> |
+{% endblock %}
+{% endcomment %}
+
+
+{% block footer %}
+    {% include "alliance/_footer.html" %}
+{% endblock %}
+
+{% block extra_body_base %}
+    {% analytics %}
+    {% block extra_body %}{% endblock %}
+{% endblock %}

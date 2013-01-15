@@ -1,0 +1,46 @@
+{% extends "alliance/site_base.html" %}
+
+{% load url from future %}
+
+{% block head_title %}Project {{ object.title }}{% endblock %}
+
+{% block hierarchy %}
+    » <a href="{% url 'detail-entry' object.project.slug %}">{{ object.project.title }}</a>
+    | <a href="{% url 'update-collaboration' object.pk %}">Update</a>
+{% endblock %}
+
+{% block title %}Project <a href="{{ object.project.get_absolute_url }}">{{ object.project.title }}</a>{% endblock %}
+
+{% block content %}
+    {% if object.labs.all %}
+        <b>Involved Labs/Organisations ({{ object.labs.all|length }})</b>:
+        {% for lab in object.labs.all %}
+            <a href="{{ lab.get_absolute_url }}">{{ lab }}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}<br>
+    {% endif %}
+    {% if object.members.all %}
+        <b>Participating Members ({{ object.members.all|length }})</b>:
+        {% for member in object.members.all %}
+            <a href="{{ member.get_absolute_url }}">{{ member}}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}<br><br>
+    {% endif %}
+        {% with object.project as entry %}
+            {% include "data/render_entry.html" %}
+        {% endwith %}<br>
+    {% if object.project.references.all %}
+        <b>References</b>:
+        {% for reference in object.project.references.all %}
+            <li><a href="{{ reference.get_absolute_url }}">{{ reference }}</a></li>
+        {% endfor %}<br>
+    {% endif %}
+    {% if object.project.links.all %}
+        <b>Links</b>:
+        {% for link in object.project.links.all %}
+            <li><a href="{{ link.get_absolute_url }}">{{ link }}</li>
+        {% endfor %}<br>
+    {% endif %}
+    <hr>
+    <b><a href="{% url 'update-collaboration' object.pk %}">Update</a></b>
+    {% include "comments/wrapper.html" %}
+
+{% endblock %}

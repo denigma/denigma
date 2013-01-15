@@ -308,6 +308,7 @@ INSTALLED_APPS = [
 
     'experts',
     'southtut',
+    'alliance',
     'books',
     'chrono',
     'meta',

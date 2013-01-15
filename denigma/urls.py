@@ -110,6 +110,7 @@ urlpatterns += patterns("",
     url(r'^meta/', include('meta.urls')),
     url(r'^add/', include('add.urls')),
     url(r'^eva/', include('eva.urls')),
+    url(r'^alliance', include('alliance.urls')),
 
 )
 if settings.SERVE_MEDIA:

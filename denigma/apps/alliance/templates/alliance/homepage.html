@@ -1,0 +1,69 @@
+{% extends "alliance/banner_base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+{% load ifsetting_tag %}
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}{% trans "International Longevity Alliance" %}{% endblock %}
+
+{% block body_class %}Home{% endblock %}
+
+{% block extra_style %}
+    <style type="text/css">
+        h1 {color:blue;}
+        p
+    </style>
+{% endblock %}
+
+{% block hierarchy %}
+    » Home
+{% endblock %}
+
+{% block banner %}
+<table width="100%">
+    <tr>
+        <td width="33%">
+            <center><img src="http://longevityalliance.s3.amazonaws.com/globe.gif" alt="globe" width="100" height="100"></center>
+        </td>
+        <td width=33%" valign="top" valign="center" align="center">
+            <centre>
+            <h2>International</h2>
+            <h3>Longevity Alliance</h3>
+            <h4>Politcal and social advocacy for scientific life expresion</h4>
+            {{ denigma_description.content|markdown|hyper|recross|safe }} {# {% blocktrans %}{% endblocktrans %} #}
+            {{ denigma_rationality.content|markdown|hyper|recross|safe }} {#  {% blocktrans %}{% endblocktrans %} #}
+        </td>
+        </centre>
+        <td style="width: 250px" valign="center" align="center">
+            <div>
+                <a href="{% url 'detail-entry' 'denigmas-logo' %}">
+                    <img src="http://longevityalliance.s3.amazonaws.com/logo.svg" alt="Longevity Alliance" height="200" width="200" style="float:right">
+                </a>
+            </div>
+        </td>
+    </tr>
+</table>
+{% comment %}
+    {% if user.is_authenticated %}
+        {% url 'what_next' as what_next_url %}
+        <p class="what_next">{% blocktrans %}Wondering <a href="{{ what_next_url }}" class="btn primary large">What Next</a>?{% endblocktrans %}</p>
+    {% else %}
+        {% url acct_login as login_url %}
+        {% ifsetting ACCOUNT_OPEN_SIGNUP %}
+            {% url 'acct_signup' as signup_url %}
+            <p>{% blocktrans %}You can <a href="{{ login_url }}" class="btn">Log In</a> or <a href="{{ signup_url }}" class="btn btn-primary">Sign Up</a> to participate in the digital revolution.{% endblocktrans %}</p>
+        {% else %}
+            <p>{% blocktrans %}You can <a href="{{ login_url }}" class="btn btn-primary btn-large">Log In</a> to try out the site.{% endblocktrans %}</p>
+        {% endifsetting %}
+    {% endif %}
+{% endcomment %}
+{% endblock %}
+
+
+
+
+
+

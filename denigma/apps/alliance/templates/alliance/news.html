@@ -1,0 +1,44 @@
+{% load url from future %}
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
+<hr>
+<h2>News</h2>
+<hr>
+{% for anews in news %}
+    <table border="0" color="white" width="100%">
+        <tr>
+            <td width="15%" align="left" style="width: 150">
+                {% for image in anews.images.all %}
+                    {% if forloop.last %}
+                        <a href={% url 'alliance-entry' anews.slug %}><img src={{ image.url }} alt={{ image.name }} width="150" height="150"></a>
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td valign="top">
+                <a href="{% url 'alliance-entry' anews.slug %}"><h3>{{ anews.title }}</h3></a>
+
+                <div class="news_meta">
+                    <centre>{{ anews.created|date:"d | M"}}</centre>
+                    {#{% if post.created != post.updated %}({{ post.updated|date:"d | M" }}){% endif %}#}
+                </div>
+
+                <div class="news_body">
+                    {{ anews.brief|markdown|hyper|recross|safe }}<b><a href="{% url 'alliance-entry' anews.slug %}">Read more</a></b>
+                </div>
+
+                <div class="tags">
+                    {% for tag in anews.tags.all %}
+                        {% if tag != "news" %}
+                            <a href={% url 'entry-tag' tag.slug %}>{{ tag }}</a>{% endif %}{% if not forloop.last %},
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </td>
+        </tr>
+    </table>
+    <hr>
+{% endfor %}
+
+
