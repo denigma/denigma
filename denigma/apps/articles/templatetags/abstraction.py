@@ -7,7 +7,7 @@ from django import template
 register = template.Library()
 
 @register.filter
-def abstract(value):
+def abstract(value, limit=150):
     """Gets the abstract of a article."""
 #    if not isinstance(value, (unicode, str)):
 #        return value.text
@@ -17,7 +17,7 @@ def abstract(value):
     elif "Abstract" in value:
        return value.replace('\r', '').split('Abstract\n========\n\n')[1].replace('==', '').split('\n')[0]
     else:
-        return value[:150]
+        return value[:int(limit)]
 
 
     paragraphs = value.replace('Abstract', '').replace('==', '').replace('## ', '').replace('--', '').replace('=', '').replace('\r', '').split('\n')
