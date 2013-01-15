@@ -330,6 +330,34 @@ class Generate(Create):
         return initial
 
 
+class GenerateRelation(Create):
+    model = Relation
+    form_class = RelationForm
+    comment = 'Generated relation.'
+    message = 'Successfully generated %s'
+    action = 'Generate'
+    def dispatch(self, request, *args, **kwargs):
+        self.source = kwargs['source']
+        self.type = kwargs['type']
+        self.target = kwargs['target']
+        del kwargs['source']
+        del kwargs['type']
+        del kwargs['target']
+        return super(GenerateRelation, self).dispatch(request, *args, **kwargs)
+
+    def get_initial(self):
+        initial = super(GenerateRelation, self).get_initial()
+        initial['fr'] = Entry.objects.get(title__icontains=self.source.replace('_', ' ')).pk
+        initial['be'] = Entry.objects.get(title__icontains=self.type.replace('_', ' ')).pk
+        initial['to'] = Entry.objects.get(title__icontains=self.target.replace('_', ' ')).pk
+        del self.source
+        del self.type
+        del self.target
+
+        return initial
+
+
+
 class Update(UpdateView):
     model = Entry
     form_class = EntryForm

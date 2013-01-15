@@ -3,8 +3,10 @@
 import re
 
 from django import template
+from django.conf import settings
+from django.db.models import Q
 
-from data.models import Entry
+from data.models import Entry, Relation
 
 
 register = template.Library()
@@ -67,7 +69,21 @@ def generate(text):
     def translate(match):
         title = match.group(1)
         if not title.startswith('<'):
-            return '<a href="http://denigma.de/data/entry/generate/%s" style="color: #CC0000">%s</a>' % (title, title)
+            return '<a href="%s/data/entry/generate/%s" style="color: #CC0000">%s</a>' % (settings.BASE_URL, title, title)
         return title
     return rc.sub(translate, text).replace('[[', '').replace(']]', '')
 
+
+@register.filter
+def relate(text):
+    rc = re.compile(r'<p>(?P<source>.+)#(?P<type>.+)#(?P<target>.+)</p>')
+    def translate(match):
+        source, type, target = match.group('source'), match.group('type'), match.group('target')
+        source_label, type_label, target_label = source.title().replace('_', ' '), type.replace('_', ' '), target.title().replace('_', ' ')
+        try:
+            relation = Relation.objects.get(Q(fr__title=source_label) & Q(be__title=type_label) & Q(to__title=target_label))
+            return '%s %s %s' % (source_label, type_label, target_label)
+        except Exception as e:
+            return '<a href="%s/data/relation/generate/%s/%s/%s" style="color: #CC0000">%s %s %s</a>' % \
+                (settings.BASE_URL, source, type, target, source, type, target)
+    return rc.sub(translate, text)

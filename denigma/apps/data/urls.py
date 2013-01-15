@@ -8,7 +8,7 @@ from taggit.models import Tag
 from models import Entry, Change, Relation, Alteration, Category
 from views import Entries, EntryList, EntryView,  EntryCreate, EntryUpdate, EntryDelete, Generate,\
                   ChangeList, ChangeView, \
-                  RelationCreate, RelationUpdate, RelationList, \
+                  RelationCreate, RelationUpdate, RelationList, GenerateRelation, \
                   AlterationList,\
                   CategoryCreate, CategoryUpdate, CategoryList, \
                   TagDetail, TagList, \
@@ -60,10 +60,13 @@ urlpatterns = patterns('data.views',
     # Relations:
     ## Class-Views
     url(r'^relations/list', RelationList.as_view(), name='list-relations'),
+    url(r'^relation/generate/(?P<source>.+)/(?P<type>.+)/(?P<target>.+)',
+        login_required(GenerateRelation.as_view()), name='generate-relation'),
     url(r'^relation/(?P<pk>\d+)', DetailView.as_view(model=Relation), name='relation-details'),
     url(r'^relation/create', RelationCreate.as_view(), name='create-relation'),
     url(r'^relation/update/(?P<pk>\d+)', login_required(RelationUpdate.as_view()), name='update-relation'),
     url(r'^relation/delete', login_required(DeleteView.as_view(model=Relation)), name='delete-relation'),
+
     ## Function-Views:
     url(r'^relations/$', 'relations', name='relations'),
     url(r'relation/feed', RelationFeed(), name='data-relation-feed'),
