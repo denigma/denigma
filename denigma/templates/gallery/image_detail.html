@@ -34,8 +34,8 @@
     {% if user == image.user %}
         {% crispy form %}
     {% endif %}
-    {% if user.is_superuser %}
-        <a href="{% url 'delete-image' image.pk %}">Delete</a>
+    {% if user.is_authenticated %}
+        <b><a href="{% url 'delete-image' image.pk %}">Delete</a></b>
     {% endif %}
     {% include "comments/wrapper.html" %}
 {% endblock %}
