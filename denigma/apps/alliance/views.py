@@ -10,7 +10,7 @@ from experts.models import Collaboration
 
 def index(request, template="alliance/homepage.html"):
     about, manifesto, take_action = get('About the Alliance'), get('ILA Manifesto'), get('Take Action')
-    news = Entry.objects.filter(tags__name='alliance').order_by('-created')
+    news = Entry.objects.filter(tags__name='alliance').order_by('-created')[:5]
     ctx = {'about': about,
            'manifesto': manifesto,
            'take_action': take_action,
