@@ -14,16 +14,16 @@
     {% include "data/render_entry.html" %}
     <hr>
     {% for object in object_list %}
-        <table width="100%">
+        <table width="100%" border="0">
             <tr>
-                <td valign="top" style="width: 250px" width="50%">
+                <td width="25%" valign="top" style="width: 250px" >
                     {% for image in object.project.images.all %}
                         {% if forloop.first %}
                             <a href="{{ object.get_absolute_url }}"></a><img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250"</a>
                         {% endif %}
                     {% endfor %}<br>
                 </td>
-                <td valign="top">
+                <td  width="75%" valign="top">
                     <a href="{% url 'alliance-project' object.pk %}"><h3>{{ object.project.title }}</h3></a>
                     {% for member in object.members.all %}
                         <a href="{{ member.get_absolute_url }}">{{ member.user_name }}</a>{% if not forloop.last %},{% endif %}
