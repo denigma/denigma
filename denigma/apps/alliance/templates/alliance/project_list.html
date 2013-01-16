@@ -11,6 +11,7 @@
 {% block title %}Projects{% endblock %}
 
 {% block content %}
+    {% include "data/render_entry.html" %}
     <hr>
     {% for object in object_list %}
         <table width="100%">
