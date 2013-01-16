@@ -313,7 +313,8 @@ INSTALLED_APPS = [
     'chrono',
     'meta',
     'eva',
-
+    'alliance',
+    
     'stats',
     'utils',
     'add',
