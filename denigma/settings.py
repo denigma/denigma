@@ -39,10 +39,12 @@ MANAGERS = ADMINS
 
 SEND_BROKEN_LINK_EMAILS = True # Report 404 errors too.
 
-if os.path.exists(os.path.join(PROJECT_ROOT, 'local_settings.py')):
+try:
+    from local_settings import DATABASES
     BACKEND = 'mysql'
-else:
+except:
     BACKEND = 'sqlite3'
+
 # Either sqlite3 or mysql as well as later on also postgres.
 if BACKEND == 'sqlite3': # Development
     DATABASES = {
