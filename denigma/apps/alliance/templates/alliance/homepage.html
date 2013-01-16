@@ -13,8 +13,8 @@
 
 {% block extra_style %}
     <style type="text/css">
-        h1 {color:blue;}
-        p
+        h2 {color:grey;}
+        h3 {color:#0099FF}
     </style>
 {% endblock %}
 
@@ -28,21 +28,23 @@
         <td width="33%">
             <center><img src="http://longevityalliance.s3.amazonaws.com/globe.gif" alt="globe" width="100" height="100"></center>
         </td>
-        <td width=33%" valign="top" valign="center" align="center">
+        <td width="33%" valign="top" valign="center" align="center">
             <centre>
-            <h2>International</h2>
-            <h3>Longevity Alliance</h3>
+            <h2>INTERNATIONAL</h2>
+            <h3>LONGEVITY ALLIANCE</h3>
             <h4>Politcal and social advocacy for scientific life expresion</h4>
             {{ denigma_description.content|markdown|hyper|recross|safe }} {# {% blocktrans %}{% endblocktrans %} #}
             {{ denigma_rationality.content|markdown|hyper|recross|safe }} {#  {% blocktrans %}{% endblocktrans %} #}
+            </centre>
         </td>
-        </centre>
-        <td style="width: 250px" valign="center" align="center">
+        <td width="33%" style="width: 250px"  valign="centre" align="centre">
+            <centre>
             <div>
-                <a href="{% url 'detail-entry' 'denigmas-logo' %}">
+                <centre>
                     <img src="http://longevityalliance.s3.amazonaws.com/logo.svg" alt="Longevity Alliance" height="200" width="200" style="float:right">
-                </a>
+                 </centre>
             </div>
+            </centre>
         </td>
     </tr>
 </table>

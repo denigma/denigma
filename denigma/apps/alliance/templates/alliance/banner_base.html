@@ -6,6 +6,7 @@
 {% load hyperlink %}
 {% load crosslink %}
 {% load abstraction %}
+{% load splitter %}
 
 {% block body_base %}
     <div class="container">
@@ -22,30 +23,30 @@
             <div class="span4">
                 {% block column-1 %}
                     {% for image in about.images.all %}
-                        <img src="https://s3.amazonaws.com/longevityalliance/ila_first_meeting_cut.jpg" alt="{{ image.name }}" width="200" height="200">
+                        <img src="https://s3.amazonaws.com/longevityalliance/ila_first_meeting_cut.jpg" alt="{{ image.name }}" width="350" height="350">
                     {% endfor %}<br>
                     <a class="btn" href="{% url 'alliance-about' %}">About &raquo;</a><br><br>
-                    {{ about.text|abstract:"289"|markdown|hyper|recross|safe }}
+                    {{ about.text|abstract:"289"|snap|markdown|hyper|recross|safe }}
                     <b><a href="{% url 'alliance-about' %}">Read more</a></b>
                 {% endblock %}
             </div>
             <div class="span4">
                 {% block column-2 %}
                     {% for image in manifesto.images.all %}
-                    <img src="{{ image.url }}" alt="{{ image.name }}" width="200" height="200">
+                    <img src="{{ image.url }}" alt="{{ image.name }}" width="350" height="350">
                     {% endfor %}<br>
                     <a class="btn" href="{% url 'alliance-manifesto' %}">Manifesto &raquo;</a><br><br>
-                    {{ manifesto.text|abstract:"302"|markdown|hyper|recross|safe }}
+                    {{ manifesto.text|abstract:"280"|snap|markdown|hyper|recross|safe }}
                     <b><a href="{% url 'alliance-manifesto' %}">Read more</a></b>
                 {% endblock %}
             </div>
             <div class="span4">
                 {% block column-3 %}
                     {% for image in take_action.images.all %}
-                        <img src="{{ image.url }}" alt="{{ image.name }}" width="200" height="200">
+                        <img src="{{ image.url }}" alt="{{ image.name }}" width="350" height="350">
                     {% endfor %}<br>
                     <a class="btn" href="{% url 'alliance-take-action' %}">Take Action &raquo;</a><br><br>
-                    {{ take_action.text|abstract:"350"|markdown|hyper|recross|safe }}
+                    {{ take_action.text|abstract:"280"|snap|markdown|hyper|recross|safe }}
                     <b><a href="{% url 'alliance-take-action' %}">Read more</a></b>
                 {% endblock %}
             </div>
