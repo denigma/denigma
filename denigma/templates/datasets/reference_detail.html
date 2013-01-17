@@ -57,7 +57,7 @@
         {% if categories %}
             <b>Categories</b>:
             {% for category in object.categories.all %}
-                <a href="{{ category.get_absolute_url }}">{{ category }}</a>
+                <a href="{{ category.get_absolute_url }}">{{ category }}</a>{% if not forloop.last %}, {% endif %}
             {% endfor %}<br>
         {% endif %}
     {% endwith %}
