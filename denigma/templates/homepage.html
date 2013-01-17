@@ -35,7 +35,7 @@
         {% ifsetting ACCOUNT_OPEN_SIGNUP %}
             {% url 'acct_signup' as signup_url %}
             <p>{% blocktrans %}You can <a href="{{ login_url }}" class="btn">Log In</a> or <a href="{{ signup_url }}" class="btn btn-primary">Sign Up</a> to participate in the digital revolution.{% endblocktrans %}
-                <a href="{% url 'detail-entry' 'site-structure' %}" class="btn btn-success">Start here</a></p>
+                <a href="{% url 'detail-entry' 'site-structure' %}" class="btn btn-info">Start here</a></p>
         {% else %}
             <p>{% blocktrans %}You can <a href="{{ login_url }}" class="btn btn-primary btn-large">Log In</a> to try out the site.{% endblocktrans %}</p>
         {% endifsetting %}
