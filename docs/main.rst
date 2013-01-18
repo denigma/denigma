@@ -1,15 +1,25 @@
-=============
-Documentation
-=============
+.. header::
+   Main Doc - page ###Page###
 
-Denigma is not just a Engima which starts with D, the Denigma project is a DDD 
-(Documentation-Driven Development). Its source code is documented from the
-very beginning. Every decision is documented as well as every issue 
-encountered including the corresponding found solution to it.
+.. footer::
+   ###Page###
 
-In contrast to papers and reviews, in Denigma *the ink is never dry*.
-It changes continously until it gets it absolutely right.
+=====================
+Denigma Documentation
+=====================
 
+:Abstract: Denigma is not just a Engima which starts with D, the Denigma 
+    project is a DDD (Documentation-Driven Development). Its source code is 
+    documented from the very beginning. Every decision is documented as well as 
+    every issue encountered including the corresponding found solution to it. 
+    In contrast to papers and reviews, in Denigma *the ink is never dry*. It 
+    changes continuously until it gets it absolutely right.
+
+.. contents::
+
+.. raw:: pdf
+
+   PageBreak oneColumn
 
 Deploying Denigma
 =================
@@ -18,24 +28,35 @@ To deploy Denigma in the clouds the Amazone Web Service (AWS) is used.
 
 1. Launch an Ubuntu AMI:
 
-   Preferable a maverick build such as the ami-975a6de3 (called Giter; which 
-   ships a GIT repository) or the ami-fd7b4089 (called Daily which is 
+   In the past a maverick build such as the ami-975a6de3 (called Giter; which
+   ships a GIT repository) or the ami-fd7b4089 (called Daily which is
    up-to-date and does not require updating/upgrading or more precise minimal 
-   updating/upgrading). Set up of Giter takes approximately 7 minutes and the 
-   Daily takes 3 minutes due to the already installed updates (However the 
-   inclusion of additional third-party libraries increased this time slightly).
+   updating/upgrading) was preferable. However due to updates the use the
+   Ubuntu Cloud Guest AMI ID ami-c1aaabb5 (called Ami which ships Ubuntu 12.04 LTS) is highly
+   recommended
 
-2. Create and mount an seperate EBS Volume to it.
+   Set up of Giter took approximately several minutes and the
+   Daily took a little less bit due to the already installed updates (However the
+   inclusion of additional third-party libraries increased this time significantly).
 
-3. ssh into the machine with the DNS and keypairs aquired from the Amazone 
-Control Center (use bash ami.sh). On the machine: ::
+   The set up of an Ami takes some time.
 
-$ sudo su
-$ cd ..
-$ aptitude install git # Only on Daily, not necessary on Giter. 
-$ git clone https://github.com/hevok/denigma
-$ bash denigma/configure.sh
+2. Create and mount an separate EBS Volume to it.
 
+3. ssh into the machine with the DNS and keypairs acquired from the Amazone
+   Control Center (use bash ami.sh). On the machine::
+
+   $ sudo su
+   $ cd ..
+   $ aptitude install git # Only on Daily, not necessary on Giter. 
+   $ git clone https://github.com/hevok/denigma
+   $ bash denigma/reconnect.sh
+   $ bash denigma/open-port.sh
+   $ sudo bash ./denigma/aws-django -n denigma -d nothing -s "/s" -H <DNS> -D denigma -U denigma -P <PASSWORD>
+
+
+Where <DNS> is the that of the instance that hast the database and <PASSOWRD> is the password
+of the database is there is any.
 
 Developmental Notes
 ===================
@@ -55,7 +76,7 @@ it was unstyled. To solve this issue:
 
    ADMIN_MEDIA_PREFIX = '/django/contrib/admin/media/'
 
-Similiar Pinax static files were also not used right after deploying.
+Similar Pinax static files were also not used right after deploying.
 Copying of the static files from the pinax_theme_botstrat/static/ into project/site/media solved this problem: ::
 
 $ cp -rf /home/denigma/env/lib/python2.6/site-packages/pinax_theme_bootstrap/static/. /home/denigma/denigma/media
@@ -96,7 +117,7 @@ this problem, but is only a suboptimal solution. Adding a RequestContext
 handler to the render_to_response in the search view which was already present 
 in the edit view resolved this issue 
 [http://stackoverflow.com/questions/3197321/csrf-error-in-django].
-
+15186745
 
 mysql in virtual env 
 --------------------
@@ -114,7 +135,6 @@ $ aptitude install libmysqlclient16-dev
 
 $ pip install MySQL-python
 
-
 Depricated Constants
 --------------------
 
@@ -125,7 +145,7 @@ depriciated [http://jira.osqa.net/browse/OSQA-712].
 mysql-ebs
 ---------
  
-Prepare db for snapshot: ::
+Prepare db for snapshot::
 
 $ mysql -u root
 $ FLUSH TABLES WITH READ LOCK;
@@ -133,14 +153,14 @@ $ SHOW MASTER STATUS;
 $ SYSTEM sudo xfs_freeze -f /vol
 
 
-Create Snapshot: ::
+Create Snapshot::
 
 $ SYSTEM sudo xfs_freeze -u /vol
 $ UNLOCK TABLES; # Release lock.
 $ EXIT
 
 
-Clean up: ::
+Clean up::
 
 $ sudo /etc/init.d/mysql stop
 $ sudo umount /etc/mysql /var/lib/mysql /var/log/mysql /vol
@@ -159,6 +179,7 @@ $ bash denigma/reconnect-ebs.sh
 $ bash denigma/open-port.sh
 $ sudo bash ./denigma/aws-django -n denigma -d nothing -s "/s" -H <DNS> -D denigma -U denigma -P <PASSWORD>
 
+ec2-54-246-29-195.eu-west-1.compute.amazonaws.com
 
 Transferring data onto EC2
 --------------------------
@@ -205,7 +226,7 @@ App Renaming
 ------------
 A entire app can be renamed and the south migration history can be preserved by
 performing defined steps [http://stackoverflow.com/questions/4566978/renaming-an-app-with-django-and-south;
-dhttps://github.com/ASKBOT/django-south-app-rename-example/commit/f7f2218af612922416b4164adae589e86de19951
+https://github.com/ASKBOT/django-south-app-rename-example/commit/f7f2218af612922416b4164adae589e86de19951
 
 Database Renaming
 -----------------
@@ -363,12 +384,15 @@ sudo aptitude install gettext
 BitNami
 -------
 
-BitNami provides a DjangoStack for deplyoing projects in the cloud. It might 
-be intersting to try their images. However it is not recommanded to use any 
+BitNami provides a DjangoStack for deploying projects in the cloud.
+The updated BitNami stack includes  Django-1.5 (bitnami-django-stack_).
+It mightbe interesting to try their images.
+However it is not recommended to use any
 stack as it restricts choices and overloads the server with application which 
 might be not used as well as takes of the implementation details and limits 
 customation.
 
+.. _bitnami-django-stack: http://blog.bitnami.org/2012/11/django-15-beta-geodjango-support-for.html
 
 Django
 ------
@@ -508,14 +532,22 @@ Gmail can be used to send Emails of a specfific domain via SES. However,
 the Email address of this domain can not be addressed via SES as it is sayed to be blacklisted. Fortunately, it is not necessary to send Emails from Denigma to Denigma so far.  
 
 
-Django Verbose names
+For debugging set the following::
+
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+This will have the effect that it tires to send to the console instead.
+
+Django Verbose Names
 --------------------
 
 The representative name of a model in admin can be ovewritten via a meta class:
 
-class Meta:
-    verbose_name = "foo"
-    verbose_name_plural = "foobars"
+.. code-block:: python
+
+    class Meta:
+        verbose_name = "foo"
+        verbose_name_plural = "foobars"
 
 
 user access in models methods
@@ -527,7 +559,7 @@ To access current user information in the models.py for templated views the requ
 Database Charset
 ----------------
 The default charset in MySQL is latin1, which is suboptimal as it only provides
-a very limited character set. utf8 is the apperent best coding format. To
+a very limited character set. utf8 is the apparently best coding format. To
 convert a table. To convert a given table to utf8 command this: ::
     ALTER TABLE <table_name> CONVERT TO CHARACTER SET utf8;
 
@@ -537,10 +569,33 @@ conversion is required.
 
 Admin Bootstrap
 ---------------
-TO install bootstrap look for the admin interface: ::
+To install bootstrap look for the admin interface: ::
+
     $ git clone https://github.com/gkuhn1/django-admin-templates-twitter-bootstrap/
     $ pip install -e git+https://github.com/gkuhn1/django-admin-templates-twitter-bootstrap/#egg=django-admin-templates-twitter-bootstrap
 
+
+An alternative alpha version of a restyling of the django admin done with Bootstrap
+ can simple be plugged in by installing the app [https://github.com/riccardo-forina/django-admin-bootstrapped].
+
+Other apps providing bootstrap templates for django.contrib:
+
+- https://github.com/michaelhelmick/django-bootstrap-admin
+- https://github.com/gkuhn1/django-admin-templates-twitter-bootstrap
+- https://github.com/riccardo-forina/django-admin-bootstrapped
+- https://github.com/aobo711/bootstrap-django-admin
+- https://github.com/zbyte64/django-hyperadmin
+
+Admin Revamp
+============
+A django-nuke uses a class per page and populate templates with widgets (php-nukes_).
+A POC of django-hydro the widget composition framework using bootstrap
+[https://github.com/amirouche/django-hydro].
+
+django-hydro was renamed into django-composite [https://github.com/django-composite/django-composite-admin].
+[https://speakerdeck.com/amiramazig/django-composite]
+
+.. php-nuke: http://en.wikipedia.org/wiki/PHP-Nuke
 
 UnicodeError
 ------------
@@ -612,8 +667,6 @@ Dropdown should better be triggered by hover [2-4].
 [2] https://github.com/chrisdev/pinax-theme-foundation/pull/19
 [3] http://stackoverflow.com/questions/8878033/how-to-make-twitter-bootstrap-menu-dropdown-on-hover-rather-than-click
 [4] http://jsfiddle.net/ekjxu/
-#234567891123456789212345678931234567894123456789512345678961234567897123456789
-
 
 Crispy
 ~~~~~~
@@ -628,7 +681,7 @@ Deployment
 The requirements are not installed on the local env.
 On installing the requirements locally, it was found that MySQL-python-1.2.4b3 could not be installed
 because distribute was only version 0.6.24, but version 0.6.28 is required. The same version is
-installed on the global pip on deployment. It was also noted that MySQL-python had to be installed
+installed on the global pip on deployment. It was also noted that MySQL-python had to be pythoinstalled
 extra during deployment. Therefore, the most rational explaination might be that pip failed during
 deployment. virtualenv & distribute shall be always kept up-to-date: ::
 
@@ -650,7 +703,7 @@ Notifications
 
 
 Customizing Styles
------------------
+------------------
 The bootstrap hero-unit was modified to have less margin: ::
 
 }
@@ -812,11 +865,15 @@ MPTT hierarchy can be integrated with the admin by subclasssing `MPTTModelAdmin`
 However this works not well in combination with django-reversion. Either one can be used combined mixins do not
 work as both provide alternative template for the list view [http://django-mptt.github.com/django-mptt/mptt.admin.html].
 
+MPTT has `TreeManyToManyField`, thus it might be possible to have a child with more than one parent.
+Althought the structure does not remain a tree anymore, it becomes a graph.
+
 Hacker
 ------
 A hacker is someone who strives to solve problems in elegant and ingenious
 ways. Part of the path to elegantly solving problems is to use tools that solve
 sub-problems very-well.
+
 
 Renaming Apps
 -------------
@@ -833,4 +890,942 @@ The many-to-many tables had to be altered manually with raw sql: ::
     ALTER TABLE taxonomy_images CHANGE photourl_id image_id INT NOT NULL;
 
 
+DAVID Annotations
+-----------------
+The DAVID API python bindings require suds. suds conflicts with the DjDt django debug toolbox.
+Specifically an error is raised during authentication
+[http://stackoverflow.com/questions/10071005/nonetype-object-has-no-attribute-str-in-suds].
+suds-htj claims to have eliminated this issue [https://github.com/bradleyayers/suds-htj/tree/master/suds].
+
+
+Running Denigma on LTS
+----------------------
+MySQLdb installation faileD with `EnvironmentError: mysql_config not found`.
+
+    aptitude install libmysqlclient-dev
+    pip install MySQL-python
+
+Executing ./manage.py runserver fails with this error:
+ _mysql_exceptions.OperationalError: (1130, "Host 'ip-10-48-111-27.eu-west-1.compute.internal' is not allowed to connect to this MySQL server")
+
+Also the EBS appears not to be connected.
+Perhaps because the secruity group need to be default.
+
+Python Version
+--------------
+The hypergeomtric test requires a lngamma function. Scipy provides it, but as Scipy has known
+issues with virtualenv django deployment alternative solutions are seeked. Python build-in math
+module provides also an lngamma function, however this was also included in 2.7+ versions.
+For this reason it is considered to install Python-2.7.4 and make it to the default installation.
+
+ln -sf /home/ubuntu/Downloads/Python-2.7.3/python /usr/bin/python
+
+ls -l /usr/bin/python*
+
+apt-get install python2.7
+
+ln -s /usr/bin/python2.7 /usr/bin/python
+
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 40
+
+
+http://stackoverflow.com/questions/5233536/python-2-7-on-ubuntu
+
+http://eli.thegreenplace.net/2011/10/10/installing-python-2-7-on-ubuntu/
+
+http://www.linuxquestions.org/questions/debian-26/change-default-python-version-605397/
+
+http://www.linuxquestions.org/questions/debian-26/how-do-i-get-apt-get-to-completely-uninstall-a-package-237772/
+
+http://stackoverflow.com/questions/8764562/installed-a-python2-7-as-an-alternate-but-path-to-default-2-6-is-destroyed-sys
+
+http://forums.debian.net/viewtopic.php?p=84898
+
+http://codeghar.wordpress.com/2009/01/27/update-alternatives-in-debian/
+
+
+http://devopsni.com/blog/2012/03/installing-python2-and-python3-on-ubuntu-maverick/
+
+apt-get install python2.7
+apt-get remove python-virtualenv
+wget http://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.7.1.2.tar.gz
+tar xzf virtualenv-1.7.1.2.tar.gz
+cd virtualenv-1.7.1.2.tar.gz
+/usr/bin/python2.6 setup.py install
+apt-get install liblzma-de
+apt-get install libgdbm-dev
+
+wget http://python.org/ftp/python/2.7.3/Python-2.7.3.tgz
+
+pip install orb
+orb init2.7 env
+
+upgrading python seems to be more challenging as initial anticipated. Therefore it is considered to
+deploy Denigma directly onto an Ubuntu instance with LTS 12.4 and Python-2.7 installed as default.
+
+
+No module names pkg_resources
+-----------------------------
+On deployment the requirement were not installed at all and checking the pip freeze in the virtualenv raised an error,
+which was also raised during installation.
+
+An apparent solution is to fix distribute with this command: ::
+
+    curl http://python-distribute.org/distribute_setup.py | python
+
+However, closer inspection of the root of this error gave a simplier solution. It turns out that that the distribute
+installation in the virtualenv corrupts it. Therefore this command was excluded from aws-django deplyoment script: ::
+
+    sudo pip -E /home/$LOCAL_USER/env install distribute
+
+
+Virtualenvwrapper
+-----------------
+http://virtualenvwrapper.readthedocs.org/en/latest/
+
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
+
+
+
+Database Engine
+---------------
+Moving to the newest Ubuntu version caused issues with ForeignKeys to new created tables
+[http://stackoverflow.com/questions/6178816/django-cannot-add-or-update-a-child-row-a-foreign-key-constraint-fails].
+The reason for this was that the all Denigma db tables were MyISAM but the most recent version of MySQL has
+InnoDB as default. Therefore all tables were converted into InnoDB in one go.
+
+References:
+http://highervisibilitywebsites.com/convert-your-mysql-database-myisam-innodb-and-get-ready-drupal-7-same-time
+
+http://kvz.io/blog/2010/04/27/convert-all-tables-to-innodb-in-one-go/
+
+
+Encoding
+--------
+
+SELECT default_character_set_name FROM information_schema.SCHEMATA
+WHERE schema_name = "database_name";
+
+
+To switch the charset default of the entire database run: ::
+
+    ALTER DATABASE <database_name> CHARACTER SET utf8;
+
+mysqldump --add-drop-table database_to_correct | replace CHARSET=latin1 CHARSET=utf8 | iconv -f latin1 -t utf8 | mysql database_to_correct
+
+mysqldump --add-drop-table denigma | replace CHARSET=latin1 CHARSET=utf8 | iconv -f latin1 -t utf8 | mysql denigma
+
+(env)root@ip-10-227-123-178:/home/denigma# mysqldump --add-drop-table denigma | replace CHARSET=latin1 CHARSET=utf8 | iconv -f latin1 -t utf8 | mysql denigma
+mysqldump: Got errno 32 on write
+
+mysqldump --add-drop-table denigma | replace CHARSET=latin1 CHARSET=utf8 | iconv -f latin1 -t utf8 | mysql
+denigma
+
+annotation_tissue, blog_post, datasets_gendr, datasets_reference, lifespan_factor
+
+Upgrading MySQL
+---------------
+MySQL 5.6 is released an upgrade should work as described here:
+[http://www.ovaistariq.net/490/a-step-by-step-guide-to-upgrading-to-mysql-5-5/]
+
+Download binary: ::
+
+    cd /root/
+    wget http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.11-linux2.6-i686.tar.gz/from/http://mysql.llarian.net/
+    http://dev.mysql.com/downloads/mysql/5.6.html
+
+
+Denigma Destiny
+===============
+There shall always be a development version of Denigma and
+eventually an experimental Destiny version which has
+fundamental differences in conceptions:
+
+| Denigma Development
+| Ubuntu 12.04
+| Python 2.7.3
+| Django 1.4.2
+| MySQL 5.5
+| Engine=InnoDB
+| Encoding=utf8
+
+| Denigma Destiny
+| Ubuntu 12.04
+| Python 3.01
+| Django 1.5.1
+| PostgresSQL
+
+
+References:
+* http://codex.wordpress.org/Converting_Database_Character_Sets
+* http://en.gntoo-wiki.com/wiki/Convert_latin1_to_UTF-8_in_MySQL
+* http://www.bluebox.net/news/2009/07/mysql_encoding/
+* http://blog.hno3.org/2010/04/22/fixing-double-encoded-utf-8-data-in-mysql/
+* http://pastebin.com/iSwVPk1w
+* http://en.gentoo-wiki.com/wiki/Convert_latin1_to_UTF-8_in_MySQL
+* http://www.bothernomore.com/2008/12/16/character-encoding-hell/
+* http://manpages.ubuntu.com/manpages/hardy/man1/iconv.1.html
+* http://blog.oneiroi.co.uk/mysql/converting-mysql-latin1-to-utf8/
+* http://blogs.law.harvard.edu/djcp/2010/01/convert-mysql-database-from-latin1-to-utf8-the-right-way/
+
+Full text search
+----------------
+As InnoDB lacks full text-search, it can be supported via Sphinx http://astellar.com/2011/12/replacing-mysql-full-text-search-with-sphinx/].
+
+Transactions
+------------
+Bulk updates of data records can be achieved with the use of transactions.
+Simply decorate the function that requires bulk update with transaction commit on success: ::
+
+    from django.db import transaction
+
+    @transaction.commit_on_success
+    def function():
+        i = 1
+        entries = Entry.objects.all()
+        for entry in entries:
+            entry.rank = i
+            i += 1
+
+Reference:
+* http://stackoverflow.com/questions/3837699/bulk-updating-a-table
+* http://stackoverflow.com/questions/9521936/django-bulk-update-based-on-calculation
+
+Apache configuration files which enabled to serve static media for the admin interface
+--------------------------------------------------------------------------------------
+# Steps that were undertaken to serve media but later found to be not required:
+
+## Copy all admin media files to project media folder:
+cp -a /home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media/* /home/denigma/denigma/media
+
+## Establish a link between the admin media and served media:
+sudo ln -s /home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/media/ /var/www/media
+
+
+Relative Path
+-------------
+Python modules (including Django apps) have a __path__ attribute which informs where they are on
+the filesystem: ::
+
+    import os, app; path = os.path.abspath(app.__path__)
+
+Similiar the path to the project can be set in configuration like this: ::
+
+   PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+
+Shelves
+-------
+Inclusion of shelves for the annotation mapping algorithm leads to appearance of the following warning multiple times
+whenever the development server is restarted: ::
+
+    Exception TypeError: "'NoneType' object is not callable" in  ignored
+
+This circumstance is well known and related ot the not properly closed shelves
+[http://www.gossamer-threads.com/lists/python/dev/755445].
+An solution might be to only open the shelves if an mapping will be instanced. However as long it does not appear to
+cause any major performance decrease or problems it is not considered to be an main issue.
+
+TODO list manager app.
+multi-ser-functionality
+
+Detecting Change in User Data
+-----------------------------
+Changes made on the user model can be registered with the use of a "pre_save".
+signale.kwargs['instance'] will contain the updated record and the old record can be
+obtained with "User.obects.get(id=user.id) if user.pk else None".
+
+Duplicated Entries
+------------------
+Whiching entries via the Q function e.g. filtering on tags and categories, resulted in duplicated entries within the
+queryset. Adding the method `distinct` on the queryset eliminated duplicates.
+
+
+Markup
+------
+
+Different leightweight markup languages have all their own strength and weakenings
+[http://vimeo.com/14300874].
+
+Django markup
+-------------
+Django contrib markup is marked for deprication.
+Therefore a replacement needs to be considered.
+Some libraries are contenders in this space.
+
+django-stify: http://code.google.com/p/django-rstify/
+https://github.com/bartTC/django-markup
+http://packages.python.org/django-markup/
+django-MarkWhat: https://github.com/Alir3z4/django-markwhat
+
+reStructuredText Templatetag
+----------------------------
+The restructuredtext templatetag provided by django contrib markup module has 
+problems with rendering the title if it appears immeditaly at the beginning.
+This attributed to a normal behaviour of docutils and several there are several
+solutions_. The best approach appears to be the use of the html_body instead of
+fragment. Therefore an optimazed templatetag called "reST" was created.
+
+.. _solutions: https://groups.google.com/forum/?fromgroups=#!topic/django-users/E_eOAwzCS4I
+
+
+rst2pdf
+-------
+Converting an reST file into a PDF causes problems with the images.
+It seems the error stems from being PIL having not zlib support
+(rst-pil-problem_).
+Prior installation of some dependencies before installing PIL with pip is claimed to resolve
+this issue (install-python-imaging-library-pil_).
+
+A possible solution path is the following (install-pil-virtualenv-on-ubuntu_):
+
+1. Install the build dependencies: ``sudo apt-get build-dep python-imaging``
+2. Symlink the libraries : ::
+
+    sudo ln -s usr/lib/`uname -i` -linux-gnu/libfreetype.so /usr/lib/ # sudo ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/
+    sudo ln -s usr/lib/`uname -i` -linux-gnu/libjpeg.so /usr/lib/ # sudo ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/
+    sudo ln -s usr/lib/`uname -i` -linux-gnu/libz.so /usr/lib/ # sudo ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/
+
+    # Note: Substitute "i386-linux-gnu" for "x86_64-linux-gnu" if on i386
+
+3. Install Python Image Library: ``pip install PIL``
+
+.. _install-python-imaging-library-pil: http://askubuntu.com/questions/156484/how-do-i-install-python-imaging-library-pil
+.. _rst-pil-problem: https://groups.google.com/forum/?fromgroups=#!msg/rst2pdf-discuss/4aCt9bRWSO8/ULJ9QC2-EskJ
+.. _install-pil-virtualenv-on-ubuntu: http://www.sandersnewmedia.com/why/2012/04/16/installing-pil-virtualenv-ubuntu-1204-precise-pangolin/
+
+Reportlab 2.6 does not work well with rst2pdf, although Reportlab2.5 works.
+There are two possibilities either monkey path rst2pdf/reportlab or use the
+older version (rst-reportlab-issue_).
+
+The alternative is to change line 527 in rst2pdf/styles.py: ::
+
+    reportlab.platypus.tables.CellStyle1.fontname=self['base'].fontName
+
+    # to:
+
+    reportlab.paltypus.tables.CellStyle.fontname=self['base'].fontName
+
+.. _rst-reportlab-issue: http://code.google.com/p/rst2pdf/issues/detail?id=474
+
+rst2pdf can generate presentations with the command `rst2pdf file.rst -b1 -s slides.style`
+whereby file containing style information is supplied (rst-presentations_).
+
+.. _rst-presentations: http://lateral.netmanagers.com.ar/stories/BBS52.html
+
+SVG images are supported by rst2pdf if svglib is installed: ``pip install svglib``
+
+To activate math install the following dependencies__: ::
+
+    apt-get install libpng-dev libjpeg8-def libfreetype6-dev
+    pip install matplotlib
+
+.. __dependencies: http://stackoverflow.com/questions/9829175/pip-install-matplotlib-error-with-virtualenv
+
+Further information can be found in the rst2pdf-manual_.
+
+.. _rst2pdf-manual: http://rst2pdf.googlecode.com/svn/trunk/doc/manual.txt
+
+rst can also alternatively be used with S5 which is a presentation way
+embedded in the browser (rst2s5_)
+
+.. _rst2s5: http://docutils.sourceforge.net/docs/user/slide-shows.html
+
+SVG
+---
+svg are vectorized graphics. They can be created with for instance inkscape_.
+rst2pdf can incorporate SVGs into documents, though
+a library need to be installed. There are two alternative libraries producing
+slightly different visual representations of SVGs (issues-with-svgs_): ::
+
+  1. svglib: ``pip install svglib``
+  2. UniConverter_
+
+.. _inkscape: http://inkscape.org/
+.. _issues-with-svgs: http://code.google.com/p/rst2pdf/issues/detail?id=188
+.. _UniConverter: http://sk1project.org/modules.php?name=Products&product=uniconvertor&op=download
+
+SVG support requires extra software installed. For best quality the `inkscape extension`_ can be used
+and pdfs generated with it that can in turn be used by rst2pdf.
+
+.. _`inkscape extension`: https://groups.google.com/forum/?fromgroups=#!topic/rst2pdf-discuss/lKbXk-c2PtM
+
+svg2rlg_ is an updated alternative to other svg libraries.
+
+.. _svg2rlg: https://groups.google.com/forum/?fromgroups=#!topic/rst2pdf-discuss/QXeHG_Gq8T0
+
+Math in reST
+------------
+There are many ways to embed math formulas into reST (math-in-reST_).
+
+.. _math-in-reST: http://forrestyu.net/art/math-in-restructuredtext/
+
+Thesis in reST
+--------------
+Straight reST can be used write a `master thesis`_
+and modified version of Sphinx can produce a PhD thesis (sphinxtr_).
+A modified rst2html generates nice `research articles`_
+A `reST API`_ is available online.
+A nature science bibliothek extension of sphinx manages scientifc citations (sphinx-natbib_).
+
+.. _`master thesis`: http://blogs.igalia.com/mrego/2009/11/23/mswl-ends-master-thesis-restructuredtext/
+.. _sphinxtr: http://jterrace.github.com/sphinxtr/singlehtml/index.html#document-index.]
+.. _`research articles`: http://www.loria.fr/~rougier/coding/python.html
+.. _`reST API`: http://rst.projectfondue.com/
+.. _sphinx-natbib: http://wnielson.bitbucket.org/projects/sphinx-natbib/
+.. _latex_rest: http://comments.gmane.org/gmane.text.docutils.user/6644
+
+
+Mulitplication Sign in ReST
+---------------------------
+muplication sign or related special characters can be inserted into a reST document by
+`inserting the unicode character`_.
+
+
+.. _`inserting the unicode character`: http://stackoverflow.com/questions/6369049/how-do-i-write-the-multiplication-sign-in-restructuredtext-rest
+
+Autoconformation
+----------------
+In bash scripts user input questions should be autoconfirmed.
+One way is to implement this automation is to flag installation commands
+with -y (confirmaton-scripting_).
+
+.. _confirmation-scripting: http://stackoverflow.com/questions/7410771/handling-input-confirmations-in-linux-shell-scripting
+
+Unicode Characters
+------------------
+The Unicode Transformation Format is a standard that assigns a code point (a
+number) to each character in every supported language. For looking up a
+character code it is here refered to a list of utf8-characters_.
+
+.. _utf8-characters: http://www.periodni.com/unicode_utf-8_encoding.html
+
+Denigma, the Journal of the Cutting Edge
+----------------------------------------
+Denigma is become a journal of the next generation. On Denigma articles are continuously peer reviewed, rather than
+``one time peer-reviewed and forget about it``.
+
+
+Cases-sensitivity
+-----------------
+MySQL tables with a utf8 characterset (woth utf8_unicode_ci) do not allow `case-sensitive lookups`_.
+`Changing the collation status`_ to utf8_bin should resolve this issue::
+
+    ALTER TABLE tabel_name CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;
+
+.. 'case-sensitive lookups`: http://stackoverflow.com/questions/5354061/multiple-different-results-returned-on-case-sensitive-exact-query-in-django
+.. _`Changing the collation status`: http://stackoverflow.com/questions/742205/mysql-alter-table-collation
+
+Alternatively__::
+
+    ALTER TABLE table_name collate=utf8_bin;
+
+.. __: http://stackoverflow.com/questions/4784168/how-to-change-collation-to-utf8-bin-in-one-go
+http://stackoverflow.com/questions/6050014/how-do-you-change-the-collation-type-for-a-mysql-column
+
+MySQL has 4 levels of collation: server, database, table, column. Changing th collation of the server,
+database or table, will not change the setting for each column, but changes the default collations.
+
+Bad unicode data
+----------------
+A field saved as string raises the Bad unicode data Error (here title of reference fetch from Bio Entrez).
+Transforming the string into unicode prior to saving the object solves this issue.
+
+  self 	<Study: [Bad Unicode data]>
+  args 	()
+  e 	AttributeError("'Cursor' object has no attribute '_last_executed'",)
+  kwargs 	{'title': u'TGF-\u03b2 and insulin signaling regulate reproductive aging via oocyte and germline quality maintenance.'}
+
+Similar issues were reoprted with the utf8_bin collation (simple-non-ascii-string_).
+Python decoding mechanism might also be handy with solving such  (django-unicodeerror_).
+
+.. _simple-non-ascii-string: http://stackoverflow.com/questions/2168816/django-headache-with-simple-non-ascii-string
+.. _django-unicodeerror: http://stackoverflow.com/questions/3798137/djangounicodedecodeerror-and-force-unicode
+
+
+Sphinx
+------
+On of the greatest wonders of the world is Sphinx: the python Auto-documentation
+
+Sphinx can be used to document python code (Using-Sphinx-to-Document-Python-Code_).
+It is easy to use and will generate HTML, LaTeX, PDF, and more.
+
+.. _Using=Sphinx-to-Document-Python-Code: http://www.youtube.com/watch?v=LQ6pFgQXQ0Q
+
+
+File Permission
+---------------
+The default apache2 group and username is www-data. It is defined in the following files:
+
+/etc/apache2/apache2.conf
+/etc/apache2/envvars
+
+The current apache2 process user are:
+[s -aux | grep apache2
+
+chgrp -R www-data denigma/
+chmod -R g+w denigma/
+http://stackoverflow.com/questions/13157364/django-production-errno-13-permission-denied
+http://stackoverflow.com/questions/1682440/permission-denied-error-with-django-while-uploading-a-file
+http://stackoverflow.com/questions/11791833/errno-13-permission-denied-media-folder-with-localhost
+
+Static Files
+------------
+A static folder in the project root includes all the project-specific (and not app specific) static files.
+The folder's path is then add to STATICFILES_DIRS_.
+This static folder is different than STATIC_ROOT folder where the collectstatic
+management command collects all `static files for deployment`_.
+
+These need to be separeted becuase the first onse is checked into version control,
+while the second is not.
+
+.. _STATICFILES_DIRS: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-dirs
+.. _`static files for deployment`: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-STATIC_ROOT
+
+Insecure string pickle
+----------------------
+Fetching specific references raises ``Insecure string pickle``. It is probably caused due to
+cPickles pickle behaviour. Specifically cPickle is used by shelve.
+
+It is possible to circumvent it by using explicitly `pickle instead of cPickle`_:
+
+.. sourcecode:: python
+
+    import shelve
+    import pickle
+    shelve.Pickler = pickle.Pickler
+    shelve.Unpickler = pickle.Unpickler
+
+.. _`pickle instead of cPickle`: http://mail.python.org/pipermail/python-list/2000-February/062597.html
+
+Sign up Customization
+---------------------
+The account creation sign up form can apparently not been customized::
+
+    class SignupForm(GroupForm):
+
+        username = forms.CharField(
+            label = _("Username"),
+            max_length = 30,
+            required=False,
+            widget = forms.TextInput()
+        )
+        password1 = forms.CharField(
+            label = _("Password"),
+            widget = forms.PasswordInput(render_value=False)
+        )
+        password2 = forms.CharField(
+            label = _("Password (again)"),
+            widget = forms.PasswordInput(render_value=False)
+        )
+        email = forms.EmailField(widget=forms.TextInput())
+        confirmation_key = forms.CharField(
+            max_length = 40,
+            required = False,
+            widget = forms.HiddenInput()
+        )
+
+        def __init__(self, *args, **kwargs):
+            super(SignupForm, self).__init__(*args, **kwargs)
+            if REQUIRED_EMAIL or EMAIL_VERIFICATION or EMAIL_AUTHENTICATION:
+                self.fields["email"].label = ugettext("Email")
+                self.fields["email"].required = True
+            else:
+                self.fields["email"].label = ugettext("Email (optional)")
+                self.fields["email"].required = False
+
+        def clean_username(self):
+
+            # If no username is given try to use the nick of the email address:
+            print("clean_username")
+            if not self.cleaned_data["username"] and self.cleaned_data["email"] and "@" in self.cleaned_data["email"]:
+                print self.cleaned_data['email']
+                self.cleaned_data["username"] = self.cleaned_data['email'].split('@')[0].replace('.', '_')
+                print self.cleaned_data['username'], self.cleaned_data['email']
+
+Taggit
+======
+Tags are not preserved by recovering delete objects via reversion.
+
+Twitter Bootstrap and Ajax
+==========================
+Ajax can be effectively used with bootstrap in a Django project (`bootstrap-ajax.js`_).
+This is wonderfully illustrated in an example tasks project (`bootstrap-ajax-demo`_)
+
+.. _`bootstrap-ajax.js`: http://paltman.com/2012/08/23/twitter-bootstrap-and-ajax/
+.. _`bootstrap-ajax-demo`: https://github.com/eldarion/bootstrap-ajax-demo/blob/master/requirements.txt
+
+Inline Input Adder
+==================
+The dynamic addition of form to a formset can be achieved with JavaScript (inline-input-adder_).
+This was applied on the Todo app.
+
+.. _inline-input-adder: http://stellarchariot.com/blog/2011/02/dynamically-add-form-to-formset-using-javascript-and-django/
+
+Excluding form fields
+=====================
+Generally fields which should not be editable at all can be excluded from admin forms
+and modelforms simply be setting ``editable=False`` as parameter in the model field definition.
+
+In the ModelAdmin ts possible to dynamically populate the exclude attribute in get_form method.
+For instance if the user is not the superuser one or more certain field(s) can be
+explicitly excluded (change-a-django-form-field-to-a-hidden-field_):
+
+.. sourcode:: python
+
+    class EntryModelAdmin(admin.ModelAdmin):
+        def get_form(self, request, obj=None, **kwargs):
+            self.exclude = []
+            if not request.user.is_superuser:
+                self.exclude.append('field_to_hide')
+            return super(EntryModelAdmin, self).get_form(request, obj, **kwargs)
+
+For excluding form fields in non-admin forms. In the respective forms the fields can be marked as hidden.
+To do this modifify/overwrite the get_context_data to include to following statement:
+
+.. sourcecode:: python
+
+    # views.py
+    ...
+    from django import forms
+    ...
+    class SomeView(UpdateView):
+        ...
+        def get_context_data(self, **kwargs):
+            super(SomeView, self).get_context_data(**kwargs)
+            form.fields['field_name'].widget = forms.HiddenInput()
+
+.. sourcecode:: python
+
+    # forms.py
+    class MyModelForm(forms.ModelForm):
+        def __init__(self, *args, **kwargs):
+             hide_condition = kwargs.pop('hide_condition', None)
+             super(MyModelForm, self).__init__(*args, **kwargs)
+             if hide_condition:
+                 self.fields['fieldname'].widget = forms.HiddenInput()
+                 # or alternatively: del self.fields['fieldname'] to remove it from the form altogether.
+
+.. sourcecode:: python
+
+   # views.py
+   form = MyModelForm(hide_condition=True)
+
+A field that is set to be editable=False can still be displayed in the admin if it is marked as
+being a ``readonly_fields`` (display-editable-false_):
+
+.. sourcecode:: python
+
+    MyModelAdmin(admin.ModelAdmin):
+        readonly_fields = ('noneditable_field',)
+
+.. _display-editable-false: http://stackoverflow.com/questions/3967644/django-admin-how-to-display-a-field-that-is-marked-as-editable-false-in-the-mo
+
+.. _change-a-django-form-field-to-a-hidden-field: http://stackoverflow.com/questions/6862250/change-a-django-form-field-to-a-hidden-field
+
+Non-editibale fields can even be made editible within the admin explicitly.
+For this to happen a custom ModelForm needs to be declared which defines those
+fields.
+
+Dynamic ChoiceField Filtering
+=============================
+In order to provide a limited queryset for a select field or initial values
+which depend on other instance variables one has to create dynamically on runtime
+a ModelForm and passing the varibles (e.g. user) to it (runtime-choicefield-filtering-in-djangos-admin_).
+
+.. _runtime-choicefield-filtering-in-djangos-admin: http://www.artfulcode.net/articles/runtime-choicefield-filtering-in-djangos-admin/
+
+Incorrect Key File for Table
+============================
+The log entry table cannot be accessed any more on the localhost.
+Trying it raises ``Incorrect key file for table.``.
+It needs to be repaired (incorrect-key-file-for-table_).
+
+.. _incorrect-key-file-for-table: http://stackoverflow.com/questions/2011050/mysql-126-incorrect-key-file-for-table
+
+Denigma Secrets
+===============
+Denigma's secret projects are revolutionary ideas.
+
+Network Visualisation
+=====================
+Cytoscape web, d3 [http://genemania.org/].
+web-frameworks-for-network-visulation: http://grokbase.com/t/python/chicago/12638c0vtf/web-application-framework-for-network-visualization
+Existing tools for generating web based network visualisation: http://www.biostars.org/p/10108/
+Graph visualization code in javascript:http://stackoverflow.com/questions/7034/graph-visualization-code-in-javascript
+Cytoscape web documentation: http://cytoscapeweb.cytoscape.org/documentation
+Cytoscape web paper: http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2935447/
+HTML5 Game Development: http://www.photonstorm.com/archives/2759/the-reality-of-html5-game-development-and-making-money-from-it
+20 webgl sites will blow your mind: http://www.netmagazine.com/features/20-webgl-sites-will-blow-your-mind
+Learning WebGL: http://learningwebgl.com/blog/?page_id=2
+ChemDoodle: http://web.chemdoodle.com/
+GraphGL: https://gephi.org/tag/webgl/
+#234567891123456789212345678931234567894123456789512345678961234567897123456789
+
+Avatar
+======
+Checking whether an email address has a gravatar [http://mcnearney.net/blog/2010/2/15/creating-django-gravatar-template-tag-part-2/].
+
+Encoder jpeg not available
+==========================
+Trying to add avatar images raises an error about missing encoder [https://github.com/dharmafly/tasket/issues/110].
+IOError at /avatar/add
+It can be fixed if PIL is installed from source [http://stackoverflow.com/questions/8479344/pil-encoder-jpeg-not-available].
+For installing in virtual env install some prerequisites [http://www.eddiewelker.com/2010/03/31/installing-pil-virtualenv-ubuntu/].
+
+``sudo apt=get build-dep packagename`` means
+"As root, install all dependencies for `packagename` so that I can build it."
+[http://superuser.com/questions/151557/what-are-build-essential-build-dep].
+
+[http://stackoverflow.com/questions/2451352/cant-figure-out-serving-static-images-in-django-dev-environment].
+
+MySQL returns File not found
+============================
+The issue can be resolved by configuring Apparmor or directly
+[http://ubuntuforums.org/showthread.php?t=822084]::
+
+    sudo nano /etc/apparmor.d/usr.sbin/mysqld
+    ...
+    /var/run/mysqld/mysqld.sock w,
+    /data/ r,
+    /data/* rw,
+    ...
+
+After reload it should be working fine::
+
+   sudo /etc/init.d/apparmor reload
+
+
+Apache Log Files
+================
+Apache Error Log File: /var/log/apache2/error.log
+Apache Access Log File: /var/log/apache2/access.log
+
+
+django-extensions
+http://packages.python.org/django-extensions/
+
+Tracking
+========
+django-tracking
+django-tracking2
+django-visitors [https://github.com/attuch/django-visitors].
+django-visits counter application for bwe sites. Can count urls via CounterMiddleware and object visits (aka. models).
+[https://bitbucket.org/jespino/django-visits].
+chartbeat
+
+
+
+Real-time monitoring systems:
+Free trial: http://chartbeat.com/demo/
+Open Source: http://piwik.org/
+Google: http://www.google.com/analytics/
+
+env Deployment
+==============
+* 9f2950d 2012-12-13 | Fixed the tissue hierarchy.Fixed the tissue hierarchy.etd [hevok]
+git checkout 322e97c
+
+IP Adress
+=========
+A GEO-ip search gives one the location of the source of an ip
+ [http://rageweb.info/2011/05/15/log-messages/].
+ The ip address locator for instance can perfom such a search
+ [http://www.geobytes.com/iplocator.htm].
+The ip-whois gives contact information of the provider
+[http://www.ip-address.org/tracer/ip-whois.php].
+It enables to contact the company that owns an ip address and to
+report it to their abuse department. If they are serious in handling abuse issues
+they'll go to the root cause of it
+[http://uk.answers.yahoo.com/question/index?qid=20101103063300AA0rOah].
+
+An api allows to display the country name [http://stackoverflow.com/questions/2218093/django-retrieve-ip-location].
+
+
+GIMP
+====
+Creating a basic shape [http://docs.gimp.org/en/gimp-using-rectangular.html].
+How to draw simple shapes in GIMP using the Pen tool
+[http://emptyeasel.com/2008/08/22/how-to-draw-simple-shapes-in-gimp-using-the-pen-tool/].
+
+Zooming 1.1000
+
+Inkscape tutorial on creating a sphere
+[http://www.youtube.com/watch?v=4OEG5zmbM_M].
+
+Inkscape
+========
+Making a custom font [How to Make a Font with Inkscape].
+Making a log [http://www.youtube.com/watch?v=CJt9AKkM4ZI].
+How to add a new node [http://bucarotechelp.com/design/graphics/92041301.asp].
+How to make own icon webfont [http://www.webdesignerdepot.com/2012/01/how-to-make-your-own-icon-webfont/].
+Create texfields only via clicking not dragging as there is
+bug with flowed text fields which renders them as black boxes [http://wiki.inkscape.org/wiki/index.php/FAQ#What_about_flowed_text.3F].
+
+Sessions
+========
+Making sure a session is always created: http://stackoverflow.com/questions/5130639/django-setting-a-session-and-getting-session-key-in-same-view].
+Get user from session key [http://scottbarnham.com/blog/2008/12/04/get-user-from-session-key-in-django/].
+
+STATIC file of 3Party apps
+==========================
+The static media of the django-fluent-comment app are not found. The files were copied into the project folder.
+
+Add Pop Up Form
+===============
+[http://stackoverflow.com/questions/11478647/cant-create-popup-with-tekextensions]
+[https://github.com/sontek/django-tekextensions]
+[http://stackoverflow.com/questions/7782479/django-reverse-engineering-the-admin-sites-add-foreign-key-button]
+[http://stackoverflow.com/questions/2347582/django-admin-popup-functionality]
+[http://sontek.net/blog/detail/implementing-djangos-admin-interface-pop-ups]
+
+Ajax Form Filter
+================
+django-ajax-filtered-fields [http://code.google.com/p/django-ajax-filtered-fields/].
+Using filter horizontal in the admin [http://stackoverflow.com/questions/3615485/django-admin-filter-horizontal].
+Replicating Django's admin [http://www.hoboes.com/Mimsy/hacks/replicating-djangos-admin/].
+Reuse Django's filter_horizontal admin widget [http://chase-seibert.github.com/blog/2010/05/14/reuse-djangos-filter_horizontal-admin-widget.html].
+Django using admin horizontal filter in forms [http://djangosnippets.org/snippets/2466/].
+Easist way to use filter horizontal outside of the admin in django [http://stackoverflow.com/questions/7778143/whats-easiest-way-to-use-filter-horizontal-outside-of-the-admin-in-django].
+django-selectable [http://django-selectable.readthedocs.org/en/version-0.3.1/index.html].
+django-ajax-selects [https://github.com/crucialfelix/django-ajax-selects].
+Process the media class of a model form in django to a template [http://stackoverflow.com/questions/1975670/process-the-media-class-of-a-model-form-in-django-to-a-template].
+django-ajax-filtered-searching the bug [http://stackoverflow.com/questions/1974671/django-ajax-filtered-fields-searching-the-bug].
+ajax and django views [http://brack3t.com/ajax-and-django-views.html].
+
+
+Collaboration column
+projects
+name (number)
+
+
+Task Management
+===============
+A plugeable TODO app that has been bring to completion. http://birdhouse.org/software/2008/09/django-todo/main/
+
+
+http://www.youtube.com/watch?v=WcwnQW_AnC8
+
+
+Voice Applcations
+=================
+Mumble https://github.com/mumble-voip/mumblekit
+http://www.youtube.com/watch?v=Cn8bCd9n8j4
+
+Beyond HTML5: Conversational Voice and Video demo | Ericsson Labs http://www.youtube.com/watch?v=WcwnQW_AnC8
+
+Using the WebSocket protocol with Twisted: http://twistedmatrix.com/trac/export/29073/branches/
+websocket-4173-2/doc/web/howto/websocket.xhtml
+
+slyseal Lightweight video server [rtmp/h264/mp4] written in Python
+
+Implementing webbased real time video chat using HTML5 websockets: http://stackoverflow.com/questions/4220672/implementing-webbased-real-time-video-chat-using-html5-websockets
+
+Star Rating System
+==================
+Agon [http://agon-ratings.readthedocs.org/en/latest/usage.html]
+dcramer [https://github.com/dcramer/django-ratings]
+django-simple-ratings [https://github.com/dcramer/django-ratings].
+
+A rating system can simple based on a font, and css to render e.g. "3.5 out of 5" into three and a half stars, while the html says just that.
+No divs, no iimages, no Canvas, no SVG, no JavaScript, no extra spans [http://socialblogsitewebdesign.com/semantic-yet-seo-friendly-rating-stars/].
+
+S3
+==
+[http://net.tutsplus.com/tutorials/tools-and-tips/use-amazon-s3-firefox-to-serve-static-files/]
+
+Accessing both Directions of ManyToManyFields
+=============================================
+In order to access a ManyToManyField also in the model that does not define it,
+explicitly define the field in the model form
+[http://stackoverflow.com/questions/4316606/how-to-access-both-directions-of-manytomanyfield-in-django-admin]:
+
+For instance, assume data entries shall be have many to many relations with dataset references.
+
+First define that dataset uses data entries as categories via a many to many relation:
+
+.. sourcecode: python
+
+    # dataset.models:
+    form django.db import models
+
+
+    class Reference(models.Model):
+        pmid = models.IntegerField()
+        categories = models.ManyToManyField('data.Entry')
+
+
+In the data form define the references field explicitly:
+
+.. sourcecode: python
+
+    # data.forms:
+    from django import forms
+
+    from datasets.models import Reference
+
+    from models import Entry
+
+
+    class EntryForm(forms.ModelForm):
+        references = forms.ModelMultipleChoiceField(
+            label="References",
+            queryset=References.objects.all(),
+            required=False,
+            help_text="References to the literature",
+            widget=admin.widgets.FilterSelectMultiple('references, False)
+        )
+        class Meta:
+            models = Entry
+
+The form can be employed outside as well as inside the admin:
+
+.. sourcecode: python
+
+    # data.admin:
+    from django.contrib import admin
+
+    class EntryAdmin(admin.ModelAdmin):
+        fields = ('references',)
+
+        def safe_model(self, request, obj, form, change):
+            # Save without m2m field (can not save them unti obj has id):
+            super(EntryAdmin, self).save_model(request, obj, form, change):
+            # If it worked, deal with m2m fields:
+            obj.references.clear()
+            for reference in form.cleaned_data['references']:
+                obj.references.add(reference)
+
+        def get_form(self, request, obj=None, **kwargs):
+            if obj:
+                self.form.base_fields['references'].initial = [o.pk for o in obj.references.all()]
+            else:
+                self.form.base_fields['references'].initial = []
+            return super(EntryAdmin, self).get_form(request, obj, **kwargs)
+
+
+    admin.site.register(Entry, EntryAdmin)
+
+
+Front-End
+=========
+Front end frameworks allow to build pages faster
+[http://foundation.zurb.com/; http://twitter.github.com/bootstrap/].
+It is even more accelerated by the use of theme/base generators
+[http://jetstrap.com/; http://www.boottheme.com/].
+They give the html and bootstrap.css or variables.less to integrate into a project.
+
+
+Front end analysis can provide great infos on traffic:
+[http://dj-wat.blogspot.de/2010/06/announcement-chat-queries.html]
+
+Multiple Sites
+==============
+The "site" framework [https://docs.djangoproject.com/en/dev/ref/contrib/sites/?from=olddocs].
+Django: cofiguring multiple domains for a website [http://stackoverflow.com/questions/7580306/django-configuring-multiple-domains-for-a-website]
+Using Subdomains in Django [http://thingsilearned.com/2009/01/05/using-subdomains-in-django/].
+[http://stackoverflow.com/questions/1553165/multiple-django-sites-with-apache-mod-wsgi].
+
+AWS
+===
+Best database solution for Django on AWS [http://stackoverflow.com/questions/9842961/best-database-solution-for-django-on-aws]
