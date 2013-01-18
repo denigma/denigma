@@ -58,12 +58,8 @@ To deploy Denigma in the clouds the Amazone Web Service (AWS) is used.
 Where <DNS> is the that of the instance that hast the database and <PASSOWRD> is the password
 of the database is there is any.
 
-Developmental Notes
-===================
-
-
 Serving Media
--------------
+=============
 
 The media/static files for the Admin Interface were intially not used and there
 it was unstyled. To solve this issue:
@@ -87,7 +83,7 @@ cookies with Ctrl + F5).
 
 
 'bool' object has no attribute 'status code'
---------------------------------------------
+============================================
 
 It appears that the pinax.middleware.security.HideSensitiveFieldsMiddleware in 
 the MIDDLEWARE_CLASSES of the settings.py is causing an error which propagates 
@@ -99,7 +95,7 @@ it with an if statement only in debuging mode.
 
 
 Missing Markup
---------------
+==============
 
 In the Wiki view.html the load markup tag raised an error. Including the 
 "django.conrib.markup" in the settings.py fixed it 
@@ -107,7 +103,7 @@ In the Wiki view.html the load markup tag raised an error. Including the
 
 
 CSRF Problem
-------------
+============
 
 Submit forms such as those in the Wiki edit and search need to be tagged with a
 {% csrf_token %}. This worked fine for the edit form 
@@ -120,7 +116,7 @@ in the edit view resolved this issue
 15186745
 
 mysql in virtual env 
---------------------
+====================
 
 For interfacing with mysql of the purpose of database evolution 
 libmysqlclient16-dev library is required 
@@ -136,14 +132,14 @@ $ aptitude install libmysqlclient16-dev
 $ pip install MySQL-python
 
 Depricated Constants
---------------------
+====================
 
 Runnig python denigma/manage.py migrate --list just returns that ENGINE is 
 depriciated [http://jira.osqa.net/browse/OSQA-712].
 
 
 mysql-ebs
----------
+=========
  
 Prepare db for snapshot::
 
@@ -167,7 +163,7 @@ $ sudo umount /etc/mysql /var/lib/mysql /var/log/mysql /vol
 
 
 Restoring a snapshotted database
---------------------------------
+================================
 
 ::
 
@@ -182,7 +178,7 @@ $ sudo bash ./denigma/aws-django -n denigma -d nothing -s "/s" -H <DNS> -D denig
 ec2-54-246-29-195.eu-west-1.compute.amazonaws.com
 
 Transferring data onto EC2
---------------------------
+==========================
 
 It is considered to transfer the Denigma database directly onto an EC2 
 instance. SFTP (secruity file transfer protocol) can be used via port 22 to 
@@ -214,7 +210,7 @@ to be prefered for connecting to an EC2 instance via sFTP.
 
 
 Customizing Django Admin
-------------------------
+========================
 
 Creating a admin folder in project template directory and modifying the 
 original admin templates in this folder allows to do basic customization of the
@@ -223,13 +219,13 @@ admin interface. In this way for instance the title can be changed
 
 
 App Renaming
-------------
+============
 A entire app can be renamed and the south migration history can be preserved by
 performing defined steps [http://stackoverflow.com/questions/4566978/renaming-an-app-with-django-and-south;
 https://github.com/ASKBOT/django-south-app-rename-example/commit/f7f2218af612922416b4164adae589e86de19951
 
 Database Renaming
------------------
+=================
 
 There are several ways on how to rename a database. The simplest appears to use
 a script which renames all tables in conjuction with another database table 
@@ -237,7 +233,7 @@ a script which renames all tables in conjuction with another database table
 
 
 Tags
-----
+====
 There are at least two major reusable django apps. one is django-tagging
 and the other is django-taggit
 Django tagging impairs south schema migration. It raises an NoMigration 
@@ -255,8 +251,7 @@ by adding tag__name instead of tags [https://groups.google.com/forum/?fromgroups
 
 
 sqlite
-------
-
+======
 sqlite is a leightweight sql database variant. There are two versions of 
 sqlite3:
 
@@ -266,7 +261,7 @@ The manage.py dbshell uses the latter one and complains if it is not installed
 
 
 Domain Forwarding/Redirection
------------------------------
+=============================
 
 The frame redirection causes that numerous external links are not functional and sub 
 folders are not displayed.
@@ -324,7 +319,7 @@ elastic IP address inserted into the configuration.
 
 
 UNIX
-----
+====
 
 Take the opportunity to venture in to the wonderful land of UNIX. It will make
 your life much, much easier. If you have the option, install Linux beside your
@@ -348,7 +343,7 @@ $ ./manage.py runserver localhost:8002
 
 
 HTML
-----
+====
 
 Severel ways exist to change the color of a hyperlink. For instance it is 
 possible toe add a style attribute and insert a color property.
@@ -367,7 +362,7 @@ Pricing for EBS snapshots:
 
 
 Pinax
------
+=====
 
 Pinax is a framework build on top of Django that aims to provide several 
 reusable apps. The latest development version is 0.9b1.dev10. The basic website 
@@ -382,7 +377,7 @@ sudo aptitude install gettext
 
 
 BitNami
--------
+=======
 
 BitNami provides a DjangoStack for deploying projects in the cloud.
 The updated BitNami stack includes  Django-1.5 (bitnami-django-stack_).
@@ -395,7 +390,7 @@ customation.
 .. _bitnami-django-stack: http://blog.bitnami.org/2012/11/django-15-beta-geodjango-support-for.html
 
 Django
-------
+======
 
 The high-level python-based web framework Django encourages rapid development 
 and clean, pragmatic design. It was innitially developed by a fast-moving 
@@ -403,13 +398,13 @@ online-news operation. It was designed to hadle two challanges:
 
 1. intensive deadlines of a newsroom
 
-2. stringent requirements of expierenced Web developers.
+2. stringent requirements of expirenced Web developers.
 
-Django allowas to build high-performing, elegant Web applications quickly.
+Django allows to build high-performing, elegant Web applications quickly.
 
 
 Generic forms
--------------
+=============
 
 A generic detail form as well as the admin form can not have a modifable 
 created and updated field which are defined in the database model as 
@@ -417,16 +412,16 @@ auto_now_add and auto_now.
 
 
 Auto-log out and failed rendering
----------------------------------
+=================================
 
 Some views such as the Wiki and the experts invoke auto-log out and wrong 
 rendering of the branding etc. It appears that adding the request context to 
 the render_to_response fixes this issue. It might be because things like user site name is used in the upper most templates. Inclusion of the RequestContext is sufficient to eliminate 
-this issue entierly.
+this issue entirely.
 
 
 Overflow
---------
+========
 
 Longer pages lead to the inclusion of a scroll bar which provokes a shift of
 the header to the left site.
@@ -441,7 +436,7 @@ There are alternative solutions
 
 
 Comments in CSS
----------------
+===============
 
 The synthax for commenting in CSS code is enclosing slash-asterisk:
 
@@ -457,7 +452,7 @@ Ctrl + F5 reloads the cached style in the browser.
 
 
 EMAIL
------
+=====
 
 There are two major possibilities to set up an email server.
 First Configure the email server yourself or use a third party provider.
@@ -539,7 +534,7 @@ For debugging set the following::
 This will have the effect that it tires to send to the console instead.
 
 Django Verbose Names
---------------------
+====================
 
 The representative name of a model in admin can be ovewritten via a meta class:
 
@@ -551,13 +546,13 @@ The representative name of a model in admin can be ovewritten via a meta class:
 
 
 user access in models methods
------------------------------
+=============================
 
 To access current user information in the models.py for templated views the request.user should be passed to the e.g. models methods. For the Admin interface the request user can be passed in the admin.py under the method save [http://stackoverflow.com/questions/10991460/django-get-current-user-in-model-save].
 
 
 Database Charset
-----------------
+================
 The default charset in MySQL is latin1, which is suboptimal as it only provides
 a very limited character set. utf8 is the apparently best coding format. To
 convert a table. To convert a given table to utf8 command this: ::
@@ -568,7 +563,7 @@ conversion is required.
 
 
 Admin Bootstrap
----------------
+===============
 To install bootstrap look for the admin interface: ::
 
     $ git clone https://github.com/gkuhn1/django-admin-templates-twitter-bootstrap/
@@ -598,7 +593,7 @@ django-hydro was renamed into django-composite [https://github.com/django-compos
 .. php-nuke: http://en.wikipedia.org/wiki/PHP-Nuke
 
 UnicodeError
-------------
+============
 
 Some text raise UniCodeError when tried to print to terminal.
 The follwing transformation solves this problem:
@@ -607,7 +602,7 @@ text = text.encode('ascii', 'ignore')
 
 
 Favicon
--------
+=======
 The small icon in the address bar is called favicon.ico [1].
 There are eat least three different ways to implement it [2].
 1. On apache server by adding this to the httpd.conf [2,3]: ::
@@ -637,17 +632,17 @@ the background color removed. The ong was scaled to 16x16 pixel (px) [6,7].
 [7] http://tools.dynamicdrive.com/favicon/
 
 Admin Favicon
--------------
+=============
 In Django-1.4 the Favicon did not appear in the admin for unknown
 reason as it worked well in Django-1.3. Several ways allow to put
 an favicon into the admin [http://jaredforsyth.com/blog/2010/apr/6/giving-django-admin-favicon/].
 
 
 Forms
------
+=====
 
 Bootstrap forms
-~~~~~~~~~~~~~~~
+---------------
 To inlcude a bootstrap form to the following [1]: ::
    {% load bootrap_tags %}
    ...
@@ -669,7 +664,7 @@ Dropdown should better be triggered by hover [2-4].
 [4] http://jsfiddle.net/ekjxu/
 
 Crispy
-~~~~~~
+------
 The best way to have DRY django form is `django-crispy` form which allow to define the form in python and provides tag
 and filter to quickly render forms in a div format while providing an eneromous amount of capability to configure and 
 control rendered HTML [https://github.com/maraujop/django-crispy-forms]. `crispy-forms` is very well documented:
@@ -677,7 +672,7 @@ control rendered HTML [https://github.com/maraujop/django-crispy-forms]. `crispy
 
 
 Deployment
-----------
+==========
 The requirements are not installed on the local env.
 On installing the requirements locally, it was found that MySQL-python-1.2.4b3 could not be installed
 because distribute was only version 0.6.24, but version 0.6.28 is required. The same version is
@@ -692,18 +687,18 @@ Need ot figure out how to update virtualenv.
 
 
 Getting a querysets for template forms
---------------------------------------
+======================================
 In order to obtain a queryset from template forms for many-to-many relationships,
 the `.getlist('field') can be used on the request.POST method.
 
 
 Notifications
--------------
+=============
 [https://github.com/yourcelf/btb/issues/3]
 
 
 Customizing Styles
-------------------
+==================
 The bootstrap hero-unit was modified to have less margin: ::
 
 }
@@ -717,7 +712,7 @@ The bootstrap hero-unit was modified to have less margin: ::
 }
 
 Citations
----------
+=========
 If you want to build a ship, do not drum up the men to gather the wood, divide the work and give orders.
 Instead teach them to yearn for the vast and endless sea. - Antoine de Saint-Exupery
 
@@ -726,7 +721,7 @@ Instead teach them to yearn the vast and endless possibilities of Denigma. - Hev
 
 
 Scalability
------------
+===========
 A scalable system doesn't need to change when the size of the problem changes.
 * Accommodate increased usage
 * Accommodate increased data
@@ -741,7 +736,7 @@ processing units (services)
 
 
 Debug Toolbar
--------------
+=============
 Since Django-1.4 the developmental status side bar does not react to hide any more.
 Upgrading to djang-toolbar-0.9.4 solved this issue.
 
@@ -761,7 +756,7 @@ into the httpd.conf which does something about sub interpreters [1]: ::
 
 
 Requirements Install Order
---------------------------
+==========================
 pip does not install the packages in a requirements file in order [1-2]. Install separate requirements file enables to control
 the order (e.g. install numpy before Biopython).
 
@@ -869,14 +864,14 @@ MPTT has `TreeManyToManyField`, thus it might be possible to have a child with m
 Althought the structure does not remain a tree anymore, it becomes a graph.
 
 Hacker
-------
+======
 A hacker is someone who strives to solve problems in elegant and ingenious
 ways. Part of the path to elegantly solving problems is to use tools that solve
 sub-problems very-well.
 
 
 Renaming Apps
--------------
+=============
 The gallery app will be renamed to media to accommodate a more general purpose.
 The photourl model will be renamed to image as it is more appropriate.
 
@@ -891,7 +886,7 @@ The many-to-many tables had to be altered manually with raw sql: ::
 
 
 DAVID Annotations
------------------
+-================
 The DAVID API python bindings require suds. suds conflicts with the DjDt django debug toolbox.
 Specifically an error is raised during authentication
 [http://stackoverflow.com/questions/10071005/nonetype-object-has-no-attribute-str-in-suds].
@@ -899,7 +894,7 @@ suds-htj claims to have eliminated this issue [https://github.com/bradleyayers/s
 
 
 Running Denigma on LTS
-----------------------
+======================
 MySQLdb installation faileD with `EnvironmentError: mysql_config not found`.
 
     aptitude install libmysqlclient-dev
@@ -912,7 +907,7 @@ Also the EBS appears not to be connected.
 Perhaps because the secruity group need to be default.
 
 Python Version
---------------
+==============
 The hypergeomtric test requires a lngamma function. Scipy provides it, but as Scipy has known
 issues with virtualenv django deployment alternative solutions are seeked. Python build-in math
 module provides also an lngamma function, however this was also included in 2.7+ versions.
@@ -965,7 +960,7 @@ deploy Denigma directly onto an Ubuntu instance with LTS 12.4 and Python-2.7 ins
 
 
 No module names pkg_resources
------------------------------
+=============================
 On deployment the requirement were not installed at all and checking the pip freeze in the virtualenv raised an error,
 which was also raised during installation.
 
@@ -980,15 +975,12 @@ installation in the virtualenv corrupts it. Therefore this command was excluded 
 
 
 Virtualenvwrapper
------------------
+=================
 http://virtualenvwrapper.readthedocs.org/en/latest/
-
-#234567891123456789212345678931234567894123456789512345678961234567897123456789
-
 
 
 Database Engine
----------------
+===============
 Moving to the newest Ubuntu version caused issues with ForeignKeys to new created tables
 [http://stackoverflow.com/questions/6178816/django-cannot-add-or-update-a-child-row-a-foreign-key-constraint-fails].
 The reason for this was that the all Denigma db tables were MyISAM but the most recent version of MySQL has
@@ -1001,7 +993,7 @@ http://kvz.io/blog/2010/04/27/convert-all-tables-to-innodb-in-one-go/
 
 
 Encoding
---------
+========
 
 SELECT default_character_set_name FROM information_schema.SCHEMATA
 WHERE schema_name = "database_name";
@@ -1023,8 +1015,20 @@ denigma
 
 annotation_tissue, blog_post, datasets_gendr, datasets_reference, lifespan_factor
 
+References:
+* http://codex.wordpress.org/Converting_Database_Character_Sets
+* http://en.gntoo-wiki.com/wiki/Convert_latin1_to_UTF-8_in_MySQL
+* http://www.bluebox.net/news/2009/07/mysql_encoding/
+* http://blog.hno3.org/2010/04/22/fixing-double-encoded-utf-8-data-in-mysql/
+* http://pastebin.com/iSwVPk1w
+* http://en.gentoo-wiki.com/wiki/Convert_latin1_to_UTF-8_in_MySQL
+* http://www.bothernomore.com/2008/12/16/character-encoding-hell/
+* http://manpages.ubuntu.com/manpages/hardy/man1/iconv.1.html
+* http://blog.oneiroi.co.uk/mysql/converting-mysql-latin1-to-utf8/
+* http://blogs.law.harvard.edu/djcp/2010/01/convert-mysql-database-from-latin1-to-utf8-the-right-way/
+
 Upgrading MySQL
----------------
+===============
 MySQL 5.6 is released an upgrade should work as described here:
 [http://www.ovaistariq.net/490/a-step-by-step-guide-to-upgrading-to-mysql-5-5/]
 
@@ -1056,24 +1060,14 @@ fundamental differences in conceptions:
 | PostgresSQL
 
 
-References:
-* http://codex.wordpress.org/Converting_Database_Character_Sets
-* http://en.gntoo-wiki.com/wiki/Convert_latin1_to_UTF-8_in_MySQL
-* http://www.bluebox.net/news/2009/07/mysql_encoding/
-* http://blog.hno3.org/2010/04/22/fixing-double-encoded-utf-8-data-in-mysql/
-* http://pastebin.com/iSwVPk1w
-* http://en.gentoo-wiki.com/wiki/Convert_latin1_to_UTF-8_in_MySQL
-* http://www.bothernomore.com/2008/12/16/character-encoding-hell/
-* http://manpages.ubuntu.com/manpages/hardy/man1/iconv.1.html
-* http://blog.oneiroi.co.uk/mysql/converting-mysql-latin1-to-utf8/
-* http://blogs.law.harvard.edu/djcp/2010/01/convert-mysql-database-from-latin1-to-utf8-the-right-way/
+
 
 Full text search
-----------------
+================
 As InnoDB lacks full text-search, it can be supported via Sphinx http://astellar.com/2011/12/replacing-mysql-full-text-search-with-sphinx/].
 
 Transactions
-------------
+============
 Bulk updates of data records can be achieved with the use of transactions.
 Simply decorate the function that requires bulk update with transaction commit on success: ::
 
@@ -1103,7 +1097,7 @@ sudo ln -s /home/denigma/env/lib/python2.6/site-packages/django/contrib/admin/me
 
 
 Relative Path
--------------
+=============
 Python modules (including Django apps) have a __path__ attribute which informs where they are on
 the filesystem: ::
 
@@ -1115,7 +1109,7 @@ Similiar the path to the project can be set in configuration like this: ::
 
 
 Shelves
--------
+=======
 Inclusion of shelves for the annotation mapping algorithm leads to appearance of the following warning multiple times
 whenever the development server is restarted: ::
 
@@ -1130,20 +1124,19 @@ TODO list manager app.
 multi-ser-functionality
 
 Detecting Change in User Data
------------------------------
+=============================
 Changes made on the user model can be registered with the use of a "pre_save".
 signale.kwargs['instance'] will contain the updated record and the old record can be
 obtained with "User.obects.get(id=user.id) if user.pk else None".
 
 Duplicated Entries
-------------------
+==================
 Whiching entries via the Q function e.g. filtering on tags and categories, resulted in duplicated entries within the
 queryset. Adding the method `distinct` on the queryset eliminated duplicates.
 
 
 Markup
-------
-
+======
 Different leightweight markup languages have all their own strength and weakenings
 [http://vimeo.com/14300874].
 
@@ -1159,7 +1152,7 @@ http://packages.python.org/django-markup/
 django-MarkWhat: https://github.com/Alir3z4/django-markwhat
 
 reStructuredText Templatetag
-----------------------------
+============================
 The restructuredtext templatetag provided by django contrib markup module has 
 problems with rendering the title if it appears immeditaly at the beginning.
 This attributed to a normal behaviour of docutils and several there are several
@@ -1170,7 +1163,7 @@ fragment. Therefore an optimazed templatetag called "reST" was created.
 
 
 rst2pdf
--------
+=======
 Converting an reST file into a PDF causes problems with the images.
 It seems the error stems from being PIL having not zlib support
 (rst-pil-problem_).
@@ -1232,7 +1225,7 @@ embedded in the browser (rst2s5_)
 .. _rst2s5: http://docutils.sourceforge.net/docs/user/slide-shows.html
 
 SVG
----
+===
 svg are vectorized graphics. They can be created with for instance inkscape_.
 rst2pdf can incorporate SVGs into documents, though
 a library need to be installed. There are two alternative libraries producing
@@ -1255,13 +1248,13 @@ svg2rlg_ is an updated alternative to other svg libraries.
 .. _svg2rlg: https://groups.google.com/forum/?fromgroups=#!topic/rst2pdf-discuss/QXeHG_Gq8T0
 
 Math in reST
-------------
+============
 There are many ways to embed math formulas into reST (math-in-reST_).
 
 .. _math-in-reST: http://forrestyu.net/art/math-in-restructuredtext/
 
 Thesis in reST
---------------
+==============
 Straight reST can be used write a `master thesis`_
 and modified version of Sphinx can produce a PhD thesis (sphinxtr_).
 A modified rst2html generates nice `research articles`_
@@ -1277,7 +1270,7 @@ A nature science bibliothek extension of sphinx manages scientifc citations (sph
 
 
 Mulitplication Sign in ReST
----------------------------
+===========================
 muplication sign or related special characters can be inserted into a reST document by
 `inserting the unicode character`_.
 
@@ -1285,7 +1278,7 @@ muplication sign or related special characters can be inserted into a reST docum
 .. _`inserting the unicode character`: http://stackoverflow.com/questions/6369049/how-do-i-write-the-multiplication-sign-in-restructuredtext-rest
 
 Autoconformation
-----------------
+================
 In bash scripts user input questions should be autoconfirmed.
 One way is to implement this automation is to flag installation commands
 with -y (confirmaton-scripting_).
@@ -1293,7 +1286,7 @@ with -y (confirmaton-scripting_).
 .. _confirmation-scripting: http://stackoverflow.com/questions/7410771/handling-input-confirmations-in-linux-shell-scripting
 
 Unicode Characters
-------------------
+==================
 The Unicode Transformation Format is a standard that assigns a code point (a
 number) to each character in every supported language. For looking up a
 character code it is here refered to a list of utf8-characters_.
@@ -1301,13 +1294,13 @@ character code it is here refered to a list of utf8-characters_.
 .. _utf8-characters: http://www.periodni.com/unicode_utf-8_encoding.html
 
 Denigma, the Journal of the Cutting Edge
-----------------------------------------
+========================================
 Denigma is become a journal of the next generation. On Denigma articles are continuously peer reviewed, rather than
 ``one time peer-reviewed and forget about it``.
 
 
 Cases-sensitivity
------------------
+=================
 MySQL tables with a utf8 characterset (woth utf8_unicode_ci) do not allow `case-sensitive lookups`_.
 `Changing the collation status`_ to utf8_bin should resolve this issue::
 
@@ -1327,7 +1320,7 @@ MySQL has 4 levels of collation: server, database, table, column. Changing th co
 database or table, will not change the setting for each column, but changes the default collations.
 
 Bad unicode data
-----------------
+================
 A field saved as string raises the Bad unicode data Error (here title of reference fetch from Bio Entrez).
 Transforming the string into unicode prior to saving the object solves this issue.
 
@@ -1344,7 +1337,7 @@ Python decoding mechanism might also be handy with solving such  (django-unicode
 
 
 Sphinx
-------
+======
 On of the greatest wonders of the world is Sphinx: the python Auto-documentation
 
 Sphinx can be used to document python code (Using-Sphinx-to-Document-Python-Code_).
@@ -1354,7 +1347,7 @@ It is easy to use and will generate HTML, LaTeX, PDF, and more.
 
 
 File Permission
----------------
+===============
 The default apache2 group and username is www-data. It is defined in the following files:
 
 /etc/apache2/apache2.conf
@@ -1370,7 +1363,7 @@ http://stackoverflow.com/questions/1682440/permission-denied-error-with-django-w
 http://stackoverflow.com/questions/11791833/errno-13-permission-denied-media-folder-with-localhost
 
 Static Files
-------------
+============
 A static folder in the project root includes all the project-specific (and not app specific) static files.
 The folder's path is then add to STATICFILES_DIRS_.
 This static folder is different than STATIC_ROOT folder where the collectstatic
@@ -1383,7 +1376,7 @@ while the second is not.
 .. _`static files for deployment`: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-STATIC_ROOT
 
 Insecure string pickle
-----------------------
+======================
 Fetching specific references raises ``Insecure string pickle``. It is probably caused due to
 cPickles pickle behaviour. Specifically cPickle is used by shelve.
 
@@ -1399,7 +1392,7 @@ It is possible to circumvent it by using explicitly `pickle instead of cPickle`_
 .. _`pickle instead of cPickle`: http://mail.python.org/pipermail/python-list/2000-February/062597.html
 
 Sign up Customization
----------------------
+=====================
 The account creation sign up form can apparently not been customized::
 
     class SignupForm(GroupForm):
@@ -1694,11 +1687,6 @@ django-ajax-filtered-searching the bug [http://stackoverflow.com/questions/19746
 ajax and django views [http://brack3t.com/ajax-and-django-views.html].
 
 
-Collaboration column
-projects
-name (number)
-
-
 Task Management
 ===============
 A plugeable TODO app that has been bring to completion. http://birdhouse.org/software/2008/09/django-todo/main/
@@ -1828,4 +1816,7 @@ Using Subdomains in Django [http://thingsilearned.com/2009/01/05/using-subdomain
 
 AWS
 ===
-Best database solution for Django on AWS [http://stackoverflow.com/questions/9842961/best-database-solution-for-django-on-aws]
+Best database solution for Django on AWS [http://stackoverflow.com/questions/9842961/best-database-solution-for-django-on-aws].
+
+
+#234567891123456789212345678931234567894123456789512345678961234567897123456789
