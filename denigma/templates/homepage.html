@@ -11,6 +11,10 @@
 
 {% block body_class %}Home{% endblock %}
 
+{% block hierarchy %}
+    | <a href="{% url 'create-entry' %}">Create Entry</a>
+{% endblock %}
+
 {% block banner %}
 <table width="100%">
     <tr>
