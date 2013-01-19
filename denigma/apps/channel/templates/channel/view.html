@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Longevity 7/24</title>
+    <script src='http://static.opentok.com/v1.1/js/TB.min.js'></script>
+    <script src="${tokenbox.nwidget.staging_widget_url}/v1.1/js/TB.min.js">
+
+        // Initialize API key, session, and token...
+        // Think of a session as a room, and a token as the key to the in to the room
+        // Sessions and tokens are generated on the server and passed down to the client
+        var apiKey = "1127"
+        var sessionId = "1_MX4xMTI3fn5TdW4gSmFuIDEzIDExOjA3OjU0IFBTVCAyMDEzfjAuODA2MjQ0Mn4";
+        var token = "T1==cGFydG5lcl9pZD0xMTI3JnNpZz02NDAxNzU2MTJhNzk4MzkzMjUyNjMzMjlhZWRmMTljYzA2NTM5NTY3OnNlc3Npb25faWQ9MV9NWDR4TVRJM2ZuNVRkVzRnU21GdUlERXpJREV4T2pBM09qVTBJRkJUVkNBeU1ERXpmakF1T0RBMk1qUTBNbjQmY3JlYXRlX3RpbWU9MTM1ODU3ODM4NiZyb2xlPXB1Ymxpc2hlciZub25jZT0xMzU4NTc4Mzg2LjEwNjYxNjE0MjU1NDgx";
+
+        // Enable console logs for debugging
+        TB.setLogLevel(TB.DEBUG);
+
+        // Initialize session, set up event listeners, and connect
+        var session = TB.initSession(sessionId);
+        session.addEventListener('sessionConnect', sessionConnectHandler);
+        session.addEventListener('streamCreated', streamCreateHandler);
+        session.connect(apiKey, token);
+
+        function sessionConnectHandler(event) {
+            var publisher = TB.initPublisher(apiKey, 'myPublisherDiv')
+            session.publish(publisher);
+
+            // Subscribe to streams that were in the session when we connected
+            subscribeToStreams(event.streams);
+        }
+
+        function subsribeToStream(streams) {
+            // Subscribe to any new streams that are created
+            subscribeToStreams(event.streams);
+        }
+
+        function subscribeToStreams(streams) {
+            for (var i = 0; i < streams.lenght; i++) {
+                // Make sure we don't subscribe to ourself
+                if (streams[i].connection.connectionId == session.connection.connectionId) {
+                    return;
+                }
+
+                // Create the div to put the subscriber element in to
+                var div = document.createElement('div');
+                div.setAttribute('id', 'stream' + streams[i].streamId);
+                document.body.appendChild(div);
+
+                // Subscribe to the stream
+                session.subscribe(streams[i], div.id);
+            }
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>
