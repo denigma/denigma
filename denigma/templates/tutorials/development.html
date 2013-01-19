@@ -31,7 +31,13 @@
                         {% endfor %}
                     {% endif %}
                 {% endwith %}
-                <p>{{ windows.content|negle|reST|neglete|markdown|hyper|recross|safe }}</p>
+                <p>
+                    {% if windows.is_rest %}
+                        {{ windows.content|negle|reST|neglete|markdown|hyper|recross|safe }}
+                    {% else %}
+                        {{ windows.content|markdown|hyper|recross|safe }}
+                    {% endif %}
+                </p>
                 <p><a class="btn" href="http://www.ubuntu.com/download/desktop/windows-installer/">More on Wubi &raquo;</a></p>
             {% endblock %}
         </div>
@@ -47,7 +53,13 @@
                         {% endfor %}
                     {% endif %}
                 {% endwith %}
-                <p>{{ mac.content|negle|reST|neglete|markdown|hyper|recross|safe }}<p>
+                <p>
+                    {%  if mac.is_rest %}
+                        {{ mac.content|negle|reST|neglete|markdown|hyper|recross|safe }}
+                    {% else %}
+                        {{ mac.content|markdown|hyper|recross|safe }}
+                    {% endif %}
+                <p>
                 <p><a class="btn" href="http://www.unix.org/">More on Unix &raquo;</a></p>
             {% endblock %}
         </div>
@@ -63,7 +75,13 @@
                         {% endfor %}
                     {% endif %}
                 {% endwith %}
-                <p>{{ linux.content|negle|reST|neglete|markdown|hyper|recross|safe }}</p>
+                <p>
+                    {% if linux.is_rest %}
+                        {{ linux.content|negle|reST|neglete|markdown|hyper|recross|safe }}
+                    {% else %}
+                        {{ linux.content|markdown|hyper|recross|safe }}
+                    {% endif %}
+                </p>
                 <p><a class="btn" href="http://www.ubuntu.com/">More on Ubuntu &raquo;</a></p>
             {% endblock %}
         </div>
