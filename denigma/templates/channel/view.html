@@ -1,0 +1,65 @@
+{% extends "site_base.html" %}
+
+{% block hierarchy %}
+    » Channel
+{% endblock %}
+
+{% block extra_script %}
+    <script src="http://static.opentok.com/v0.91/js/TB.min.js"></script>
+
+    <script type="text/javascript">
+        var apiKey = '21805942';
+        var sessionId = '1_MX4yMTgwNTk0Mn5-U2F0IEphbiAxOSAwMzo1MTo1MSBQU1QgMjAxM34wLjkxMTExMzJ-';
+        var token = 'T1==cGFydG5lcl9pZD0yMTgwNTk0MiZzaWc9MGY4ZDc3ODU4ZjcwYmFmZTg4M2YzZmM5MDQwMGQ0Njk4N2RhNzEwYTpzZXNzaW9uX2lkPTFfTVg0eU1UZ3dOVGswTW41LVUyRjBJRXBoYmlBeE9TQXdNem8xTVRvMU1TQlFVMVFnTWpBeE0zNHdMamt4TVRFeE16Si0mY3JlYXRlX3RpbWU9MTM1ODU5NjMxMCZleHBpcmVfdGltZT0xMzU4NjgyNzEwJnJvbGU9cHVibGlzaGVyJm5vbmNlPTMzMTAwMA==';
+
+        TB.setLogLevel(TB.DEBUG);
+
+        var session = TB.initSession(sessionId);
+        session.addEventListener('sessionConnected', sessionConnectedHandler);
+        session.addEventListener('streamCreated', streamCreatedHandler);
+        session.connect(apiKey, token);
+
+        var publisher;
+
+        function sessionConnectedHandler(event) {
+            publisher = TB.initPublisher(apiKey, 'myPublisherDiv');
+            session.publish(publisher);
+
+            // Subscribe to streams that were in the session when we connected
+            subscribeToStreams(event.streams);
+        }
+
+        function streamCreatedHandler(event) {
+            // Subscribe to any new streams that are created
+            subscribeToStreams(event.streams);
+        }
+
+        function subscribeToStreams(streams) {
+            for (var i = 0; i < streams.length; i++) {
+                // Make sure we don't subscribe to ourself
+                if (streams[i].connection.connectionId == session.connection.connectionId) {
+                    return;
+                }
+
+                // Create the div to put the subscriber element in to
+                var div = document.createElement('div');
+                div.setAttribute('id', 'stream' + streams[i].streamId);
+                document.body.appendChild(div);
+
+                // Subscribe to the stream
+                session.subscribe(streams[i], div.id);
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block head_title %}
+    Longevity 7/24
+{% endblock %}
+
+{% block title %}Longevity 7/24{% endblock %}
+
+{% block content %}
+    <div id="myPublisherDiv"></div>
+
+{% endblock %}
