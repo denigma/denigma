@@ -50,10 +50,7 @@ To deploy Denigma in the clouds the Amazone Web Service (AWS) is used.
    $ cd ..
    $ aptitude install git # Only on Daily, not necessary on Giter. 
    $ git clone https://github.com/hevok/denigma
-   $ bash denigma/reconnect.sh
-   $ bash denigma/open-port.sh
-   $ sudo bash ./denigma/aws-django -n denigma -d nothing -s "/s" -H <DNS> -D denigma -U denigma -P <PASSWORD>
-
+   $ bash denigma/configure.sh
 
 Where <DNS> is the that of the instance that hast the database and <PASSOWRD> is the password
 of the database is there is any.
@@ -197,7 +194,7 @@ $ sudo aptitude install filezilla
 > Open the Site Manage
 Host: <DNS>
 Port: 22
-Logon Type: Norma
+Logon Type: Normal
 User: Ubuntu 
 
 > Edit > Settings
@@ -206,7 +203,7 @@ Convert key
 
 It is noted that when FileZilla transferes data to a EC2 instance it results 
 into a block of the internet connection. Possible another port such as 21 has 
-to be prefered for connecting to an EC2 instance via sFTP.
+to be preferred for connecting to an EC2 instance via sFTP.
 
 
 Customizing Django Admin
@@ -643,7 +640,10 @@ Forms
 
 Bootstrap forms
 ---------------
-To inlcude a bootstrap form to the following [1]: ::
+To inlcude a bootstrap form to the following [1]:
+
+.. sourcecode:: django
+
    {% load bootrap_tags %}
    ...
    <form>
@@ -699,17 +699,19 @@ Notifications
 
 Customizing Styles
 ==================
-The bootstrap hero-unit was modified to have less margin: ::
+The bootstrap hero-unit was modified to have less margin:
 
-}
-.hero-unit {
-  padding: 6px; /* 60 */
-  margin-bottom: 30px; /* 3 */
-  background-color: #f5f5f5; /* f5f5f5; 993399 FF99CC */ FFEEEE ffeeff
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
-}
+.. sourcecode:: css
+
+    }
+    .hero-unit {
+      padding: 6px; /* 60 */
+      margin-bottom: 30px; /* 3 */
+      background-color: #f5f5f5; /* f5f5f5; 993399 FF99CC */ FFEEEE ffeeff
+      -webkit-border-radius: 6px;
+      -moz-border-radius: 6px;
+      border-radius: 6px;
+    }
 
 Citations
 =========
@@ -770,12 +772,14 @@ Hierarchy
 =========
 django-mptt enables the construction of relational tree structures
 [http://django-mptt.github.com/django-mptt/index.html#].
-To enable mptt needs added to the requirements, installed and added to the installed apps in Config: ::
+To enable mptt needs added to the requirements, installed and added to the installed apps in Config::
 
      nano requirements/project.txt
      ...
      -e git+https://github.com/django-mptt/django-mptt/#egg=django-mptt
      ...
+
+.. sourcecode:: python
 
      nano settings.py
      ...
@@ -810,7 +814,9 @@ migration. Simply specify 0 for those, but make sure to run in the ./manage.py s
 
 That is it, the model should now support hierarchical structures.
 To display the hierarchy in the view/template load the `{% mptt_tags %}` template tag
-and iterate over the recursetree passed data objects: ::
+and iterate over the recursetree passed data objects:
+
+.. sourcecode:: python
 
     nano views.py
     ...
@@ -819,6 +825,9 @@ and iterate over the recursetree passed data objects: ::
                             {'nodes': Classification.objects.all()},
                             context_instance=RequestContext(request))
     ...
+
+
+.. sourcecode:: django
 
     nano classifcations.html
     ...
@@ -837,7 +846,9 @@ and iterate over the recursetree passed data objects: ::
     </ul>
     ...
 
-An the name of parent attribute does not to be `parent`, but than has to be specified in the MPTTMeta class: ::
+An the name of parent attribute does not to be `parent`, but than has to be specified in the MPTTMeta class:
+
+.. sourcecode:: python
 
     nano models.py
     ...
@@ -846,7 +857,9 @@ An the name of parent attribute does not to be `parent`, but than has to be spec
         parent_attr = 'category'
     ...
 
-MPTT hierarchy can be integrated with the admin by subclasssing `MPTTModelAdmin` and registration: ::
+MPTT hierarchy can be integrated with the admin by subclasssing `MPTTModelAdmin` and registration:
+
+.. sourcecode:: python
 
     nano admin.py
     ...
@@ -886,7 +899,7 @@ The many-to-many tables had to be altered manually with raw sql: ::
 
 
 DAVID Annotations
--================
+=================
 The DAVID API python bindings require suds. suds conflicts with the DjDt django debug toolbox.
 Specifically an error is raised during authentication
 [http://stackoverflow.com/questions/10071005/nonetype-object-has-no-attribute-str-in-suds].
@@ -1058,8 +1071,6 @@ fundamental differences in conceptions:
 | Python 3.01
 | Django 1.5.1
 | PostgresSQL
-
-
 
 
 Full text search
@@ -1393,7 +1404,9 @@ It is possible to circumvent it by using explicitly `pickle instead of cPickle`_
 
 Sign up Customization
 =====================
-The account creation sign up form can apparently not been customized::
+The account creation sign up form can apparently not been customized:
+
+.. sourcecode:: python
 
     class SignupForm(GroupForm):
 
@@ -1732,7 +1745,7 @@ For instance, assume data entries shall be have many to many relations with data
 
 First define that dataset uses data entries as categories via a many to many relation:
 
-.. sourcecode: python
+.. sourcecode:: python
 
     # dataset.models:
     form django.db import models
@@ -1745,7 +1758,7 @@ First define that dataset uses data entries as categories via a many to many rel
 
 In the data form define the references field explicitly:
 
-.. sourcecode: python
+.. sourcecode:: python
 
     # data.forms:
     from django import forms
@@ -1768,7 +1781,7 @@ In the data form define the references field explicitly:
 
 The form can be employed outside as well as inside the admin:
 
-.. sourcecode: python
+.. sourcecode:: python
 
     # data.admin:
     from django.contrib import admin
@@ -1818,5 +1831,37 @@ AWS
 ===
 Best database solution for Django on AWS [http://stackoverflow.com/questions/9842961/best-database-solution-for-django-on-aws].
 
+
+Chat
+====
+Installation of gnotty via pip failed due to compilation error during gevent installation.
+[http://stackoverflow.com/questions/11094718/error-command-gcc-failed-with-exit-status-1-while-installing-eventlet]/
+installing libevent solves this issue [https://groups.google.com/forum/?fromgroups=#!topic/gevent/xrl72-I0ciM]:
+
+    sudo apt-get install libevent-dev
+
+
+Wrong Permission
+================
+To enable ftp access to other developer the key-pair need to be shared.
+Trying to generate a new key-pair and using it to access an instance raises the following issue:
+
+The authenticity of host 'ec2-46-137-15-178.eu-west-1.compute.amazonaws.com (46.137.15.178)' can't be established.
+ECDSA key fingerprint is 72:e7:40:75:d3:ad:c3:55:1c:4c:34:77:3a:4c:6a:05.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'ec2-46-137-15-178.eu-west-1.compute.amazonaws.com,46.137.15.178' (ECDSA) to the list of known hosts.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions 0664 for 'kp.pem' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+bad permissions: ignore key: kp.pem
+Permission denied (publickey).
+
+Appearentely it is duo to having the wrong mod on the file which was solved by
+[http://stackoverflow.com/questions/8193768/trying-to-ssh-into-an-amazon-ec2-instance-permission-error]:
+
+    chmod 400 dp.pem
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
