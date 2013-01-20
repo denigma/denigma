@@ -106,9 +106,9 @@ class Entry(Content):
     #relations = models.ManyToManyField('self', through='Relation', symmetrical=False, related_name='relation')#, blank=True, null=True)
 
     # User track:
-    creator = models.ForeignKey(User, related_name=_('creator'), blank=True, null=True, verbose_name=_('creator')) # M2M allow more than one creator? #_
-    updates = models.ManyToManyField(User, through='Change', verbose_name=_('updates')) # changed changes? #_('updates'),
-    publisher = models.ForeignKey(User, related_name=_('publisher'), blank=True, null=True) # M2M? #_('publisher'),
+    creator = models.ForeignKey(User, related_name=_('entries'), blank=True, null=True, verbose_name=_('creator')) # M2M allow more than one creator? #_
+    updates = models.ManyToManyField(User, related_name='updated_entries', through='Change', verbose_name=_('updates')) # changed changes? #_('updates'),
+    publisher = models.ForeignKey(User, related_name=_('published_entries'), blank=True, null=True) # M2M? #_('publisher'),
     published = models.BooleanField(_('published'), db_index=True, default=True) # DateTimeField()?
     original = None
     tagged_changed = []
