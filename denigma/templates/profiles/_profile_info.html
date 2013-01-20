@@ -2,7 +2,7 @@
 {% load avatar_tags %}
 
 <div class="profile_info">
-    <table width="100%">
+    <table width="100%" border="0">
         <tr>
             <td>
                 {% if profile.name %}<p><b>{% trans "Name" %}</b>: {{ profile.name }}</p>{% endif %}
@@ -60,4 +60,29 @@
             </td>
         </tr>
     </table>
+    <table>
+        <tr>
+            <td align="top">
+                {% with profile.user.entries.all as entries %}
+                    {% if entries %}
+                        <b>Created Entries</b>:
+                        {% for entry in entries %}
+                            <li><a href="{{ entry.get_absolute_url }}">{{ entry }}</a></li>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </td>
+            <td align="top" valign="top">
+                {% with profile.user.todos.all as todos %}
+                    {% if todos %}
+                        <b>Duties</b>
+                        {% for todo in todos %}
+                            <li><a href="{{ todo.get_absolute_url }}">{{ todo }}</a></li>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </td>
+        </tr>
+    </table>
+
 </div>
