@@ -1,3 +1,4 @@
+"""Todos will be renamed to Duties."""
 import datetime
 
 from django.db import models
@@ -14,17 +15,25 @@ priorities = (
 )
 
 
-class Todo(models.Model):
+class Todo(models.Model): # Rename To Duty
     title = models.CharField(max_length=200)
     description = models.TextField()
-    importance = models.CharField(max_length=1, choices=priorities, verbose_name='priority')
+
+    importance = models.CharField(max_length=1, choices=priorities, verbose_name='priority') # Rename to priority.
+    #difficulty?
+
     created = models.DateField(auto_now_add=True) # 'creation date'
     updated = models.DateField(auto_now=True)
     start_date = models.DateField(blank=True, null=True)
     stop_date = models.DateField(blank=True, null=True)
     #finished = models.DateField(blank=True, null=True)
     done = models.BooleanField()
-    owner = models.ForeignKey(User, blank=True, verbose_name=_("Creator"))
+
+    owner = models.ForeignKey(User, related_name='todos', blank=True, verbose_name=_("Creator")) # Rename to creator.
+    #assigned = models.ManyToManyField(User, related_name='assigned_todos', blank=True, null=True, verbose_name=_("Assigned")) # Executor.
+
+    #entry = models.ForeignKey('data.Entry', relate_name="todo", blank=True, null=True)
+
     #deadlines?
     # email to inform people before deadlines end.
 
