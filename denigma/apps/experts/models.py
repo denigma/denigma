@@ -78,6 +78,10 @@ class Profile(models.Model): # User
     msn = models.EmailField(max_length=60, blank=True)
     city = models.CharField(max_length=30, blank=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
+
+    skype = models.CharField(max_length=32, blank=True, null=True)
+
+    images = models.ManyToManyField('media.Image', blank=True, null=True)
     
     birthday = models.DateField(_('birth date'), blank=True, null=True)
 

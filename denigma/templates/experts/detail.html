@@ -19,69 +19,82 @@
 {% load obfuscation %}
 
 {% block content %}
-    {% if expert.first_name %}<p><b>First name: </b>{{ expert.first_name }}</p>{% endif %}
-    {% if expert.middle_name %}<p><b>Middle name:</b> {{ expert.middle_name }}</p>{% endif %}
-    {% if expert.last_name %}<p><b>Last name: </b>{{ expert.last_name }}</p>{% endif %}
-    {% if user.is_authenticated %}
-        {% if expert.email %}<p><b>Email: </b><a href="mailto:{{ expert.email }}">{{ expert.email|obfuscate }}</a></p>{% endif %}
-    {% endif %}
-    {% if expert.phone %}<p><b>Phone: </b>{{ expert.phone }}</p>{% endif %}
-    {% if expert.mobile %}<p><b>Mobile: </b>{{ expert.mobile }}</p>{% endif %}
-    {% if expert.gender %}
-        <p><b>Gender: </b>
-            {% if expert.gender == 1 %}Male
-            {% elif expert.gender == 2 %}Female
-            {% endif %}
-        </p>
-    {% endif %}
-    {% if expert.affiliation %}<p><b>Affiliation: </b>{{ expert.affiliation }}</p>{% endif %}
-    {% if expert.street %}<p><b> Street: </b>{{ expert.street }}</p>{% endif %}
-    {% if expert.city %}<p><b> City: </b>{{ expert.city }}</p>{% endif %}
-    {% if expert.state %}<p><b>State: </b>{{ expert.state }}</p>{% endif %}
-    {% if expert.zip_code %}<p><b>Zip code: </b>{{ expert.zip_code }}</p>{% endif %}
-    {% if expert.country %}<p><b>Country:  </b>{{ expert.country }}</p>{% endif %}
-    {% if expert.work %}<p><b>Work: </b><ul>{{ expert.work|markdown|hyper|recross|safe }}</ul></p>{% endif %}
-    {% if expert.website %}<p><a href="{{ expert.website }}">Website</a></p>{% endif %}
-    {% if expert.link_set.all %}
-        <b>Organisations</b>:
-        {% for link in expert.link_set.all %}
-           <li><a href="{{ link.get_absolute_url }}">{{ link }}</a></li>
-        {% endfor %}<br>
-    {% endif %}
-    {% if expert.publications.all %}
-        <b>Publications</b>:
-        {% for publication in expert.publications.all %}
-            <a href="{{ publication.get_absolute_url }}">{{ publication }}</a>
-        {% endfor %}
-    {% endif %}
-    {% if expert.collaboration %}<p><b>Requires collaboration</b></p>{% endif %}
-    {% if expert.entries.all %}
-        <b>Type of collaboration:</b>
-        {% for entry in expert.entries.all %}
-            <li><a href="{% url 'detail-entry' entry.slug %}">{{ entry.title }}</a></li>
-        {% endfor %}
-    {% endif %}
-    {% if references %}
-        <b>References</b>:
-        {% for reference in references %}
-            <li><a href="{% url 'detail-reference' reference.pk %}">{{ reference }}</a></li>
-        {% endfor %}
-    {% endif %}<br>
-    {% with expert|medline as publications %}
-        {% if publications %}
-            <b>Publications</b>:
-            {% for key, value in publications.items %}
-                {% if key not in pmids %}
-                    <li><a href="{% url 'detail-reference' key %}">{{ key }} {{ value }}</a></li>
+    <table>
+        <tr>
+            <td valgin="top">
+                {% if expert.first_name %}<p><b>First name: </b>{{ expert.first_name }}</p>{% endif %}
+                {% if expert.middle_name %}<p><b>Middle name:</b> {{ expert.middle_name }}</p>{% endif %}
+                {% if expert.last_name %}<p><b>Last name: </b>{{ expert.last_name }}</p>{% endif %}
+                {% if user.is_authenticated %}
+                    {% if expert.email %}<p><b>Email: </b><a href="mailto:{{ expert.email }}">{{ expert.email|obfuscate }}</a></p>{% endif %}
                 {% endif %}
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    <hr>
-    <b><a href="{% url 'update-expert-profile' expert.pk %}">Update</a></b>
-    {% with expert as object %}
-        {% include "comments/wrapper.html" %}
-    {% endwith %}
+                {% if expert.phone %}<p><b>Phone: </b>{{ expert.phone }}</p>{% endif %}
+                {% if expert.mobile %}<p><b>Mobile: </b>{{ expert.mobile }}</p>{% endif %}
+                {% if expert.skype %}<p><b>Skype: </b>{{ expert.skype }}</p>{% endif %}
+                {% if expert.gender %}
+                    <p><b>Gender: </b>
+                        {% if expert.gender == 1 %}Male
+                        {% elif expert.gender == 2 %}Female
+                        {% endif %}
+                    </p>
+                {% endif %}
+                {% if expert.affiliation %}<p><b>Affiliation: </b>{{ expert.affiliation }}</p>{% endif %}
+                {% if expert.street %}<p><b> Street: </b>{{ expert.street }}</p>{% endif %}
+                {% if expert.city %}<p><b> City: </b>{{ expert.city }}</p>{% endif %}
+                {% if expert.state %}<p><b>State: </b>{{ expert.state }}</p>{% endif %}
+                {% if expert.zip_code %}<p><b>Zip code: </b>{{ expert.zip_code }}</p>{% endif %}
+                {% if expert.country %}<p><b>Country:  </b>{{ expert.country }}</p>{% endif %}
+                {% if expert.work %}<p><b>Work: </b><ul>{{ expert.work|markdown|hyper|recross|safe }}</ul></p>{% endif %}
+                {% if expert.website %}<p><a href="{{ expert.website }}">Website</a></p>{% endif %}
+                {% if expert.link_set.all %}
+                    <b>Organisations</b>:
+                    {% for link in expert.link_set.all %}
+                        <li><a href="{{ link.get_absolute_url }}">{{ link }}</a></li>
+                    {% endfor %}<br>
+                {% endif %}
+                {% if expert.publications.all %}
+                    <b>Publications</b>:
+                    {% for publication in expert.publications.all %}
+                        <a href="{{ publication.get_absolute_url }}">{{ publication }}</a>
+                    {% endfor %}
+                {% endif %}
+                {% if expert.collaboration %}<p><b>Requires collaboration</b></p>{% endif %}
+                {% if expert.entries.all %}
+                    <b>Type of collaboration:</b>
+                    {% for entry in expert.entries.all %}
+                        <li><a href="{% url 'detail-entry' entry.slug %}">{{ entry.title }}</a></li>
+                    {% endfor %}
+                {% endif %}
+                {% if references %}
+                    <b>References</b>:
+                    {% for reference in references %}
+                        <li><a href="{% url 'detail-reference' reference.pk %}">{{ reference }}</a></li>
+                    {% endfor %}
+                {% endif %}<br>
+                {% with expert|medline as publications %}
+                    {% if publications %}
+                        <b>Publications</b>:
+                        {% for key, value in publications.items %}
+                            {% if key not in pmids %}
+                                <li><a href="{% url 'detail-reference' key %}">{{ key }} {{ value }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <hr>
+                <b><a href="{% url 'update-expert-profile' expert.pk %}">Update</a></b>
+                {% with expert as object %}
+                    {% include "comments/wrapper.html" %}
+                {% endwith %}
+            </td>
+            <td valign="top" align="right">
+                {% for image in expert.images.all %}
+                    <a href="{{ image.get_absolute_url }}"><img src="{{ image.url }}" alt="{{ image.name }}"></a>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+
 {% endblock %}
 
 
