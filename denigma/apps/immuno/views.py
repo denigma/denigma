@@ -1,4 +1,5 @@
 from django.views.generic import TemplateView
+from django.db.models import Q
 
 from data import get
 from data.models import Entry
@@ -19,7 +20,7 @@ class IndexView(TemplateView):
         context['publications'] = get('Publications')
         context['crowd_funding'] = get('Crowd-Funding')
         context['experiments'] = get('Experiments')
-        context['entries'] = Entry.objects.filter(tags__name='immunology')
+        context['entries'] = Entry.objects.filter(Q(tags__name='immunology') | Q(tags__name='immune system')).distinct()
         return context
 
 
