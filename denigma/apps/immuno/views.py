@@ -19,7 +19,7 @@ class IndexView(TemplateView):
         context['publications'] = get('Publications')
         context['crowd_funding'] = get('Crowd-Funding')
         context['experiments'] = get('Experiments')
-        context['entries'] = Entry.objects.filter(tags__name__istartswith='i')
+        context['entries'] = Entry.objects.filter(tags__name='immunology')
         return context
 
 
