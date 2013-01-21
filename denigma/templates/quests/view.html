@@ -24,7 +24,7 @@
     {% endif %}
 
     {% for image in quest.images.all %}
-        <img src={{ image.get_absolute_url }} alt={{ image.name }}>
+        <a href="{{ image.get_absolute_url }}"><img src={{ image.url }} alt={{ image.name }}></a>
     {% endfor %}
     <br><br>
     <b>Tags</b>:
