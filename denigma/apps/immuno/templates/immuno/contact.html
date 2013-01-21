@@ -1,0 +1,14 @@
+{% extends 'immuno/base.html' %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block banner %}
+    <br>
+    <br>
+{% endblock banner %}
+
+{% block content %}
+    <div class="container">
+        {{ object.content }}
+    </div>
+{% endblock %}

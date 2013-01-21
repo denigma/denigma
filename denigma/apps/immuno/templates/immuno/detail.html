@@ -1,0 +1,9 @@
+{% extends "immuno/base.html" %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block content %}
+    {% with object as entry %}
+        {% include "data/render_entry.html" %}
+    {% endwith %}
+{% endblock %}

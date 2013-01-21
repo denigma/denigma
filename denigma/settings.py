@@ -314,6 +314,7 @@ INSTALLED_APPS = [
     'meta',
     'eva',
     'alliance',
+    'immuno',
     'channel',
 
     'stats',
