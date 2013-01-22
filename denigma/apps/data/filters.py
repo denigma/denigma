@@ -12,6 +12,7 @@ from models import Entry
 class FilterForm(Form):
     filter = CharField()
 
+
 class EntryFilterSet(FilterSet):
     fields = ('categories', 'creator', 'created', 'updated')
 
