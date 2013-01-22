@@ -11,9 +11,12 @@ from django.contrib import messages
 from models import PastedItem
 from forms import PastedItemForm, SendItemForm
 
+from data import get
+
 
 def new(request, form_class=PastedItemForm, template_name="pastebin/new.html"):
     """Form for pasting new items."""
+    entry = get('Pastebin')
     form = form_class()
     if request.method == 'POST':
         if request.POST["action"] == "paste":
@@ -33,7 +36,7 @@ def new(request, form_class=PastedItemForm, template_name="pastebin/new.html"):
                 return HttpResponseRedirect(reverse('pastebin_detail',
                                             args=(item.uuid,)))
     return render_to_response(template_name,
-                            { "form": form, },
+                            { "form": form, "entry": entry },
                             context_instance=RequestContext(request))
 
 new = login_required(new)
@@ -41,7 +44,7 @@ new = login_required(new)
 
 def detail(request, uuid, form_class=SendItemForm,
            template_name='pastebin/pasteditem_detail.html'):
-    """View that shoes a pasted item and will also act on this form's data."""
+    """View that showes a pasted item and will also act on this form's data."""
     form = form_class()
     if request.method == 'POST':
         if request.POST["action"] == "send":
@@ -63,4 +66,5 @@ def detail(request, uuid, form_class=SendItemForm,
     return render_to_response(template_name,
                                { 'object': pasted_item, 'form': form },
                                context_instance=RequestContext(request))
-    detail = login_required(detail)
+
+detail = login_required(detail)

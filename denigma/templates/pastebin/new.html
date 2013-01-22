@@ -1,24 +1,31 @@
 {% extends "pastebin/base.html" %}
 
+{% load url from future %}
 {% load i18n %}
 
 {% block hierarchy %}
-    > <a href="/pastebin">Messaging</a>
+    » <a href="{% url 'pastebin' %}">Pastebin</a>
 {% endblock %}
 
 {% block body %}
-<p>You can simple paste any kind of textual information which will stay <em>pristine</em>, i.e. not processed by mark-ups. It allows to communicate plain-text data and scripts with any one known to Denigma.</p>
-<div id="basic-form"?
-<fieldset>
-<legend>{% trans "New item" %}</legend>
-<form id="pastebin_new_form" method="POST" action="">{% csrf_token %}
-<div>{{ form.non_field_error }}</div>
-<div>{{ form.text.errors }}</div>
-<div>{{ form.text }}</div>
-<div><input type="hidden" name="action" value="paste" />
-<input type="submit" value="paste" class="button" /></div>
-</form>
-</fieldset>
-</div>
+    {% if entry.text %}
+        {% include 'data/render_entry.html' %}
+    {% else %}
+        <p>You can simple paste any kind of textual information which will stay <em>pristine</em>, i.e. not processed by mark-ups. It allows to communicate plain-text data and scripts with any one known to Denigma.</p>
+    {% endif %}
+    <div id="basic-form">
+        <fieldset>
+        <legend>{% trans "New item" %}</legend>
+        <form id="pastebin_new_form" method="POST" action="">{% csrf_token %}
+            <div>{{ form.non_field_error }}</div>
+            <div>{{ form.text.errors }}</div>
+            <div>{{ form.text }}</div>
+            <div>
+                <input type="hidden" name="action" value="paste" />
+                <input type="submit" value="paste" class="button" />
+            </div>
+        </form>
+        </fieldset>
+    </div>
 {% endblock %}
 

@@ -13,9 +13,9 @@ urlpatterns = patterns('',
     url(r'^pre/$', # Previous version (depricated).
         direct_to_template,
         {"template": "pastebin/pre.html"},
-        name="pastebin"),
+        name="pastebin_pre"),
                        
-   url(r'^$', 'pastebin.views.new', name='pastebin_new'),
+   url(r'^$', 'pastebin.views.new', name='pastebin'),
                        
    url(r'^(?P<uuid>[-0-9a-f]{36})/$',
        'pastebin.views.detail',

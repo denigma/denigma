@@ -47,7 +47,7 @@
         {% block extra_head_base %}
             {% block extra_head %}{% endblock %}
         {% endblock %}
-    </head> {# http://elydis.files.wordpress.com/2010/07/lab.jpg  #}
+    </head>
     <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}">
 
         {% block topbar_base %}
@@ -60,7 +60,7 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </a>
-                            {% block site_brand %}<a class="brand" href="{% url 'home' %}"><img src="http://dgallery.s3.amazonaws.com/denigma_logo.png" alt="Denigma" height="60" width="60"></a>{% endblock %} {#  #}
+                            {% block site_brand %}<a class="brand" href="/admin/"><img src="http://dgallery.s3.amazonaws.com/denigma_logo.png" alt="Denigma" height="60" width="60"></a>{% endblock %} {#  #}
                             <div class="nav-collapse">
                                 {% block nav %}
                                     {% comment %}
@@ -87,7 +87,7 @@
 
                                 <span class="left">
 
-                                <b><a href="/admin">{{ SITE_NAME }} db</a>
+                                <b><a href="{% url 'home' %}">{{ SITE_NAME }}</a>
 
                                 {% block base_hierarchy %}
                                 {% endblock base_hierarchy %}
