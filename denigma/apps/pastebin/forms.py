@@ -23,7 +23,7 @@ class PastedItemForm(forms.ModelForm):
 class SendItemForm(forms.Form):
     """Form that deals with submitted data."""
     uuid = forms.CharField(max_length=36)
-    recipient = forms.CharField(max_length=30)
+    #recipient = forms.CharField(max_length=30)
 
     def __init__(self, sender=None, *args, **kwargs):
         super(SendItemForm, self).__init__(*args, **kwargs)
@@ -53,3 +53,10 @@ class SendItemForm(forms.Form):
            notification.send([self.recipient_user], "pasteditem_received", # If the last argument is wrong it raises a NoticeType matching query does not exist.
                               {'pasted_item': self.pasted_item,
                                'sender': self.sender,})
+
+           # Recipients:
+           self.recipients = self.cleaned_data['recipients']
+           if self.recipients:
+                notification.send(self.recipients, 'pasteditem_recieved',
+                                {'pasted_item': self.pasted_item,
+                                'sender': self.sender,})

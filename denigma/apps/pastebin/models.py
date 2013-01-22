@@ -17,6 +17,10 @@ class PastedItem(models.Model):
     def __unicode__(self):
         return self.uuid
 
+    @property
+    def short(self):
+        return self.text[:100]
+
     def save(self):
         if not self.uuid:
             self.uuid = str(uuid4()) # Random so it can't be easily guessed.
