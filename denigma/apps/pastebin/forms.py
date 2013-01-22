@@ -26,8 +26,9 @@ class SendItemForm(forms.Form):
     recipient = forms.CharField(max_length=30)
 
     def __init__(self, sender=None, *args, **kwargs):
-        super(SendItemForm, self).__init__(*args, **kwargs)
         self.sender = sender
+        super(SendItemForm, self).__init__(*args, **kwargs)
+
 
     def clean_uuid(self):
         try:
@@ -49,6 +50,7 @@ class SendItemForm(forms.Form):
         if notification:
            notification.send([self.sender], "pasteditem_sent",
                               {'pasted_item': self.pasted_item,
+                               'sender': self.sender,
                                'recipient': self.recipient_user,})
            notification.send([self.recipient_user], "pasteditem_received", # If the last argument is wrong it raises a NoticeType matching query does not exist.
                               {'pasted_item': self.pasted_item,

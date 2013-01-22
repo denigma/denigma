@@ -264,6 +264,9 @@ def send_now(users, label, extra_context=None, on_site=True, sender=None):
     """
     if extra_context is None:
         extra_context = {}
+
+    if not sender and "sender" in extra_context: # Sets the
+        sender = extra_context['sender']         # Sender.
     
     notice_type = NoticeType.objects.get(label=label)
     
