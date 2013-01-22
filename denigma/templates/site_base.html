@@ -23,11 +23,17 @@
                 <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="{% url 'terms' %}">Terms</a></li>
-                <li><a href="{% url 'privacy' %}">Privacy</a></li>
+                <li><a href="{% url 'detail-entry' 'denigma-concepts' %}">Concepts</a></li>
+                <li><a href="{% url 'detail-entry' 'philosophy'%}">Philosophy</a></li>
+                <li><a href="{% url 'detail-entry' 'roadmap' %}">Roadmap</a></li>
+                <li><a href="{% url 'detail-entry' 'aim-and-scope' %}">Aim & Scope</a></li>
+                <li><a href="{% url 'detail-entry' 'global-computing-initiative' %}">GCI</a></li>
+                <li><a href="{% url 'detail-entry' 'international-longevity-alliance' %}">ILA</a></li>
                 <li><a href="{% url 'what_next' %}">What Next?</a></li>
                 <li><a href="{% url 'matrix' %}">Matrix</a></li>
                 <li><a href="{% url 'repository' %}">{% trans "Repository" %}</a></li>
+                <li><a href="{% url 'terms' %}">Terms</a></li>
+                <li><a href="{% url 'privacy' %}">Privacy</a></li>
             </ul>
         </li>
 
@@ -108,35 +114,8 @@
                     <li><a href="{% url 'quests' %}">Quests</a></li>
                 </ul>
              <li id="tab_profile"><a href="{% url 'profile_detail' user.username %}">{% trans "Profile" %}</a></li>
-
-
         		{% endspaceless %}</ul>
 		{% endif %}
-
-    {% comment %}
-
-                 <li id="tab_third" class="dropdown">
-                 <a href="/aspects/" class="dropdown-toggle" data-toggle="dropdown">
-                     Aspects
-                     <b class="caret"></b>
-                 </a>
-                 <ul class="dropdown-menu">
-                     <li><a href="/aspects/research/">Research</a></li>
-                     <li><a href="/aspects/programming/">Programming</a></li>
-                     <li><a href="/aspects/design">Design</a></li>
-                     <li class="divider"</li>
-                     <li><b><h3><a href="/aspects/professions/">Professions</a></h3></b></li>
-                     <li><a href="/aspects/profession/scientist/">Scientist</a></li>
-                     <li><a href="/aspects/profession/developer/">Developer</a></li>
-                     <li><a href="/aspects/profession/artist/">Artist</a></li>
-                 </ul>
-             </li>
-
-                     <li><a href="/aspects/research/">Research/Scientist</a></li>
-                     <li><a href="/aspects/programming/">Programming/Developer</a></li>
-                     <li><a href="/aspects/design">Design/Artist</a></li>
-                     {%  endcomment %}
-
 
 <style>body { overflow:scroll; }</style> {# This adds a scrollbar to all pages and prevents jumping of the header by switching #}
 
@@ -188,25 +167,7 @@ ul.nav li.dropdown:hover ul.dropdown-menu{
   </div>
 
 {% endcomment %}
-
-
 {% endblock %}
-
-{% comment %} A menu right below the navigation.
-{% block menu %}
-   <a href="/polls">Polls</a> |
-   <a href="/shorty">URL</a> |
-   <a href="/wiki/page/Start/">Wiki</a> |
-   <a href="/media/">Gallery</a> |
-   <a href="/meta">Meta</a> |
-   <a href="/blog/">Blog</a> |
-   <a href="/contact/">Contact</a> |
-   <a href="/todos/">Todo</a> |
-   <a href="/experts/">Experts</a> |
-   <a href="/time/">Time</a> |
-{% endblock %}
-{% endcomment %}
-
 
 {% block footer %}
     {% include "_footer.html" %}
