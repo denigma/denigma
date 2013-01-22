@@ -38,7 +38,7 @@ class ProfileForm(ModelForm):
                 'phone',
                 'mobile',
                 'msn',
-                'skype'
+                'skype',
                 'birthday',
                 'gender',
                 'work',
