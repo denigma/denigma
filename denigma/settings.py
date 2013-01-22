@@ -164,7 +164,8 @@ MIDDLEWARE_CLASSES = [
     'pagination.middleware.PaginationMiddleware',
     #'pinax.middleware.security.HideSensistiveFieldsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'track.middleware.VisitorTrackMiddleware'
+    'track.middleware.VisitorTrackMiddleware',
+    'track.middleware.BannedIPMiddleware'
 #    #CMS:
 #    "cms.middleware.multilingual.MultilingualURLMiddleware',
 ]
