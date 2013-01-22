@@ -23,7 +23,7 @@ class PastedItemForm(forms.ModelForm):
 class SendItemForm(forms.Form):
     """Form that deals with submitted data."""
     uuid = forms.CharField(max_length=36)
-    #recipient = forms.CharField(max_length=30)
+    recipient = forms.CharField(max_length=30)
 
     def __init__(self, sender=None, *args, **kwargs):
         super(SendItemForm, self).__init__(*args, **kwargs)
