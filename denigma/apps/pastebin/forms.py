@@ -55,8 +55,8 @@ class SendItemForm(forms.Form):
                                'sender': self.sender,})
 
            # Recipients:
-           self.recipients = self.cleaned_data['recipients']
-           if self.recipients:
-                notification.send(self.recipients, 'pasteditem_recieved',
-                                {'pasted_item': self.pasted_item,
-                                'sender': self.sender,})
+#           self.recipients = self.cleaned_data['recipients']
+#           if self.recipients:
+#                notification.send(self.recipients, 'pasteditem_recieved',
+#                                {'pasted_item': self.pasted_item,
+#                                'sender': self.sender,})
