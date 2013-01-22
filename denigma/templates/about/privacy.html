@@ -1,8 +1,7 @@
 {% extends "about/base.html" %}
 
 {% block hierarchy %}
-    > <a href="/about">About</a> >
-    {{ flatpage.title }} of usage
+    » {{ flatpage.title }} of usage
 {% endblock hierarchy %}
 
 {% block subtitle %}{{ flatpage.title }}{% endblock %}

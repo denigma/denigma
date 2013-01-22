@@ -5,36 +5,33 @@
 {% load i18n %}
 
 {% block nav %}
-    <ul class="nav" xmlns="http://www.w3.org/1999/html">
-		{% comment %}<td class="tab rtba_pastbin"><div><a href="{% url pastebin_new %}">{% trans "PasteBin" %}</a></div></td> {% endcomment %}
-		<li id="tab_nav"> <a href="/polls">Polls</a> </li>
-		{# <li id="tab_nav"> <a href="/wiki/page/Start/">Wiki</a> </li> #}
-                {#  <li id="tab_nav"> <a href="/blog/">Data/</a> </li> #}
-        <li id="tab=third" class="dropdown">
-            <a href="/content/" class="dropdown-toggle" data-toogle="dropdown">
-                Content
+
+    {# Simple hover drowdown menu: #}
+    <style>
+        ul.nav li.dropdown:hover ul.dropdown-menu{
+            display: block;
+            margin: 0;
+        }
+    </style>
+
+    <ul class="nav">
+
+        {# About #}
+        <li id="tab_nav" class="dropdown">
+            <a href="{% url 'about' %}" class="dropdown-toggle" data-toggle="dropdown">
+                About
                 <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-                <li> <a href="/data/"><i class="icon-folder-close"></i> Data/Entries/Relations <i class="icon-random"></i></a></li> {##}
-                <li> <a href="/blog/"><i class="icon-bold"></i> Blog/Posts/Comments <i class="icon-comment"></i></a></li> {##}
-                <li> <a href="/wiki/"><i class="icon-question-sign"></i> Wiki/Pages/Tags <i class="icon-tags"></i></a></li> {#icon-globe#}
-                <li id="tab_msg"> <a href="/articles/">Articles</a></li>
+                <li><a href="{% url 'terms' %}">Terms</a></li>
+                <li><a href="{% url 'privacy' %}">Privacy</a></li>
+                <li><a href="{% url 'what_next' %}">What Next?</a></li>
+                <li><a href="{% url 'matrix' %}">Matrix</a></li>
+                <li><a href="{% url 'repository' %}">{% trans "Repository" %}</a></li>
             </ul>
         </li>
-        <li id="tab_nav"> <a href="/links">Links</a> </li>{# URLs #}
-        <li id="tab_nav"> <a href="/gallery/">Media</a> </li> {# Gallery #}
-        <li id="tab nav"> <a href="/tutorials/">Tutorials</a> </li>
-        <li id="tab_nav"> <a href="{% url 'repository' %}">{% trans "Repository" %}</a></li>
 
-        {# Simple hover drowdown menu: #}
-        <style>
-            ul.nav li.dropdown:hover ul.dropdown-menu{
-                display: block;
-                margin: 0;
-            }
-        </style>
-
+        {# Aspects #}
         <li id="tab_third" class="dropdown">
             <a href="/aspects/" class="dropdown-toggle" data-toggle="dropdown">
                 Aspects
@@ -45,17 +42,41 @@
                 <li><a href="/aspects/research/"><i class="icon-chevron-up"></i> Research</a></li>
                 <li><a href="/aspects/programming/"><i class="icon-cog"></i> Programming</a></li>
                 <li><a href="/aspects/design"><i class="icon-picture"></i> Design</a></li>
-                <li class="divider"</li>
-        <li><b><h3><a href="/aspects/professions/"><i class="icon-eye-close"></i> Professions</a></h3></b></li>
-        <li><a href="/aspects/profession/scientist/"><i class="icon-star-empty"></i> Scientist</a></li>
-        <li><a href="/aspects/profession/developer/"><i class="icon-download"></i> Developer</a></li>
-        <li><a href="/aspects/profession/artist/"><i class="icon-camera"></i> Artist</a></li>
-        <li class="divider"</li>
-        <li><h3><a href="/aspects/achievements/"><i class="icon-signal"></i> Achievements</a></h3></li>
-        <li><a href="/aspects/research/ranks/"><i class="icon-eject"></i> Ranks</a></li>
-        <li><a href="/aspects/programming/grades/"><i class="icon-pencil"></i>Grades</a></li>
-        <li><a href="/aspects/design/titles/"><i class="icon-plus-sign"></i> Titles</a></li>
-    </ul>
+                <li class="divider"></li>
+                <li><b><h3><a href="/aspects/professions/"><i class="icon-eye-close"></i> Professions</a></h3></b></li>
+                <li><a href="/aspects/profession/scientist/"><i class="icon-star-empty"></i> Scientist</a></li>
+                <li><a href="/aspects/profession/developer/"><i class="icon-download"></i> Developer</a></li>
+                <li><a href="/aspects/profession/artist/"><i class="icon-camera"></i> Artist</a></li>
+                <li class="divider"></li>
+                <li><h3><a href="/aspects/achievements/"><i class="icon-signal"></i> Achievements</a></h3></li>
+                <li><a href="/aspects/research/ranks/"><i class="icon-eject"></i> Ranks</a></li>
+                <li><a href="/aspects/programming/grades/"><i class="icon-pencil"></i>Grades</a></li>
+                <li><a href="/aspects/design/titles/"><i class="icon-plus-sign"></i> Titles</a></li>
+            </ul>
+
+		{% comment %}<td class="tab rtba_pastbin"><div><a href="{% url pastebin_new %}">{% trans "PasteBin" %}</a></div></td> {% endcomment %}
+
+
+		{# <li id="tab_nav"> <a href="/wiki/page/Start/">Wiki</a> </li> #}
+                {#  <li id="tab_nav"> <a href="/blog/">Data/</a> </li> #}
+
+        {# Content #}
+        <li id="tab=third" class="dropdown">
+            <a href="/content/" class="dropdown-toggle" data-toogle="dropdown">
+                Content
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li> <a href="/data/"><i class="icon-folder-close"></i> Data/Entries/Relations <i class="icon-random"></i></a></li> {##}
+                <li> <a href="/blog/"><i class="icon-bold"></i> Blog/Posts/Comments <i class="icon-comment"></i></a></li> {##}
+                <li> <a href="/wiki/"><i class="icon-question-sign"></i> Wiki/Pages/Tags <i class="icon-tags"></i></a></li> {#icon-globe#}
+                <li id="tab_msg"> <a href="/articles/">Articles (Reports/Reviews)</a></li>
+            </ul>
+        </li>
+        <li id="tab_nav"> <a href="/links/">Links</a> </li>{# URLs #}
+        <li id="tab_nav"> <a href="/gallery/">Media</a> </li> {# Gallery #}
+        <li id="tab_nav"> <a href="/polls">Polls</a> </li>
+        <li id="tab nav"> <a href="/tutorials/">Tutorials</a> </li>
 
         <li id="tab nav">
             <form class="navbar-search" action="/search/"> {% comment %} Replace this with haystack/Whoosh {% endcomment %}

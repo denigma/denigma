@@ -4,11 +4,11 @@
 {% load hyperlink %}
 
 {% block hierarchy %}
-    > <a href="/about/">About</a> >
-    <a href="/about/matrix/0">Matrix</a> >
-    <a href="/about/matrix/{{ number }}">Path of Truth {{ number }}</a> >
-    Choice >
-    <a href="/about/matrix/{{ number }}/choice/{{ color }}">{{ color }}
+    » <a href="/about/">About</a>
+    » <a href="/about/matrix/0">Matrix</a>
+    » <a href="/about/matrix/{{ number }}">Path of Truth {{ number }}</a>
+    » Choice
+    » <a href="/about/matrix/{{ number }}/choice/{{ color }}">{{ color }}
 {% endblock %}
 
 {% block title %}{{ result.title }}{% endblock %}
