@@ -11,14 +11,14 @@
 {% block title %}{{ entry.title }}{% endblock %}
 
 {% block content %}
-    <table>
+    <table width="100%" border="0">
         <tr>
             <td valign="top">
                 {{ entry.content|markdown|hyper|recross|safe }}
             </td>
-            <td valign="top">
+            <td valign="top" style="width:250px">
                 {% for image in entry.images.all %}
-                    <img src="{{ image.url }}" alt="{{ image.name }}" width="250">
+                    <img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250">
                 {% endfor %}
             </td>
         </tr>
