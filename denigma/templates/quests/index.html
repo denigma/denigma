@@ -40,7 +40,7 @@
             </td>
             <td valign="top" style="width: 250px">
                 {% for image in quests.images.all %}
-                    <img src={{ image.get_absolute_url }} alt={{ image.name }} width="250" height="250">
+                    <img src={{ image.url }} alt={{ image.name }} width="250" height="250">
                 {% endfor %}
             </td>
         </tr>
