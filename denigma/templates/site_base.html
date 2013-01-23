@@ -94,12 +94,12 @@
  		{% if user.is_authenticated %}{% spaceless %}
              <li id="tab_third" class="dropdown">
                  <a href="#" class="dropdown-toggle" data-toogle="dropdown">
-                     Com {# munication  #}
+                     Communication
                      <b class="caret"></b>
                  </a>
                  <ul class="dropdown-menu">
-                     <li><a href="{% url 'pastebin' %}">Pastebin</a></li>
-                     <li><a href="{% url 'channel' %}">Channel</a></li>
+                     <li><a href="{% url 'pastebin' %}">Pastebin Messaging</a></li>
+                     <li><a href="{% url 'channel' %}">Videochat Channel</a></li>
                  </ul>
              </li>
              <li id="tab_notices"><a href="{% url 'notification_notices' %}">{% trans "Notices" %}{% if notice_unseen_count %}({{ notice_unseen_count }}){% endif %}</a></li>
