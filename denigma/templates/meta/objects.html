@@ -1,12 +1,15 @@
 {% extends 'meta/base.html' %}
 
-{% block head_title %}Meta Objects{% endblock %}
+{% load url from future %}
+
+{% block head_title %}Meta Objects of {{ link }}{% endblock %}
 
 {% block hierarchy %}
-    » Objects
+    » <a href="{% url 'meta-links' %}">Links</a>
+    » {{ link }} Objects
 {% endblock %}
 
-{% block title %}Objects{% endblock %}
+{% block title %}{{ link }} Objects{% endblock %}
 
 {% block content %}
     {% for object in objects %}

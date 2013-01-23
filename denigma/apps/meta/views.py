@@ -90,7 +90,7 @@ def objects(request, link=None, template='meta/objects.html'):
         if related_link == link:
             for object in objects:
                 object_list.append(object)
-    ctx = {'related_links': related_links,
+    ctx = {'link': link,
            'objects': object_list}
     return render(request, template, ctx)
 
