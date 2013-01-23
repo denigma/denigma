@@ -1,0 +1,17 @@
+{% extends "meta/base.html" %}
+
+{% load url from future %}
+
+{% block head_title %}Meta Links{% endblock %}
+
+{% block title %}Links{% endblock %}
+
+{% block hierarchy %}
+    » Links
+{% endblock %}
+
+{% block content %}
+    {% for rel in related_links %}
+        <li><a href="{% url 'meta-objects' rel %}">{{ rel }}</a>
+    {% endfor %}
+{% endblock content %}

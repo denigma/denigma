@@ -1,14 +1,17 @@
 {% extends "site_base.html" %}
 
+{% load url from future %}
+
 {% block head_title %}Meta{% endblock %}
 
 {% block hierarchy %}
-   > Meta
+    » Meta
 {% endblock %}
 
 {% block title %}Meta{% endblock %}
 
 {% block options %}
-    <a href="/meta/">Index</a> |
-    <a href="/meta/data/">Data</a>
+    <a href="{% url 'meta' %}">Index</a>
+    | <a href="{% url 'meta-data' %}">Data</a>
+    | <a href="{% url 'meta-links' %}">Links</a>
 {% endblock %}

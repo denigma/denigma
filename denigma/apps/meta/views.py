@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -72,7 +72,27 @@ def difference(request):
     patch_html = generate_patch_html(old_version, new_version, "text")
     return HttpResponse(patch_html)
 
+def links(request, template='meta/links.html'):
+    """Retrieves all related links of an user."""
+    user = User.objects.get(username=request.user)
+    related_links = [rel.get_accessor_name() for rel in
+                     user._meta.get_all_related_objects()]
+    return render(request, template, {'related_links': related_links})
 
+def objects(request, link=None, template='meta/objects.html'):
+    """Retrieves and lists all objects related to an user."""
+    user = User.objects.get(username=request.user)
+    related_links = [rel.get_accessor_name() for rel in
+                     user._meta.get_all_related_objects()]
+    object_list = []
+    for related_link in related_links:
+        objects = getattr(user, related_link).all()
+        if related_link == link:
+            for object in objects:
+                object_list.append(object)
+    ctx = {'related_links': related_links,
+           'objects': object_list}
+    return render(request, template, ctx)
 
 
 

@@ -1,0 +1,19 @@
+{% extends 'meta/base.html' %}
+
+{% block head_title %}Meta Objects{% endblock %}
+
+{% block hierarchy %}
+    » Objects
+{% endblock %}
+
+{% block title %}Objects{% endblock %}
+
+{% block content %}
+    {% for object in objects %}
+        <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
+    {% endfor %}
+{% endblock %}
+
+
+
+
