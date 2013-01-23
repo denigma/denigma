@@ -6,27 +6,31 @@
 {% load hyperlink %}
 
 {% block hierarchy %}
-    > <a href="/pastebin">Paste Bin Messaging</a>
-    > {{ object.uuid }}
+    » <a href="/pastebin">Paste Bin Messaging</a>
+    » {{ object.uuid }}
+{% endblock %}
+
+{% block options %}
+    (<a href="/admin/pastebin/pasteditem/{{ object.id }}">Admin</a>)
 {% endblock %}
 
 {% block subtitle %}{% trans "Pasted Item" %}{% endblock %}
 
 {% block content %}
-{% comment %}<h1>Pasted Item</h1>{% endcomment %}
-<pre>
-<p>{{ object.text|hyper|recross|safe }}</p>
-</pre>
-<div id="basic-form">
-<fieldset>
-<legend>{% trans "Send Item" %}</legend>
-<form id="pastebin_send_form" method="POST" action="">{% csrf_token %}
-<div>{{ form.non_field_errors }}</div>
-<div>{{ form.recipient.errors }}</div>
-<div>Send to another user: {{ form.recipient }}</div>
-<input type="hidden" name="action" value="send" />
-<input type="hidden" name="uuid" value="{{ object.uuid }}" />
-</form>
-<fieldset>
-</div>
+    {% comment %}<h1>Pasted Item</h1>{% endcomment %}
+    <pre>
+        <p>{{ object.text|hyper|recross|safe }}</p>
+    </pre>
+    <div id="basic-form">
+        <fieldset>
+            <legend>{% trans "Send Item" %}</legend>
+            <form id="pastebin_send_form" method="POST" action="">{% csrf_token %}
+            <div>{{ form.non_field_errors }}</div>
+            <div>{{ form.recipient.errors }}</div>
+            <div>Send to another user: {{ form.recipient }}</div>
+            <input type="hidden" name="action" value="send" />
+            <input type="hidden" name="uuid" value="{{ object.uuid }}" />
+            </form>
+        <fieldset>
+    </div>
 {% endblock %}
