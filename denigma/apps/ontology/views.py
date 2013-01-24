@@ -48,7 +48,7 @@ def load(request, template='ontology/load.html'):
         columns = node.split('\t')
 
         if len(columns) <= 5: columns.append('')
-        print len(columns), columns
+        #print len(columns), columns
         shape_number, shape_key, text, shape_color, region_color1, region_color2 = columns
         Entity.objects.create(pk=int(shape_number),title=text.replace('"', ''), text='\n'.join([shape_key, shape_color, region_color1, region_color2]))
 
@@ -59,7 +59,7 @@ def load(request, template='ontology/load.html'):
         from_node, arrow_color, width, to_node, x_at_end = link.split('\t')
         if to_node == '-': continue
         entity, created = Entity.objects.get_or_create(title=arrow_color, text="\n".join([width, x_at_end]))
-        print link.split('\t')
+        #print link.split('\t')
         Relation.objects.create(source=Entity.objects.get(pk=int(from_node)), type=entity, target=Entity.objects.get(pk=int(to_node)))
 
     #ctx = {'entities':Entity.objects}
