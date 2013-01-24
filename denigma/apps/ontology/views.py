@@ -29,10 +29,10 @@ shape_key = {
 }
 
 def index(request, template='ontology/index.html'):
-    print("index")
+    #print("index")
     ctx = {'entities': Entity.objects.all(),
            'relations': Relation.objects.all()}
-    print("responding")
+    #print("responding")
     return render(request, template, ctx)
 
 def delete(request, template='ontology/index.html'):
@@ -40,7 +40,7 @@ def delete(request, template='ontology/index.html'):
     return redirect('ontology')
 
 def load(request, template='ontology/load.html'):
-    print("loading")
+    #print("loading")
     Entity.objects.all().delete()
 
     path = os.path.join(settings.PROJECT_ROOT, 'apps', 'ontology', 'nodes.csv')
