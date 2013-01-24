@@ -25,7 +25,7 @@ class Relation(models.Model):
     target = models.ForeignKey(Entity, related_name='source_relations')
 
     def __unicode__(self):
-        return "%s -%s-> %s " % (self.source, self.type, self.target)
+        return u"%s -%s-> %s " % (self.source, self.type, self.target)
 
     def get_absolute_url(self):
         return ""
