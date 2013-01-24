@@ -317,6 +317,7 @@ INSTALLED_APPS = [
     'alliance',
     'immuno',
     'channel',
+    'ontology',
 
     'stats',
     'utils',

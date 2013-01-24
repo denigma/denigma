@@ -1,0 +1,17 @@
+{% extends "ontology/base.html" %}
+
+{% block options %}
+    (<a href="/admin/ontology">Admin</a>)
+{% endblock %}
+
+{% block content %}
+    <b>Entities</b>:
+    {% for entity in entities %}
+        <li>{{ entity }}</li>
+    {% endfor %}
+    <hr>
+    <b>Relations</b>:
+    {% for relation in relations %}
+        <li>{{ relation }}</li>
+    {% endfor %}
+{% endblock %}

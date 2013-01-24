@@ -113,6 +113,7 @@ urlpatterns += patterns("",
     url(r'^alliance/', include('alliance.urls')),
     url(r'^immuno/', include('immuno.urls')),
     url(r'^channel/', include('channel.urls')),
+    url(r'^ontology/', include('ontology.urls')),
 
 )
 if settings.SERVE_MEDIA:
