@@ -70,7 +70,8 @@
         var compound_network_json = {
             // note the parent attribute:
             data: {
-                nodes: [ { id: "1" },
+                nodes: [
+                    { id: "1" },
                     { id: "2", parent: "1" },
                     { id: "3", parent: "1" },
                     { id: "4", parent: "2" },
@@ -115,10 +116,17 @@
 
         // visualize style we use
         var visual_style = {
-            global: {
-                backgroundColor: "#ABCFD6"//"#FFFFFF" //
-            },
+           // global: {
+           //    backgroundColor: "#ABCFD6"//"#FFFFFF" //
+           //},
             nodes: {
+               //parent: 50,
+                //compoundShape: "RECTANGLE",
+               // compoundLabel: { passthroughMapper: { attrName: "label" }},
+                //compoundBorderWidth: 1,
+               // compoundBorderColor: "#999999",
+               // compoundColor: "#eaeaea",
+
                 shape: { //"ELLIPSE", // OCTAGON",
                     discreteMapper: {
                         attrName: "shape",
@@ -274,7 +282,7 @@
         });
 
         var layout = {
-            name: "ForceDirected",
+            name: "CompoundSpringEmbedder", //ForceDirected",
             options: { tension: 0.00001 } //, restLength: 5
         };
 
@@ -295,7 +303,7 @@
             layout: layout,//"Tree", //CompoundSpringEmbedder", //ForceDirected", //"Preset",//"Radial",//,"CompoundSpringEmbedder" //#"Tree",ForceDirected
 
             // set the style at initialisation
-            visualStyle: visual_style//compound_visual_style
+            visualStyle: visual_style//compound_visual_style compound_visual_style //
         };
 
         vis.draw(draw_options);

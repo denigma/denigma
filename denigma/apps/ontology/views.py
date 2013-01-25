@@ -82,7 +82,8 @@ def graph(request, template='ontology/graph.html'):
                 {'name': 'links', 'type': 'string'},
                 {'name': 'weight', 'type': 'number'},
                 {'name': 'shape', 'type': 'string'},
-                {'name': 'color', 'type': 'string'}
+                {'name': 'color', 'type': 'string'},
+               # {'name': 'parent', 'type': 'string'}
 
             ],
             'edges': [
@@ -108,6 +109,39 @@ def graph(request, template='ontology/graph.html'):
     def wrapping(text, at=30):
         return "\n".join(wrap(text, width=at))
 
+    compartiments = {
+            'blue': 'Nucleus & Endoplasmic Reticulum',
+            'tan narrow': 'Cytoplasmic molecules',
+            'light blue': 'Mitochondria',
+            'brown': 'Extracellular Proteins, etc.',
+            'pink': 'Controlled Degradation',
+            'green': 'Beneficial process or intervention',
+            'purple': 'Signaling Pathway',
+            'red': 'Damaging Substance or Process',
+            'black': 'Senescence Physiology',
+            'white': 'Something else',
+            'yellow': 'Whatever',
+            'yelow': 'Else',
+            '': 'Nothing'
+        }
+
+    data = {'nodes':[], 'edges':[]}
+    #data['nodes'].extend([{'label': 'Organisms', 'text': '', 'links':'', 'shape': '3', 'color': 'blue'}])
+    #            {'label': 'Nucleus & Endoplasmic Reticulum', 'text': '', 'links':'', 'shape': '3', 'color': 'blue'},
+    #            {'label': 'Cytoplasmic molecules', 'text': '', 'links':'', 'shape': '3', 'color': 'tan narrow'},
+    #            {'label': 'Mitochondria', 'text': '', 'links':'', 'shape': '3', 'color': 'light blue'},
+    #            {'label': 'Extracellular Proteins, etc.', 'text': '', 'links':'', 'shape': '3', 'color': 'brown'},
+    #            {'label': 'Controlled Degradation', 'text': '', 'links':'', 'shape': '3', 'color': 'pink'},
+    #            {'label': 'Beneficial process or intervention', 'text': '', 'links':'', 'shape': '3', 'color': 'green'},
+    #            {'label': 'Signaling Pathway', 'text': '', 'links':'', 'shape': '3', 'color': 'purple'},
+    #            {'label': 'Damaging Substance or Process', 'text': '', 'links':'', 'shape': '3', 'color': 'red'},
+    #            {'label': 'Senescence Physiology', 'text': '', 'links':'', 'shape': '3', 'color': 'black'},
+    #            {'label': 'Something else', 'text': '', 'links':'', 'shape': '3', 'color': 'white'},
+    #            {'label': 'Whatever', 'text': '', 'links':'', 'shape': '3', 'color': 'yellow'},
+    #            {'label': 'Else', 'text': '', 'links':'', 'shape': '3', 'color': 'yelow'},
+    #            {'label': 'Nothing', 'text': '', 'links':'', 'shape': '3', 'color': ''},])
+
+
     def node(entry):
         "Helper function to construct a node object."
         memo.append(entry.pk)
@@ -116,11 +150,12 @@ def graph(request, template='ontology/graph.html'):
                 'links': '<a href="%s">View</a>' %
                          (entry.get_absolute_url()), 'weight': len(entry.title), #random(),
                 'shape': attributes[0],
-                'color': attributes[1]
+                'color': attributes[1],
+                #'parent': 'Organisms' #'Enhance Mitochondrial Fission' #compartiments[attributes[2]]
         }
 
     # Getting the actually data:
-    data = {'nodes':[], 'edges':[]}
+
     relations = Relation.objects.all()
     for relation in relations:
         fr = relation.source
@@ -139,6 +174,9 @@ def graph(request, template='ontology/graph.html'):
 
                              }
         )
+
+
+
     network['data'] = data
 
     network_json = simplejson.dumps(network)
