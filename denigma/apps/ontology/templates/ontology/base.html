@@ -2,8 +2,14 @@
 
 {% block head_title %}Ontology{% endblock %}
 
-{% block title %}Ontology{% endblock %}
-
 {% block base_hierarchy %}
     » Ontology
 {% endblock %}
+
+{% block options %}
+    <a href="{% url 'ontology-list' %}">List</a>
+    | <a href="{% url 'ontology-graph' %}">Graph</a>
+    | (<a href="/admin/ontology">Admin</a>)
+{% endblock %}
+
+{% block title %}Ontology{% endblock %}

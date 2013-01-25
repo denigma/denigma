@@ -2,11 +2,7 @@
 
 {% load url from future %}
 
-{% block options %}
-    <a href="{% url 'ontology-list' %}">List</a>
-    | <a href="{% url 'ontology-graph' %}">Graph</a>
-    | (<a href="/admin/ontology">Admin</a>)
-{% endblock %}
+
 
 {% block head_title %}
     {{ entry.title }}
