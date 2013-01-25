@@ -13,6 +13,8 @@ from blog.templatetags.crosslink import recross
 from data.templatetags.rendering import markdown
 
 
+from data import get
+
 color_key = {'blue': 'Nucleus & Endoplasmic Reticulum',
              'tan narrow': 'Cytoplasmic molecules',
              'light_blue': 'Mitochondria',
@@ -29,10 +31,12 @@ shape_key = {
 }
 
 def index(request, template='ontology/index.html'):
-    #print("index")
+    ctx = {'entry': get('ontology')}
+    return render(request, template, ctx)
+
+def list(request, template='ontology/list.html'):
     ctx = {'entities': Entity.objects.all(),
            'relations': Relation.objects.all()}
-    #print("responding")
     return render(request, template, ctx)
 
 def delete(request, template='ontology/index.html'):
@@ -85,7 +89,8 @@ def graph(request, template='ontology/graph.html'):
                 {'name': 'label', 'type': 'string'},
                 {'name': 'text', 'type': 'string'},
                 {'name': 'links', 'type': 'string'},
-                {'name': 'weight', 'type': 'number' }
+                {'name': 'weight', 'type': 'string'},
+                {'name': 'shape', 'type': 'string'}
             ]
         },
         'data': { # Dummy data:
@@ -125,11 +130,13 @@ def graph(request, template='ontology/graph.html'):
             data['nodes'].append(node(fr))
         if to.pk not in memo:
             data['nodes'].append(node(to))
-
+        weight, shape = be.text.split('\n')
         data['edges'].append({'id': "%sto%s" % (fr.pk, to.pk), 'label': be.title, 'text': be.text, #markdown(),
                               'source': str(fr.pk), 'target': str(to.pk), 'directed': True,
                               'links': '<a href="%s">View</a>' %
-                                       (relation.get_absolute_url()), 'weight':random(),
+                                       (relation.get_absolute_url()), 'weight': weight, #'weight':random(),
+                              'shape': shape
+
                              }
         )
     network['data'] = data

@@ -3,7 +3,8 @@
 
 {% block extra_script %}
     <!-- JSON support for IE (needed to use JS API) -->
-    <script type="text/javascript" src="{% static "cytoscape/js/min/json2.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "cytoscape/js/min/json2.min.js" %}"
+            xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"></script>
 
     <!-- Flash embedding utility (needed to embed Cytoscape Web) -->
     <script type="text/javascript" src="{% static "cytoscape/js/min/AC_OETags.min.js" %}"></script>
@@ -119,6 +120,7 @@
             },
             nodes: {
                 shape: "ELLIPSE", // OCTAGON",
+                labelFontWeight: 'bold',
                 borderWith: 3,
                 borderColor: "#ffffff",
                 size: {
@@ -150,7 +152,24 @@
 
             },
             edges: {
-                width: 3,
+                label: '',
+                targetArrowShape: {
+                    discreteMapper: {
+                        attrName: "shape",
+                        entries: [
+                            { attrValue: 'no', value: 'ARROW'},
+                            { attrValue: 'X', value: 'T'}]
+                    }
+                },
+                width: {
+                    discreteMapper: {
+                    attrName: "weight",
+                    entries: [
+                        { attrValue: 'narrow', value: 3 },
+                        { attrValue: 'wide', value: 6 }]
+
+                }
+            },
                 color: {
                     discreteMapper: {
                         attrName: "label",
@@ -293,6 +312,19 @@
 {% block title %}Graph{% endblock %}
 
 {% block content %}
+
+    <b>Legend:
+    <li><font color='#0000FF'>Nucleus & Endoplasmic Reticulum (blue)</font></li>
+    <li><font color='#F5DEB3'>Cytoplasmic molecules (tan narrow)</font></li>
+    <li><font color='#87CEFA'>Mitochondria (light blue)</font></li>
+    <li><font color='#8B4513'>Extracellular Proteins, etc. (brown)</font></li>
+    <li><font color='#FF82AB'>Controlled Degradation (pink)</font></li>
+    <li><font color='#00CD66'>Beneficial process or intervention (green)</font></li>
+    <li><font color='#9400D3'>Signaling Pathway (purple)</font></li>
+    <li><font color='#DC143C'>Damaging Substance or Process (red)</font></li>
+    <li><font color='#292421'>Senescence Physiology (black)</font></li>
+    </b>
+    <hr>
     <div id="cytoscapeweb">
         Cytoscape Web will replace the contents of this div with the graph.
     </div>

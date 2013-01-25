@@ -1,17 +1,22 @@
 {% extends "ontology/base.html" %}
 
+{% load url from future %}
+
 {% block options %}
-    (<a href="/admin/ontology">Admin</a>)
+    <a href="{% url 'ontology-list' %}">List</a>
+    | <a href="{% url 'ontology-graph' %}">Graph</a>
+    | (<a href="/admin/ontology">Admin</a>)
 {% endblock %}
 
+{% block head_title %}
+    {{ entry.title }}
+{% endblock %}
+
+{% block title %}{{ entry.title }}{% endblock %}
+
 {% block content %}
-    <b>Entities</b>:
-    {% for entity in entities %}
-        <li>{{ entity }}</li>
-    {% endfor %}
-    <hr>
-    <b>Relations</b>:
-    {% for relation in relations %}
-        <li>{{ relation }}</li>
-    {% endfor %}
+    {% include 'data/render_entry.html' %}
+    {% with entry as object %}
+        {% include 'comments/wrapper.html' %}
+    {% endwith %}
 {% endblock %}
