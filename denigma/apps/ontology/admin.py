@@ -4,10 +4,11 @@ from models import Entity, Relation
 
 
 class EntityAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ('title', 'text')
+
 
 class RelationAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ('source', 'type', 'target')
 
 
 admin.site.register(Entity, EntityAdmin)
