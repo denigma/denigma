@@ -119,13 +119,28 @@
                 backgroundColor: "#ABCFD6"//"#FFFFFF" //
             },
             nodes: {
-                shape: "ELLIPSE", // OCTAGON",
-                labelFontWeight: 'bold',
+                shape: { //"ELLIPSE", // OCTAGON",
+                    discreteMapper: {
+                        attrName: "shape",
+                        entries: [
+                            { attrValue: 1, value: "RECTANGLE" },
+                            { attrValue: 2, value: "OCTAGON" },
+                            { attrValue: 3, value: "ROUNDRECT" },
+                            { attrValue: 4, value: "HEXAGON" },
+                            { attrValue: 5, value: "PARALLELOGRAM" },
+                            { attrValue: 6, value: "DIAMOND" },
+                            { attrValue: 7, value: "DIAMOND" },
+                            { attrValue: 8, value: "ELLIPSE" },
+                            { attrValue: 9, value: "VEE" }]}
+                            // Not used: "TRIANGLE"
+                },
+
+                // labelFontWeight: 'bold',
                 borderWith: 3,
                 borderColor: "#ffffff",
                 size: {
                     defaultValue: 25,
-                    continuousMapper: { attrName: "weight", minValue: 25, maxValue: 75 }
+                    continuousMapper: { attrName: "weight", minValue: 25, maxValue: 250 }//75 }
                 },
                 color: {
                     discreteMapper: {
@@ -312,17 +327,42 @@
 {% block title %}Graph{% endblock %}
 
 {% block content %}
+    <h3>Legend</h3>
 
-    <b>Legend:
-    <li><font color='#0000FF'>Nucleus & Endoplasmic Reticulum (blue)</font></li>
-    <li><font color='#F5DEB3'>Cytoplasmic molecules (tan narrow)</font></li>
-    <li><font color='#87CEFA'>Mitochondria (light blue)</font></li>
-    <li><font color='#8B4513'>Extracellular Proteins, etc. (brown)</font></li>
-    <li><font color='#FF82AB'>Controlled Degradation (pink)</font></li>
-    <li><font color='#00CD66'>Beneficial process or intervention (green)</font></li>
-    <li><font color='#9400D3'>Signaling Pathway (purple)</font></li>
-    <li><font color='#DC143C'>Damaging Substance or Process (red)</font></li>
-    <li><font color='#292421'>Senescence Physiology (black)</font></li>
+    <table width="100%">
+        <tr>
+            <td valign="top">
+                <br>
+                <h4>Colors</h4>
+                <li><font color='#0000FF'>Nucleus & Endoplasmic Reticulum (blue)</font></li>
+                <li><font color='#F5DEB3'>Cytoplasmic molecules (tan narrow)</font></li>
+                <li><font color='#87CEFA'>Mitochondria (light blue)</font></li>
+                <li><font color='#8B4513'>Extracellular Proteins, etc. (brown)</font></li>
+                <li><font color='#FF82AB'>Controlled Degradation (pink)</font></li>
+                <li><font color='#00CD66'>Beneficial process or intervention (green)</font></li>
+                <li><font color='#9400D3'>Signaling Pathway (purple)</font></li>
+                <li><font color='#DC143C'>Damaging Substance or Process (red)</font></li>
+                <li><font color='#292421'>Senescence Physiology (black)</font></li>
+            </td>
+            <td valign="top">
+                <h4>Arrow With</h4>
+                <li>thin: Causel sequence of events</li>
+                <li><b>thick: Movement, transport or flow of things</b></li>
+                <br>
+                <h4>Node Shapes</h4>
+                <li>Rectangle: Thing (Quantities or Pools of Molecules, Cells, Substances, etc.)</li>
+                <li>Octagon: Action (Process, Action, Change,or Reaction)</li>
+                <li>Roundrect: Compartment (Organelle or compartment)</li>
+                <li>Hexagon: Accumulation (Gradual Accumulation or Increase in Quantity or Mass with Aging)</li>
+                <li>Parallelogram: Loss (Gradual Loss or Decrease in Quantity or Mass with Aging)</li>
+                <li>Diamond: External (External Intervention, or Environmental Factors)</li>
+                <li>Ellipse: Condition (Physiological Condition; Senescence)</li>
+                <li>Vee: Suppression (Inhibition of pathways & process that is inhibited)</li>
+                {# Not used: <li>Triangle</li> #}
+            </td>
+        </tr>
+    </table>
+
     </b>
     <hr>
     <div id="cytoscapeweb">

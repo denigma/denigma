@@ -105,7 +105,7 @@ def graph(request, template='ontology/graph.html'):
     }
     memo = []
 
-    def wrapping(text, at=10):
+    def wrapping(text, at=30):
         return "\n".join(wrap(text, width=at))
 
     def node(entry):
@@ -114,7 +114,7 @@ def graph(request, template='ontology/graph.html'):
         attributes = entry.text.split('\n')
         return {'id': str(entry.pk), 'label': wrapping(entry.title), 'text': entry.text, #recross(hyper(markdown()))
                 'links': '<a href="%s">View</a>' %
-                         (entry.get_absolute_url()), 'weight':random(),
+                         (entry.get_absolute_url()), 'weight': len(entry.title), #random(),
                 'shape': attributes[0],
                 'color': attributes[1]
         }
