@@ -8,7 +8,6 @@ from django.db import models
 from Bio import Entrez, Medline
 
 
-
 Entrez.email = "hevok@denigma.de"
 
 
@@ -36,8 +35,6 @@ def normalize_time(date):
                     except:
                         time = datetime(*strptime(date, "%Y")[0:3])
     return time
-
-
 
 def normalize_title(title):
     title = title.lower()
@@ -268,7 +265,6 @@ class Reference(models.Model):
                 reference.title = reference.title + "."
                 reference.save()
 
-
     def __repr__(self):
         if self.authors and self.title:
             authors = self.authors.split('; ')
@@ -302,6 +298,7 @@ class Reference(models.Model):
     @property
     def citations(self):
         return ref()
+
 
 class Signature(models.Model):
     entrez_gene_id = models.IntegerField(null=True, blank=True)
