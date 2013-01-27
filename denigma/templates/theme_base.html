@@ -198,39 +198,32 @@ div.btn-group ul.dropdown-menu{
                         </div>
         </div>
         {% endblock %}
-
             <div id="context">
                 <div class="inner">
                     <div class="container">
-        <h2>{% block title %}{% endblock %}</h2>
-	<h3>{% block subtitle %}{% endblock %}</h3>
-        {% block content %}{% endblock %}
+                        <h2>{% block title %}{% endblock %}</h2>
+                        <h3>{% block subtitle %}{% endblock %}</h3>
+                        {% block content %}{% endblock %}
                    </div>
                 </div>
             </div>
-
-
-        {% block body_base %}
-            <div class="container">
-                {% include "_messages.html" %}
-                {% block body %}
-                {% endblock %}
-            </div>
-        {% endblock %}
-
-        {% block news %}
-        {% endblock %}
-
-        {% block footer_base %}
-            <div id="footer">
-                <div class="inner">
-                    <div class="container">
-                        {% block footer %}{% endblock %}
+            {% block body_base %}
+                <div class="container">
+                    {% include "_messages.html" %}
+                    {% block body %}
+                    {% endblock %}
+                </div>
+            {% endblock %}
+            {% block news %}{% endblock %}
+            {% block footer_base %}
+                <div id="footer">
+                    <div class="inner">
+                        <div class="container">
+                            {% block footer %}{% endblock %}
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endblock %}
-
+            {% endblock %}
         {% block extra_body_base %}
             {% block extra_body %}{% endblock %}
         {% endblock %}
