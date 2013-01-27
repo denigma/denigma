@@ -6,7 +6,7 @@ from django.views.generic.edit import CreateView
 from utils.ajax import HybridDetailView
 
 from views import ProfileList, CreateProfile, UpdateProfile
-from views import CollaborationList, CreateCollaboration, UpdateCollaboration
+from views import CollaborationList, CreateCollaboration, UpdateCollaboration, CollaborationView
 from models import Profile, Collaboration
 
 
@@ -26,6 +26,7 @@ urlpatterns = patterns('experts.views',
     url(r'^collaborations/$', CollaborationList.as_view(), name="collaborations"),
     url(r'^collaboration/create', CreateCollaboration.as_view(), name="create-collaboration"),
     url(r'^collaboration/update/(?P<pk>\d+)', UpdateCollaboration.as_view(), name="update-collaboration"),
-    url(r'^collaboration/(?P<pk>\d+)', DetailView.as_view(model=Collaboration), name="collaboration")
+    url(r'^collaboration/(?P<pk>\d+)', DetailView.as_view(model=Collaboration), name="collaboration"),
+    url(r'^collaboration/(?P<slug>.+)', CollaborationView.as_view(), name="collaboration")
 
 )

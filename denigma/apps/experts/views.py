@@ -6,6 +6,9 @@ from django.contrib import messages
 from django.contrib.auth.models import User, AnonymousUser
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
+from django.views.generic import DetailView
+from django.http import Http404
+from django.core.exceptions import ObjectDoesNotExist
 
 import reversion
 
@@ -64,6 +67,10 @@ def detail(request, expertname, template='experts/detail.html'):
     return render(request, template, {'expert': expert, 'references': references, 'pmids': pmids})
 
 
+def newProfile(request):
+    return handlePopAdd(request, ProfileForm, 'contacts')
+
+
 class ProfileList(TableFilter):
     queryset = Profile.objects.all()
     success_url = '/experts/profiles/'
@@ -88,6 +95,7 @@ class ProfileList(TableFilter):
         self.filterset = ProfileFilterSet(qs, self.request.GET)
         return self.filterset.qs
 
+
 class CollaborationList(TableFilter):
     table_class = CollaborationTable
     model = Collaboration
@@ -109,6 +117,7 @@ class CollaborationList(TableFilter):
                                Q(members__user_name__icontains=term)).distinct()
         self.filterset = CollaborationFilterSet(qs, self.request.GET)
         return self.filterset.qs
+
 
 class CreateProfile(Create):
     model = Profile
@@ -159,10 +168,6 @@ class UpdateProfile(Update):
             return HttpResponseRedirect(self.get_success_url())
 
 
-def newProfile(request):
-    return handlePopAdd(request, ProfileForm, 'contacts')
-
-
 class CreateCollaboration(Create):
     model = Collaboration
     success_url = '/experts/collaborations/'
@@ -177,5 +182,31 @@ class UpdateCollaboration(Update):
     form_class = CollaborationForm
     comment = "Updated Collaboration"
     message = "Successfully updated Collaboration"
+
+
+class CollaborationView(DetailView):
+    model = Collaboration
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+
+        pk = self.kwargs.get(self.pk_url_kwarg, None)
+        slug = self.kwargs.get(self.slug_url_kwarg, None)
+        if pk is not None:
+            queryset = queryset.filter(pk=pk)
+        elif slug is not None:
+
+            queryset = queryset.filter(project__slug=slug)
+        else:
+            raise AttributeError(u"Generic detail view %s view must be called with"
+                                 u"either an object pk or a slug."
+                                 % self.__class__.__name__)
+        try:
+            obj = queryset.get()
+        except ObjectDoesNotExist:
+            raise Http404(_(u"No %(verbose_name)s found matching the query") %
+                            {'verbose_name': queryset.model._meta.verbose_name})
+        return obj
 
 
