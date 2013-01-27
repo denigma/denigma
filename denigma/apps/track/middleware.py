@@ -194,7 +194,7 @@ class VisitorCleanUpMiddleware:
 
 
 class BannedIPMiddleware:
-    """Raises an Http404 error for any page request form a banned IP."""
+    """Raises an Http404 error for any page request from a banned IP."""
 
     def process_request(self, request):
         key = '_tracking_banned_ips'
