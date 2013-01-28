@@ -85,7 +85,7 @@ urlpatterns += patterns("",
     # Duties
     url(r'^duties/', include('duties.urls')),
     url(r'^tasks/', include('tasks.urls')),
-    url(r'^todo/', include('todo.urls')),
+    #url(r'^todo/', include('todo.urls')),
     url(r'^todos/', include('todos.urls')),
     url(r'^quests/', include('quests.urls')),
 

@@ -291,7 +291,7 @@ INSTALLED_APPS = [
     'duties',
     'tasks',
     'todos',
-    'todo',
+    #'todo',
     'quests',
 
     # Communication
