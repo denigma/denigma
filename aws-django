@@ -271,6 +271,10 @@ install_subversion() {
     apt-get install -y subversion
 }
 
+install_libevent() {
+    sudo apt-get install libevent-dev
+}
+
 bootstrap_project() {
     adduser --system --disabled-password --disabled-login $LOCAL_USER
     sudo virtualenv /home/$LOCAL_USER/env
@@ -371,6 +375,7 @@ prepare_pil
 install_webserver
 
 install_subversion
+install_libevent
 
 bootstrap_project
 install_project

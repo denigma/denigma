@@ -291,10 +291,15 @@ INSTALLED_APPS = [
     'duties',
     'tasks',
     'todos',
-    #'todo',
+    'todo',
     'quests',
-    'pastebin',
 
+    # Communication
+    'pastebin',
+    'channel',
+    'chat',
+
+    # Integrator
     'annotations',
     'interactions',
     'expressions',
@@ -316,12 +321,12 @@ INSTALLED_APPS = [
     'eva',
     'alliance',
     'immuno',
-    'channel',
     'ontology',
 
     'stats',
     'utils',
     'add',
+
 ]
 
 FIXTURE_DIRS = [
@@ -361,10 +366,14 @@ DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
 }
 
+# Chatting:
+CHAT_HTTP_PORT = 8080
+
 # local_settings.py can be used to override environment-specific settings
 # like database and email that differ between development and production.
 try:
     from local_settings import *
+    CHAT_HTTP_HOST = DATABASES['default']['HOST']
 except ImportError:
     pass
 
@@ -385,3 +394,5 @@ except ImportError:
    pass
 
 #BANISH_ENABLED = True
+
+

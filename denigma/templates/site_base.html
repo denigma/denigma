@@ -101,6 +101,7 @@
                  <ul class="dropdown-menu">
                      <li><a href="{% url 'pastebin' %}">Pastebin Messaging</a></li>
                      <li><a href="{% url 'channel' %}">Videochat Channel</a></li>
+                     <li><a href="{% url 'chat_chat' %}">Chat</a></li>
                  </ul>
              </li>
              <li id="tab_notices"><a href="{% url 'notification_notices' %}">{% trans "Notices" %}{% if notice_unseen_count %}({{ notice_unseen_count }}){% endif %}</a></li>

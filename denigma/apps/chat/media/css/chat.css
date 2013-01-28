@@ -1,0 +1,59 @@
+
+body {margin:70px 0 65px 0;}
+.navbar-fixed-top {position:fixed !important;}
+.navbar-fixed-top, .navbar-inner {padding:0 !important;}
+
+footer {position:fixed; left:0; bottom:0; background:#ddd; width:100%;
+        border-top:1px solid #999; padding:0 20px;}
+
+th {border-top:0 !important; text-indent:5px;}
+.calendar {margin-bottom:30px;}
+.calendar th, .calendar td {text-align:center;}
+.calendar .not-in-month, .calendar .not-in-month a {color:#ddd;}
+.calendar a {font-weight:bold; text-decoration:underline;}
+.archive {margin-bottom:40px;}
+
+#joins-leaves {margin:12px 0 0 0;}
+#joins-leaves label {display:inline; color:#666; margin-right:10px;}
+#joins-leaves input {margin-bottom:5px;}
+
+.main-chat {display:none; margin-top:-15px;}
+.main-chat a {text-decoration:underline;}
+.message {width:100%;}
+#messages td, .nickname {border:0;}
+#messages .time {color:#999; font-size:12px;}
+#messages .nickname {text-align:right;}
+.pager-archive {float:right; text-align:right; margin:-20px 20px 40px 0;}
+.pager-archive-empty {margin:-60px 10px 0 0;}
+#messages .pager-archive {margin:5px;}
+.pager-archive li {font-weight:bold; margin-left:10px;}
+.message-highlighted td {background:#ffc !important;}
+
+#nicknames {margin-bottom:0;}
+.nicknames-row {position:fixed; top:60px; bottom:90px; overflow-y:scroll; z-index:-1;}
+.nicknames-wrap {margin-left:-50px;}
+
+.dropdown-menu a {text-align:right;}
+.chat {margin-top:5px; margin-bottom:0; padding:15px 0;}
+.chat input {margin-right:10px;}
+#leave {display: none;}
+
+.loading {margin-top:0; top:40%;}
+.progress {margin-bottom:0;}
+.bar {width:1px;}
+.modal-backdrop {background:#fff;}
+
+.logout {margin:-5px 0 0 5px !important;}
+
+.powered {padding:10px 0; margin:0 10px; text-align:right;}
+
+@media (max-width:979px) {
+    .nick, #password {max-width:40%;}
+}
+
+@media (max-width: 767px) {
+    body {margin-top:30px;}
+    .nick, #password {max-width:32%;}
+    .msg {max-width:55%;}
+    .nicknames-row, .navbar-fixed-top, .submit-joined, .powered {display:none !important;}
+}

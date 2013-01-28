@@ -1,0 +1,50 @@
+{% extends "chat/base.html" %}
+
+{% block content %}
+<script>
+$(function() {
+    chat({
+        httpHost:     '{{ HTTP_HOST }}',
+        httpPort:     '{{ HTTP_PORT }}',
+        ircHost:      '{{ IRC_HOST }}',
+        ircPort:      '{{ IRC_PORT }}',
+        ircChannel:   '{{ IRC_CHANNEL }}'
+    });
+});
+</script>
+
+<script id="messages-template" type="text/x-jquery-tmpl">
+<tr>
+    <td class="time">[${time}]</td>
+    <td class="nickname" style="color:${color};">${nickname}:</td>
+    <td class="message">{% templatetag openvariable %}html message{% templatetag closevariable %}</td>
+</tr>
+</script>
+
+<script id="nicknames-template" type="text/x-jquery-tmpl">
+<ul class="nav nav-list">
+    <li class="nav-header">Users</li>
+    {% templatetag openvariable %}each nicknames{% templatetag closevariable %}
+    <li class="nickname" style="color:${$value.color};">${$value.nickname}</li>
+    {% templatetag openvariable %}/each{% templatetag closevariable %}
+</ul>
+</script>
+
+<div class="row nicknames-row hidden">
+    <div class="nicknames-wrap">
+        <div id="nicknames" class="span2 offset10 well"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span9">
+        <table class="table table-striped table-condensed main-chat" id="messages"></table>
+    </div>
+</div>
+
+<div class="loading modal hide">
+    <div class="progress progress-success">
+        <div class="bar"></div>
+    </div>
+</div>
+{% endblock %}

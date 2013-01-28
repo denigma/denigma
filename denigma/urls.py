@@ -74,6 +74,7 @@ urlpatterns += patterns("",
     url(r'^news/$', include('news.urls')), # Data entry is currently functioning as news medium.
     url(r'^tutorials/', include('tutorials.urls')),
     url(r'^articles/', include('articles.urls')),
+    url(r'^ontology/', include('ontology.urls')),
 
     # Links
     url(r'^shorty/$', 'shorty.views.home', name='sURL'),
@@ -84,10 +85,14 @@ urlpatterns += patterns("",
     # Duties
     url(r'^duties/', include('duties.urls')),
     url(r'^tasks/', include('tasks.urls')),
-    #url(r'^todo/', include('todo.urls')),
+    url(r'^todo/', include('todo.urls')),
     url(r'^todos/', include('todos.urls')),
     url(r'^quests/', include('quests.urls')),
+
+    # Communication
     url(r'^pastebin/', include('pastebin.urls')),
+    url(r'^channel/', include('channel.urls')),
+    url(r'^chat/', include('chat.urls')),
 
     # Integrator
     url(r'^annotations/', include('annotations.urls')),
@@ -110,11 +115,10 @@ urlpatterns += patterns("",
     url(r'^meta/', include('meta.urls')),
     url(r'^add/', include('add.urls')),
     url(r'^eva/', include('eva.urls')),
+
+    # Sites
     url(r'^alliance/', include('alliance.urls')),
     url(r'^immuno/', include('immuno.urls')),
-    url(r'^channel/', include('channel.urls')),
-    url(r'^ontology/', include('ontology.urls')),
-
 )
 if settings.SERVE_MEDIA:
     urlpatterns += patterns("",
