@@ -9,8 +9,12 @@ class BooleanFilter(Filter):
 
 class TodoFilterSet(FilterSet):
     fields = (#'done',# {}, BooleanFilter),
+              'categories',
               'creator',
               'executor',
               'importance',
+              'created',
+              'updated',
+
               #'created', 'updated', 'start_date', 'stop_date'] #  rename to priority.
 )
