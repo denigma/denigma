@@ -23,8 +23,8 @@ intermine # Provides yeastmine (SGD) API.
 
 # Tags:
 django-taggit   # Provides tagging functionality.
--e svn+http://django-tagging.googlecode.com/svn/trunk/#egg=tagging # Allows the inclusion of tags to any model, is used for links.
-pip install -e git+https://github.com/brosner/django-tagging#egg=tagging
+#-e svn+http://django-tagging.googlecode.com/svn/trunk/#egg=tagging # Allows the inclusion of tags to any model, is used for links.
+-e git+https://github.com/brosner/django-tagging#egg=tagging
 
 
 # Alternative Admin designs:
