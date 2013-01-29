@@ -25,7 +25,6 @@ class TodoCreate(CreateView):
     template_name= 'todos/create_todo.html'
     form_class = TodoForm
     model = Todo
-    success_url = '/todos/index'
 
     def dispatch(self, request, *args, **kwargs):
         if 'task' in kwargs and kwargs['task']:
@@ -50,7 +49,7 @@ class TodoList(TableFilter):
     table_class = TodoTable
     queryset = Todo.objects.filter(done=False).order_by('-updated')
     filterset = TodoFilterSet
-    success_url = '/todos/index'
+    success_url = '/todos/'
 
     def dispatch(self, request, *args, **kwargs):
         profile = Profile.objects.get(user__username__exact=request.user.username)
