@@ -37,7 +37,7 @@ class TodoCreate(CreateView):
         """Get initial dictionary from the superclass method."""
         initial = super(TodoCreate, self).get_initial()
         initial = initial.copy()
-        initial['owner'] = self.request.user.pk
+        initial['creator'] = self.request.user.pk
         initial['importance'] = 'C'
         if self.task:
             initial['title'] = self.task
@@ -78,7 +78,7 @@ def todo_index(request):
     profile = Profile.objects.get(user__username__exact=request.user.username)
     profile.last_list_check = datetime.datetime.today()
     profile.save()
-    todos = Todo.objects.filter(owner=request.user).order_by('importance', '-created', 'title')
+    todos = Todo.objects.filter(creator=request.user).order_by('importance', '-created', 'title')
     return render_to_response('todos/index.html',
                               {'todos': todos,
                                'choices': priorities,
@@ -94,7 +94,7 @@ def add_todo(request):
         importance = request.POST['importance'],
         start_date = request.POST['start_date'],
         stop_date = request.POST['stop_date'],
-        owner = request.user)
+        creator = request.user)
     t.save()
     # reverse() takes etiher a view or the name of a view and returns its URLS:
     return HttpResponseRedirect(reverse(todo_index)) # Redirect todo_index view 
@@ -117,6 +117,7 @@ def update_todo(request, todo_id):
         post_save_redirect='/todos/%(id)s'
      )
 
+
 def view_todo(request, todo_id):
     #pass
     #todo = Todo.objects.get(pk=todo_id))
@@ -132,7 +133,7 @@ def edit_todo(request, todo_id):
 
 def delete_todo(request, todo_id):
     todo = get_object_or_404(Todo, id=todo_id)
-    if todo.owner.id != request.user.id:
+    if todo.creator.id != request.user.id:
         return HttpResponseRedirect(
             reverse(todo_index) + "?error_msg=That's not your todo!")
     return delete_object(

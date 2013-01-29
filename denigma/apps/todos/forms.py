@@ -20,14 +20,19 @@ class TodoForm(ModelForm):
                 'title',
                 'description',
                 'importance',
+                'difficulty',
+                'progress',
                 'start_date',
                 'stop_date',
+                'creator',
+                'executor',
+                'categories',
+                'onhold',
                 'done',
-                'owner'
             ),
             FormActions(
                 Submit('submit', 'Submit', css_class="btn-primary"),
-                Submit('cancel', 'Cancel')
+                Submit('cancel', 'Cancel', css_class="btn-danger")
             )
         )
 

@@ -1,69 +1,27 @@
 {% extends "todos/base.html" %}
 
 {% load url from future %}
+{% load crispy_forms_tags %}
 
-{% block hierarchy %}
-    > Todo
-    = <a href="/todos/{{ object.id }}">{{ object.title }}</a>
-    > Edit
-{% endblock %}
-
-{% block subtitle %}Todo{% endblock %}
-
-{% block content %}
-<html>
-<head>
-<title>Edit Todo #{{ object.id }}</title>
-<style type="text/css">
-    body {  font-family: arial, Helvetica, sans-setif;
+{% block extra_scripts %}
+    <style type="text/css">
+        body {  font-family: arial, Helvetica, sans-setif;
             color: black;
             background: #ffffff; }
-</style>
-</head>
-<body>
+    </style>
+{% endblock %}
 
-<form action="" method="POST">{% csrf_token %}
-    <table>
-    <tr><td valign="top">
-            {{ form.title.label_tag }}
-        <td>{{ form.title }}
-    <tr><td valign="top">
-            {{ form.created.label_tag }}
-        <td>{{ form.created }}
-    <tr><td valign="top">
-            {{ form.importance.label_tag }}
-        <td>{{ form.importance }}
-    <tr><td valign="top">
-            {{ form.description.label_tag }}
-        <td>{{ form.description }}
-    <tr><td valign="top">
-            {{ form.updated.label_tag }}
-        <td>{{ form.updated }}
-    <tr><td valign="top">
-            {{ form.owner.label_tag }}
-        <td>{{ form.owner }}
-    <tr><td valign="top">
-            {{ form.start_date.label_tag }}
-        <td>{{ form.start_date }}
-    <tr><td valign="top">
-           {{ form.done.label_tag }}
-       <td>{{ form.done }}
-    <tr><td valign="top">
-           {{ form.stop_date.label_tag }}
-       <td>{{ form.stop_date }}
-    <tr><td colspan="2">
-        <input type="submit" value="Save">
-    </table>
-</form>
+{% block hierarchy %}
+    » Todo
+    = <a href="/todos/{{ object.id }}">{{ object.title }}</a>
+    » Edit
+{% endblock %}
 
-    <p>
-    <b>
+{% block title %}Edit Todo #{{ object.id }}{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+    <br>
       <a href="/todos/index">Return to todo list</a>
     | <a href="{% url 'create-quest' object.pk %}">Create Quest</a>
-    </b>
-    </p>
-
-
-</body>
-</html>
 {% endblock %}

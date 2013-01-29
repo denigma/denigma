@@ -5,7 +5,7 @@ from models import Todo
 
 class TodoAdmin(admin.ModelAdmin): # Revision  raises error: django.contrib.auth.models.DoesNotExist
     fields = ('title', 'description', 'importance', 'start_date', 'stop_date',
-              'done', 'owner') # 'updated')# 'created',
+              'done', 'creator', 'executor') # 'updated')# 'created',
     list_display = ['title', 'description', 'importance',
                     'start_date', 'stop_date', 'created', 'updated', 'done']
     search_fields = ['title', 'description']

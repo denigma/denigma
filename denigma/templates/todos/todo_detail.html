@@ -1,0 +1,50 @@
+{% extends "todos/base.html" %}
+
+{% load url from future %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}Todo{% endblock %}
+
+{% block hierarchy %}
+    » {{ object.title }}
+{% endblock %}
+
+{% block title %}Todo {{ object.title }}{% endblock %}
+
+{% block content %}
+    {{ object.description|markdown|hyper|recross|safe }}
+
+    From <b>{{ object.start_date }}</b> To <b>{{ object.stop_date }}</b><br>
+    <b>Creator</b>: <a href="{{ object.creator.get_absolute_url }}">{{ object.creator }}</a><br>
+    {% with object.executors.all as executors %}
+        {% if executors %}
+            <b>Executors</b>:
+            {% for executor in exectors %}
+                <a href="{{ executor.get_absolute_url }}">{{ executor }}</a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    {% with object.catgories.all as categories %}
+        {% for category in categories %}
+            <a href="{{ category.get_absolute_url }}">{{ category }}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    {% endwith %}
+
+    {% with object.importance as priority %}
+        {% if priority %}
+            <b>Priority</b>: {{ priority }}<br>
+        {% endif %}
+    {% endwith %}
+
+    <b>Difficulty</b>: {{ object.difficulty }}<br>
+    <b>Progress</b>: {{ object.progress }}<br>
+
+    {% if object.done %}<b>Done</b>{% endif %}
+    {% if object.onhold %}
+        <b>On Hold</b><br>
+    {% endif %}
+    <hr>
+    <b><a href="{% url 'update_todo' object.pk %}">Update</a></b>
+{% endblock %}

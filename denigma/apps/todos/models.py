@@ -4,7 +4,7 @@ import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-
+from django.core.urlresolvers import reverse
 
 # Constrain choices
 priorities = (
@@ -20,19 +20,20 @@ class Todo(models.Model): # Rename To Duty
     description = models.TextField()
 
     importance = models.CharField(max_length=1, choices=priorities, verbose_name='priority') # Rename to priority.
-    #difficulty?
+    difficulty = models.IntegerField(default=0)
+    progress = models.IntegerField(default=0)
 
     created = models.DateField(auto_now_add=True) # 'creation date'
     updated = models.DateField(auto_now=True)
     start_date = models.DateField(blank=True, null=True)
     stop_date = models.DateField(blank=True, null=True)
     #finished = models.DateField(blank=True, null=True)
+    creator = models.ForeignKey(User, related_name='todos', blank=True, verbose_name=_("Creator")) # Rename to creator.
+    executor = models.ManyToManyField(User, related_name='assigned_todos', blank=True, null=True, verbose_name=_("Executors")) #
+    categories = models.ManyToManyField('data.Entry', related_name='todo', blank=True, null=True)
     done = models.BooleanField()
+    onhold = models.BooleanField(default=0)
 
-    owner = models.ForeignKey(User, related_name='todos', blank=True, verbose_name=_("Creator")) # Rename to creator.
-    #assigned = models.ManyToManyField(User, related_name='assigned_todos', blank=True, null=True, verbose_name=_("Assigned")) # Executor.
-
-    #entry = models.ForeignKey('data.Entry', relate_name="todo", blank=True, null=True)
 
     #deadlines?
     # email to inform people before deadlines end.
@@ -54,5 +55,5 @@ class Todo(models.Model): # Rename To Duty
         return self.title
 
     def get_absolute_url(self):
-        return u"/todos/%s" % self.pk
-    
+        return reverse('detail-todo', args=[self.pk])
+        #return u"/todos/%s" % self.pk
