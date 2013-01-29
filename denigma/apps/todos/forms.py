@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.forms import ModelForm, DateTimeField, ModelMultipleChoiceField
-from django.contrib.models import User
+from django.contrib.auth.models import User
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit
