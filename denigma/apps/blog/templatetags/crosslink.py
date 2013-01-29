@@ -58,9 +58,15 @@ def recross(text):
     entries = dict([(e.title, u'<a href="{0}">{1}</a>'.format(e.get_absolute_url(), e.title))\
             for e in Entry.objects.all()])
     if entries: # Check if whether database is non-empty (as it is by setting up).
-        rc = re.compile('|'.join(map(re.escape, entries)))
+
+        # Sorts according to term length (long terms first):
+        listed_entries = list(entries)
+        listed_entries.sort(key=len)
+        listed_entries.reverse()
+
+        rc = re.compile(r'(?P<pre>\W)(?P<term>%s)(?P<post>\W)' % '|'.join(map(re.escape, listed_entries)))
         def translate(match):
-            return entries[match.group(0)]
+            return match.group('pre')+entries[match.group('term')]+match.group('post')
         return rc.sub(translate, text)
     return text
 
