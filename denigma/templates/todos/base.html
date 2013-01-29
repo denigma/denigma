@@ -9,9 +9,8 @@
 {% endblock %}
 
 {% block options %}
-    <a href={% url 'todo-list' %}>Own</a>
-    | <a href="/todos/create/">Create</a>
-    (</b><a href="/admin/todo/">Admin</a><b>)
+    <a href="/todos/create/">Create</a>
+    (</b><a href="/admin/todos/todo/">Admin</a><b>)
     | <a href={% url 'tasks' %}>Tasks</a>
     | <a href={% url 'todos' %}>Todos</a>
     | <a href={% url 'quests' %}>Quests</a>

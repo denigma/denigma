@@ -10,13 +10,14 @@ from django.template import RequestContext
 from django.views.generic.edit import CreateView
 from django.db.models import Q
 
+from profiles.models import Profile
+from data.filters import FilterForm, TableFilter
+from data import get
+
 from models import Todo, priorities
 from forms import TodoForm
 from tables import TodoTable
 from filters import TodoFilterSet
-
-from profiles.models import Profile
-from data.filters import FilterForm, TableFilter
 
 
 class TodoCreate(CreateView):
@@ -56,6 +57,11 @@ class TodoList(TableFilter):
         profile.last_list_check = datetime.datetime.today()
         profile.save()
         return super(TodoList, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context =super(TodoList, self).get_context_data(*args, **kwargs)
+        context['entry'] = get('Todos')
+        return context
 
     def get_queryset(self):
         qs = self.queryset

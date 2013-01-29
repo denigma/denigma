@@ -11,8 +11,8 @@ urlpatterns = patterns('todos.views', # Pattern definition
     url(r'^login$', 'todo_login'),
     url(r'^logout$', 'todo_logout'),
                        
-    url(r'^$', 'todo_index', name='todo-list'),
-    url(r'index/$', login_required(TodoList.as_view()), name='todos'),
+    #url(r'^$', 'todo_index', name='todo-list'),
+    url(r'^$', login_required(TodoList.as_view()), name='todos'),
     url(r'^add$', 'add_todo'),
     url(r'^create/(?P<task>.*)', TodoCreate.as_view(), name='create_todo'),
     url(r'^(?P<pk>\d+)/$', DetailView.as_view(model=Todo, template_name='todo_detail.html'), name='detail-todo'),#views.view_todo),
