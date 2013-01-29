@@ -5,13 +5,13 @@
 {% load hyperlink %}
 {% load crosslink %}
 
-{% block head_title %}Todo{% endblock %}
+{% block head_title %}Todo {{ object.title }}{% endblock %}
 
 {% block hierarchy %}
     » {{ object.title }}
 {% endblock %}
 
-{% block title %}Todo {{ object.title }}{% endblock %}
+{% block title %}{{ object.title }}{% endblock %}
 
 {% block content %}
     {{ object.description|markdown|hyper|recross|safe }}
@@ -25,21 +25,35 @@
         {% endif %}
     {% endwith %}
 
-    From <b>{{ object.start_date }}</b> To <b>{{ object.stop_date }}</b><br>
-    <b>Creator</b>: <a href="{{ object.creator.get_absolute_url }}">{{ object.creator }}</a><br>
+    <b>Creator</b>: <a href="{{ object.creator.get_absolute_url }}">{{ object.creator }}</a> <br>
+
     {% with object.executor.all as executors %}
         {% if executors %}
-            <b>Executors</b>:
+            <b> Executors</b>:
             {% for executor in executors %}
                 <a href="{{ executor.get_absolute_url }}">{{ executor }}</a>{% if not forloop.last %}, {% endif %}
             {% endfor %}<br>
         {% endif %}
     {% endwith %}
+    <br>
 
+    {% with object.start_date as start_date %}
+        {% if start_date %}
+            <b>From</b> {{ start_date }}
+        {% endif %}
+    {% endwith %}
+
+    {% with object.stop_date as stop_date %}
+        {% if stop_date %}
+            <b> To </b>{{ object.stop_date }}<br>
+        {% endif %}
+    {% endwith %}
+
+    <br>
 
     {% with object.importance as priority %}
         {% if priority %}
-            <b>Priority</b>: {{ priority }}<br>
+            <b>Priority</b>: {{ object.get_importance_display }}<br>
         {% endif %}
     {% endwith %}
 
@@ -52,4 +66,5 @@
     {% endif %}
     <hr>
     <b><a href="{% url 'update_todo' object.pk %}">Update</a></b>
+    {% include 'comments/wrapper.html' %}
 {% endblock %}
