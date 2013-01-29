@@ -12,9 +12,13 @@ class TodoFilterSet(FilterSet):
               'categories',
               'creator',
               'executor',
-              'importance',
+              'priority',
+              'difficulty',
+              'value',
               'created',
               'updated',
+              'start_date',
+              'stop_date',
 
               #'created', 'updated', 'start_date', 'stop_date'] #  rename to priority.
 )

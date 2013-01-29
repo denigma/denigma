@@ -75,7 +75,15 @@
             <td align="top" valign="top">
                 {% with profile.user.todos.all as todos %}
                     {% if todos %}
-                        <b>Duties</b>
+                        <b>Created Duties</b>:
+                        {% for todo in todos %}
+                            <li><a href="{{ todo.get_absolute_url }}">{{ todo }}</a></li>
+                        {% endfor %}<br>
+                    {% endif %}
+                {% endwith %}
+                {% with profile.user.assigned_todos.all as todos %}
+                    {% if todos %}
+                        <b>Assigned Duties</b>:
                         {% for todo in todos %}
                             <li><a href="{{ todo.get_absolute_url }}">{{ todo }}</a></li>
                         {% endfor %}

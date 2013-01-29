@@ -3,6 +3,32 @@
 {% load url from future %}
 {% load crispy_forms_tags %}
 
+{% load adminmedia %}
+
+{% block extra_script %}
+    <script type="text/javascript" src="{% admin_media_prefix %}js/admin/RelatedObjectLookups.js"></script>
+    <script type="text/javascript" src="/admin/jsi18n/"></script>
+    <script type="text/javascript" src="{% admin_media_prefix %}js/core.js"></script>
+    <script type="text/javascript" src="{% admin_media_prefix %}js/SelectBox.js"></script>
+    <script type="text/javascript" src="{% admin_media_prefix %}js/SelectFilter2.js"></script>
+    <script type="text/javascript" src="/media/js/multiselect.js"></script>
+    {% comment %}
+    <script type="text/javascript">
+        jQuery.each($("select[multiple]"), function() {
+            SelectFilter.init(this.id, "Locations", 0, "/media/");
+        });
+    </script>{% endcomment %}
+{% endblock %}
+
+
+{% block extra_style %}
+    {# {{ form.media }}#}
+{% comment %}  {% endcomment %}
+    <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/widgets.css" />
+
+{% endblock %}
+
+
 {% block head_title %}{{ action }} Entry{% endblock %}
 
 {% block hierarchy %}

@@ -19,9 +19,10 @@ class Todo(models.Model): # Rename To Duty
     title = models.CharField(max_length=200)
     description = models.TextField()
 
-    importance = models.CharField(max_length=1, choices=priorities, verbose_name='priority') # Rename to priority.
+    priority = models.CharField(max_length=1, choices=priorities, default='C', verbose_name='priority') # Rename to priority.
     difficulty = models.IntegerField(default=0)
     progress = models.IntegerField(default=0)
+    value = models.IntegerField(default=1)
 
     created = models.DateField(auto_now_add=True) # 'creation date'
     updated = models.DateField(auto_now=True)
@@ -32,7 +33,7 @@ class Todo(models.Model): # Rename To Duty
     executor = models.ManyToManyField(User, related_name='assigned_todos', blank=True, null=True, verbose_name=_("Executors")) #
     categories = models.ManyToManyField('data.Entry', related_name='todo', blank=True, null=True)
     done = models.BooleanField()
-    onhold = models.BooleanField(default=0)
+    onhold = models.BooleanField(default=False)
 
 
     #deadlines?

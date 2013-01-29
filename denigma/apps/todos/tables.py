@@ -19,7 +19,7 @@ class TodoTable(tables.Table):
     def render_description(self, record, value):
         return mark_safe(recross(hyper(value)))
 
-    def render_importance(self, record, value):
+    def render_priority(self, record, value):
         return mark_safe('<span style="color:%s">%s</span>' % (priority_colors[value], value))
 
     def render_creator(self, record, value):
@@ -34,4 +34,4 @@ class TodoTable(tables.Table):
         model = Todo
         attrs = {"class": "paleblue"}
         exclude = ('id',)
-        fields = ('title', 'description', 'importance', 'created', 'updated', 'start_date', 'stop_date', 'done', 'creator', 'quest')
+        fields = ('title', 'description', 'priority', 'created', 'updated', 'start_date', 'stop_date', 'done', 'creator', 'quest')

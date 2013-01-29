@@ -4,12 +4,13 @@ from models import Todo
 
 
 class TodoAdmin(admin.ModelAdmin): # Revision  raises error: django.contrib.auth.models.DoesNotExist
-    fields = ('title', 'description', 'importance', 'start_date', 'stop_date',
+    fields = ('title', 'description', 'priority', 'difficulty', 'value', 'start_date', 'stop_date',
               'done', 'creator', 'executor') # 'updated')# 'created',
-    list_display = ['title', 'description', 'importance',
-                    'start_date', 'stop_date', 'created', 'updated', 'done']
+    list_display = ['title', 'description', 'priority',
+                    'start_date', 'stop_date', 'created', 'updated', 'done', 'onhold']
     search_fields = ['title', 'description']
-    list_filter  = ('done', 'importance',)
+    list_filter  = ('done', 'priority', 'difficulty', 'value', 'created',
+                    'updated', 'start_date', 'stop_date', 'done', 'onhold')
 
 
 admin.site.register(Todo, TodoAdmin)
