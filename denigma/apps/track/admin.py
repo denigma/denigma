@@ -7,6 +7,8 @@ class VisitorAdmin(admin.ModelAdmin):
     list_display = ('session_key', 'ip_address', 'user', 'location', 'activities', 'session_start', 'last_update', 'time_on_site', 'inactive_time') #'country',
     ordering = ('-last_update',)
     readonly_fields = ('country',)
+    search_fields = ('ip_address', 'user_agent', 'url', 'referrer')
+    list_filter = ('user', 'session_start', 'last_update', 'start_time')
 
     def location(self, obj):
         return '<a href="%s">%s</a>' % (obj.url, obj.url)
