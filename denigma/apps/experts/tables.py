@@ -3,6 +3,8 @@ from django.utils.safestring import mark_safe
 
 from django_tables2 import tables
 
+from django_tables2 import Column
+
 #from data.templatetags.rendering import markdown
 
 from models import Profile, Collaboration
@@ -32,7 +34,8 @@ class ProfileTable(tables.Table):
 
 
 class CollaborationTable(tables.Table):
-
+    people = Column(order_by='members')
+    description = Column(order_by='project__text')
     def render_project(self, record, value):
         return mark_safe('<a href="%s">%s</a>' % (record.get_absolute_url(), value))
 
