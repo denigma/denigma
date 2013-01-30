@@ -64,7 +64,7 @@ def recross(text):
         listed_entries.sort(key=len)
         listed_entries.reverse()
 
-        rc = re.compile(r'(?P<pre>\W)(?P<term>%s)(?P<post>\W)' % '|'.join(map(re.escape, listed_entries)))
+        rc = re.compile(r'(?P<pre>\W)(?P<term>%s)(?P<post>\W|s)' % '|'.join(map(re.escape, listed_entries)))
         def translate(match):
             return match.group('pre')+entries[match.group('term')]+match.group('post')
         return rc.sub(translate, text)
