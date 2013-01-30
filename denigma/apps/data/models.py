@@ -291,7 +291,7 @@ class Change(Content):
             action = 'initialized'
         else:
             action = 'changed'
-        return '{0} {1} "{2}" on {3} {4}'.format(self.by, action, self.of.title,
+        return u'{0} {1} "{2}" on {3} {4}'.format(self.by, action, self.of.title,
             self.at.date(), self.at.time())
 
     def get_absolute_url(self):
