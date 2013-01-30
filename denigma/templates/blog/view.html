@@ -3,7 +3,7 @@
 {% load markup %}
 {% load hyperlink %}
 {% load crosslink %}
-{% load comments %}
+{% load comment %}
 
 {% block head_title %}Post{% endblock %}
 
@@ -55,4 +55,7 @@
         <br>
         {% display_comments post.id %}
     {% endif %}
+    {% with post as object %}
+        {% include 'comments/wrapper.html' %}
+    {% endwith %}
 {% endblock %}
