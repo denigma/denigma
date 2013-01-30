@@ -1,10 +1,12 @@
 {% extends "site_base.html" %}
 
+{% load url from future %}
+
 {% block head_title %}Gallery{% endblock %}
 
-{% block hierarchy %}
-    > Media
-    > <a href="/gallery">Gallery</a>
+{% block base_hierarchy %}
+    »  Media
+    »  <a href="{% url 'media' %}">Gallery</a>
 {% endblock %}
 
 {% block title %}Gallery{% endblock %}
