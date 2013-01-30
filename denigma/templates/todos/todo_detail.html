@@ -67,6 +67,14 @@
         <b>On Hold</b><br>
     {% endif %}
     <hr>
-    <b><a href="{% url 'update_todo' object.pk %}">Update</a></b>
+    <div class="line">
+        <span class="left">
+             <b><a href="{% url 'update_todo' object.pk %}">Update</a></b>
+        </span>
+        <span class="centre">
+            <center><b><a href="{% url 'execute' object.pk %}" class="btn btn-danger btn-large">Execute</a></b></center>
+        </span>
+    </div>
+
     {% include 'comments/wrapper.html' %}
 {% endblock %}

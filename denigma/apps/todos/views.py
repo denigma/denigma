@@ -7,6 +7,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic.create_update import update_object, delete_object
 from django.template import RequestContext
+from django.views.generic import DetailView
 from django.views.generic.edit import CreateView
 from django.db.models import Q
 
@@ -71,6 +72,16 @@ class TodoList(TableFilter):
                                Q(description__icontains=TodoList.query))
         self.filterset = TodoFilterSet(qs, self.request.GET)
         return self.filterset.qs
+
+
+
+class ExecuteView(DetailView):
+    model = Todo
+    def get_context_data(self, *args, **kwargs):
+        context = super(ExecuteView, self).get_context_data(*args, **kwargs)
+        context['object'].executor.add(self.request.user)
+        return context
+
 
 
 def todo_index(request):
