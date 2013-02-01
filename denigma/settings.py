@@ -373,7 +373,8 @@ CHAT_HTTP_PORT = 8080
 # like database and email that differ between development and production.
 try:
     from local_settings import *
-    CHAT_HTTP_HOST = DATABASES['default']['HOST']
+    CHAT_HTTP_HOST = CHAT_HOST or DATABASES[
+                                  'default']['HOST']
 except ImportError:
     pass
 

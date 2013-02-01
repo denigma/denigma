@@ -324,6 +324,7 @@ TEMPLATE_DIRS = ["$PROJECT_ROOT/templates"]
 ADMIN_MEDIA_PREFIX = '/django/contrib/admin/media/'
 
 GRAPPELLI = False
+CHAT_HOST = False
 
 EOF
 
