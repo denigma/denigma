@@ -27,8 +27,8 @@
                 <li><a href="{% url 'detail-entry' 'the-purpose-of-denigma' %}">Purpose</a></li>
                 <li><a href="{% url 'detail-entry' 'denigma-concepts' %}">Concepts</a></li>
                 <li><a href="{% url 'detail-entry' 'philosophy'%}">Philosophy</a></li>
-                <li><a href="{% url 'detail-entry' 'international-longevity-alliance' %}">ILA</a></li>
-                <li><a href="{% url 'collaboration' '27' %}">GCI</a></li>
+                <li><a href="{% url 'detail-entry' 'international-longevity-alliance' %}">ILA</a></li> {# International Longevity Alliance #}
+                <li><a href="{% url 'collaboration' '27' %}">GCI</a></li> {# Global Computing Initiative #}
                 <li><a href="{% url 'what_next' %}">What Next?</a></li>
                 <li><a href="{% url 'matrix' %}">Matrix</a></li>
                 <li><a href="{% url 'repository' %}">{% trans "Repository" %}</a></li>
@@ -101,7 +101,7 @@
                  <ul class="dropdown-menu">
                      <li><a href="{% url 'pastebin' %}">Pastebin Messaging</a></li>
                      <li><a href="{% url 'channel' %}">Videochat Channel</a></li>
-                     <li><a href="{% url 'chat_chat' %}">Chat</a></li>
+                     <li><a href="http://denigma.info/chat/">Chat</a></li> {# {% url 'chat_chat' %}">Chat</a></li> #}
                  </ul>
              </li>
              <li id="tab_notices"><a href="{% url 'notification_notices' %}">{% trans "Notices" %}{% if notice_unseen_count %}({{ notice_unseen_count }}){% endif %}</a></li>
