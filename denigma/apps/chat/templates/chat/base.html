@@ -26,7 +26,7 @@
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
-                    <a class="brand" href="{% url chat_chat %}">{{ IRC_CHANNEL }}</a>
+                    <a class="brand" href="http://denigma.de"> {{ IRC_CHANNEL }}</a>
                     {% chat_nav %}
                     <form id="joins-leaves" class="pull-right nav-collapse" action="#joins-leaves">
                         <input type="checkbox" id="show-joins-leaves">
@@ -50,7 +50,7 @@
                         <input type="button" class="btn" id="leave" value="Leave">
                     </div>
                 </div>
-                    <p class="span3 powered">Denigma <a href="{{ CHAT_PROJECT_URL }}">{{ CHAT_VERSION_STRING }}</a></p>
+                    <p class="span3 powered"><a href="http://denigma.de">Denigma</a> <a href="{{ CHAT_PROJECT_URL }}">{{ CHAT_VERSION_STRING }}</a></p>
                 </div>
             </form>
         </footer>
