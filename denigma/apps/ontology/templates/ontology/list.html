@@ -7,11 +7,11 @@
 {% block content %}
     <b>Entities</b>:
     {% for entity in entities %}
-        <li>{{ entity }}</li>
+        <li><a href="{{ entity.get_absolute_url }}">{{ entity }}</a></li>
     {% endfor %}
     <hr>
     <b>Relations</b>:
     {% for relation in relations %}
-        <li>{{ relation }}</li>
+        <li><a href="{{ relation.get_absolute_url }}">{{ relation }}</a></li>
     {% endfor %}
 {% endblock %}

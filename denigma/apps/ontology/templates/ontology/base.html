@@ -9,7 +9,9 @@
 {% endblock %}
 
 {% block base_options %}
-    <a href="{% url 'ontology-list' %}">List</a>
+    <a href="/admin/ontology/entity/add/">New Entity</a>
+    | <a href="/admin/ontology/relation/add/">New Relation</a>
+    | <a href="{% url 'ontology-list' %}">List</a>
     | <a href="{% url 'ontology-graph' %}">Graph</a>
 {% endblock %}
 
