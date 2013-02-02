@@ -1,9 +1,40 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+{% extends "ontology/base.html" %}
 
-</body>
-</html>
+{% load url from future %}
+
+{% block head_title %}{{ object }}{% endblock %}
+
+{% block hierarchy %}
+    » Relation
+    = {{ object.pk }}
+{% endblock %}
+
+{% block options %}
+    | (<b><a href="/admin/ontology/relation/{{ object.pk }}">Admin</a></b>)
+{% endblock %}
+
+{% block title %}{{ object }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="span4">
+        {% block column-1 %}
+            <a href="{{ object.source.get_absolute_url }}"><h3>{{ object.source.title }}</h3></a>
+            {{ object.source.text }}
+        {% endblock %}
+    </div>
+    <div class="span4">
+       {% block column-2 %}
+           <a href="{{ object.type.get_absolute_url }}"><h3>{{ object.type.title }}</h3></a>
+           {{ object.type.text }}
+       {% endblock %}
+    </div>
+    <div class="span4">
+        {% block column-3 %}
+            <a href="{{ object.target.get_absolute_url }}"><h3>{{ object.target.title }}</h3></a>
+            {{ object.target.text }}
+        {% endblock %}
+    </div>
+</div>
+
+{% endblock %}

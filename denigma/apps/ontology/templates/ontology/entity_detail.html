@@ -1,9 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+{% extends "ontology/base.html" %}
 
-</body>
-</html>
+{% load url from future %}
+
+{% block head_title %}{{ object.title }}{% endblock %}
+
+{% block hierarchy %}
+    » Entity
+{% endblock %}
+
+{% block options %}
+    | (<b><a href="/admin/ontology/entity/{{ object.pk }}">Admin</a></b>)
+{% endblock %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block content %}{{ object.text }}{% endblock %}

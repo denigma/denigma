@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.core.urlresolvers import reverse
 
 class Entity(models.Model):
     title = models.CharField(max_length=255)
@@ -9,7 +9,7 @@ class Entity(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return ""
+        return reverse('ontology-entity-detail', args=[self.pk])
 
     @property
     def color(self):
@@ -28,4 +28,4 @@ class Relation(models.Model):
         return u"%s -%s-> %s " % (self.source, self.type, self.target)
 
     def get_absolute_url(self):
-        return ""
+        return reverse('ontology-relation-detail', args=[self.pk])

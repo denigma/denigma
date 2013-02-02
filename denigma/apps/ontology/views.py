@@ -12,6 +12,7 @@ from blog.templatetags.hyperlink import hyper
 from blog.templatetags.crosslink import recross
 from data.templatetags.rendering import markdown
 
+from data.views import EntryView
 
 from data import get
 
@@ -71,6 +72,7 @@ def load(request, template='ontology/load.html'):
     #ctx = {'entities':Entity.objects}
 
     return redirect('ontology')
+
 
 def graph(request, template='ontology/graph.html'):
     """View that generates a data graph connecting data entries with relations."""
@@ -181,3 +183,7 @@ def graph(request, template='ontology/graph.html'):
 
     network_json = simplejson.dumps(network)
     return render(request, template, {'network_json': network_json})
+
+
+class EntityDetail(EntryView):
+    model = Entity
