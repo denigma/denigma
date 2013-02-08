@@ -16,7 +16,7 @@ urlpatterns = patterns('todos.views', # Pattern definition
     url(r'^add$', 'add_todo'),
     url(r'^create/(?P<task>.*)', TodoCreate.as_view(), name='create_todo'),
     url(r'^(?P<pk>\d+)/$', DetailView.as_view(model=Todo, template_name='todo_detail.html'), name='detail-todo'),#views.view_todo),
-    url(r'^execute/(?P<pk>\d+)', ExecuteView.as_view(), name='execute'),
+    url(r'^execute/(?P<pk>\d+)', login_required(ExecuteView.as_view()), name='execute'),
 
 
     url(r'^(\d+)/$',
