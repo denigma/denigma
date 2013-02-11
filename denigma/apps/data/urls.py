@@ -102,4 +102,5 @@ urlpatterns = patterns('data.views',
     url(r'^category/feed/$', CategoryFeed(), name='data-category-feed'),
 
     url(r'graph/$', 'graph', name='data-graph'),
+    url(r'map/$', 'hierarchy', {'template': 'data/map.html'}, name='data-map'),
 )#234567891123456789212345678931234567894123456789512345678961234567897123456789

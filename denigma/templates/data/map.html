@@ -1,0 +1,40 @@
+{# {% extends "data/base.html" %} #}
+{% load url from future %}
+{% load staticfiles %}
+{% load mptt_tags %}
+
+{% block head_title  %}Mindmap{% endblock %}
+
+{% block extra_style %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" xmlns="http://www.w3.org/1999/html"/>
+    <link rel="stylesheet" type="text/css" href="{% static "mindmap/css/js-mindmap.css" %}" />
+    <link href="{% static "mindmap/css/style.css" %}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block extra_script %}
+    <!--jQuery-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>
+    <!-- UI, for draggable nodes -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+
+    <!-- Raphael for SVG support (won't work on android) -->
+    <script type="text/javascript" src="{% static "mindmap/js/raphael-min.js" %}"></script>
+
+    <!-- Mindmap -->
+    <script type="text/javascript" src="{% static "mindmap/js/js-mindmap.js" %}"></script>
+
+    <!-- Kick everything off -->
+    <script src="{% static "mindmap/js/script.js" %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block content %}
+    <ul>
+        <li><a href="http://denigma.de/">Denigma db</a>
+                {% for entry, structure in entries|tree_info %}
+                    {% if structure.new_level %}<ul><li>{% else %}</li><li>{% endif %}
+                    <a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a>
+                    {% for level in structure.closed_levels %}</li></ul>{% endfor %}
+                {% endfor %}
+        </li>
+    </ul>
+{% endblock %}
