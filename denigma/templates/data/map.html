@@ -3,7 +3,18 @@
 {% load staticfiles %}
 {% load mptt_tags %}
 
-{% block head_title  %}Mindmap{% endblock %}
+<title>Danigma: Map</title>
+{% comment %}
+{# {% block head_title  %}{% endblock %} #}
+
+{% block hierarchy%}
+    <b>
+        <a href="{% url 'home' %}">{{ SITE_NAME }}</a>
+        » <a href="{% url 'data' %}">Data</a>
+        » <a href="{% url 'data-map' %}">Map</a>
+    </b>
+{% endblock %}
+{% endcomment %}
 
 {% block extra_style %}
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" xmlns="http://www.w3.org/1999/html"/>
