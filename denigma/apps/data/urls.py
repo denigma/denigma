@@ -105,5 +105,5 @@ urlpatterns = patterns('data.views',
     url(r'map/$', 'hierarchy', {'template': 'data/map.html'}, name='data-map'),
     url(r'vivagraph/(?P<slug>[a-zA-Z\_]+)', VivaGraph.as_view(), name='data-vivagraph'),
     url(r'vivagraph/(?P<pk>\d?)', VivaGraph.as_view(), name='data-vivagraph'),
-    url(r'viva', 'vivagraph', name='vivagraph')
+    url(r'viva/(?P<pk>\d?)', 'vivagraph', name='vivagraph')
 )#234567891123456789212345678931234567894123456789512345678961234567897123456789
