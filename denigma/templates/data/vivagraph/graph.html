@@ -71,8 +71,7 @@
                             .attr('stroke-width', '1.5px')
                             .attr("fill", colors[groupId ? groupId - 1: 5]);
                     circle.append(svgText);
-                    circle.append('title').text('<a xlink:href="http://denigma.de/">' + node.data.name + '</a>');
-                    circle.append('desc').text(node.data.name);
+                    circle.append('title').text(node.data.name);
 
                     return circle;
 
