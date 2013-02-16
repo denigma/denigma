@@ -84,7 +84,7 @@ def graph(request, template='data/graph.html'):
     return render(request, template, {'network_json': network_json})
 
 
-def vivagraph(request, pk=None, template='data/vivagraph/graph2.html'):
+def vivagraph(request, pk=None, template='data/vivagraph/graph3.html'):
     graph = {
         "nodes":[{"name":"Myriel","group":1},
                  {"name":"Napoleon","group":1}
