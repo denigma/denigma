@@ -76,7 +76,7 @@
 {#                    return circle;#}
                     var ui = Viva.Graph.svg('g'),
                     // Create SVG text element with user id as content
-                            svgText = Viva.Graph.svg('text').attr('y', '-4px').attr('font-size', '10').text(node.id),
+                            svgText = Viva.Graph.svg('text').attr('y', '+2px').attr('x', '-' + 3 * node.id.length/2 + 'px').attr('font-size', 6).text(node.id),
                             {#                                    img = Viva.Graph.svg('image')#}
                             {#                                            .attr('width', nodeSize)#}
                             {#                                            .attr('height', nodeSize)#}

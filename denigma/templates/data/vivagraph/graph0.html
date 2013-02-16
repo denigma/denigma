@@ -62,45 +62,22 @@
                 svgGraphics.node(function(node) {
 
 
-
+                    var svgText = Viva.Graph.svg('text').attr('y', '-4px').text(node.id);
                     var groupId = node.communities[0].name % colors.length;
                     // console.log(groupId);
-{#                    var circle = Viva.Graph.svg('circle')#}
-{#                            .attr('r', 7)#}
-{#                            .attr('stroke', '#fff')#}
-{#                            .attr('stroke-width', '1.5px')#}
-{#                            .attr("fill", colors[groupId ? groupId - 1: 5]);#}
-{#                    circle.append(svgText);#}
-{#                    circle.append('title').text(node.data.name);#}
-{##}
-{#                    return circle;#}
-                    var ui = Viva.Graph.svg('g'),
-                    // Create SVG text element with user id as content
-                            svgText = Viva.Graph.svg('text').attr('y', '-4px').text(node.id),
-                            {#                                    img = Viva.Graph.svg('image')#}
-                            {#                                            .attr('width', nodeSize)#}
-                            {#                                            .attr('height', nodeSize)#}
-                            {#                                            .link('https://secure.gravatar.com/avatar/' + node.data);#}
-                            circle = Viva.Graph.svg('circle')
-                                    .attr('r', 7)
-                                    .attr('stroke', '#fff')
-                                    .attr('stroke-width', '1.5px')
-                                    .attr("fill", colors[groupId ? groupId - 1: 5]);
-                    ui.append('title').text(node.data.text);
+                    var circle = Viva.Graph.svg('circle')
+                            .attr('r', 7)
+                            .attr('stroke', '#fff')
+                            .attr('stroke-width', '1.5px')
+                            .attr("fill", colors[groupId ? groupId - 1: 5]);
+                    circle.append(svgText);
+                    circle.append('title').text(node.data.name);
+                    circle.append('desc').text(node.data.name);
 
+                    return circle;
 
-                    ui.append(circle);
-                    ui.append(svgText);
-                    return ui;
-
-
-                }).placeNode(function(nodeUI, pos) {
-                            // 'g' element doesn't have convenient (x,y) attributes, instead
-                            // we have to deal with transforms: http://www.w3.org/TR/SVG/coords.html#SVGGlobalTransformAttribute
-                            nodeUI.attr('transform',
-                                    'translate(' +
-                                            (pos.x - nodeSize/15) + ',' + (pos.y - nodeSize/15) +
-                                            ')');
+            }).placeNode(function(nodeUI, pos){
+                        nodeUI.attr("cx", pos.x).attr("cy", pos.y);
 
 
 

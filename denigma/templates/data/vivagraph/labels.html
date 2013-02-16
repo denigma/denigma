@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <title>VivaGraph</title>
+        <script type="text/javascript" src="{% static "vivagraph/vivagraph.js" %}"></script>
+
+        <!--
+        This example uses jQuery, but it's only for convenience of listening
+        to DOM events. The jQuery can be replaced with your favorite library.
+        -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript">
+            function main() {
+                // This demo shows how to create ans SVG node which is a bit more complex
+                // than single image. To accomplish this we 'g' element and
+                // compose group of elements to represent a node with label.
+                var graph = Viva.Graph.graph();
+
+                var graphics = Viva.Graph.View.svgGraphics(),
+                        nodeSize=24;
+
+                graph.addNode('anvaka', '91bad8ceeec43ae303790f8fe238164b');
+                graph.addNode('indexzero', 'd43e8ea63b61e7669ded5b9d3c2e980f');
+                graph.addLink('anvaka', 'indexzero');
+
+                var colors = [
+                    "#1f77b4", "#aec7e8",
+                    "#ff7f0e", "#ffbb78",
+                    "#2ca02c", "#98df8a",
+                    "#d62728", "#ff9896",
+                    "#9467bd", "#c5b0d5",
+                    "#8c564b", "#c49c94",
+                    "#e377c2", "#f7b6d2",
+                    "#7f7f7f", "#c7c7c7",
+                    "#bcbd22", "#dbdb8d",
+                    "#17becf", "#9edae5"
+                ]
+
+
+
+                graphics.node(function(node) {
+                    // This time it's a group of elements: http://www.w3.org/TR/SVG/struct.html#Groups
+                    var groupId = 6; //node.communities[0].name % colors.length;
+                    var ui = Viva.Graph.svg('g'),
+                            // Create SVG text element with user id as content
+                            svgText = Viva.Graph.svg('text').attr('y', '-4px').text(node.id),
+{#                                    img = Viva.Graph.svg('image')#}
+{#                                            .attr('width', nodeSize)#}
+{#                                            .attr('height', nodeSize)#}
+{#                                            .link('https://secure.gravatar.com/avatar/' + node.data);#}
+                                    circle = Viva.Graph.svg('circle')
+                                            .attr('r', 7)
+                                            .attr('stroke', '#fff')
+                                            .attr('stroke-width', '1.5px')
+                                            .attr("fill", colors[groupId ? groupId - 1: 5]);
+                    ui.append('title').text(node.data.name);
+
+                    ui.append(svgText);
+                    ui.append(circle);
+                    return ui;
+
+                }).placeNode(function(nodeUI, pos) {
+                            // 'g' element doesn't have convenient (x,y) attributes, instead
+                            // we have to deal with transforms: http://www.w3.org/TR/SVG/coords.html#SVGGlobalTransformAttribute
+                            nodeUI.attr('transform',
+                                        'translate(' +
+                                            (pos.x - nodeSize/2) + ',' + (pos.y - nodeSize/2) +
+                                        ')');
+                });
+                // Render the graph:
+                var renderer = Viva.Graph.View.renderer(graph, {
+                        graphics: graphics
+                });
+                renderer.run();
+            }
+        </script>
+        <style type="text/css" media="screen">
+            html, body, svg { width: 100%; height: 100%;}
+        </style>
+    </head>
+    <body onload='main()'>
+
+    </body>
+</html>
