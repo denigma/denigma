@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <title>VivaGraph</title>
+        <script type="text/javascript" src="{% static "vivagraph/vivagraph.js" %}"></script>
+
+        <!--
+        This example uses jQuery, but it's only for conenience of listening
+        to DOM events. The jQuery can be replaced with your favorite library.
+        -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript">
+            function main() {
+                // Step 1. We create a baseic structure of a graph object:
+                var graph = Viva.Graph.graph();
+
+                // Step 2. Add graph Content:
+                // graph.addNote(nodeId, yourCustomData) method lets you add new
+                // nodes to the graph and associate them with custom data. In this
+                // case we are associating GitHub user with Gravatar's image
+                graph.addNode('anvaka', '91bad8ceeec43ae303790f8fe238164b');
+                graph.addNode('indexzero', 'd43e8ea63b61e7669ded5b9d3c2e980f');
+
+                graph.addLink('anvaka', 'indexzero')
+
+                // Step 3. Customize node appearance:
+                // Vivagraph can present graph in multiple ways. svsGraphics() - is
+                // the way to render graph in SVG format:
+
+                var graphics = Viva.Graph.View.svgGraphics(),
+                        nodeSize=24,
+                        // We use this method to highlight all related links
+                        // when user hovers mouse over a node:
+                        highlightRelatedNodes = function(nodeId, isOn) {
+                            // just enumerate all related nodes and update link color:
+                            graph.forEachLinkedNode(nodeId, function(node, link) {
+                                if (link && link.ui) {
+                                    // link.ui is a special property of each link
+                                    //points to the link presentation object.
+                                    link.ui.attr('stroke', isOn ? 'red': 'grey');
+                                }
+                            })
+                        };
+
+                // Since we are using SVG we can easily subscribe to any supported
+                // events (http://www.w3.org/TR/SVG/interact.html#SVGEvents),
+                // including mouse events:
+                graphics.node(function(node) {
+                    var ui = Viva.Graph.svg('image')
+                            .attr('width', nodeSize)
+                            .attr('height', nodeSize)
+                            .link('https://secure.gravatar.com/avatar/' + node.data);
+
+                    $(ui).hover(function() { // mouse over
+                        highlightRelatedNodes(node.id, true);
+                    }, function() { // mouse out
+                        highlightRelatedNodes(node.id, false);
+                    });
+                    return ui;
+                }).placeNode(function(nodeUI, pos) {
+                            nodeUI.attr('x', pos.x - nodeSize / 2).attr('y', pos.y - nodeSize / 2);
+
+                });
+
+                // Step 4. Customize link appearance:
+                // As you might have gussed already the link()/placeLink()
+                // functions complement the node()/placeNode() functions
+                // and let us override default presentation of edges:
+                graphics.link(function(link) {
+                    return Viva.Graph.svg('path')
+                            .attr('stroke', 'red')
+                            .attr('stroke-dasharray', '5, 5');
+                }).placeLink(function(linkUI, fromPos, toPos) {
+                            // linkUI - is the object returned from link() callback above.
+                            var data = 'M' + fromPos.x + ',' + fromPos.y +
+                                       'L' + toPos.x + ',' + toPos.y;
+
+                            // 'Path.data' (http://www.w3.org/TR/SVG/paths.html#DAttribute)
+                            // is a common way of rendering paths in SVGs:
+                            linkUI.attr("d", data)
+                        });
+
+                // Step 45. Render the graph with our customized graphics object:
+                var renderer = Viva.Graph.View.renderer(graph, {
+                        graphics: graphics
+                });
+                renderer.run();
+            }
+        </script>
+        <style type="text/css" media="screen">
+            html, body, svg { width: 100%; height: 100%;}
+        </style>
+    </head>
+    <body onload='main()'>
+
+    </body>
+</html>

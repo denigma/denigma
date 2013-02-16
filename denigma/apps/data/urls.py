@@ -12,7 +12,7 @@ from views import Entries, EntryList, EntryView,  EntryCreate, EntryUpdate, Entr
                   AlterationList,\
                   CategoryCreate, CategoryUpdate, CategoryList, \
                   TagDetail, TagList, \
-                  HierarchyList
+                  HierarchyList, VivaGraph
 from feeds import EntryFeed, ChangeFeed, RelationFeed, AlterationFeed, CategoryFeed
 
 
@@ -101,6 +101,9 @@ urlpatterns = patterns('data.views',
     url(r'^category/update/(?P<pk>\d+)', login_required(CategoryUpdate.as_view()), name='update-category'),
     url(r'^category/feed/$', CategoryFeed(), name='data-category-feed'),
 
-    url(r'graph/$', 'graph', name='data-graph'),
+    url(r'^graph/$', 'graph', name='data-graph'),
     url(r'map/$', 'hierarchy', {'template': 'data/map.html'}, name='data-map'),
+    url(r'vivagraph/(?P<slug>[a-zA-Z\_]+)', VivaGraph.as_view(), name='data-vivagraph'),
+    url(r'vivagraph/(?P<pk>\d?)', VivaGraph.as_view(), name='data-vivagraph'),
+    url(r'viva', 'vivagraph', name='vivagraph')
 )#234567891123456789212345678931234567894123456789512345678961234567897123456789

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <title>VivaGraph</title>
+        <script type="text/javascript" src="{% static "vivagraph/vivagraph.js" %}"></script>
+        <script type="text/javascript">
+            function main() {
+                // Step 1. We create a graph object:
+                var graph = Viva.Graph.graph();
+
+                // Step 2. We add nodes and edges to the graph:
+                graph.addLink(1, 2);
+
+                var renderer = Viva.Graph.View.renderer(graph);
+                renderer.run();
+            }
+        </script>
+        <style type="text/css" media="screen">
+            html, body, svg { width: 100%; height: 100%;}
+        </style>
+    </head>
+    <body onload='main()'>
+
+    </body>
+</html>

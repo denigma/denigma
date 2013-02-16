@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <title>VivaGraph</title>
+        <script type="text/javascript" src="{% static "vivagraph/vivagraph.js" %}"></script>
+
+        <!--
+        This example uses jQuery, but it's only for convenience of listening
+        to DOM events. The jQuery can be replaced with your favorite library.
+        -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript">
+            function main() {
+                var graph = Viva.Graph.graph(),
+                        graphics = Viva.Graph.View.svgGraphics(),
+                        renderer = Viva.Graph.View.renderer(graph, {
+                            graphics: graphics
+                        });
+                graph.addLink(1,2, 'Buy')
+                graph.addLink(1,2, 'Sell')
+
+                graphics.link(function(link){
+                    var isBuy = (link.data == 'Buy'),
+                            ui = Viva.Graph.svg('path')
+                                    .attr('stroke', isBuy ? 'red': 'blue')
+                                    .attr('fill', 'none');
+                    ui.isBuy = isBuy; // remember for future.
+
+                    return ui;
+                }).placeLink(function(linkUI, fromPos, toPos) {
+                            // linkUI - is the object returned from link() callback above.
+                            var ry = linkUI.isBuy ? 10 : 0,
+                            // using arc command: http://www/w3.org/TR/SVG/paths.html#PahtDataEllipticalArcCommands.
+                                    data = 'M' + fromPos.x + ',' + fromPos.y+
+                                            ' A 10,' + ry + ',-30,0,1' + toPos.x + ',' + toPos.y;
+
+                            // 'Path data' (http://www.w3.org/TR/SVG/path.html#DAttribute)
+                            // is common ay of rendering paths in SVG:
+                            linkUI.attr("d", data);
+                        });
+
+                        renderer.run();
+            }
+        </script>
+        <style type="text/css" media="screen">
+            html, body, svg { width: 100%; height: 100%;}
+        </style>
+    </head>
+    <body onload='main()'>
+
+    </body>
+</html>

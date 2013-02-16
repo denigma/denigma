@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <title>VivaGraph</title>
+        <script type="text/javascript" src="{% static "vivagraph/vivagraph.js" %}"></script>
+        <script type="text/javascript">
+            function main() {
+                // Step 1. We create a graph object:
+                var graph = Viva.Graph.graph();
+
+                // Step 2. Add graph Content:
+                // graph.addNote(nodeId, yourCustomData) method lets you add new
+                // nodes to the graph and associate them with custom data. In this
+                // case we are associating GitHub user with Gravatar's image
+                graph.addNode('anvaka', '91bad8ceeec43ae303790f8fe238164b');
+                graph.addNode('indexzero', 'd43e8ea63b61e7669ded5b9d3c2e980f');
+
+                graph.addLink('anvaka', 'indexzero')
+
+                // Step 3. Customize node appearance:
+                // Vivagraph can present graph in multiple ways. svsGraphics() - is
+                // the way to render graph in SVG format:
+
+                var graphics = Viva.Graph.View.svgGraphics();
+
+                // This function let us override default node appearance and create
+                // something better than blue dots
+                // Nothing changed in these lines. They are the smae as in Step 2
+                // of this Tutorial. Except maybe chaining suppor:
+                graphics.node(function(node) {
+                    // node.data holds custom object passed to graph.addNode():
+                    return Viva.Graph.svg('image')
+                            .attr('width', 24)
+                            .attr('height', 24)
+                            .link('https://secure.gravatar.com/avatar/' + node.data);
+                        }).placeNode(function(nodeUI, pos) {
+                            // nodeUI - is exactly the same object that we returned from
+                            // node() callback above.
+                            nodeUI.attr('x', pos.x - 12).attr('y', pos.y - 12);
+                        })
+                // Usually when you have custom look for nodes, you might want to
+                // set their position in a new way too. placeNode() method serves
+                // this goal.
+
+                // Step 4. Customize link appearance:
+                // As you might have gussed already the link()/placeLink()
+                // functions complement the node()/placeNode() functions
+                // and let us override default presentation of edges:
+                graphics.link(function(link) {
+                    return Viva.Graph.svg('path')
+                            .attr('stroke', 'red')
+                            .attr('stroke-dasharray', '5, 5');
+                }).placeLink(function(linkUI, fromPos, toPos) {
+                            // linkUI - is the object returned from link() callback above.
+                            var data = 'M' + fromPos.x + ',' + fromPos.y +
+                                       'L' + toPos.x + ',' + toPos.y;
+
+                            // 'Path.data' (http://www.w3.org/TR/SVG/paths.html#DAttribute)
+                            // is a common way of rendering paths in SVGs:
+                            linkUI.attr("d", data)
+                        });
+
+                // Step 45. Render the graph with our customized graphics object:
+                var renderer = Viva.Graph.View.renderer(graph, {
+                        graphics: graphics
+                })
+                renderer.run();
+            }
+        </script>
+        <style type="text/css" media="screen">
+            html, body, svg { width: 100%; height: 100%;}
+        </style>
+    </head>
+    <body onload='main()'>
+
+    </body>
+</html>
