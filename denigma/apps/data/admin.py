@@ -33,7 +33,7 @@ class EntryAdminForm(forms.ModelForm):
                   'quickref.html">reStructuredText Quick Reference</a>'
     )
     references = forms.ModelMultipleChoiceField(
-        label= 'References',
+        label='References',
         queryset=Reference.objects.all(),
         required=False,
         help_text='References to the literature.',
@@ -47,6 +47,7 @@ class EntryAdmin(reversion.VersionAdmin):
     list_filter = ('published',)
     #inlines = [ChangeInline]
     #inlines = [RelationInline]
+    filter_horizontal = ('categories', 'images')
     form = EntryAdminForm
 
 
