@@ -10,7 +10,7 @@ from data import get
 
 
 urlpatterns = patterns('expressions.views',
-    url('^$', 'index'),
+    url('^$', 'index', name="expressions"),
 
     # Profiles:
     url('^profiles/$', 'profiles', name='profiles'),
@@ -79,7 +79,8 @@ urlpatterns = patterns('expressions.views',
         queryset=Set.objects.all,
         context_object_name='sets',
         template_name='expressions/sets.html',
-        extra_context={'entry': get('sets')})),
+        extra_context={'entry': get('sets')}),
+    name='sets'),
     url('^signatures/set/create$', login_required(SetCreate.as_view()), name='create-set'),
 
 )

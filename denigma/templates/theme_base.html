@@ -112,7 +112,9 @@
                                     {% block options %}{% endblock options %}</span>
 
                                 <span class="right">
+
                                 {% block sections %}
+                                    {% comment %}
                                      <a href="/annotations/">Annotations</a> |
                                      <a href="/interactions/">Interactions</a> |
                                      <a href="/expressions/">Expressions</a> |
@@ -142,6 +144,7 @@
                                               <li><a href="/lifespan/epistases/">Epistases</a></li>
                                           </ul>
                                      </span>
+                                    {% endcomment %}
 
 {% comment %} Experimental Implementation of Dropdown menu support:
 {# Hover dropdown menu button: #}

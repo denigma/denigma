@@ -11,7 +11,7 @@ urlpatterns = patterns('annotations.views',
     #url(r'^bulk_upload/data', 'bulk_upload_data'),
 
     # Classifications:
-    url(r'^classifications/$', 'classifications', name="classification"), 
+    url(r'^classifications/$', 'classifications', name="classifications"),
     url(r'^classification/(?P<pk>\d+)/$', 'classification'),
     url(r'^classification/add/', 'add_classification',
         name='add_classification'),
