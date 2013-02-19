@@ -13,9 +13,12 @@
 
 {% block options %}
     <a href="{% url 'create-entry' %}">Submit</a>
-    | <a href="/search/">Search</a>
+    | <a href="/annotations/">Annotations</a>
+    | <a href="/interactions/">Interactions</a>
+    | <a href="/expressions/">Expressions</a>
+    | <a href="/datasets/">Datasets</a>
+    | <a href="/lifespan/">Lifespan</a>
     | <a href="{% url 'detail-entry' 'site-structure' %}">Site</a>
-    | <a href="{% url 'collaborations' %}">Collaborations</a>
 {% endblock %}
 
 {% block title %}{{ entry.title }}{% endblock %}
