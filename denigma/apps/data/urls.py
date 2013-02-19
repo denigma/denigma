@@ -23,9 +23,9 @@ urlpatterns = patterns('data.views',
     ## Class-Views
     url(r'^entries/list/$', EntryList.as_view(paginate_by=20), name='list-entries'),
     url(r'^entry/table/$', Entries.as_view(template_name='data/entry_table.html'), name='entry-table'),
-
     #url(r'^entry/table/$', EntryList.as_view(template_name='data/entry_table.html'), name='entry-table'),
-    url(r'^entry/(?P<pk>\d+)', DetailView.as_view(model=Entry), name='detail-entry'), # User generic class-based view # template_name='entry_detail.html' # use defaults
+    url(r'^entry/(?P<pk>\d+)$', DetailView.as_view(model=Entry), name='detail-entry'), # User generic class-based view # template_name='entry_detail.html' # use defaults
+    url(r'^entry/(?P<slug>.+)', EntryView.as_view(), name='detail-entry'), #  Alternative detail entry accepting slug.
     url(r'^entry/view/(?P<slug>.+)', EntryView.as_view(), name='view-entry'),
     url(r'^entry/create/$', EntryCreate.as_view(), name='create-entry'),
     url(r'^entry/generate/(?P<title>.+)', Generate.as_view(), name='generate-entry'),
@@ -33,7 +33,6 @@ urlpatterns = patterns('data.views',
     url(r'^entry/update/(?P<slug>.+)', login_required(EntryUpdate.as_view()), name='update-entry'),
     url(r'^entry/delete/(?P<pk>\d+)', login_required(EntryDelete.as_view()), name='delete-entry'),
     url(r'^entry/feed/$', EntryFeed(), name='data-entry-feed'),
-    url(r'^entry/(?P<slug>.+)', EntryView.as_view(), name='detail-entry'), #  Alternative detail entry accepting slug.
     url(r'^hierarchy/list/$', HierarchyList.as_view(), name='list-hierarchy'),
 
     ## Function-Views:
