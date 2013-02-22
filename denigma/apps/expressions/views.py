@@ -702,6 +702,7 @@ def add_signature(request):
     if request.POST:
         if not "file" in request.POST:
             file = request.FILES['file']
+            file.name = file.name.replace('.txt', '')
             data = file.read().replace('\r', '').split('\n')
         elif "profile" not in request:
             msg = "No file or profiles selected. Please provide either a signature "\
@@ -814,7 +815,7 @@ def add_signature(request):
                 transcript = Transcript(seq_id=seq_id, symbol=symbol, ratio=ratio, fold_change=fold_change, pvalue=pvalue, effect_size=es)
 
                 transcript.save()
-                #print(transcript)
+                #print(transcript.id, transcript.symbol, transcript.ratio)
                 expression = Expression.objects.create(
                     signature=signature,
                     transcript=transcript,
@@ -823,6 +824,7 @@ def add_signature(request):
                     fold_change=fold_change,
                     pvalue=pvalue,
                 effect_size=es)
+                #print expression
             except ValueError as e:
                 print e, symbol, seq_id, fold_change, pvalue, ctr, exp
                 #break
