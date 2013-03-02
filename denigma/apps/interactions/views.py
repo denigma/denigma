@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 import os
 import fileinput
 
+from django.views.generic import ListView
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.conf import settings
@@ -42,7 +44,40 @@ class InteractionList(TableFilter):
         return self.filterset.qs
 
 
+class InteractionRDF(ListView):
+    """Generates RDF data from interactions."""
+    model = Interaction
+    queryset = Interaction.objects.all()[:1000]
+    template_name = 'interactions/rdf.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(InteractionRDF, self).get_context_data(**kwargs)
+        interactions = self.queryset.all()
+
+        result = ['@prefix <http://xmlns.com/foaf/0.1/>\n',
+                 '@de: <http://denigma.de/data/entry/>\n']
+        for interaction in interactions:
+            #print(interaction)
+            result.append('<http://www.ncbi.nlm.nih.gov/gene/%s> foaf:alias ,' % interaction.id_a)
+            result.append(interaction.alias_a.replace('; ', ','))
+            if interaction.alias_a:
+                for alias in interaction.alias_a.split('; ')[1:]:
+                    result.append('http://www.ncbi.nlm.nih.gov/gene/%s' % alias)
+
+            result.append('.\n<http://www.ncbi.nlm.nih.gov/gene/%s> foaf:alias ,' % interaction.id_b)
+            result.append(interaction.alias_b.replace('; ', ','))
+            if interaction.alias_b:
+                for alias in interaction.alias_b.split('; ')[1:]:
+                    result.append('http://www.ncbi.nlm.nih.gov/gene/%s' % alias)
+
+            result.append('.\n<http://www.ncbi.nlm.nih.gov/gene/%s> de:interactsWith <http://www.ncbi.nlm.nih.gov/gene/%s> .' % (interaction.id_a, interaction.id_b))
+
+            #result.extend(['<http://www.ncbi.nlm.nih.gov/gene/%s> foaf:alias ,' % interaction.id_a,
+            #interaction.alias_a.replace('; ', ', '),
+           # '.\n<http://www.ncbi.nlm.nih.gov/gene/%s> foaf:alias ,' % interaction.id_b,
+           # '.\n<http://www.ncbi.nlm.nih.gov/gene/%s> de:interactsWith <http://www.ncbi.nlm.nih.gov/gene/%s> .' % (interaction.id_a, interaction.id_b)])
+        context['interactions'] = "".join(result)
+        return context
 
 def update(request, db="BioGRID"):
     exec("from %s import main" % db)
@@ -109,4 +144,6 @@ def integrator(request, memory=True, header=False):
     msg = "Successfully integrated interactions"
     messages.add_message(request, messages.SUCCESS, msg)
     return redirect('/interactions/')
+
+
 #234567891123456789212345678931234567893
