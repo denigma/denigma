@@ -62,13 +62,13 @@ class InteractionRDF(ListView):
             result.append(interaction.alias_a.replace('; ', ','))
             if interaction.alias_a:
                 for alias in interaction.alias_a.split('; ')[1:]:
-                    result.append('http://www.ncbi.nlm.nih.gov/gene/%s' % alias)
+                    result.append('%s' % alias)
 
             result.append('.\n<http://www.ncbi.nlm.nih.gov/gene/%s> foaf:alias ,' % interaction.id_b)
             result.append(interaction.alias_b.replace('; ', ','))
             if interaction.alias_b:
                 for alias in interaction.alias_b.split('; ')[1:]:
-                    result.append('http://www.ncbi.nlm.nih.gov/gene/%s' % alias)
+                    result.append('%s' % alias)
 
             result.append('.\n<http://www.ncbi.nlm.nih.gov/gene/%s> de:interactsWith <http://www.ncbi.nlm.nih.gov/gene/%s> .' % (interaction.id_a, interaction.id_b))
 
