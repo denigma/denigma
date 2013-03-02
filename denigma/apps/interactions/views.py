@@ -58,17 +58,20 @@ class InteractionRDF(ListView):
                  '@prefix de: <http://denigma.de/data/entry/> .\n\n']
         for interaction in interactions:
             #print(interaction)
-            result.append('<http://www.ncbi.nlm.nih.gov/gene/%s> foaf:alias ,' % interaction.id_a)
+            result.append('<http://www.ncbi.nlm.nih.gov/gene/%s> foaf:alias ' % interaction.id_a)
             if interaction.alias_a:
-                result.append(interaction.alias_a.replace('; ', ', '))
+                index = interaction.alias_a.index('; ')
+                print interaction.alias_a[index:].replace('; ', ', ').replace(',, ', '')
+                result.append(interaction.alias_a[index:].replace('; ', ', ')[2:])
 
               #  for alias in interaction.alias_a.split('; ')[1:]:
               #      result.append('%s' % alias)
 
-            result.append(' .\n<http://www.ncbi.nlm.nih.gov/gene/%s> foaf:alias ,' % interaction.id_b)
+            result.append(' .\n<http://www.ncbi.nlm.nih.gov/gene/%s> foaf:alias ' % interaction.id_b)
 
             if interaction.alias_b:
-                result.append(interaction.alias_b.replace('; ', ', '))
+                index = interaction.alias_b.index('; ')
+                result.append(interaction.alias_b[index:].replace('; ', ', ')[2:])
               #  for alias in interaction.alias_b.split('; ')[1:]:
               #      result.append('%s' % alias)
 
