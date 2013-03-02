@@ -54,8 +54,8 @@ class InteractionRDF(ListView):
         context = super(InteractionRDF, self).get_context_data(**kwargs)
         interactions = self.queryset.all()
 
-        result = ['@prefix <http://xmlns.com/foaf/0.1/>\n',
-                 '@de: <http://denigma.de/data/entry/>\n']
+        result = ['@prefix foaf: <http://xmlns.com/foaf/0.1/>\n',
+                 '@prefix de: <http://denigma.de/data/entry/>\n']
         for interaction in interactions:
             #print(interaction)
             result.append('<http://www.ncbi.nlm.nih.gov/gene/%s> foaf:alias ,' % interaction.id_a)
