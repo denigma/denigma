@@ -81,6 +81,10 @@ class InteractionRDF(ListView):
         context['interactions'] = "".join(result)
         return context
 
+    def render_to_response(self, context, **kwargs):
+        return super(InteractionRDF, self).render_to_response(context,
+            content_type="text/turtle")
+
 def update(request, db="BioGRID"):
     exec("from %s import main" % db)
     main()
