@@ -54,8 +54,8 @@ class InteractionRDF(ListView):
         context = super(InteractionRDF, self).get_context_data(**kwargs)
         interactions = self.queryset.all()
 
-        result = ['@prefix foaf: <http://xmlns.com/foaf/0.1/>\n',
-                 '@prefix de: <http://denigma.de/data/entry/>\n']
+        result = ['@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n',
+                 '@prefix de: <http://denigma.de/data/entry/> .\n\n']
         for interaction in interactions:
             #print(interaction)
             result.append('<http://www.ncbi.nlm.nih.gov/gene/%s> foaf:alias ,' % interaction.id_a)
@@ -65,14 +65,14 @@ class InteractionRDF(ListView):
               #  for alias in interaction.alias_a.split('; ')[1:]:
               #      result.append('%s' % alias)
 
-            result.append('.\n<http://www.ncbi.nlm.nih.gov/gene/%s> foaf:alias ,' % interaction.id_b)
+            result.append(' .\n<http://www.ncbi.nlm.nih.gov/gene/%s> foaf:alias ,' % interaction.id_b)
 
             if interaction.alias_b:
                 result.append(interaction.alias_b.replace('; ', ', '))
               #  for alias in interaction.alias_b.split('; ')[1:]:
               #      result.append('%s' % alias)
 
-            result.append('.\n<http://www.ncbi.nlm.nih.gov/gene/%s> de:interactsWith <http://www.ncbi.nlm.nih.gov/gene/%s> .' % (interaction.id_a, interaction.id_b))
+            result.append('.\n<http://www.ncbi.nlm.nih.gov/gene/%s> de:interactsWith <http://www.ncbi.nlm.nih.gov/gene/%s> .\n' % (interaction.id_a, interaction.id_b))
 
             #result.extend(['<http://www.ncbi.nlm.nih.gov/gene/%s> foaf:alias ,' % interaction.id_a,
             #interaction.alias_a.replace('; ', ', '),
