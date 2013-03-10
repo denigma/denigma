@@ -1,0 +1,13 @@
+{% extends "about/base.html" %}
+
+{% load rendering %}
+
+{% block hierarchy %}
+    » {{ flatpage.title }} of usage
+{% endblock hierarchy %}
+
+{% block subtitle %}{{ flatpage.title|markdown|safe }}{% endblock %}
+
+{% block content %}
+    {{ flatpage.content }}
+{% endblock %}
