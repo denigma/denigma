@@ -17,7 +17,7 @@ urlpatterns += patterns("",
        kwargs={'url': '/about/privacy/'},
        name='privacy'),
     url(r'^license/$', 'django.contrib.flatpages.views.flatpage',
-      kwargs={'url': '/about/license'},
+      kwargs={'url': '/about/license/'},
       name='license')
 )
 
