@@ -6,8 +6,8 @@
     » {{ flatpage.title }} of usage
 {% endblock hierarchy %}
 
-{% block subtitle %}{{ flatpage.title|markdown|safe }}{% endblock %}
+{% block subtitle %}{{ flatpage.title }}{% endblock %}
 
 {% block content %}
-    {{ flatpage.content }}
+    {{ flatpage.content|markdown|safe }}
 {% endblock %}
