@@ -1,6 +1,11 @@
 {% extends "questionnaire/base.html" %}
 {% load url from future %}
 {% load rendering %}
+
+{% block options %}
+    <a href="/admin/questionnaire">Admin</a>
+{% endblock %}
+
 {% block content %}
 
 <div class="main">
