@@ -64,6 +64,7 @@ urlpatterns += patterns("",
     url(r'^aspects/', include('aspects.urls')),
 
     url(r'^polls/', include('polls.urls')),
+    url(r'^questionnaire', include('questionnaire.urls')),
     url(r'^gallery/', include('media.urls')),
 
     # Data Unit

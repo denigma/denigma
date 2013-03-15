@@ -1,0 +1,12 @@
+{% extends "questionnaire/base.html" %}
+{% load url from future %}
+{% block content %}
+    <div class="main">
+        <ul>
+            {% for quest in userquestionnaire_list %}
+                <li><a href="{%  url 'user_questionnaire' quest.pk %}"
+                    >{{ quest.user }} - {{ quest.questionnaire.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

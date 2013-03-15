@@ -275,6 +275,7 @@ INSTALLED_APPS = [
     # project
     'home',
     'polls',
+    'questionnaire',
 
     'data',
     'blogs',
@@ -368,13 +369,13 @@ DEBUG_TOOLBAR_CONFIG = {
 
 # Chatting:
 CHAT_HTTP_PORT = 8080
+CHAT_HOST = None
 
 # local_settings.py can be used to override environment-specific settings
 # like database and email that differ between development and production.
 try:
     from local_settings import *
-    CHAT_HTTP_HOST = CHAT_HOST or DATABASES[
-                                  'default']['HOST']
+    CHAT_HTTP_HOST = CHAT_HOST or DATABASES['default']['HOST']
 except ImportError:
     pass
 
