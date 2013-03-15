@@ -16,7 +16,7 @@ class SectionForm(forms.Form):
         for question in section.questions.all():
             choices = question.choices
             if question.footnote:
-                self.footnotes += question.footnote+'\n'
+                self.footnotes += question.footnote+'<br>'
 
             kw = dict(help_text=question.question, required=False, widget=PagedownWidget(
                 attrs={'rows': 1, 'cols': 10,
