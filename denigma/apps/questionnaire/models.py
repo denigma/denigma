@@ -49,6 +49,7 @@ class Section(BaseModel):
 class Question(BaseModel):
     question = CharField(max_length=200)
     choices = CharField(max_length=500, blank=True, null=True)
+    footnote = CharField(max_length=250, blank=True, null=True)
     answer_type = CharField(max_length=6, choices=(("str", "str"), ("int", "int")))
     section = ForeignKey(Section, related_name="questions", blank=True, null=True)
     order = IntegerField()

@@ -12,8 +12,12 @@ class SectionForm(forms.Form):
         self.description = section.description
         super(SectionForm, self).__init__(*args, **kwargs)
 
+        self.footnotes = ''
         for question in section.questions.all():
             choices = question.choices
+            if question.footnote:
+                self.footnotes += question.footnote+'\n'
+
             kw = dict(help_text=question.question, required=False, widget=PagedownWidget(
                 attrs={'rows': 1, 'cols': 10,
                        'style': 'font-family: monospace',

@@ -27,7 +27,7 @@ class UserQuestionnaireAdmin(admin.ModelAdmin):
 
 
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = "question choices answer_type section".split()
+    list_display = "question footnote choices answer_type section".split()
 
 
 class AnswerAdmin(admin.ModelAdmin):
@@ -41,7 +41,7 @@ class SectionAdmin(admin.ModelAdmin):
     def response_change(self, request, obj):
         """Determines the HttpResponse for the change_view stage.
 
-        copied from admin.options.ModelAdmib."""
+        copied from admin.options.ModelAdmin."""
         opts = obj._meta
 
         # Handle proxy models automatically created by .only() or .defer()
