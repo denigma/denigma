@@ -33,7 +33,7 @@ except Exception as e:
 
 class Title(MPTTModel):
     """Abstract title with capability of auto-generating a slug."""
-    title = models.CharField(_('title'), max_length=255) #, unique=True?
+    title = models.CharField(_('title'), max_length=255, db_index=True) #, unique=True?
     slug = models.SlugField(_('slug'), max_length=255, unique=True, blank=True)
 
     def save(self, *args, **kwargs):
@@ -99,7 +99,7 @@ class Content(Title):
 class Entry(Content):
     """A database entry containing the actual data content and meta data."""
     # Meta data:
-    created = models.DateTimeField(_('created'), auto_now_add=True)
+    created = models.DateTimeField(_('created'), auto_now_add=True, db_index=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
     pub_date = models.DateTimeField(_('publication date'), blank=True, null=True)
 
