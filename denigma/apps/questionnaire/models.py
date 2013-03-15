@@ -76,7 +76,7 @@ class UserQuestionnaire(BaseModel):
 
 
 class Answer(BaseModel):
-    answer = CharField(max_length=200)
+    answer = CharField(blank=True, max_length=200)
     question = ForeignKey(Question, related_name="answers", blank="True", null=True)
     user_questionnaire = ForeignKey(UserQuestionnaire, related_name="answers", blank=True, null=True)
 

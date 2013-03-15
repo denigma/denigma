@@ -11,7 +11,7 @@
                 {% for fld in form %}
                     <div class="form-row">
                         <label class="{% if fld.field.required %} required {% endif %}">
-                            {{ fld.label }}. {{ fld.help_text }}
+                           <b> {{ fld.label }}. {{ fld.help_text }}</b><br>
                         </label>
                         {{ fld }} {{ fld.errors }}
                     </div>

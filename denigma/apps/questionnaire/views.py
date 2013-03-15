@@ -60,36 +60,7 @@ class QuestStates(DetailView):
         print(quests)
         return defdict_to_odict(quests)
 
-class QuestStats(DetailView):
-    detail_model  = Questionnaire
-    template_name = "questionnaire/quest-stats.html"
 
-    def stats(self):
-        user_quests = UserQuestionnaire.obj.filter(questionnaire=self.detail_object)
-        d           = DefaultOrderedDict
-        #             quests    sections  questions answers:nums
-        quests      = d( lambda:d( lambda:d( lambda:d(int) ) ) )
-
-        for user_quest in user_quests:
-            quest = user_quest.questionnaire.name
-
-            # add each answer in user questionnaire to respective sections sub-dict, add to counter
-            for answer in user_quest.answers.all():
-                question = answer.question
-                answer   = answer.answer
-                q        = question.question
-                section  = question.section.name
-
-                quests[quest][section][q][answer] += 1
-
-        # sort to have most frequent answers first
-        for quest in quests.values():
-            for section in quest.values():
-                for name, question in section.items():
-                    answers       = sorted(question.items(), key=itemgetter(1), reverse=True)
-                    section[name] = OrderedDict(answers)
-
-        return defdict_to_odict(quests)
 
 class ViewQuestionnaire(ListRelated, FormView):
     detail_model = Questionnaire
