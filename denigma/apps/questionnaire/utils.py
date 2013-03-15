@@ -8,7 +8,6 @@ from django.core.urlresolvers import reverse
 def reverse2(name, *args, **kwargs):
     return reverse(name, args=args, kwargs=kwargs)
 
-
 def defdict_to_dict(defdict, constructor=dict):
     """Recursively convert default dicts to regular dicts.
     constructor: convert to a custom type of dict, e.g. OrderedDict."""
@@ -16,6 +15,7 @@ def defdict_to_dict(defdict, constructor=dict):
         new = constructor()
         for key, value in defdict.items():
             new[key] = defdict_to_dict(value, constructor)
+        return new
     else:
         return defdict
 

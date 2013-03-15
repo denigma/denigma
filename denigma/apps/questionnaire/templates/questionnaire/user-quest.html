@@ -2,17 +2,17 @@
 {% load url from future %}
 {% block content %}
     <div class="main">
-        <table border="0" cellpadding="2" cellspacing="2">
+        {{ userquestionnaire.created }} by {{ userquestionnaire.user }}
+        <table border="0" cellpadding="2" cellspacing="2" width="100%">
             {% for answer in userquestionnaire.answers.all %}
                 {% with answer.question.section.title as title %}
                     {% ifchanged title %}
-                        <tr><td colspan="2"><p class="title">{{ title }}</p></td></tr>
+                        <tr><td colspan="2"><p class="title"><hr><b>{{ title }}</b></p></td></tr>
                     {% endifchanged %}
                 {% endwith %}
-
                 <tr>
-                    <td>{{ answer.question.question }}</td>
-                    <td><{{ answer.answer }}/td>
+                    <td width="30%">{{ answer.question.question }}</td>
+                    <td width="70%">{{ answer.answer }}</td>
                 </tr>
 
         {% endfor %}
