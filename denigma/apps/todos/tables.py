@@ -17,7 +17,7 @@ class TodoTable(tables.Table):
         return mark_safe('<a href="%s">%s</a>' % (record.get_absolute_url(), value))
 
     def render_description(self, record, value):
-        return mark_safe(recross(hyper(value)))
+        return mark_safe(value) #recross(hyper())
 
     def render_priority(self, record, value):
         return mark_safe('<span style="color:%s">%s</span>' % (priority_colors[value], value))
