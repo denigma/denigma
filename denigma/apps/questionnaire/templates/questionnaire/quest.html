@@ -1,6 +1,9 @@
 {% extends "questionnaire/base.html" %}
 {% load todo %}
 {% load rendering %}
+{% block options %}
+    Section {{ current }} of {{ form.total }}
+{% endblock %}
 {% block content %}
     <div class="main">
         <form action="" method="POST">{% csrf_token %}
@@ -22,4 +25,5 @@
     </div>
     {# <b>Footnotes:</b><br> #}
     {{ form.footnotes|safe }}
+
 {% endblock %}

@@ -10,6 +10,7 @@ class SectionForm(forms.Form):
         section = kwargs.pop("section")
         self.name = section.name
         self.description = section.description
+        self.total = section.questionnaire.sections.count()
         super(SectionForm, self).__init__(*args, **kwargs)
 
         self.footnotes = ''

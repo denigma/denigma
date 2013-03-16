@@ -27,6 +27,9 @@ class  Questionnaire(BaseModel):
         return ", ".join([link % c for c in lst])
     section_links.allow_tags = True
 
+    def get_length(self):
+        return len(self.sections)
+
 
 class Section(BaseModel):
     """Container for a few questions, show on a single page."""

@@ -73,6 +73,11 @@ class ViewQuestionnaire(ListRelated, FormView):
         self.snum = int(self.kwargs.get("section", 1))
         return self.get_list_queryset()[self.snum-1]
 
+    def get_context_data(self, **kwargs):
+        context = super(ViewQuestionnaire, self).get_context_data(**kwargs)
+        context['current'] = self.snum
+        return context
+
     def get_form_kwargs(self):
         kwargs = super(ViewQuestionnaire, self).get_form_kwargs()
         return dict(kwargs, section=self.get_section())
@@ -85,6 +90,7 @@ class ViewQuestionnaire(ListRelated, FormView):
             self.user = User.objects.get(username='Anonymous')
         uquest = UserQuestionnaire.obj.get_or_create(questionnaire=quest, user=self.user)[0]
         section = self.get_section()
+
 
         for order, value in form.cleaned_data.items():
             question = section.questions.get(order=int(order))
