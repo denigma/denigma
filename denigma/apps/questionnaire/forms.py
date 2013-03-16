@@ -20,7 +20,7 @@ class SectionForm(forms.Form):
                 self.footnotes += question.footnote+'<br>'
 
             kw = dict(help_text=question.question, required=False, widget=PagedownWidget(
-                attrs={'rows': 1, 'cols': 10,
+                attrs={'rows': 2, 'cols': 10,
                        #'style': 'font-family: monospace',
                        #'class':'wmd-input', 'id': 'wmd-input'
                 }))
