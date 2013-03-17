@@ -20,11 +20,9 @@ class SectionForm(forms.Form):
                 #question.question.split('')[1].split('*')
                 self.footnotes += question.footnote+'<br>'
 
-            kw = dict(help_text=question.question, required=False, widget=PagedownWidget(
-                attrs={'rows': 1, 'cols': 1,
+            kw = dict(help_text=question.question, required=False)
                        #'style': 'font-family: monospace',
                        #'class':'wmd-input', 'id': 'wmd-input'
-                }))
 
             if choices:
                 fld = forms.ChoiceField
@@ -33,6 +31,7 @@ class SectionForm(forms.Form):
             else:
                 fld = forms.CharField
                 #kw["max_length"] = 200
+                kw['widget'] = PagedownWidget(attrs={'rows': 1, 'cols': 1})
 
             if not "Stages" in self.name:
                 self.fields[str(question.order)] = fld(**kw)

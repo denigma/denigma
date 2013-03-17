@@ -113,18 +113,14 @@ class ViewQuestionnaire(ListRelated, FormView):
 
         if not "Stages" in section.name:
             for order, value in form.cleaned_data.items():
-                print(order, value)
                 question = section.questions.get(order=int(order))
                 answer = Answer.obj.get_or_create(user_questionnaire=uquest, question=question)[0]
                 answer.update(answer=value)
-                print(value)
         else:
             for order, value in form.cleaned_data.items():
-                print(order, value)
                 question = section.questions.get(order=int(order.split('-')[0]))
                 answer = Answer.obj.create(user_questionnaire=uquest, question=question) #[0]
                 answer.update(answer=value)
-                print(value)
 
         # Redirect to the next section or to 'done' page:
         if self.snum >= stotal: return redir("done")
