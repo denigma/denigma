@@ -23,8 +23,8 @@ def concat(value, arg):
 letters = map(chr, range(65, 91))
 mapping = dict(zip(range(1, len(letters)), letters))
 
-def number_letter(value):
-    return mapping[int(value.split('-')[0])]
+def number_letter(value, start=1):
+    return mapping[int(value.split('-')[0])+int(start)-1]
 
 register.filter("getattribute", getattribute)
 register.filter("get", get)

@@ -40,7 +40,7 @@
                     {% if not forloop.counter|divisibleby:2 %}
                         <div class="form-row">
                             <label class="{% if fld.field.required %} required {% endif %}">
-                                <b> {{ fld.label|number_letter }}. {{ fld.help_text }}</b><br>
+                                <b> {{ fld.label|number_letter:form.start }} . {{ fld.help_text }}</b><br>
                             </label>
                             {#  {{ fld }} {{ fld.errors } }#}
                         </div>
@@ -58,7 +58,7 @@
                         <tr>
                             <div class="form-row">
                                 <label class="{% if fld.field.required %} required {% endif %}">
-                                    <td align="center"><b>{{ fld.label|number_letter }}.</b></td>
+                                    <td align="center"><b>  {{ fld.label|number_letter:form.start  }}.</b></td>
                                         <td>{{ fld }} {{ fld.errors }}</td>
                                     {% else %}
                                         <td>{{ fld }} {{ fld.errors }}</td>
@@ -78,6 +78,6 @@
         </form>
     </div>
     {# <b>Footnotes:</b><br> #}
-    {{ form.footnotes|safe }}
+    {{ form.footnotes|markdown }}
 
 {% endblock %}

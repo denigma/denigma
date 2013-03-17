@@ -38,6 +38,7 @@ class Section(BaseModel):
     description = TextField(blank=True)
     questionnaire = ForeignKey(Questionnaire, related_name="sections", blank=True, null=True)
     order = IntegerField()
+    start = IntegerField(default=1)
 
     class Meta:
         ordering = ["order"]

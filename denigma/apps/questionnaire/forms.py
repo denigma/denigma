@@ -11,6 +11,7 @@ class SectionForm(forms.Form):
         self.name = section.name
         self.description = section.description
         self.total = section.questionnaire.sections.count()
+        self.start = section.start
         super(SectionForm, self).__init__(*args, **kwargs)
 
         self.footnotes = ''
@@ -32,6 +33,7 @@ class SectionForm(forms.Form):
                 fld = forms.CharField
                 #kw["max_length"] = 200
                 kw['widget'] = PagedownWidget(attrs={'rows': 1, 'cols': 1})
+
 
             if not "Stages" in self.name:
                 self.fields[str(question.order)] = fld(**kw)
