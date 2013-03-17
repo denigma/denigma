@@ -5,7 +5,7 @@
         <ul>
             {% for quest in userquestionnaire_list %}
                 <li><a href="{%  url 'user_questionnaire' quest.pk %}"
-                    >{{ quest.user }} - {{ quest.questionnaire.name }}</a></li>
+                    >{{ quest.user }} - {{ quest.questionnaire.name }} ({{ quest.created }})</a></li>
             {% endfor %}
         </ul>
     </div>

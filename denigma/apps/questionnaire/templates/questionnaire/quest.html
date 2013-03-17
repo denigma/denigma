@@ -4,21 +4,75 @@
 {% block options %}
     Section {{ current }} of {{ form.total }}
 {% endblock %}
+{% block extra_styles %}
+    <style>
+
+
+    textarea
+    {
+    border:1px solid #999999;
+    width:5%;
+    margin:5px 0;
+    padding:3px;
+    }
+    </style>
+{% endblock %}
+
 {% block content %}
     <div class="main">
         <form action="" method="POST">{% csrf_token %}
             <fieldset class="module aligned">
             <h2>{{ form.name }}</h2>
             {{ form.description|markdown }}
-            <!-- see note in SectionForm docstring -->
+
+            {% if not "Stages" in form.name %}
                 {% for fld in form %}
                     <div class="form-row">
                         <label class="{% if fld.field.required %} required {% endif %}">
-                           <b> {{ fld.label }}. {{ fld.help_text }}</b><br>
+                            <b> {{ fld.label }}. {{ fld.help_text }}</b><br>
                         </label>
                         {{ fld }} {{ fld.errors }}
                     </div>
                 {% endfor %}
+            {% else %}
+                <!-- see note in SectionForm docstring -->
+                {% for fld in form %}
+                    {% if not forloop.counter|divisibleby:2 %}
+                        <div class="form-row">
+                            <label class="{% if fld.field.required %} required {% endif %}">
+                                <b> {{ fld.label|number_letter }}. {{ fld.help_text }}</b><br>
+                            </label>
+                            {#  {{ fld }} {{ fld.errors } }#}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <hr>
+                <table width="100%" border="1">
+                    <tr>
+                        <td valign="top" align="center"><b>Stage</b></td>
+                        <td valign="top" align="center"><b>How the crowd could help at this stage?</b></td>
+                        <td valign="top" align="center"><b>Are there any risks of crowd involvement?</b></td>
+                    </tr>
+                    {% for fld in form %}
+                        {% if not forloop.counter|divisibleby:2 %}
+                        <tr>
+                            <div class="form-row">
+                                <label class="{% if fld.field.required %} required {% endif %}">
+                                    <td><b>{{ fld.label|number_letter }}.</b></td>
+                                        <td>{{ fld }} {{ fld.errors }}</td>
+                                    {% else %}
+                                        <td>{{ fld }} {{ fld.errors }}</td>
+                                </label>
+                            </div>
+                        </tr>
+                        {% endif  %}
+
+                    {% endfor %}
+                </table>
+            {% endif %}
+
+            <br>
+
             </fieldset>
             <div id="submit"><input id="submit-btn" type="submit" value="Continue"></div>
         </form>

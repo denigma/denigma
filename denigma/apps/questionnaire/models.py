@@ -69,6 +69,9 @@ class Question(BaseModel):
 
 class UserQuestionnaire(BaseModel):
     user = ForeignKey(User, related_name="questionnaires", blank=True, null=True)
+    session_key = CharField(max_length=255)
+    ip_address = CharField(max_length=39)
+    user_agent = CharField(max_length=255)
     questionnaire = ForeignKey(Questionnaire, related_name="user_questionnaires", blank=True, null=True)
     created = DateTimeField(auto_now_add=True)
 

@@ -20,6 +20,14 @@ def concat(value, arg):
     return value + arg
 
 
+letters = map(chr, range(65, 91))
+mapping = dict(zip(range(1, len(letters)), letters))
+
+def number_letter(value):
+    return mapping[int(value.split('-')[0])]
+
 register.filter("getattribute", getattribute)
 register.filter("get", get)
 register.filter("concat", concat)
+
+register.filter("number_letter", number_letter)
