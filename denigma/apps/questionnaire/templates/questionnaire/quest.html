@@ -29,7 +29,13 @@
                 {% for fld in form %}
                     <div class="form-row">
                         <label class="{% if fld.field.required %} required {% endif %}">
-                            <b> {{ fld.label }}. {{ fld.help_text }}</b><br>
+                        <b>
+                         {% if form.start %}
+                            {{ fld.label|number_letter:form.start }}.
+                        {% else %}
+                           {{ fld.label }}.
+                        {% endif %}
+                            {{ fld.help_text }}</b><br>
                         </label>
                         {{ fld }} {{ fld.errors }}
                     </div>
