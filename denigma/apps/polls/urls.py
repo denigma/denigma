@@ -6,14 +6,13 @@ from views import PollsList
 
 
 urlpatterns = patterns('',
-    (r'^$',
+    url(r'^$',
         PollsList.as_view(
             queryset=Poll.objects.order_by('-pub_date')[:10],
             context_object_name='latest_poll_list',
-            template_name='polls/index.html',
-        )
-    ),
-    (r'^(?P<pk>\d+)/$',
+            template_name='polls/index.html'
+        ), name='polls'),
+    url(r'^(?P<pk>\d+)/$',
         DetailView.as_view(
             model=Poll,
             template_name='polls/detail.html')),
