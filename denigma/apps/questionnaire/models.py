@@ -1,6 +1,6 @@
 from string import join
 
-from django.db.models import CharField, TextField, ForeignKey, IntegerField, DateTimeField
+from django.db.models import CharField, TextField, ForeignKey, IntegerField, DateTimeField, BooleanField
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
@@ -13,6 +13,7 @@ link = "<a href='%s'>%s</a>"
 class  Questionnaire(BaseModel):
     name = CharField(max_length=60, unique=True)
     description = TextField()
+    published = BooleanField(default=True)
 
     def __unicode__(self):
         return self.name
