@@ -114,12 +114,12 @@
         <li id="tab_nav"> <a href="/gallery/">Media</a> </li> {# Gallery #}
         {#  <li id="tab_nav"> <a href="/polls">Polls</a> </li>#}
         <li id="tab_third" class="dropdown">
-            <a href="{% url 'duties' %}" class="dropdown-toggle" data-toogle="dropdown">
-                Surveys
+            <a href="{% url 'polls' %}" class="dropdown-toggle" data-toogle="dropdown">
+                Polls{# Surveys #}
                 <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="{% url 'polls'  %}">Polls</a></li>
+                {#  <li><a href="{% url 'polls'  %}">Polls</a></li>#}
                 <li><a href="{% url 'questionnaires' %}">Questionnaires</a></li>
             </ul>
         <li id="tab nav"> <a href="/tutorials/">Tutorials</a> </li>
