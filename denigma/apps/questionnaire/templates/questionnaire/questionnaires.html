@@ -12,10 +12,14 @@
     <table border="0" cellpadding="2" cellspacing="2">
         {% for quest in questionnaire_list %}
             <tr>
-                <td> {{ quest.name }} </td>
-                <td> <a href="{% url 'questionnaire' quest.pk %}">Take!</a> </td>
-                <td> <a href="{% url 'user_questionnaires' quest.pk %}">Results</a></td>
-                <td> <a href="{% url 'quest_stats' quest.pk %}">Stats</a> </td>
+                {% if quest.published or user.is_superuser %}
+                    <td> <a href="{% url 'questionnaire' quest.pk %}">{{ quest.name }}</a> </td>
+                {% endif %}
+                {% if user.is_superuser %}
+                    <td> <a href="{% url 'questionnaire' quest.pk %}">Take!</a> </td>
+                    <td> <a href="{% url 'user_questionnaires' quest.pk %}">Results</a></td>
+                    <td> <a href="{% url 'quest_stats' quest.pk %}">Stats</a> </td>
+                {% endif %}
             </tr>
         {% endfor %}
     </table>
