@@ -23,7 +23,7 @@
         <form action="" method="POST">{% csrf_token %}
             <fieldset class="module aligned">
             <h2>{{ form.name }}</h2>
-            {{ form.description|markdown }}
+            {{ form.description|markdown|urlize }}
 
             {% if not "Stages" in form.name %}
                 {% for fld in form %}
@@ -84,6 +84,6 @@
         </form>
     </div>
     {# <b>Footnotes:</b><br> #}
-    {{ form.footnotes|markdown }}
+    {{ form.footnotes|markdown|urlize }}
 
 {% endblock %}
