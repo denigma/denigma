@@ -1,0 +1,49 @@
+{% extends "announcements/base.html" %}
+
+{% load i18n %}
+{% load url from future %}
+
+{% block hierarchy %}
+    » <a href="{% url 'announcement_home' %}">Announcements</a>
+{% endblock %}
+
+{% block head_title %}{% trans "Announcement Admin" %}{% endblock %}
+
+{% block body_class %}announcements{% endblock %}
+{% block content %}
+    {% with object_list as announcement_list %}
+    <h2>{% trans "Announcements" %}</h2>
+   {%  comment %}  <a href="{% url "announcements_create" %}" class="btn btn-success">
+        {% trans "Add New Announcement" %}
+    </a> {% endcomment %}
+
+    <table class="table">
+        {% for announcement in announcement_list %}
+            <tr>
+                <td>{% comment %}
+                    <a href="{% url "announcements_update" pk=announcement.pk %}" class="btn btn-mini">
+                        <i class>=icon icon-pencil"></i>
+                        {% trans "Edit" %}
+                        {% endcomment %}
+                    </a>
+                </td>
+                <td>
+                    {% if announcement.publish_start or announcement.publish_end %}
+                        <small>Published from <em>{{ announcement.publish_start|date:"F j, Y" }}</em> to
+                        <em>{{ announcement.publish_end|date:"F j Y" }}</em></small>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'announcement_detail' announcement.pk %}">{{ announcement.title }}</a>
+                </td>
+                <td>
+                    {{ announcement.content }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{#    {% with announcement_list as object %}#}
+{#        {% include "comments/wrapper.html" %}#}
+{#    {% endwith %}#}
+    {% endwith %}
+{% endblock %}

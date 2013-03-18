@@ -1,0 +1,32 @@
+{% extends "announcements/base.html" %}
+
+{% load url from future %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}Announcement{% endblock %}
+
+{% block title %}Announcement{% endblock %}
+
+{% block hierarchy %}
+    » <a href="{% url "announcement_home" %}">Announcements</a>
+    » Announcement
+    {%  with object as announcement  %}
+        = {{ announcement.title }}
+    {% endwith %}
+{% endblock %}
+
+{% block content %}
+    {%  with object as announcement  %}
+        {{ announcement.creator }}
+        {{ announcement.creation_date }} |
+        Site wide: {{ announcement.site_wide }} |
+        Members only: {{ announcement.members_only }} <br>
+        <p>{{ announcement.content|recross|hyper|markdown }}</p>
+        {% with announcement as object %}
+            {% include "comments/wrapper.html"%}
+        {% endwith %}
+    {% endwith %}
+
+{% endblock %}
