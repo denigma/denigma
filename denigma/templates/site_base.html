@@ -7,7 +7,7 @@
 {% block nav %}
 
     {# Simple hover drowdown menu: #}
-    <style xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+    <style xmlns="http://www.w3.org/1999/html">
         ul.nav li.dropdown:hover ul.dropdown-menu{
             display: block;
             margin: 0;
@@ -209,8 +209,19 @@
                     <li><a href="{% url 'todos' %}">Todos</a></li>
                     <li><a href="{% url 'quests' %}">Quests</a></li>
                 </ul>
+             </li>
              <li id="tab_profile"><a href="{% url 'profile_detail' user.username %}">{% trans "Profile" %}</a></li>
-             <li id="tab_experts"><a href="{% url 'experts' %}">Experts</a></li>
+             </li>
+             <li id="tab_third" class="dropdown">  {# Duties: Tasks, Todos and Quests #}
+                 <a href="{% url 'experts' %}" class="dropdown-toggle" data-toogle="dropdown">
+                     Experts
+                     <b class="caret"></b>
+                 </a>
+                 <ul class="dropdown-menu">
+                     <li><a href="{% url 'profiles'  %}">Profiles</a></li>
+                     <li><a href="{% url 'collaborations' %}">Collaborations</a></li>
+                 </ul>
+             </li>
         		{% endspaceless %}</ul>
 		{% endif %}
 
