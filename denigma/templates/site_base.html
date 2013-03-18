@@ -7,7 +7,7 @@
 {% block nav %}
 
     {# Simple hover drowdown menu: #}
-    <style xmlns="http://www.w3.org/1999/html">
+    <style xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
         ul.nav li.dropdown:hover ul.dropdown-menu{
             display: block;
             margin: 0;
@@ -106,8 +106,8 @@
                 <li> <a href="/data/"><i class="icon-folder-close"></i> Data/Entries/Relations <i class="icon-random"></i></a></li> {##}
                 <li> <a href="/blog/"><i class="icon-bold"></i> Blog/Posts/Comments <i class="icon-comment"></i></a></li> {##}
                 <li> <a href="/wiki/"><i class="icon-question-sign"></i> Wiki/Pages/Tags <i class="icon-tags"></i></a></li> {#icon-globe#}
-                <li> <a href="/articles/">Articles (Reports/Reviews)</a></li>
-                <li><a href="{% url 'ontology' %}">Ontology</a></li>
+                <li> <a href="/articles/"><i class="icon-book"></i> Articles (Reports/Reviews)</a></li>
+                <li><a href="{% url 'ontology' %}"><i class="icon-qrcode"></i> Ontology</a></li>
             </ul>
         </li>
         <li id="tab_nav"> <a href="/links/">Links</a> </li>{# URLs #}
