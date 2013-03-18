@@ -119,8 +119,9 @@
                                             <ul>
                                                 {% for announcement in site_wide_announcements %}
                                                     <li>
-                                                        <a href="{{ announcement.get_absolute_url }}">{{ announcement }}</a> -
-                                                        <a href="{% url 'announcement_hide' announcement.pk %}?next={{ request.path }}">Hide announcement</a>
+                                                        <a href="{{ announcement.get_absolute_url }}">{{ announcement }}</a>
+                                                        (<a href="{% url 'announcement_hide' announcement.pk %}?next={{ request.path }}">Hide</a>)
+                                                        {% if not forloop.last %}|{% endif %}
                                                     </li>
                                                 {% endfor %}
                                             </ul>
