@@ -1,0 +1,19 @@
+label {
+    display: inline-block;
+    font-weight: bolder;
+    background-color: #fafad2;
+}
+
+.popup
+{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    display: none;
+    position: absolute;
+    background-color: #ff9;
+    border-radius: 15px;
+    border: solid 1px #333;
+    z-index: 999;
+}
