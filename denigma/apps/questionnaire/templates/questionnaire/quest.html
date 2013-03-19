@@ -42,7 +42,8 @@
                         {% else %}
                            {{ fld.label }}.
                         {% endif %}
-                            {{ fld.help_text }}</b><br>
+                        </b>
+                            {{ fld.help_text|markweg }}<br>
                         </label>
                         {{ fld }} {{ fld.errors }}
                     </div>
@@ -53,7 +54,7 @@
                     {% if not forloop.counter|divisibleby:2 %}
                         <div class="form-row">
                             <label class="{% if fld.field.required %} required {% endif %}">
-                                <b> {{ fld.label|number_letter:form.start }} . {{ fld.help_text }}</b><br>
+                                <b> {{ fld.label|number_letter:form.start }} .</b> {{ fld.help_text|markweg }}<br>
                             </label>
                             {#  {{ fld }} {{ fld.errors } }#}
                         </div>
@@ -62,9 +63,17 @@
                 <hr>
                 <table width="100%" border="1">
                     <tr>
-                        <td valign="top" align="center"><b>Stage</b></td>
-                        <td valign="top" align="center"><b>How citizen scientists could help at this stage? (several answers are possible)</b></td>
-                        <td valign="top" align="center"><b>Are there any risks of involvement of citizen scientists? (several answers are possible)</b></td>
+                        {% with form.section.headers.all as headers %}
+                            {% if headers %}
+                                {% for header in headers %}
+                                    <td valign="centre" align="left"><b>{{ header }}</b></td>
+                                {% endfor %}
+                            {% else %}
+                                <td valign="centre" align="left"><b>Stage</b></td>
+                                <td valign="centre" align="left"><b>How could citizen scientists help at this stage? (Feel free to include multiple answers)</b></td>
+                                <td valign="centre" align="left"><b>Are there any risks of involvement of citizen scientists? (Feel free to include multiple answers)</b></td>
+                            {% endif %}
+                        {% endwith %}
                     </tr>
                     {% for fld in form %}
                         {% if not forloop.counter|divisibleby:2 %}
