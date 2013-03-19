@@ -120,4 +120,9 @@ def reST(value):
     settings_overrides=docutils_settings)
     return parts['html_body'].replace("<p>reStructured</p>", '')
 
+@register.filter(is_safe=True)
+def markweg(value):
+    """Markdown rendering that does not wrap text into a paragraph."""
+    return markdown(value)[3:][:-4]
+
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
