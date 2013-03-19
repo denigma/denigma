@@ -44,7 +44,7 @@
 
                                             {% endif %}
                                         </b>
-                                            {{ fld.help_text|markweg }}<br>
+                                            {{ fld.help_text|markweg|safe }}<br>
                                     </label>
                                     {{ fld }} {{ fld.errors }}
                                 </div>
@@ -58,7 +58,7 @@
                                 {% if not forloop.counter|divisibleby:2 %}
                                     <div class="form-row">
                                         <label class="{% if fld.field.required %} required {% endif %}">
-                                            <b> {{ fld.label|number_letter:section.start }} .</b> {{ fld.help_text|markweg }}<br>
+                                            <b> {{ fld.label|number_letter:section.start }} .</b> {{ fld.help_text|markweg|safe }}<br>
                                         </label>
                                         {#  {{ fld }} {{ fld.errors } }#}
                                     </div>
