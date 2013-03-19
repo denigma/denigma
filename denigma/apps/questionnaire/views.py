@@ -176,11 +176,17 @@ class ViewQuests(ViewQuestionnaire):
                         question = section.questions.get(order=int(order.split('::')[1].split('-')[0]))
                         answer = Answer.obj.create(user_questionnaire=uquest, question=question) #[0]
                         answer.update(answer=value)
-
-        return redir("thanks", form.questionnaire.pk)
+        thanks = form.questionnaire.thanks.all()
+        if thanks:
+            pk = thanks.pk
+        else:
+            pk = 1
+        return redir("thanks", pk)
 
 
 class ThankYouView(DetailView):
     template_name = "questionnaire/thanks.html"
     model = Thanks
-    detail_model = Thanks.objects.all()[0]
+    thanks = Thanks.objects.all()
+    if thanks:
+        detail_model = Thanks[0]
