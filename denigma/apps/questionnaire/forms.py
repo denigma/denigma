@@ -14,12 +14,12 @@ class SectionForm(forms.Form):
         self.start = section.start
         super(SectionForm, self).__init__(*args, **kwargs)
 
-        self.section.footnotes = ''
+        section.footnotes = ''
         for question in section.questions.all():
             choices = question.choices
             if question.footnote:
                 #question.question.split('')[1].split('*')
-                self.section.footnotes += question.footnote+'<br>'
+                section.footnotes += question.footnote+'<br>'
 
             kw = dict(help_text=question.question, required=False)
                        #'style': 'font-family: monospace',
