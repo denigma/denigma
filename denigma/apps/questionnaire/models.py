@@ -119,4 +119,12 @@ class Thanks(BaseModel):
         verbose_name_plural = "Thanks"
 
 
+class Header(BaseModel):
+    name = CharField(blank=True, max_length=200)
+    section = ForeignKey(Section, related_name="headers")
+
+    def __unicode__(self):
+        return "%s" % self.name
+
+
 

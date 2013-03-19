@@ -66,9 +66,17 @@
                         <br>
                         <table width="100%" border="1">
                             <tr>
-                                <td valign="centre" align="left"><b>Stage</b></td>
-                                <td valign="centre" align="left"><b>How could citizen scientists help at this stage? (Feel free to include multiple answers)</b></td>
-                                <td valign="centre" align="left"><b>Are there any risks of involvement of citizen scientists? (Feel free to include multiple answers)</b></td>
+                                {% with section.headers.all as headers %}
+                                    {% if headers %}
+                                        {% for header in headers %}
+                                          <td valign="centre" align="left"><b>{{ header }}</b></td>
+                                        {% endfor %}
+                                    {% else %}
+                                        <td valign="centre" align="left"><b>Stage</b></td>
+                                        <td valign="centre" align="left"><b>How could citizen scientists help at this stage? (Feel free to include multiple answers)</b></td>
+                                        <td valign="centre" align="left"><b>Are there any risks of involvement of citizen scientists? (Feel free to include multiple answers)</b></td>
+                                    {% endif %}
+                                {% endwith %}
                             </tr>
                             {% for fld in form %}
                                 {% if section.name.lower in fld.label.lower %}

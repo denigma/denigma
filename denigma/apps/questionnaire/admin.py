@@ -4,7 +4,7 @@ from django.utils.encoding import force_unicode
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
-from models import Questionnaire, Question, Answer, Section, UserQuestionnaire, Thanks
+from models import Questionnaire, Question, Answer, Section, Header, UserQuestionnaire, Thanks
 
 
 class SectionInline(admin.TabularInline):
@@ -20,6 +20,7 @@ class QuestionInline(admin.TabularInline):
 class AnswerInline(admin.TabularInline):
     model = Thanks
     extra = 1
+
 
 
 class QuestionnaireAdmin(admin.ModelAdmin):
@@ -39,9 +40,13 @@ class AnswerAdmin(admin.ModelAdmin):
     list_display = "answer question user_questionnaire".split()
     list_filter = "user_questionnaire answer".split()
 
+class HeaderInnline(admin.TabularInline):
+    model = Header
+    extra = 3
+
 class SectionAdmin(admin.ModelAdmin):
     list_display = "name questionnaire order".split()
-    inlines = [QuestionInline]
+    inlines = [QuestionInline, HeaderInnline]
 
     def response_change(self, request, obj):
         """Determines the HttpResponse for the change_view stage.
@@ -80,6 +85,7 @@ class SectionAdmin(admin.ModelAdmin):
 admin.site.register(Questionnaire, QuestionnaireAdmin)
 admin.site.register(UserQuestionnaire, UserQuestionnaireAdmin)
 admin.site.register(Section, SectionAdmin)
+admin.site.register(Header)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Thanks)
