@@ -14,6 +14,7 @@ class  Questionnaire(BaseModel):
     name = CharField(max_length=60, unique=True)
     description = TextField()
     published = BooleanField(default=True)
+    section_footnotes = {}
 
     def __unicode__(self):
         return self.name
@@ -27,6 +28,13 @@ class  Questionnaire(BaseModel):
         lst = [(reverse2(section_url, pk), name) for pk, name in lst]
         return ", ".join([link % c for c in lst])
     section_links.allow_tags = True
+
+    def get_section(self, str):
+        for section in self.sections.all():
+            if str == section.name:
+                return section
+
+
 
     def get_length(self):
         return len(self.sections)

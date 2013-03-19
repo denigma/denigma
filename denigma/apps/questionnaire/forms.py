@@ -14,12 +14,12 @@ class SectionForm(forms.Form):
         self.start = section.start
         super(SectionForm, self).__init__(*args, **kwargs)
 
-        self.footnotes = ''
+        self.section.footnotes = ''
         for question in section.questions.all():
             choices = question.choices
             if question.footnote:
                 #question.question.split('')[1].split('*')
-                self.footnotes += question.footnote+'<br>'
+                self.section.footnotes += question.footnote+'<br>'
 
             kw = dict(help_text=question.question, required=False)
                        #'style': 'font-family: monospace',
@@ -48,12 +48,12 @@ class QuestForm(forms.Form):
         self.questionnaire = section.questionnaire
         super(QuestForm, self).__init__(*args, **kwargs)
 
-        self.footnotes = ''
         for section in self.questionnaire.sections.all():
+            self.questionnaire.section_footnotes[section.name] = ''
             for question in section.questions.all():
                 choices = question.choices
                 if question.footnote:
-                    self.footnotes += question.footnote+'<br>'
+                    self.questionnaire.section_footnotes[section.name] += question.footnote+'<br>'
                 kw = dict(help_text=question.question, required=False)
 
                 if choices:

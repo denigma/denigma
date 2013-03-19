@@ -183,7 +183,6 @@ class ViewQuests(ViewQuestionnaire):
             pk = 1
         return redir("thanks", pk)
 
-
 class ThankYouView(DetailView):
     template_name = "questionnaire/thanks.html"
     model = Thanks
