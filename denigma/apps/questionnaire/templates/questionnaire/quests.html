@@ -66,8 +66,8 @@
                         <table width="100%" border="1">
                             <tr>
                                 <td valign="top" align="center"><b>Stage</b></td>
-                                <td valign="top" align="center"><b>How citizen scientists could help at this stage? (several answers are possible)</b></td>
-                                <td valign="top" align="center"><b>Are there any risks of involvement of citizen scientists? (several answers are possible)</b></td>
+                                <td valign="top" align="center"><b>How could citizen scientists help at this stage? (Feel free to include multiple answers)</b></td>
+                                <td valign="top" align="center"><b>Are there any risks of involvement of citizen scientists? (Feel free to include multiple answers)</b></td>
                             </tr>
                             {% for fld in form %}
                                 {% if section.name.lower in fld.label.lower %}
@@ -87,6 +87,7 @@
                             {% endfor %}
                         </table>
                     {% endif %}
+                    {{ questionnaire|get_footnotes:section.name|markdown|urlize }}
                     <hr>
 
                 {% endfor %}
@@ -95,12 +96,12 @@
 
             <div id="submit">
                 <center>
-                <input id="submit-btn" type="submit" value="Submit" class="btn btn-primary btn-large">
+                    <input id="submit-btn" type="submit" value="Submit" class="btn btn-primary btn-large">
                 </center>
             </div>
 
         </form>
     </div>
-    {# <b>Footnotes:</b><br> #}
-    {{ form.footnotes|markdown|urlize }}
+
+
 {% endblock %}
