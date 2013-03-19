@@ -26,6 +26,7 @@
     <div class="main">
         <h1>{{ questionnaire.name }}</h1>
         <form action="" method="POST">{% csrf_token %}
+            <p>
             <fieldset class="module aligned">
                 {% for section in form.questionnaire.sections.all  %}
                     <h2>{{ section.name }}</h2>
@@ -65,9 +66,9 @@
                         <br>
                         <table width="100%" border="1">
                             <tr>
-                                <td valign="top" align="center"><b>Stage</b></td>
-                                <td valign="top" align="center"><b>How could citizen scientists help at this stage? (Feel free to include multiple answers)</b></td>
-                                <td valign="top" align="center"><b>Are there any risks of involvement of citizen scientists? (Feel free to include multiple answers)</b></td>
+                                <td valign="centre" align="left"><b>Stage</b></td>
+                                <td valign="centre" align="left"><b>How could citizen scientists help at this stage? (Feel free to include multiple answers)</b></td>
+                                <td valign="centre" align="left"><b>Are there any risks of involvement of citizen scientists? (Feel free to include multiple answers)</b></td>
                             </tr>
                             {% for fld in form %}
                                 {% if section.name.lower in fld.label.lower %}
@@ -99,7 +100,7 @@
                     <input id="submit-btn" type="submit" value="Submit" class="btn btn-primary btn-large">
                 </center>
             </div>
-
+            </p>
         </form>
     </div>
 
