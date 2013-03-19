@@ -1,21 +1,28 @@
 {% extends "questionnaire/base.html" %}
 {% load todo %}
 {% load rendering %}
+{% load staticfiles %}
+
 {% block options %}
     Section {{ current }} of {{ form.total }}
 {% endblock %}
-{% block extra_styles %}
+
+{% block extra_style %}
     <style>
-
-
-    textarea
-    {
-    border:1px solid #999999;
-    width:5%;
-    margin:5px 0;
-    padding:3px;
-    }
+        textarea {
+            border:1px solid #999999;
+            width:98%;
+            margin:5px 0;
+            padding:3px;
+        }
     </style>
+    <link rel="stylesheet" href="{% static "css/annotate.css" %}" type="text/css">
+{% endblock %}
+
+{% block extra_script %}
+    <script src="{% static "js/jquery-1.9.1.js" %}"></script>
+    <script src="{% static "js/highlights.js" %}" type="text/javascript"></script>
+    <script src="{% static "js/dictionary.js" %}" type="text/javascript"></script>
 {% endblock %}
 
 {% block content %}
@@ -85,5 +92,4 @@
     </div>
     {# <b>Footnotes:</b><br> #}
     {{ form.footnotes|markdown|urlize }}
-
 {% endblock %}

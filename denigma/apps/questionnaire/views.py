@@ -1,9 +1,8 @@
-# Create your views here.
 from operator import itemgetter
 from collections import OrderedDict
 
 from django.contrib.auth.models import AnonymousUser, User
-from forms import SectionForm
+from forms import SectionForm, QuestForm
 from models import Questionnaire, UserQuestionnaire, Section, Answer
 
 from utils import DefaultOrderedDict, defdict_to_odict, redir
@@ -12,6 +11,7 @@ from mcbv.edit import FormView
 from mcbv.list_custom import ListView, ListRelated
 
 from track.utils import get_ip
+
 
 class Questionnaires(ListView):
     list_model = Questionnaire
@@ -125,3 +125,54 @@ class ViewQuestionnaire(ListRelated, FormView):
         # Redirect to the next section or to 'done' page:
         if self.snum >= stotal: return redir("done")
         else: return redir(quest.get_absolute_url(self.snum+1))
+
+
+class ViewQuests(ViewQuestionnaire):
+    form_class = QuestForm
+    template_name = "questionnaire/quests.html"
+
+    def form_valid(self, form):
+        """Create user answer records using form data."""
+        stotal = self.get_list_queryset().count()
+        quest = self.get_detail_object()
+
+        ip_address = get_ip(self.request)
+        user_agent = unicode(self.request.META.get('HTTP_USER_AGENT', '')[:255], errors='ignore')
+        if hasattr(self.request, 'session') and self.request.session.session_key:
+            session_key = self.request.session.session_key
+        else:
+            session_key = '%s:%s' % (ip_address, user_agent)
+
+        if isinstance(self.user, AnonymousUser):
+            self.user = User.objects.get(username='Anonymous')
+            uquest = UserQuestionnaire.obj.get_or_create(questionnaire=quest,
+                user=self.user,
+                session_key=session_key,
+                ip_address=ip_address,
+                user_agent=user_agent)[0]
+        else:
+            uquest = UserQuestionnaire.obj.get_or_create(questionnaire=quest,
+                user=self.user,
+                session_key=session_key,
+                ip_address=ip_address,
+                user_agent=user_agent)[0]
+
+        for section in form.questionnaire.sections.all():
+            #section = self.get_section()
+            section_name = section.name.lower()
+            #print form.cleaned_data.items()
+
+            if not "Stages" in section.name:
+                for order, value in form.cleaned_data.items():
+                    if section_name in order.lower():
+                        question = section.questions.get(order=int(order.split('::')[1]))
+                        answer = Answer.obj.get_or_create(user_questionnaire=uquest, question=question)[0]
+                        answer.update(answer=value)
+            else:
+                for order, value in form.cleaned_data.items():
+                    if section_name in order.lower():
+                        question = section.questions.get(order=int(order.split('::')[1].split('-')[0]))
+                        answer = Answer.obj.create(user_questionnaire=uquest, question=question) #[0]
+                        answer.update(answer=value)
+
+        return redir("done")

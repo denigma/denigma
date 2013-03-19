@@ -50,6 +50,9 @@ class Section(BaseModel):
     def title(self):
         return "(%s) %s" % (self.order, self.name or '')
 
+    def get_absolute_url(self):
+        return reverse2("questionnaire", self.questionnaire.pk, self.pk)
+
 
 class Question(BaseModel):
     question = CharField(max_length=200)

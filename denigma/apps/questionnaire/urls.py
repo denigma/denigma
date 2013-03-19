@@ -1,7 +1,6 @@
 from django.conf.urls import patterns, url
-from django.contrib.auth.decorators import login_required
 
-from views import Questionnaires, ViewQuestionnaire, UserQuest, UserQuests, QuestStates
+from views import Questionnaires, ViewQuestionnaire, UserQuest, UserQuests, QuestStates,  ViewQuests
 
 
 urlpatterns = patterns('questionnaire.views',
@@ -16,6 +15,8 @@ urlpatterns = patterns('questionnaire.views',
         UserQuest.as_view(), {}, "user_questionnaire"),
     url(r'^/quest-stats/(?P<dpk>\d+)/$',
         QuestStates.as_view(), {}, "quest_stats"),
+    url(r'^/quests/(?P<dpk>\d+)/$',
+        ViewQuests.as_view(), {}, "onepage-questionnaire" )
 )
 
 urlpatterns += patterns("django.views.generic",

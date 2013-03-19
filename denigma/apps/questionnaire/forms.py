@@ -40,3 +40,32 @@ class SectionForm(forms.Form):
             else:
                 self.fields[str(question.order)+'-help'] = fld(**kw)
                 self.fields[str(question.order)+'-risk'] = fld(**kw)
+
+
+class QuestForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        section = kwargs.pop("section")
+        self.questionnaire = section.questionnaire
+        super(QuestForm, self).__init__(*args, **kwargs)
+
+        self.footnotes = ''
+        for section in self.questionnaire.sections.all():
+            for question in section.questions.all():
+                choices = question.choices
+                if question.footnote:
+                    self.footnotes += question.footnote+'<br>'
+                kw = dict(help_text=question.question, required=False)
+
+                if choices:
+                    fld = forms.ChoiceField
+                    choices = [c.strip() for c in choices.split(',')]
+                    kw['choices'] = [(c,c) for c in choices]
+                else:
+                    fld = forms.CharField
+                    kw['widget'] = PagedownWidget(attrs={'rows':1, 'cols':1})
+
+                if not "Stages" in section.name:
+                    self.fields[section.name+'::'+str(question.order)] = fld(**kw)
+                else:
+                    self.fields[section.name+'::'+str(question.order)+'-help'] = fld(**kw)
+                    self.fields[section.name+'::'+str(question.order)+'-risk'] = fld(**kw)
