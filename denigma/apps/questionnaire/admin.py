@@ -47,8 +47,8 @@ class HeaderInnline(admin.TabularInline):
 class SectionAdmin(admin.ModelAdmin):
     list_display = "name questionnaire order".split()
     inlines = [QuestionInline, HeaderInnline]
-    
-    ordering = ['questionnaire']
+
+    ordering = ['questionnaire', 'order']
 
     def response_change(self, request, obj):
         """Determines the HttpResponse for the change_view stage.
