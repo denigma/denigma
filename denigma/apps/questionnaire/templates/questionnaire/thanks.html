@@ -1,0 +1,13 @@
+{% extends "questionnaire/base.html" %}
+{% load url from future %}
+{% load rendering %}
+
+{% block head_title %}Questionnaire - {{ detail_object.title }}{% endblock %}
+
+{% block title %}{{ detail_object.title }}{% endblock %}
+
+{% block content %}
+    <div class="main">
+        {{ detail_object.text|markdown|urlize }}
+    </div>
+{% endblock %}

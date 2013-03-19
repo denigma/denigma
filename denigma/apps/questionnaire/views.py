@@ -2,8 +2,9 @@ from operator import itemgetter
 from collections import OrderedDict
 
 from django.contrib.auth.models import AnonymousUser, User
+from django.views.generic import DetailView
 from forms import SectionForm, QuestForm
-from models import Questionnaire, UserQuestionnaire, Section, Answer
+from models import Questionnaire, UserQuestionnaire, Section, Answer, Thanks
 
 from utils import DefaultOrderedDict, defdict_to_odict, redir
 from mcbv.detail import DetailView
@@ -12,6 +13,7 @@ from mcbv.list_custom import ListView, ListRelated
 
 from track.utils import get_ip
 
+from data import get
 
 class Questionnaires(ListView):
     list_model = Questionnaire
@@ -175,4 +177,10 @@ class ViewQuests(ViewQuestionnaire):
                         answer = Answer.obj.create(user_questionnaire=uquest, question=question) #[0]
                         answer.update(answer=value)
 
-        return redir("done")
+        return redir("thanks", form.questionnaire.pk)
+
+
+class ThankYouView(DetailView):
+    template_name = "questionnaire/thanks.html"
+    model = Thanks
+    detail_model = Thanks.objects.all()[0]

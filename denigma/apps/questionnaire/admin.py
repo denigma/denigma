@@ -4,7 +4,7 @@ from django.utils.encoding import force_unicode
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
-from models import Questionnaire, Question, Answer, Section, UserQuestionnaire
+from models import Questionnaire, Question, Answer, Section, UserQuestionnaire, Thanks
 
 
 class SectionInline(admin.TabularInline):
@@ -17,9 +17,14 @@ class QuestionInline(admin.TabularInline):
     extra = 4
 
 
+class AnswerInline(admin.TabularInline):
+    model = Thanks
+    extra = 1
+
+
 class QuestionnaireAdmin(admin.ModelAdmin):
     list_display = ["name", "section_links"]
-    inlines = [SectionInline]
+    inlines = [SectionInline, AnswerInline]
 
 
 class UserQuestionnaireAdmin(admin.ModelAdmin):
@@ -77,3 +82,4 @@ admin.site.register(UserQuestionnaire, UserQuestionnaireAdmin)
 admin.site.register(Section, SectionAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Answer, AnswerAdmin)
+admin.site.register(Thanks)

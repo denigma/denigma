@@ -99,4 +99,16 @@ class Answer(BaseModel):
         ordering = ["question__section__order", "question__order"]
 
 
+class Thanks(BaseModel):
+    title = CharField(max_length=255)
+    text = TextField()
+    questionnaire = ForeignKey(Questionnaire, related_name="thanks", blank=True, null=True)
+
+    def __unicode__(self):
+        return "%s" % self.title
+
+    class Meta:
+        verbose_name_plural = "Thanks"
+
+
 
