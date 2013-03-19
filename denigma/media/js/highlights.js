@@ -2,22 +2,23 @@
 (function() {
 
   jQuery(function() {
-    var createPopus, makeGlossary, popByTerm;
+    var createPopus, makeGlossary, popByTerm, toId;
     window.jQuery.fn.regHighlight = function(term, regex, description) {
       /*
-      jQuery extension to highligh something inside the element
+          jQuery extension to highlight something inside the element.
       */
 
-      var $terms, parts;
+      var $terms, id, parts;
+      id = toId(term);
       parts = this.contents().filter(function() {
         return this.nodeType === 3 && regex.test(this.nodeValue);
       });
       parts.replaceWith(function() {
         return (this.nodeValue || "").replace(regex, function(match) {
-          return "<label class=\"" + term + "\">" + match + "</label>";
+          return "<code class=\"" + id + "\">" + match + "</code>";
         });
       });
-      $terms = this.find("." + term);
+      $terms = this.find("." + id);
       $terms.mouseover(function(event) {
         var $pop;
         $pop = popByTerm(term);
@@ -32,8 +33,8 @@
     };
     makeGlossary = function(dic) {
       /*
-      transforms ordinary javascript object with key-value pairs
-      to more appropriate format with descriptiop
+          Transfors ordniary JavaScript object with key-value-pairs
+          to more appropriate format with description.
       */
 
       var key, res, val;
@@ -41,7 +42,6 @@
       for (key in dic) {
         val = dic[key];
         res[key] = {
-          id: "_" + key,
           term: key,
           description: val,
           regex: new RegExp(key, "gi")
@@ -49,8 +49,11 @@
       }
       return res;
     };
+    toId = function(term) {
+      return "pop_" + term.replace(" ", "_");
+    };
     popByTerm = function(term) {
-      return $("#pop_" + term.replace(/s+/, "_"));
+      return $("#pop_" + toId(term));
     };
     createPopus = function(gloss) {
       var doc, key, pid, val, _results;
@@ -58,7 +61,7 @@
       _results = [];
       for (key in gloss) {
         val = gloss[key];
-        pid = "pop_" + val.term.replace(/s+/, "_");
+        pid = "pop_" + toId(val.term);
         doc.append("<div class='popup' id=\"" + pid + "\"><b>" + val.term + ":</b> " + val.description + "</div>");
         _results.push($("#" + pid).hide());
       }
@@ -66,7 +69,7 @@
     };
     window.jQuery.fn.annotate = function(dic) {
       /*
-      dictionary consists of terms and annotations
+          Dictionary consists of terms and annotations.
       */
 
       var gloss;
@@ -83,15 +86,15 @@
         return _results;
       });
     };
-    return window.jQuery.fn.annotateTerm = function(str, desription) {
+    return window.jQuery.fn.annotateTerm = function(str, description) {
       /*
-      Annotating extension, use it for every tag you want
+          Annotating extension, use it for every tag you want
       */
 
       var regex;
       regex = new RegExp(str, "gi");
       return this.each(function(index, element) {
-        return $(element).regHighlight(str, regex, desription);
+        return $(element).regHighlight(str, regex, description);
       });
     };
   });

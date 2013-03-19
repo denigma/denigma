@@ -2,14 +2,15 @@ jQuery ->
 
   window.jQuery.fn.regHighlight = (term,regex, description)->
     ###
-jQuery extension to highligh something inside the element
-###
+        jQuery extension to highlight something inside the element.
+    ###
+    id = toId(term)
     parts = @contents().filter(-> @nodeType is 3 and regex.test(@nodeValue))
     parts.replaceWith ->
       (@nodeValue or "").replace regex, (match) ->
-        "<label class=\"#{term}\">#{match}</label>"
-    $terms = @find(".#{term}")
-    $terms.mouseover (event)->
+        "<code class=\"#{id}\">#{match}</code>"
+    $terms = @find(".#{id}")
+    $terms.mouseover (event) ->
       $pop = popByTerm(term)
       $pop.position()
       $pop.css("left", $(@).position().left + 20)
@@ -17,46 +18,45 @@ jQuery extension to highligh something inside the element
       $pop.show()
     $terms.mouseout (event)-> popByTerm(term).hide()
 
-
-
-  makeGlossary = (dic)->
+  makeGlossary = (dic) ->
     ###
-transforms ordinary javascript object with key-value pairs
-to more appropriate format with descriptiop
-###
+        Transfors ordniary JavaScript object with key-value-pairs
+        to more appropriate format with description.
+    ###
     res = {}
     for key,val of dic
       res[key] =
-        id: "_"+key
         term: key
-        description : val
+        description: val
         regex: new RegExp(key, "gi")
     res
 
-  popByTerm = (term)-> $("#pop_"+term.replace(/s+/, "_"))
+  toId = (term)->"pop_"+term.replace(" ", "_")
 
-  createPopus = (gloss)->
+  popByTerm = (term)-> $("#pop_"+toId(term))
+
+  createPopus = (gloss) ->
     doc = $("body")
-    for key,val of gloss
-      pid = "pop_"+val.term.replace(/s+/, "_")
+    for key, val of gloss
+      pid = "pop_"+toId(val.term)
       doc.append "<div class='popup' id=\"#{pid}\"><b>#{val.term}:</b> #{val.description}</div>"
       $("#"+pid).hide()
 
   window.jQuery.fn.annotate = (dic)->
     ###
-dictionary consists of terms and annotations
-###
+        Dictionary consists of terms and annotations.
+    ###
     gloss = makeGlossary(dic)
     createPopus(gloss)
-    @each (index, element)->
+    @each (index, element) ->
       $el = $(element)
-      for key,val of gloss
-        $el.regHighlight(val.term,val.regex,val.description)
+      for key, val of gloss
+        $el.regHighlight(val.term, val.regex, val.description)
 
-  window.jQuery.fn.annotateTerm = (str, desription) ->
+  window.jQuery.fn.annotateTerm = (str, description) ->
     ###
-Annotating extension, use it for every tag you want
-###
+        Annotating extension, use it for every tag you want
+    ###
     regex = new RegExp(str, "gi")
     @each (index, element)->
-      $(element).regHighlight(str,regex, desription)
+      $(element).regHighlight(str, regex, description)
