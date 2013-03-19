@@ -32,7 +32,7 @@ class SectionForm(forms.Form):
             else:
                 fld = forms.CharField
                 #kw["max_length"] = 200
-                kw['widget'] = PagedownWidget(attrs={'rows': 1, 'cols': 1})
+                kw['widget'] = PagedownWidget(attrs={'rows': 2, 'cols': 1})
 
 
             if not "Stages" in self.name:
@@ -62,10 +62,10 @@ class QuestForm(forms.Form):
                     kw['choices'] = [(c,c) for c in choices]
                 else:
                     fld = forms.CharField
-                    kw['widget'] = PagedownWidget(attrs={'rows':1, 'cols':1})
 
                 if not "Stages" in section.name:
                     self.fields[section.name+'::'+str(question.order)] = fld(**kw)
                 else:
+                    kw['widget'] = PagedownWidget(attrs={'rows':2, 'cols':1})
                     self.fields[section.name+'::'+str(question.order)+'-help'] = fld(**kw)
                     self.fields[section.name+'::'+str(question.order)+'-risk'] = fld(**kw)
