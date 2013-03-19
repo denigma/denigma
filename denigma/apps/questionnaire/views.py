@@ -189,4 +189,4 @@ class ThankYouView(DetailView):
     model = Thanks
     thanks = Thanks.objects.all()
     if thanks:
-        detail_model = Thanks[0]
+        detail_model = thanks[0]
