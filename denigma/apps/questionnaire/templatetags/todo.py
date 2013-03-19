@@ -28,8 +28,12 @@ def number_letter(value, start=1):
         value = value.split('::')[1]
     return mapping[int(value.split('-')[0])+int(start)-1]
 
+def get_footnotes(questionnaire, section):
+    return questionnaire.section_footnotes[section]
+
 register.filter("getattribute", getattribute)
 register.filter("get", get)
 register.filter("concat", concat)
 
 register.filter("number_letter", number_letter)
+register.filter("get_footnotes", get_footnotes)
