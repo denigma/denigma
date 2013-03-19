@@ -4,7 +4,9 @@ from views import Questionnaires, ViewQuestionnaire, UserQuest, UserQuests, Ques
 
 
 urlpatterns = patterns('questionnaire.views',
-    url(r'^/$', Questionnaires.as_view(), {}, "questionnaires"),
+    url(r'^/$',
+        ViewQuests.as_view(), {'dpk':u'2'}, "onepage-questionnaire" ),
+    url(r'^s/$', Questionnaires.as_view(), {}, "questionnaires"),
     url(r'^/questionnaire/(?P<dpk>\d+)/(?P<section>\d+)/$',
         ViewQuestionnaire.as_view(), {}, "questionnaire"),
     url(r'^/questionnaire/(?P<dpk>\d+)/$',

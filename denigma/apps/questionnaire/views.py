@@ -132,6 +132,13 @@ class ViewQuestionnaire(ListRelated, FormView):
 class ViewQuests(ViewQuestionnaire):
     form_class = QuestForm
     template_name = "questionnaire/quests.html"
+    detail_queryset = Questionnaire.objects.all()
+
+    def dispatch(self, request, *args, **kwargs):
+        print args, kwargs
+        if not 'dpk' in self.kwargs:
+            kwargs['dpk'] = u'2'
+        return super(ViewQuests, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         """Create user answer records using form data."""
