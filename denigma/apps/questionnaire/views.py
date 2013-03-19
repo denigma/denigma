@@ -178,7 +178,7 @@ class ViewQuests(ViewQuestionnaire):
                         answer.update(answer=value)
         thanks = form.questionnaire.thanks.all()
         if thanks:
-            pk = thanks.pk
+            pk = thanks[0].pk
         else:
             pk = 1
         return redir("thanks", pk)
