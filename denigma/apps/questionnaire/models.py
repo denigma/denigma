@@ -63,7 +63,7 @@ class Section(BaseModel):
 
 
 class Question(BaseModel):
-    question = CharField(max_length=200)
+    question = CharField(max_length=255)
     choices = CharField(max_length=500, blank=True, null=True)
     footnote = CharField(max_length=250, blank=True, null=True)
     answer_type = CharField(max_length=6, choices=(("str", "str"), ("int", "int")))
