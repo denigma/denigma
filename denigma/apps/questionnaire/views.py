@@ -120,9 +120,13 @@ class ViewQuestionnaire(ListRelated, FormView):
                 answer.update(answer=value)
         else:
             for order, value in form.cleaned_data.items():
+                if 'help' == order.split('-')[-1]:
+                    type = 1
+                else:
+                    type = 2
                 question = section.questions.get(order=int(order.split('-')[0]))
-                answer = Answer.obj.create(user_questionnaire=uquest, question=question) #[0]
-                answer.update(answer=value)
+                answer = Answer.obj.create(user_questionnaire=uquest, question=question)
+                answer.update(answer=value, type=type)
 
         # Redirect to the next section or to 'done' page:
         if self.snum >= stotal: return redir("done")
@@ -172,23 +176,33 @@ class ViewQuests(ViewQuestionnaire):
             #print form.cleaned_data.items()
 
             if not "Stages" in section.name:
+
                 for order, value in form.cleaned_data.items():
+
                     if section_name in order.lower():
                         question = section.questions.get(order=int(order.split('::')[1]))
                         answer = Answer.obj.get_or_create(user_questionnaire=uquest, question=question)[0]
                         answer.update(answer=value)
+
             else:
                 for order, value in form.cleaned_data.items():
                     if section_name in order.lower():
+                        if 'help' == order.split('::')[1].split('-')[1]:
+                            type = 1
+                        else:
+                            type = 2
                         question = section.questions.get(order=int(order.split('::')[1].split('-')[0]))
                         answer = Answer.obj.create(user_questionnaire=uquest, question=question) #[0]
-                        answer.update(answer=value)
+                        answer.update(answer=value, type=type)
+
+
         thanks = form.questionnaire.thanks.all()
         if thanks:
             pk = thanks[0].pk
         else:
             pk = 1
         return redir("thanks", pk)
+
 
 class ThankYouView(DetailView):
     template_name = "questionnaire/thanks.html"

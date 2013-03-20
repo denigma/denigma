@@ -10,7 +10,10 @@
                         <tr><td colspan="2"><p class="title"><hr><b>{{ title }}</b></p></td></tr>
                     {% endifchanged %}
                 {% endwith %}
-                <tr>
+
+                <tr><td>{{ answer.pk }}</td>
+                    <td>{{  answer.type }}</td>
+                    <td>{{ answer.order }}</td>
                     <td width="30%">{{ answer.question.question }}</td>
                     <td width="70%">{{ answer.answer }}</td>
                 </tr>

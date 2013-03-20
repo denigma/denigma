@@ -99,6 +99,7 @@ class Answer(BaseModel):
     answer = TextField(blank=True)
     question = ForeignKey(Question, related_name="answers", blank="True", null=True)
     user_questionnaire = ForeignKey(UserQuestionnaire, related_name="answers", blank=True, null=True)
+    type = IntegerField(null=True, blank=True, default=0)
 
     def __unicode__(self):
         return "%s - %s" % (self.user_questionnaire, self.answer)

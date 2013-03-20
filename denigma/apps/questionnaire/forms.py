@@ -8,6 +8,7 @@ class SectionForm(forms.Form):
         """Add a field for every question.
         Field may be CharField or ChoiceField; field name is question.order."""
         section = kwargs.pop("section")
+        self.section = section
         self.name = section.name
         self.description = section.description
         self.total = section.questionnaire.sections.count()
@@ -32,12 +33,11 @@ class SectionForm(forms.Form):
             else:
                 fld = forms.CharField
                 #kw["max_length"] = 200
-                kw['widget'] = PagedownWidget(attrs={'rows': 2, 'cols': 1})
-
 
             if not "Stages" in self.name:
                 self.fields[str(question.order)] = fld(**kw)
             else:
+                kw['widget'] = PagedownWidget(attrs={'rows': 2, 'cols': 1})
                 self.fields[str(question.order)+'-help'] = fld(**kw)
                 self.fields[str(question.order)+'-risk'] = fld(**kw)
 
