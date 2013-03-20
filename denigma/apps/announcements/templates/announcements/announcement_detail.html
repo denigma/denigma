@@ -5,9 +5,18 @@
 {% load hyperlink %}
 {% load crosslink %}
 
-{% block head_title %}Announcement{% endblock %}
+{% block head_title %}
+    {% with object as announcement %}
+        Announcement - {{ announcement.title }}
+    {% endwith %}
+{% endblock %}
 
-{% block title %}Announcement{% endblock %}
+{% block title %}
+    {% with object as announcement %}
+        {{ announcement.title }}
+    {% endwith %}
+{% endblock %}
+
 
 {% block hierarchy %}
     » <a href="{% url "announcement_home" %}">Announcements</a>
@@ -18,15 +27,14 @@
 {% endblock %}
 
 {% block content %}
-    {%  with object as announcement  %}
+    {% with object as announcement %}
         {{ announcement.creator }}
         {{ announcement.creation_date }} |
         Site wide: {{ announcement.site_wide }} |
         Members only: {{ announcement.members_only }} <br>
         <p>{{ announcement.content|recross|hyper|markdown }}</p>
-        {% with announcement as object %}
-            {% include "comments/wrapper.html"%}
-        {% endwith %}
+{#        {% with announcement as object %}#}
+{#            {% include "comments/wrapper.html"%}#}
+{#        {% endwith %}#}
     {% endwith %}
-
 {% endblock %}

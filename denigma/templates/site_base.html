@@ -194,8 +194,9 @@
                  </a>
                  <ul class="dropdown-menu">
                      <li><a href="{% url 'pastebin' %}">Pastebin Messaging</a></li>
-                     <li><a href="{% url 'channel' %}">Videochat Channel</a></li>
+                     <li><a href="{%  url 'announcements_list' %}">Announcements</li>
                      <li><a href="http://denigma.org/chat/">Chat</a></li> {# {% url 'chat_chat' %}">Chat</a></li> #}
+                     <li><a href="{% url 'channel' %}">Videochat Channel</a></li>
                  </ul>
              </li>
              <li id="tab_notices"><a href="{% url 'notification_notices' %}">{% trans "Notices" %}{% if notice_unseen_count %}({{ notice_unseen_count }}){% endif %}</a></li>
@@ -212,13 +213,13 @@
              </li>
              <li id="tab_profile"><a href="{% url 'profile_detail' user.username %}">{% trans "Profile" %}</a></li>
              </li>
-             <li id="tab_third" class="dropdown">  {# Duties: Tasks, Todos and Quests #}
+             <li id="tab_experts" class="dropdown">  {# Duties: Tasks, Todos and Quests #}
                  <a href="{% url 'experts' %}" class="dropdown-toggle" data-toogle="dropdown">
                      Experts
                      <b class="caret"></b>
                  </a>
                  <ul class="dropdown-menu">
-                     <li><a href="{% url 'profiles'  %}">Profiles</a></li>
+                     <li><a href="{% url 'experts-profiles' %}">Profiles</a></li>
                      <li><a href="{% url 'collaborations' %}">Collaborations</a></li>
                  </ul>
              </li>
