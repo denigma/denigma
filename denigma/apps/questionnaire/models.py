@@ -11,7 +11,7 @@ link = "<a href='%s'>%s</a>"
 
 
 class  Questionnaire(BaseModel):
-    name = CharField(max_length=60, unique=True)
+    name = CharField(max_length=255, unique=True)
     description = TextField()
     published = BooleanField(default=True)
     section_footnotes = {}
