@@ -2,28 +2,34 @@
 {% load url from future %}
 {% load rendering %}
 
+{% block head_title %}{{ entry.title }}{% endblock %}
+
 {% block options %}
     <a href="/admin/questionnaire">Admin</a>
 {% endblock %}
 
-{% block content %}
+{% block title %}{{ entry.title }}{% endblock %}
 
+{% block content %}
 <div class="main">
+    {% include "data/render_entry.html" %}
     <table border="0" cellpadding="2" cellspacing="2">
         {% for quest in questionnaire_list %}
             <tr>
                 {% if quest.published or user.is_superuser %}
-                    <td> <a href="{% url 'questionnaire' quest.pk %}">{{ quest.name }}</a> </td>
-                    <td> <a href="{% url 'onepage-questionnaire' quest.pk %}">One page</a></td>
+                    <td>{{ quest.name }}</td>
+                    <td> <a href="{% url 'onepage-questionnaire' quest.pk %}">One page</a> |</td>
+                    <td> <a href="{% url 'questionnaire' quest.pk %}">Multi-page</a> |</td>
                 {% endif %}
                 {% if user.is_superuser %}
-                    <td> <a href="{% url 'questionnaire' quest.pk %}">Take!</a> </td>
-                    <td> <a href="{% url 'user_questionnaires' quest.pk %}">Results</a></td>
+                    <td> <a href="{% url 'user_questionnaires' quest.pk %}">Results</a> |</td>
                     <td> <a href="{% url 'quest_stats' quest.pk %}">Stats</a> </td>
                 {% endif %}
             </tr>
         {% endfor %}
     </table>
+    {% with entry as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
 </div>
-
 {% endblock %}

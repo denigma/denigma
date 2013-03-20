@@ -15,10 +15,15 @@ from track.utils import get_ip
 
 from data import get
 
+
 class Questionnaires(ListView):
     list_model = Questionnaire
     template_name = "questionnaire/questionnaires.html"
 
+    def get_context_data(self, **kwargs):
+        context = super(Questionnaires, self).get_context_data(**kwargs)
+        context['entry'] = get("Questionnaire")
+        return context
 
 class UserQuests(ListRelated):
     detail_model = Questionnaire
