@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load url from future %}
+{% load rendering %}
 
 {% block hierarchy %}
     » <a href="{% url 'announcement_home' %}">Announcements</a>
@@ -37,7 +38,7 @@
                     <a href="{% url 'announcement_detail' announcement.pk %}">{{ announcement.title }}</a>
                 </td>
                 <td>
-                    {{ announcement.content }}
+                    {{ announcement.content|markdown }}
                 </td>
             </tr>
         {% endfor %}
