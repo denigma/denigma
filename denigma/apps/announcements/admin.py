@@ -1,7 +1,8 @@
 from django.contrib import admin
 
-from models import Announcement
+from models import Announcement, Dismissal
 from forms import AnnouncementAdminForm
+
 
 
 class AnnouncementAdmin(admin.ModelAdmin):
@@ -10,12 +11,14 @@ class AnnouncementAdmin(admin.ModelAdmin):
     form = AnnouncementAdminForm
     fieldsets = [
         (None, {
-            "fields": ["title", "content", "site_wide", "members_only"],
+            "fields": ["title", "content", "site_wide", "members_only", "publish_start", "publish_end", "dismissal_type"],
             }),
         ("Manage announcement", {
-            "fields": ["send_now"],
+            "fields": ["users", "send_now"]
+
         }),
     ]
+    #filter_horizontal = ('user',)
 
     def save_model(self, request, obj, form, change):
         if not change:
@@ -25,3 +28,4 @@ class AnnouncementAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Announcement, AnnouncementAdmin)
+admin.site.register(Dismissal)

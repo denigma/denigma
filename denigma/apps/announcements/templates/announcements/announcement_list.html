@@ -13,18 +13,18 @@
 {% block content %}
     {% with object_list as announcement_list %}
     <h2>{% trans "Announcements" %}</h2>
-   {%  comment %}  <a href="{% url "announcements_create" %}" class="btn btn-success">
+   <a href="{% url "announcement_create" %}" class="btn btn-success">
         {% trans "Add New Announcement" %}
-    </a> {% endcomment %}
+    </a>
 
     <table class="table">
         {% for announcement in announcement_list %}
             <tr>
-                <td>{% comment %}
-                    <a href="{% url "announcements_update" pk=announcement.pk %}" class="btn btn-mini">
-                        <i class>=icon icon-pencil"></i>
+                <td>
+                    <a href="{% url "announcement_update" pk=announcement.pk %}" class="btn btn-mini">
+                        <i class="icon icon-pencil"></i>
                         {% trans "Edit" %}
-                        {% endcomment %}
+
                     </a>
                 </td>
                 <td>
@@ -46,4 +46,7 @@
 {#        {% include "comments/wrapper.html" %}#}
 {#    {% endwith %}#}
     {% endwith %}
+
+<hr>
+<b><a href="{% url 'announcement_create' %}">Create Announcement</a> </b>(<a href="/admin/announcements/announcement/add">Admin</a>)</b>
 {% endblock %}

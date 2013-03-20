@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-
+from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.utils.translation import ugettext_lazy as _
 
 try:
@@ -18,6 +18,19 @@ class AnnouncementAdminForm(forms.ModelForm):
     send_now = forms.BooleanField(required=False,
         help_text=_("Tick this box to send out this announcement now."))
 
+    users = forms.ModelMultipleChoiceField(User.objects.all(), required=False)
+
+#    creator = forms.ModelMultipleChoiceField(
+#        queryset=User.objects.all(),
+#        required=False,
+#        widget=FilteredSelectMultiple(verbose_name="User profile",
+#        is_stacked=False))
+#
+#    def __init__(self, *args, **kwargs):
+#        super(AnnouncementAdminForm, self).__init__(*args, **kwargs)
+#        if self.instance.pk:
+#            self.fields['userproifles'].initial = self.instance.creator
+
     class Meta:
         model = Announcement
         exclude = ("creator", "creation_date")
@@ -33,4 +46,48 @@ class AnnouncementAdminForm(forms.ModelForm):
                 notification.send(users, "announcement", {
                     "announcement": announcement,
                     }, on_site=False, queue=True)
+        if self.users: print(users)
         return announcement
+
+
+class AnnouncementForm(forms.ModelForm):
+
+    class Meta:
+        model = Announcement
+        fields = [
+            "title",
+            "content",
+            "site_wide",
+            "members_only",
+            "dismissal_type",
+            "publish_start",
+            "publish_end"
+        ]
+
+from django.contrib.auth.models import User
+
+try:
+    from profiles.models import Profile as profiles
+except ImportError as e:
+    profiles = None
+    print(e)
+try:
+    from experts.models import Profile as experts
+except ImportError as e:
+    experts = None
+    print(e)
+
+
+class UserForm(forms.Form):
+#    text = forms.CharField()
+#    users = forms.ModelMultipleChoiceField(User.objects.all())
+    try:
+        profiles = forms.ModelMultipleChoiceField(profiles.objects.all(), required=False)
+    except Exception as e:
+        pass
+        print(e)
+    try:
+        experts = forms.ModelMultipleChoiceField(experts.objects.all(), required=False)
+    except Exception as e:
+        pass
+        print(e)

@@ -1,7 +1,7 @@
-from datetime import datetime
-
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 try:
@@ -38,18 +38,34 @@ class AnnouncementManager(models.Manager):
 
 class Announcement(models.Model):
     """A single announcement."""
+    DISMISSAL_NO = 1
+    DISMISSAL_SESSION = 2
+    DISMISSAL_PERMANENT = 3
+
+    DISMISSAL_CHOICES = [
+        (DISMISSAL_NO, _("No Dismissals Allowed")),
+        (DISMISSAL_SESSION, _("Session Only Dismissal")),
+        (DISMISSAL_PERMANENT, _("Permanent Dismissal Allowed"))
+    ]
     title = models.CharField(_("title"), max_length=50)
     content = models.TextField(_("content"))
     creator = models.ForeignKey(User, verbose_name=_("creator"))
-    creation_date = models.DateTimeField(_("creation_date"), default=datetime.now)
+    creation_date = models.DateTimeField(_("creation_date"), default=timezone.now)
     site_wide = models.BooleanField(_("site_wide"), default=False)
     members_only = models.BooleanField(_("members only"), default=False)
+    dismissal_type = models.IntegerField(choices=DISMISSAL_CHOICES, default=DISMISSAL_SESSION)
+    publish_start = models.DateTimeField(_("publish_start"), default=timezone.now)
+    publish_end = models.DateTimeField(_("publish_end"), blank=True, null=True)
 
     objects = AnnouncementManager()
 
-    @models.permalink
+    #@models.permalink
     def get_absolute_url(self):
-        return ("announcement_detail", [str(self.pk)])
+        return reverse("announcement_detail", args=[str(self.pk)])
+
+    def dismiss_url(self):
+        if self.dismissal_type != Announcement.DISMISSAL_NO:
+            return reverse("announcement_dismiss", args=[self.pk])
 
     def __unicode__(self):
         return self.title
@@ -59,6 +75,12 @@ class Announcement(models.Model):
         verbose_name_plural = _("Announcements")
 
 
+class Dismissal(models.Model):
+    user = models.ForeignKey(User, related_name="announcement_dimissals")
+    announcement = models.ForeignKey(Announcement, related_name="dismissals")
+    dismissed_at = models.DateTimeField(default=timezone.now)
+
+#
 def current_announcements_for_request(request, **kwargs):
     """A helper function to get the current announcements based on some data from
     the HttpRequest.

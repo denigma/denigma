@@ -8,7 +8,7 @@
 
 {% block body %}
     <h1>{% trans "Delete Announcement" %}</h1>
-    {% url "announcements_delete" %} pk=announcement.pk as post_url %}
+    {% url "announcement_delete" %} pk=announcement.pk as post_url %}
     <p class="lead">
         {% trans "Are you sure you want to delete this announcement?" %}
     </p>

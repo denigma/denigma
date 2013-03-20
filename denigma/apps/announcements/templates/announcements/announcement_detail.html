@@ -1,20 +1,21 @@
 {% extends "announcements/base.html" %}
 
 {% load url from future %}
+{% load crispy_forms_tags %}
 {% load rendering %}
 {% load hyperlink %}
 {% load crosslink %}
 
 {% block head_title %}
-    {% with object as announcement %}
+{#    {% with object as announcement %}#}
         Announcement - {{ announcement.title }}
-    {% endwith %}
+{#    {% endwith %}#}
 {% endblock %}
 
 {% block title %}
-    {% with object as announcement %}
+{#    {% with object as announcement %}#}
         {{ announcement.title }}
-    {% endwith %}
+{#    {% endwith %}#}
 {% endblock %}
 
 
@@ -27,7 +28,7 @@
 {% endblock %}
 
 {% block content %}
-    {% with object as announcement %}
+{#    {% with object as announcement %}#}
         {{ announcement.creator }}
         {{ announcement.creation_date }} |
         Site wide: {{ announcement.site_wide }} |
@@ -36,5 +37,15 @@
 {#        {% with announcement as object %}#}
 {#            {% include "comments/wrapper.html"%}#}
 {#        {% endwith %}#}
-    {% endwith %}
+{#    {% endwith %}#}
+
+    {% if user.is_authenticated %}
+        <hr>
+        <form action="{% url 'announcement_detail' announcement.pk %}" method="POST" class="form form-horizontal">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+    {% endif %}
 {% endblock %}
