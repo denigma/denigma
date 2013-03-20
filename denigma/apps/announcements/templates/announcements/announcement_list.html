@@ -38,7 +38,7 @@
                     <a href="{% url 'announcement_detail' announcement.pk %}">{{ announcement.title }}</a>
                 </td>
                 <td>
-                    {{ announcement.content|markdown }}
+                    {{ announcement.content|markdown|urlize }}
                 </td>
             </tr>
         {% endfor %}
