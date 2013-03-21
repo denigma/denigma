@@ -22,9 +22,8 @@
 {% block hierarchy %}
     » <a href="{% url "announcement_home" %}">Announcements</a>
     » Announcement
-    {%  with object as announcement  %}
-        = {{ announcement.title }}
-    {% endwith %}
+    = {{ announcement.title }}
+
 {% endblock %}
 
 {% block content %}
