@@ -87,7 +87,7 @@ def detail(request, pk):
                 pass
                 print(e)
                 messages.add_message(request, messages.ERROR,
-                    _("Failed to broadcasted Announcement via Email."))
+                    _("Failed to broadcasted Announcement via Email. %s" % e))
     else:
         form = UserForm()
 
