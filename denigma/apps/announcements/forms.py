@@ -20,6 +20,7 @@ class AnnouncementAdminForm(forms.ModelForm):
 
     users = forms.ModelMultipleChoiceField(User.objects.all(), required=False)
 
+#http://stackoverflow.com/questions/11657682/django-admin-interface-using-horizontal-filter-with-inline-manytomany-field
 #    creator = forms.ModelMultipleChoiceField(
 #        queryset=User.objects.all(),
 #        required=False,
@@ -71,11 +72,11 @@ try:
 except ImportError as e:
     profiles = None
     print(e)
-try:
-    from experts.models import Profile as experts
-except ImportError as e:
-    experts = None
-    print(e)
+#try:
+#    from experts.models import Profile as experts
+#except ImportError as e:
+#    experts = None
+#    print(e)
 
 
 class UserForm(forms.Form):
@@ -86,8 +87,8 @@ class UserForm(forms.Form):
     except Exception as e:
         pass
         print(e)
-    try:
-        experts = forms.ModelMultipleChoiceField(experts.objects.all(), required=False)
-    except Exception as e:
-        pass
-        print(e)
+#    try:
+#        experts = forms.ModelMultipleChoiceField(experts.objects.all(), required=False)
+#    except Exception as e:
+#        pass
+#        print(e)
