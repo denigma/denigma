@@ -7,15 +7,11 @@
 {% load crosslink %}
 
 {% block head_title %}
-{#    {% with object as announcement %}#}
         Announcement - {{ announcement.title }}
-{#    {% endwith %}#}
 {% endblock %}
 
 {% block title %}
-{#    {% with object as announcement %}#}
         {{ announcement.title }}
-{#    {% endwith %}#}
 {% endblock %}
 
 
@@ -27,18 +23,13 @@
 {% endblock %}
 
 {% block content %}
-{#    {% with object as announcement %}#}
-        {{ announcement.creator }}
+        <a href="{{ announcement.creator.get_absolute_url }}">{{ announcement.creator }}</a>
         {{ announcement.creation_date }} |
         Site wide: {{ announcement.site_wide }} |
         Members only: {{ announcement.members_only }} <br>
         <p>{{ announcement.content|recross|hyper|markdown }}</p>
-       {% with announcement as object %}
-            {% include "comments/wrapper.html"%}
-{       {% endwith %}
-{#    {% endwith %}#}
 
-    {% if user.is_superuser %}
+    {% if user.is_authenticated %}
         <hr>
         <form action="{% url 'announcement_detail' announcement.pk %}" method="POST" class="form form-horizontal">
             {% csrf_token %}
@@ -47,4 +38,11 @@
 
         </form>
     {% endif %}
+
+    {% with announcement as object %}
+        {% include "comments/wrapper.html"%}
+    {% endwith %}
+
+
+
 {% endblock %}
