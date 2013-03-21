@@ -73,7 +73,7 @@ def detail(request, pk):
         if form.is_valid():
             cd = form.cleaned_data
             try:
-                send_mail(announcement.title, announcement.content,
+                send_mail(announcement.title, announcement.content,#+'\n'+announcement.get_absolute_url(),
                     request.user.email or 'hevok@denigma.de',
                     [profile.user.email for profile in cd['profiles']] +
                     [profile.user.email for profile in cd['experts']])
@@ -102,7 +102,7 @@ class CreateAnnouncementView(ProtectedView, CreateView):
         self.object = form.save(commit=False)
         self.object.creator = self.request.user
         self.object.save()
-        signals.annoncement_created.send(
+        signals.announcement_created.send(
             sender=self.object,
             announcemnt=self.object,
             request=self.request
