@@ -15,6 +15,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import permission_required
 from django.core.mail import send_mail
+from django.contrib import messages
+from django.utils.translation import ugettext_lazy as _
 
 import signals
 from forms import AnnouncementForm
@@ -73,15 +75,19 @@ def detail(request, pk):
         if form.is_valid():
             cd = form.cleaned_data
             try:
-                recipients = [profile.user.email for profile in cd['profiles']]
+                recipients = [profile.user.email for profile in cd['profiles'] if profile.user.email]
                 if 'experts' in cd:
-                    recipients += [profile.user.email for profile in cd['experts']]
+                    recipients += [profile.user.email for profile in cd['experts'] if profile.user.email]
                 send_mail(announcement.title, announcement.content+'\n\nhttp:/denigma.de/'+announcement.get_absolute_url(),
                     request.user.email or 'hevok@denigma.de', recipients
                 )
+                messages.add_message(request, messages.SUCCESS,
+                    _("Successfully broadcasted Announcement via Email."))
             except Exception as e:
                 pass
                 print(e)
+                messages.add_message(request, messages.ERROR,
+                    _("Failed to broadcasted Announcement via Email."))
     else:
         form = UserForm()
 
