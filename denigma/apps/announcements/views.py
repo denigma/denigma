@@ -73,10 +73,12 @@ def detail(request, pk):
         if form.is_valid():
             cd = form.cleaned_data
             try:
+                recipients = [profile.user.email for profile in cd['profiles']]
+                if 'experts' in cd:
+                    recipients += [profile.user.email for profile in cd['experts']]
                 send_mail(announcement.title, announcement.content+'\n\nhttp:/denigma.de/'+announcement.get_absolute_url(),
-                    request.user.email or 'hevok@denigma.de',
-                    [profile.user.email for profile in cd['profiles']] +
-                    [profile.user.email for profile in cd['experts']])
+                    request.user.email or 'hevok@denigma.de', recipients
+                )
             except Exception as e:
                 pass
                 print(e)
