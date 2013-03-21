@@ -73,7 +73,7 @@ def detail(request, pk):
         if form.is_valid():
             cd = form.cleaned_data
             try:
-                send_mail(announcement.title, announcement.content,#+'\n'+announcement.get_absolute_url(),
+                send_mail(announcement.title, announcement.content+'\n'+announcement.get_absolute_url(),
                     request.user.email or 'hevok@denigma.de',
                     [profile.user.email for profile in cd['profiles']] +
                     [profile.user.email for profile in cd['experts']])
