@@ -33,9 +33,9 @@
         Site wide: {{ announcement.site_wide }} |
         Members only: {{ announcement.members_only }} <br>
         <p>{{ announcement.content|recross|hyper|markdown }}</p>
-{#        {% with announcement as object %}#}
-{#            {% include "comments/wrapper.html"%}#}
-{#        {% endwith %}#}
+       {% with announcement as object %}
+{#            {% include "comments/wrapper.html"%}
+{       {% endwith %}
 {#    {% endwith %}#}
 
     {% if user.is_superuser %}
