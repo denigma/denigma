@@ -119,7 +119,7 @@ class UpdateAnnouncementView(ProtectedView, UpdateView):
 
     def form_valid(self, form):
         response = super(UpdateAnnouncementView, self).form_valid(form)
-        signals.announcement_update.send(
+        signals.announcement_updated.send(
             sender=self.object,
             announcement=self.object,
             request=self.request
@@ -127,7 +127,7 @@ class UpdateAnnouncementView(ProtectedView, UpdateView):
         return response
 
     def get_success_url(self):
-        return reverse("announcement_list")
+        return reverse("announcements_list")
 
 
 class DeleteAnnouncementView(ProtectedView, DeleteView):
