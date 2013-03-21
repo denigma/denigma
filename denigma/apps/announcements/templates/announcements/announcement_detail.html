@@ -38,7 +38,7 @@
 {#        {% endwith %}#}
 {#    {% endwith %}#}
 
-    {% if user.is_authenticated %}
+    {% if user.is_superuser %}
         <hr>
         <form action="{% url 'announcement_detail' announcement.pk %}" method="POST" class="form form-horizontal">
             {% csrf_token %}
