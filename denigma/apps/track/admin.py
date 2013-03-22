@@ -30,7 +30,7 @@ class ActivityAdmin(admin.ModelAdmin):
     list_display = ('visitor', 'link', 'location', 'view_time')
     ordering = ('-id',)
     #list_filter = ('visitor', 'url')
-    search_fields = ('location', 'visitor')
+    search_fields = ('url', 'visitor')
 
     def link(self, obj):
         return '<a href="/admin/track/activity/%s/">%s</a>' % (obj.visitor.pk, obj.visitor.user_agent)
