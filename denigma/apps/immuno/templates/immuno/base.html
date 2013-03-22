@@ -294,9 +294,11 @@ body {
                 <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
                 <div class="nav-collapse collapse">
                     <ul class="nav">
-                        <li class="active"><a href="{% url 'immuno' %}">Home</a></li>
-                        <li><a href="{% url 'immuno-about' %}">About</a></li>
+                        <li class="active"><a href="{% url 'immuno' %}">News</a></li>
+                        {#  <li><a href="{% url 'immuno-projects' %}">Projects</a></li>#}
                         <li><a href="{% url 'immuno-contact' %}">Contact</a></li>
+                        <li><a href="{% url 'immuno-about' %}">About</a></li>
+
                         <!-- Read about Bootstrap dropdowns at http://twitter.github.com/bootstrap/javascript.html#dropdowns -->
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
@@ -354,6 +356,8 @@ body {
                 </div>
             </div>
         </div>
+
+    </div>
         <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
         <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
     </div><!-- /.carousel -->
@@ -370,7 +374,7 @@ body {
     <!-- Marketing messaging and featurettes
     ================================================== -->
     <!-- Wrap the rest of the page in another container to center all the content. -->
-
+    <h2></h2>
     <div class="container marketing">
 
     <!-- Three columns of text below the carousel -->
@@ -411,8 +415,8 @@ body {
                 {% endif %}
             {% endwith %}
             <h2 class="featurette-heading">{{ entry.title }}. <span class="muted">
-                {% for tag in entry.tags.all %}
-                    {{ tag }}{% if not forloop.last %}, {% endif%}
+                {% for category in entry.categories.all %}
+                    {{ category }}{% if not forloop.last %}, {% endif%}
                 {% endfor %}
 
                 </span></h2>
