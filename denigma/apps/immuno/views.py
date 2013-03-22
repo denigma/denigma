@@ -17,10 +17,12 @@ class IndexView(TemplateView):
         context['immunosenescence'] = get('Immunosenescence')
         context['immunosenescence'].text = "The immune system deteriorates with increasing age. We can prevent it."
         context['lab'] = get('Pathophysiology and Immunology Laboratory')
+        context['group'] = get('Pathophysiology and Immunology Group')
+        context['immunosenescence'].text = "A highly skilled team of enthusiastic researches."
         context['publications'] = get('Publications')
         context['crowd_funding'] = get('Crowd-Funding')
         context['experiments'] = get('Experiments')
-        context['entries'] = Entry.objects.filter(Q(tags__name='immunology') | Q(tags__name='immune system')).distinct()
+        context['entries'] = Entry.objects.filter(Q(tags__name='immunology') | Q(tags__name='immune system')).distinct().order_by('-created')
         return context
 
 
