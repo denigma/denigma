@@ -74,11 +74,11 @@ def detail(request, pk):
         form = UserForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
+            recipients = [profile.user.email for profile in cd['profiles'] if profile.user.email]
+            if 'experts' in cd:
+                recipients += [profile.user.email for profile in cd['experts'] if profile.user.email]
             try:
-                recipients = [profile.user.email for profile in cd['profiles'] if profile.user.email]
-                if 'experts' in cd:
-                    recipients += [profile.user.email for profile in cd['experts'] if profile.user.email]
-                send_mail(announcement.title, announcement.content+'\n\nhttp:/denigma.de/'+announcement.get_absolute_url(),
+                send_mail(announcement.title, announcement.content+'\n\nhttp://denigma.de'+announcement.get_absolute_url(),
                     request.user.email or 'hevok@denigma.de', recipients
                 )
                 messages.add_message(request, messages.SUCCESS,
