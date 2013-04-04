@@ -33,3 +33,12 @@ discontinued.mrl
 *ToId*
 *IdTo*
 *idTo*
+
+# Generated documentation
+docs/build
+docs/source
+
+# Intellij IDEA files
+.idea/
+.idea_modules/
+*.iml
