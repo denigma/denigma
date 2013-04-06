@@ -165,7 +165,7 @@ MIDDLEWARE_CLASSES = [
     #'pinax.middleware.security.HideSensistiveFieldsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'track.middleware.VisitorTrackMiddleware',
-    'track.middleware.BannedIPMiddleware'
+    'track.middleware.BannedIPMiddleware',
 #    #CMS:
 #    "cms.middleware.multilingual.MultilingualURLMiddleware',
 ]
@@ -276,6 +276,7 @@ INSTALLED_APPS = [
     'home',
     'polls',
     'questionnaire',
+    'donation',
 
     'data',
     'blogs',
@@ -354,6 +355,7 @@ ACCOUNT_UNIQUE_EMAIL = EMAIL_CONFIRMATION_UNIQUE_EMAIL = False
 
 AUTHENTICATION_BACKENDS = [
     'pinax.apps.account.auth_backends.AuthenticationBackend',
+    #'announcements.auth_backends.AnnouncementPermissionsBackend',
 ]
 
 LOGIN_URL = '/account/login/' # @@@ any way this can be a url name?
@@ -397,4 +399,6 @@ except ImportError:
 
 #BANISH_ENABLED = True
 
-
+DONATION_NAME = 'Denigma'
+DONATION_NUMBER = 'The Digital Decipher Machine'
+PAYPAL_ID = 'daniel.wuttke@gmx.de'

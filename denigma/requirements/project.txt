@@ -75,10 +75,16 @@ pygments
 # Comments:
 -e git://github.com/edoburu/django-fluent-comments.git#egg=django-fluent-comments
 
-
 # Chat
 gevent-socketio==0.3.5-beta
 irc==2.0
 daemon==1.0
-sphinx
-sphinx-me
+
+# Donation
+-e git://github.com/denigma/donation.git#egg=donation
+
+# Documentation
+#sphinx
+#sphinx-me
+
+

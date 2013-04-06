@@ -1,0 +1,11 @@
+{% extends "donation/base.html" %}
+
+{% block extra_style %}
+    <style>
+        input[type="text"] {width: 150px;}
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% include "donation/confirm_form.html" %}
+{% endblock %}

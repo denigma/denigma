@@ -1,11 +1,14 @@
 {% load url from future %}
 {% load i18n %}
 {% load track_tags %}
+{% load url from future %}
+
 
 <center><a href="#">Back to top</a></center>
 <hr/>
-<div class="line" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<div class="line" xmlns="http://www.w3.org/1999/html">
     <span class="left">
+
         <div class="legal">
             <p>
                 Developed by the
@@ -17,7 +20,11 @@
         </div>
     </span>
     <span class="centre">
-       <a href="/contact/">Contact</a> | <a href="/time/">Time</a> | <a href="/about/">About</a> | <a href="/sitemap.xml">Sitemap</a>
+       <a href="/contact/">Contact</a>
+        | <a href="/time/">Time</a>
+        | <a href="/about/">About</a>
+        | <a href="/sitemap.xml">Sitemap</a>
+        | <a href="{% url 'donation-index' %}">Donate</a>
         {% if user.is_superuser %}
             | <a href="/meta/">Meta</a>
             | <a href="/eva/">EVA</a>

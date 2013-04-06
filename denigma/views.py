@@ -3,13 +3,17 @@ A view is just a Python function that takes an HttpRequest as its parameter
 and returns an instance of HttpResponse.
 """
 from django.shortcuts import render
-from django.db.models import Q
+from django.conf import settings
+from django.contrib.sites.models import Site
+from django import forms
 
 from data import get
 from data.models import Entry
+
 from blog.models import Post
 
-from django import forms
+from donation.models import Donation
+
 
 
 class SearchForm(forms.Form):
@@ -22,9 +26,9 @@ def home(request, template='homepage.html'):
     searchform = SearchForm() # Depricated?
     denigma_description = get("Denigma Description")
     denigma_rationality = get("Denigma Rationality")
-    news = Entry.objects.filter(Q(tags__name='news') |
-                                Q(categories__name='News')).order_by('-created', '-id').distinct()[:8]\
-        or Post.objects.filter(tags__name='news').order_by('-created', '-id')[:8]
+    news = Entry.objects.all()[:8]#.filter(Q(tags__name='news') |
+                                #Q(categories__name='News')).order_by('-created', '-id').distinct()[:8]\
+     #   or Post.objects.filter(tags__name='news').order_by('-created', '-id')[:8]
     research = get("Research")
     programming = get("Programming")
     design = get("Design")
@@ -36,7 +40,17 @@ def home(request, template='homepage.html'):
            'dashboard':dashboard,
            'research': research,
            'programming': programming,
-           'design': design}
+           'design': design,
+
+           'site': Site.objects.get_current,
+           'total': Donation.objects.get_total,
+           'donation_name': settings.DONATION_NAME,
+           'donation_number': settings.DONATION_NUMBER,
+           'paypal_id': settings.PAYPAL_ID,
+           'debug': settings.DEBUG,
+    }
+
+
     return render(request, template, ctx)
 
 def search(request, term, template='search.html'):

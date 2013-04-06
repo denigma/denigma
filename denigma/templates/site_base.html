@@ -224,6 +224,8 @@
                  </ul>
              </li>
         		{% endspaceless %}</ul>
+        {% else %}
+             <li id="tab nav"> <a href="{% url 'donation-index' %}">Donate</a> </li>
 		{% endif %}
 
 <style>body { overflow:scroll; }</style> {# This adds a scrollbar to all pages and prevents jumping of the header by switching #}
