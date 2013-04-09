@@ -28,7 +28,7 @@ In order to set up Denigma locally just do the following
 
 2. Fork Denigma::
 
-    $ git clone https://github.com/hevok/denigma
+    $ git clone https://github.com/denigma/denigma
 
 3. Get the Might to Create Virtual Environments::
 
@@ -38,7 +38,7 @@ In order to set up Denigma locally just do the following
     $ virtualenv env
     $ . env/bin/activate
 
-When you do this ``env`` folder will be created with separate python intepreter and libraries. It eases future deployment and protects you from messing current python installation with extra libraries. Next steps you should under active enviroment (you will see ``(env)`` before your useraccount in console).
+When you do this ``env`` folder will be created with separate python interpreter and libraries. It eases future deployment and protects you from messing current python installation with extra libraries. Next steps you should under active enviroment (you will see ``(env)`` before your useraccount in console).
 
 4. Prepare Environment::
 
