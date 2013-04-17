@@ -26,9 +26,9 @@ def home(request, template='homepage.html'):
     searchform = SearchForm() # Depricated?
     denigma_description = get("Denigma Description")
     denigma_rationality = get("Denigma Rationality")
-    news = Entry.objects.all()[:8]#.filter(Q(tags__name='news') |
+    news = Entry.objects.all().order_by('-created', '-id').distinct()[:8]#.filter(Q(tags__name='news') |
                                 #Q(categories__name='News')).order_by('-created', '-id').distinct()[:8]\
-     #   or Post.objects.filter(tags__name='news').order_by('-created', '-id')[:8]
+     #   or Post.objects.filter(tags__name='news')
     research = get("Research")
     programming = get("Programming")
     design = get("Design")
