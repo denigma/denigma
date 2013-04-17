@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django import forms
+from django.db.models import Q
 
 from data import get
 from data.models import Entry
@@ -26,8 +27,8 @@ def home(request, template='homepage.html'):
     searchform = SearchForm() # Depricated?
     denigma_description = get("Denigma Description")
     denigma_rationality = get("Denigma Rationality")
-    news = Entry.objects.all().order_by('-created', '-id').distinct()[:8]#.filter(Q(tags__name='news') |
-                                #Q(categories__name='News')).order_by('-created', '-id').distinct()[:8]\
+    news = Entry.objects.filter(Q(tags__name='news') |
+                                Q(categories__name='News')).order_by('-created', '-id').distinct()[:8]
      #   or Post.objects.filter(tags__name='news')
     research = get("Research")
     programming = get("Programming")
