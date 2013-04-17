@@ -73,10 +73,12 @@ e{% extends "lifespan/base.html" %}
         <li><a href="/annotations/classification/{{ classification.pk }}/">{{ classification.title }}</a><br></li>
     {% endfor %}<br>
 
-    <br><b>Type:</b>
-    {% for type in factor.types.all %}
-        <li>{{ type.name }}
-    {% endfor %}<br>
+    {% if factor.types.all %}
+        <br><b>Type:</b>
+        {% for type in factor.types.all %}
+            <li>{{ type.name }}
+        {% endfor %}<br>
+    {% endif %}
 
     {% if factor.references.all %}
         <br><b>References:</b><br>
