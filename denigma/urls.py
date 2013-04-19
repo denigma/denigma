@@ -89,6 +89,7 @@ urlpatterns += patterns("",
     #url(r'^todo/', include('todo.urls')),
     url(r'^todos/', include('todos.urls')),
     url(r'^quests/', include('quests.urls')),
+    url(r'^task/', include('task.urls')),
 
     # Communication
     url(r'^pastebin/', include('pastebin.urls')),

@@ -12,7 +12,7 @@ def get_version():
         version = "%s.%s" % (version, VERSION[2])
     if VERSION[3] != "f":
         version = "%s%s%s" % (version, VERSION[3], VERSION[4])
-        if DEF_N:
+        if DEV_N:
             version = "%s.dev%s" % (version, DEV_N)
     return version
 

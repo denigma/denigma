@@ -1,0 +1,3 @@
+[submodule "semantictasks"]
+	path = semantictasks
+	url = git://github.com/denigma/semantictasks.git

@@ -8,7 +8,7 @@
 
 markdown	# Markup for Wiki.
 south 		# Necessary for database evolution.
-MySQL-python 	# Required for interfacing with db via manage.py on server.
+#MySQL-python 	# Required for interfacing with db via manage.py on server.
 PIL		# Used by gallery.
 
 -e git+https://github.com/boto/boto.git#egg=boto # AWS API. 
@@ -75,9 +75,14 @@ pygments
 # Comments:
 -e git://github.com/edoburu/django-fluent-comments.git#egg=django-fluent-comments
 
-
 # Chat
 gevent-socketio==0.3.5-beta
 irc==2.0
 daemon==1.0
+
+# Semantic
+-e git://github.com/denigma/semantic.git#egg=task
+
+# Documentation
 sphinx-me
+
