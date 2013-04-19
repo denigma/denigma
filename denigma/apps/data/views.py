@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+import os
 from random import random
 
 from django.db.models import Q
@@ -12,6 +14,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.utils import simplejson
+from django.conf import settings
+from django.http import Http404
 
 import reversion
 from taggit.models import Tag, TaggedItem
@@ -253,7 +257,7 @@ class EntryList(ListView, FormView):
                                Q(text__icontains=term))
         self.filterset = EntryFilterSet(qs, self.request.GET)
         self.count = self.filterset.qs.count()
-        return self.filterset.qs
+        return self.filterset.qs.filter(published=True)
 
 
 class ChangeList(ListView):
@@ -379,6 +383,7 @@ class GenerateRelation(Create):
     message = 'Successfully generated %s'
     action = 'Generate'
     def dispatch(self, request, *args, **kwargs):
+        print("Generating data entry")
         self.source = kwargs['source']
         self.type = kwargs['type']
         self.target = kwargs['target']
@@ -500,6 +505,15 @@ class EntryView(DetailView):
             ctx['slug'] =  self.slug = self.kwargs['slug']
         return ctx
 
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except Http404:
+            return redirect('generate-entry', self.slug)
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
+
+
 
 class EntryCreate(Create):
     comment = 'Created entry.'
@@ -561,6 +575,7 @@ class CategoryList(ListView):
 class Entries(TableFilter):
     table_class = EntryTable
     model = Entry
+    queryset = Entry.objects.filter(published=True)
 
     def get_context_data(self, **kwargs):
         context = super(Entries, self).get_context_data(**kwargs)
@@ -601,6 +616,32 @@ class HierarchyList(EntryList):
         context['entry'] = get('Data Hierarchy')
         return context
 
+class DictionaryView(ListView):
+    queryset = Entry.objects.all()
+    template_name = "data/dictionary.html"
+
+    def get_context_data(self, **args):
+        #print("Creating Dictionary")
+        context = super(DictionaryView, self).get_context_data(**args)
+        #print((os.path.join(settings.PROJECT_ROOT, 'media', 'js', 'dictionary.js')))
+        output = open(os.path.join(settings.PROJECT_ROOT, 'media', 'js', 'dictionary.js'), 'w')
+        output.write('''(function() {
+
+            jQuery(function() {
+            var dic, p;
+        p = $('p');
+        dic = {''')
+        context['entries'] = u"\n".join([u'"' + unicode(entry.title) +u'": "'+unicode(entry.text.replace('"', '').replace('\n', ''))+u'"' for entry in self.queryset])
+        output.write(context['entries'].encode('utf-8'))
+        output.write('''    };
+    return $("p").annotate(dic, "term");
+  });''')
+
+        output.close()
+        #print("Created Dictionary")
+        return context
+
 
 def newEntry(request):
     return handlePopAdd(request, EntryForm, 'entry')
+

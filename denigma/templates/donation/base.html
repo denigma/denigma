@@ -1,0 +1,9 @@
+{% extends "site_base.html" %}
+{% load url from future %}
+
+{% block head_title %}Donation{% endblock %}
+{% block title %}Donation{% endblock %}
+
+{% block hierarchy %}
+    » <a href="{% url 'donation-index' %}">Donation</a></a>
+{% endblock %}

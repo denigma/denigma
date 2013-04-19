@@ -1,0 +1,23 @@
+{% extends "donation/base.html" %}
+
+{% load url from future %}
+
+
+
+{% block content %}
+    <p>
+        If you want promote the construction of a Digital Decipher Machine but you have no time to contribute
+        we would greatly appreciate any donation.
+    </p>
+    <p>
+        Thank you very much.
+    </p>
+    <center>
+        <style>
+            .button input[type="text"] {width: 100px;}
+        </style>
+        <div id="donation" class="button">
+            {% include "donation/donate_form.html" %}
+        </div>
+    </center>
+{% endblock %}

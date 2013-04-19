@@ -28,7 +28,7 @@ In order to set up Denigma locally just do the following
 
 2. Fork Denigma::
 
-    $ git clone https://github.com/hevok/denigma
+    $ git clone https://github.com/denigma/denigma
 
 3. Get the Might to Create Virtual Environments::
 
@@ -37,6 +37,8 @@ In order to set up Denigma locally just do the following
     $ cd denigma
     $ virtualenv env
     $ . env/bin/activate
+
+When you do this ``env`` folder will be created with separate python interpreter and libraries. It eases future deployment and protects you from messing current python installation with extra libraries. Next steps you should under active enviroment (you will see ``(env)`` before your useraccount in console).
 
 4. Prepare Environment::
 
@@ -51,6 +53,9 @@ In order to set up Denigma locally just do the following
     $ ./manage.py syncdb --all
     $ ./manage.py migrate --fake
     $ ./manage.py runserver
+
+While installation you may see some warning (i.e. scipy not installed) and multiple ``Exception TypeError: "'NoneType' object is not callable" in  ignored`` Do not pay attention to them. Not all acticles are present in developer's database so when running Denigma you may encounter some meta errors as well as 404 at some places, they are not bugs but only missing articles
+
 
 6. Change Denigma::
 

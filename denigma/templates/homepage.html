@@ -9,6 +9,15 @@
 
 {% block head_title %}{% trans "The Digital Enigma" %}{% endblock %}
 
+{% block extra_style %}
+    <style>
+
+       .button input[type="text"] {
+            width: 100px;
+        }
+    </style>
+{% endblock %}
+
 {% block body_class %}Home{% endblock %}
 
 {% block hierarchy %}
@@ -16,35 +25,47 @@
 {% endblock %}
 
 {% block banner %}
-<table width="100%">
-    <tr>
-        <td valign="top">
-            {{ denigma_description.content|markdown|hyper|recross|safe }} {# {% blocktrans %}{% endblocktrans %} #}
-            {{ denigma_rationality.content|markdown|hyper|recross|safe }} {#  {% blocktrans %}{% endblocktrans %} #}
-        </td>
-        <td style="width: 500px">
-            <div>
-                <a href="{% url 'detail-entry' 'denigmas-logo' %}">
-                    <img src="http://dgallery.s3.amazonaws.com/denigma_pos.svg" alt="Denigma - The Digital Enigma" height="500" width="500" style="float:right">
-                </a>
-            </div>
-        </td>
-    </tr>
-</table>
-    {% if user.is_authenticated %}
-        {% url 'what_next' as what_next_url %}
-        <p class="what_next">{% blocktrans %}Wondering <a href="{{ what_next_url }}" class="btn primary large">What Next</a>?{% endblocktrans %}</p>
-    {% else %}
-        {% url acct_login as login_url %}
-        {% ifsetting ACCOUNT_OPEN_SIGNUP %}
-            {% url 'acct_signup' as signup_url %}
-            <p>{% blocktrans %}You can <a href="{{ login_url }}" class="btn">Log In</a> or <a href="{{ signup_url }}" class="btn btn-primary">Sign Up</a> to participate in the digital revolution.{% endblocktrans %}
-                <a href="{% url 'detail-entry' 'site-structure' %}" class="btn btn-info">Start here</a></p>
-        {% else %}
-            <p>{% blocktrans %}You can <a href="{{ login_url }}" class="btn btn-primary btn-large">Log In</a> to try out the site.{% endblocktrans %}</p>
-        {% endifsetting %}
+    <table width="100%">
+        <tr>
+            <td valign="top">
+                {{ denigma_description.content|markdown|hyper|recross|safe }} {# {% blocktrans %}{% endblocktrans %} #}
+                {{ denigma_rationality.content|markdown|hyper|recross|safe }} {#  {% blocktrans %}{% endblocktrans %} #}
+            </td>
+            <td style="width: 500px">
+                <div>
+                    <a href="{% url 'detail-entry' 'denigmas-logo' %}">
+                        <img src="http://dgallery.s3.amazonaws.com/denigma_pos.svg" alt="Denigma - The Digital Enigma" height="500" width="500" style="float:right">
+                    </a>
+                </div>
 
-    {% endif %}
+            </td>
+        </tr>
+    </table >
+    <table width="100%">
+        <tr>
+            <td>
+                {% if user.is_authenticated %}
+                    {% url 'what_next' as what_next_url %}
+                    <p class="what_next">{% blocktrans %}Wondering <a href="{{ what_next_url }}" class="btn primary large">What Next</a>?{% endblocktrans %}</p>
+                {% else %}
+                    {% url acct_login as login_url %}
+                    {% ifsetting ACCOUNT_OPEN_SIGNUP %}
+                        {% url 'acct_signup' as signup_url %}
+                        <p>{% blocktrans %}You can <a href="{{ login_url }}" class="btn">Log In</a>
+                            or <a href="{{ signup_url }}" class="btn btn-primary">Sign Up</a> to participate in the digital revolution.{% endblocktrans %}
+                            <a href="{% url 'detail-entry' 'site-structure' %}" class="btn btn-info">Start here</a></p>
+                    {% else %}
+                        <p>{% blocktrans %}You can <a href="{{ login_url }}" class="btn btn-primary btn-large">Log In</a> to try out the site.{% endblocktrans %}</p>
+                    {% endifsetting %}
+                {% endif %}
+            </td>
+            <td align="centre" valign=1>
+                <div id="donation" class="button">
+                    {% include "donation/donate_form.html" %}
+                </div>
+            </td>
+        </tr>
+    </table>
 {% endblock %}
 
 

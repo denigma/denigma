@@ -27,7 +27,7 @@
         {{ announcement.creation_date }} |
         Site wide: {{ announcement.site_wide }} |
         Members only: {{ announcement.members_only }} <br>
-        <p>{{ announcement.content|recross|hyper|markdown }}</p>
+        <p>{{ announcement.content|recross|hyper|markdown|urlize }}</p>
 
     {% if user.is_authenticated %}
         <hr>

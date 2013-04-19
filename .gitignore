@@ -16,7 +16,7 @@ denigma/documents/*.style
 
 # Access Keys:
 ami.sh
-*key.*
+key.*
 
 # Virtual Environments:
 ev/
@@ -33,3 +33,16 @@ discontinued.mrl
 *ToId*
 *IdTo*
 *idTo*
+
+# Generated documentation
+docs/build
+docs/source
+
+# Intellij IDEA files
+.idea/
+.idea_modules/
+<<<<<<< Updated upstream
+*.iml
+=======
+*.iml
+>>>>>>> Stashed changes
