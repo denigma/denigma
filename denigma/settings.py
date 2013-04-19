@@ -4,7 +4,7 @@
 import os.path
 import posixpath
 import pinax
-
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PINAX_ROOT = os.path.abspath(os.path.dirname(pinax.__file__))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
@@ -122,6 +122,7 @@ STATICFILES_DIRS = [
     #os.path.join(PROJECT_ROOT, "static"),
     os.path.join(PROJECT_ROOT, 'media'),
     os.path.join(PINAX_ROOT, 'media', PINAX_THEME),
+    os.path.join(BASE_DIR, 'semantictasks')
 ]
 
 STATICFILES_FINDERS = [
@@ -295,6 +296,7 @@ INSTALLED_APPS = [
     'todos',
     #'todo',
     'quests',
+    'task',
 
     # Communication
     'pastebin',
