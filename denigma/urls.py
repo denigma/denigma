@@ -96,6 +96,7 @@ urlpatterns += patterns("",
     url(r'^pastebin/', include('pastebin.urls')),
     url(r'^channel/', include('channel.urls')),
     url(r'^chat/', include('chat.urls')),
+    url(r'^video/', include('video.urls')),
 
     # Integrator
     url(r'^annotations/', include('annotations.urls')),

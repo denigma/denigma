@@ -302,6 +302,7 @@ INSTALLED_APPS = [
     'pastebin',
     'channel',
     'chat',
+    'video',
 
     # Integrator
     'annotations',
