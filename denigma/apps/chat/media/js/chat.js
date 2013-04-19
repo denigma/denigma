@@ -14,7 +14,7 @@ that should include the following members:
     - ircNickname:  IRC nickname.
     - ircPassword:  IRC password (optional).
 
-The follwing methods are implemented:
+The following methods are implemented:
 
     - message(message):         Sends a message string to the channel
     - leave():                  Disconnect from the channel

@@ -1,5 +1,7 @@
 {% extends "chat/base.html" %}
 {% load url from future %}
+{% load rendering %}
+{% load crosslink %}
 
 {% block extrahead %}
 {{ block.super }}
@@ -22,36 +24,35 @@ if (!location.hash) {
 {% endblock %}
 
 {% block content %}
-<table class="table table-striped table-condensed archive" id="messages">
-{% for message in messages %}
-{% with message.time.date as day %}
-{% ifchanged day %}
-<tr>
-    <th colspan="{% if request.GET.q %}4{% else %}3{% endif %}">
-        <ul class="pager pager-archive">
-            {% if prev_url %}<li><a href="{{ prev_url }}" class="previous">&larr; Previous day</a></li>{% endif %}
-            {% if next_url %}<li><a href="{{ next_url }}" class="next">Next day &rarr;</a></li>{% endif %}
-        </ul>
-        <h2><a href="{% url 'chat_day' day.year day.month day.day %}">{{ day }}</a></h2>
-    </th>
-</tr>
-{% endifchanged %}
-<tr id="message-{{ message.id }}">
-    {% if request.GET.q %}
-    <td><a class="btn btn-mini btn-primary" href="{{ message.get_absolute_url }}?id={{ message.id }}">View</a></td>
-    {% endif %}
-    <td class="time">[{{ message.time|date:"H:i:s" }}]</td>
-    <td class="nickname" style="color:{{ message.color }};">{{ message.nickname }}:</td>
-    <td class="message">{{ message.message|urlize }}</td>
-</tr>
-{% endwith %}
-{% empty %}
-<p>No messages.</p>
-{% endfor %}
-</table>
-
-<ul class="pager pager-archive{% if not messages %} pager-archive-empty{% endif %}">
-    {% if prev_url %}<li><a href="{{ prev_url }}" class="previous">&larr; Previous day</a></li>{% endif %}
-    {% if next_url %}<li><a href="{{ next_url }}" class="next">Next day &rarr;</a></li>{% endif %}
-</ul>
+    <table class="table table-striped table-condensed archive" id="messages">
+        {% for message in messages %}
+            {% with message.time.date as day %}
+                {% ifchanged day %}
+                    <tr>
+                        <th colspan="{% if request.GET.q %}4{% else %}3{% endif %}">
+                            <ul class="pager pager-archive">
+                                {% if prev_url %}<li><a href="{{ prev_url }}" class="previous">&larr; Previous day</a></li>{% endif %}
+                                {% if next_url %}<li><a href="{{ next_url }}" class="next">Next day &rarr;</a></li>{% endif %}
+                            </ul>
+                            <h2><a href="{% url 'chat_day' day.year day.month day.day %}">{{ day }}</a></h2>
+                        </th>
+                    </tr>
+                {% endifchanged %}
+                <tr id="message-{{ message.id }}">
+                    {% if request.GET.q %}
+                    <td><a class="btn btn-mini btn-primary" href="{{ message.get_absolute_url }}?id={{ message.id }}">View</a></td>
+                    {% endif %}
+                    <td class="time">[{{ message.time|date:"H:i:s" }}]</td>
+                    <td class="nickname" style="color:{{ message.color }};">{{ message.nickname }}:</td>
+                    <td class="message">{{ message.message }}</td>
+                </tr>
+            {% endwith %}
+            {% empty %}
+                <p>No messages.</p>
+        {% endfor %}
+    </table>
+    <ul class="pager pager-archive{% if not messages %} pager-archive-empty{% endif %}">
+        {% if prev_url %}<li><a href="{{ prev_url }}" class="previous">&larr; Previous day</a></li>{% endif %}
+        {% if next_url %}<li><a href="{{ next_url }}" class="next">Next day &rarr;</a></li>{% endif %}
+    </ul>
 {% endblock %}

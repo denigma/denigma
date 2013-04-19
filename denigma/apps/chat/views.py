@@ -21,6 +21,7 @@ def chat(request, template='chat/chat.html'):
     return render(request, template, context)
 
 
+
 def messages(request, year=None, month=None, day=None,
              template='chat/messages.html'):
     """Show messages for the given query or day."""
