@@ -35,7 +35,7 @@ io.sockets.on('connection', function (socket){
 
         var options = {
             host: 'localhost',
-            port: 8080,
+            port: 3000,
             path: '/node_api',
             method: 'POST',
             headers: {
