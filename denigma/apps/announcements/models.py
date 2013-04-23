@@ -3,12 +3,12 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-
+from django.db.models import Q
 try:
     set
 except NameError:
     from sets import Set as set # Python 2.3 fallback
-
+from datetime import datetime
 
 class AnnouncementManager(models.Manager):
     """A basic manager for dealing with announcements."""
@@ -32,7 +32,8 @@ class AnnouncementManager(models.Manager):
             queryset = queryset.exclude(pk__in=exclude)
         if not for_members:
             queryset = queryset.filter(members_only=False)
-        queryset = queryset.order_by("-creation_date")
+        print timezone.now()
+        queryset = queryset.filter(Q(publish_end__gte=datetime.now()) | Q(publish_end=None)).order_by("-creation_date")
         return queryset
 
 
