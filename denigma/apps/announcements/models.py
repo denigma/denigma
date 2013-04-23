@@ -32,7 +32,6 @@ class AnnouncementManager(models.Manager):
             queryset = queryset.exclude(pk__in=exclude)
         if not for_members:
             queryset = queryset.filter(members_only=False)
-        print timezone.now()
         queryset = queryset.filter(Q(publish_end__gte=datetime.now()) | Q(publish_end=None)).order_by("-creation_date")
         return queryset
 
