@@ -27,7 +27,7 @@
         {{ announcement.creation_date }} |
         Site wide: {{ announcement.site_wide }} |
         Members only: {{ announcement.members_only }} <br>
-        <p>{{ announcement.content|recross|hyper|markdown|urlize }}</p>
+        <p>{{ announcement.content|recross|markdown }}</p>
 
     {% if user.is_authenticated %}
         <hr>
@@ -38,6 +38,8 @@
 
         </form>
     {% endif %}
+
+    <b><a href="{% url 'announcement_update' announcement.pk %}">Edit Announcement</a></b>
 
     {% with announcement as object %}
         {% include "comments/wrapper.html"%}
