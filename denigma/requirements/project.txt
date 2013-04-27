@@ -80,13 +80,11 @@ gevent-socketio==0.3.5-beta
 irc==2.0
 daemon==1.0
 
-<<<<<<< HEAD
 # Semantic
--e git://github.com/denigma/semantic.git#egg=task
+-e git://github.com/denigma/semantic#egg=task
 
 # Documentation
 sphinx-me
-=======
 # Donation
 -e git://github.com/denigma/donation.git#egg=donation
 
@@ -94,5 +92,6 @@ sphinx-me
 #sphinx
 #sphinx-me
 
->>>>>>> d758b06ec52f96541f4af2ace083d1558f7a4f5f
-
+# Video
+redis
+-e git://github.com/denigma/video#egg=video
