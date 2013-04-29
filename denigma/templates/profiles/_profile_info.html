@@ -81,11 +81,11 @@
                             <li><a href="{{ todo.get_absolute_url }}">{{ todo }}
                                 {% if todo.done %}
                                     (Done)
-                                {% endif %}
+                                {% endif %}</a>
                                 [{% for category in todo.categories.all %}
                                     <a href="{{ category.get_absolute_url }}">{{ category }}{% if not forloop.last %}, {% endif %}</a>
                                 {% endfor %}]
-                            </a></li>
+                            </li>
                         {% endfor %}
                     {% endif %}
                 {% endwith %}
