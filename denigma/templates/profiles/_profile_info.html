@@ -72,6 +72,21 @@
                     {% endif %}
                 {% endwith %}
             </td>
+            {% with profile.user.assigned_todos.all as todos %}
+                {% if todos %}
+                    <b>Assigned Duties</b>:
+                    {% for todo in todos %}
+                        <li><a href="{{ todo.get_absolute_url }}">{{ todo }}
+                            {% if todo.done %}
+                                (Done)
+                            {% endif %}
+                            {% for category in todo.categories.all %}
+                                <a href="{% url 'category.get_absolute_url' %}">{{ category }}</a>
+                            {% endfor %}
+                        </a></li>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
             <td align="top" valign="top">
                 {% with profile.user.todos.all as todos %}
                     {% if todos %}
@@ -85,18 +100,7 @@
                         {% endfor %}<br>
                     {% endif %}
                 {% endwith %}
-                {% with profile.user.assigned_todos.all as todos %}
-                    {% if todos %}
-                        <b>Assigned Duties</b>:
-                        {% for todo in todos %}
-                            <li><a href="{{ todo.get_absolute_url }}">{{ todo }}
-                            {% if todo.done %}
-                                (Done)
-                            {% endif %}
-                            </a></li>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
+
             </td>
         </tr>
     </table>
