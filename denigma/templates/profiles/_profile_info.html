@@ -72,7 +72,7 @@
                     {% endif %}
                 {% endwith %}
             </td>
-
+            <br>
             <td align="top" valign="top">
                 {% with profile.user.assigned_todos.all as todos %}
                     {% if todos %}
@@ -83,7 +83,7 @@
                                     (Done)
                                 {% endif %}
                                 {% for category in todo.categories.all %}
-                                    ( <a href="{{ category.get_absolute_url }}">{{ category }}</a>)
+                                    (<a href="{{ category.get_absolute_url }}">{{ category }}{% if not forloop.last %}, {% endif %}</a>)
                                 {% endfor %}
                             </a></li>
                         {% endfor %}
