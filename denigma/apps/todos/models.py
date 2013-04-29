@@ -16,8 +16,8 @@ priorities = (
 
 
 class Todo(models.Model): # Rename To Duty
-    title = models.CharField(max_length=200)
-    description = models.TextField()
+    title = models.CharField(max_length=200, help_text="The name of the todo")
+    description = models.TextField(help_text="Informal description what the todo is about. Provide here useful links for instance")
 
     priority = models.CharField(max_length=1, choices=priorities, default='C', verbose_name='priority', help_text="The importance of a todo.") # Rename to priority.
     difficulty = models.IntegerField(default=0, help_text="The estimated difficulty to complete the todo (Give it a value from 1 to 10 where 10 is most difficult).")

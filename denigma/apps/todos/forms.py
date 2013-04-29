@@ -14,10 +14,10 @@ from models import Todo
 
 
 class TodoForm(ModelForm):
-    start_date = DateTimeField(initial=datetime.now(), required=False)
-    stop_date = DateTimeField(initial=datetime.now(), required=False)
-    categories = ModelMultipleChoiceField(Entry.objects.all().order_by('title'), required=False, widget=MultipleSelectWithPop)
-    executor = ModelMultipleChoiceField(User.objects.all().order_by('username'), required=False)
+    start_date = DateTimeField(initial=datetime.now(), required=False, help_text="Optional")
+    stop_date = DateTimeField(initial=datetime.now(), required=False, help_text="Optional")
+    categories = ModelMultipleChoiceField(Entry.objects.all().order_by('title'), required=False, widget=MultipleSelectWithPop, help_text="The categories which this todo belongs to. It also be used to assign arbitrary kind of labels")
+    executor = ModelMultipleChoiceField(User.objects.all().order_by('username'), required=False, help_text="The assigned user who should execute the todo (Optional).")
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
