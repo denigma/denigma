@@ -19,21 +19,21 @@ class Todo(models.Model): # Rename To Duty
     title = models.CharField(max_length=200)
     description = models.TextField()
 
-    priority = models.CharField(max_length=1, choices=priorities, default='C', verbose_name='priority') # Rename to priority.
-    difficulty = models.IntegerField(default=0)
-    progress = models.IntegerField(default=0)
-    value = models.IntegerField(default=1)
+    priority = models.CharField(max_length=1, choices=priorities, default='C', verbose_name='priority', help_text="The importance of a todo.") # Rename to priority.
+    difficulty = models.IntegerField(default=0, help_text="The estimated difficulty to complete the todo (Give it a value from 1 to 10 where 10 is most difficult).")
+    progress = models.IntegerField(default=0, help_text="The progress of the task in Percentage.")
+    value = models.IntegerField(default=1, help_text="The <a href='Data Credit'>Data Credit</a> value that should be given to the executor on successful completion.")
 
     created = models.DateField(auto_now_add=True) # 'creation date'
     updated = models.DateField(auto_now=True)
-    start_date = models.DateField(blank=True, null=True)
-    stop_date = models.DateField(blank=True, null=True)
+    start_date = models.DateField(blank=True, null=True, help_text="Optional")
+    stop_date = models.DateField(blank=True, null=True, help_text="Optional")
     #finished = models.DateField(blank=True, null=True)
     creator = models.ForeignKey(User, related_name='todos', blank=True, verbose_name=_("Creator")) # Rename to creator.
-    executor = models.ManyToManyField(User, related_name='assigned_todos', blank=True, null=True, verbose_name=_("Executors")) #
-    categories = models.ManyToManyField('data.Entry', related_name='todo', blank=True, null=True)
-    done = models.BooleanField()
-    onhold = models.BooleanField(default=False)
+    executor = models.ManyToManyField(User, related_name='assigned_todos', blank=True, null=True, verbose_name=_("Executors"), help_text="The assigned user who should execute the todo (Optional).") #
+    categories = models.ManyToManyField('data.Entry', related_name='todo', blank=True, null=True, help_text="The categories which this todo belongs to. It also be used to assign arbitrary kind of labels")
+    done = models.BooleanField(help_text="Check this if the todo is successfully completed.")
+    onhold = models.BooleanField(default=False, help_text="Check this if the todo was put on hold.")
 
 
     #deadlines?
