@@ -85,12 +85,12 @@ daemon==1.0
 
 # Documentation
 sphinx-me
+
 # Donation
 -e git://github.com/denigma/donation.git#egg=donation
 
-# Documentation
-#sphinx
-#sphinx-me
+# Memcache
+-e git://github.com/jbalogh/django-pylibmc.git#egg=django-pylibmc
 
 # Video
 redis

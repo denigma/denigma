@@ -140,6 +140,20 @@ ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, 'admin/')
 # Subdirectory of COMPRESS_ROOT to store the cached media files in
 COMPRESS_OUTPUT_DIR = 'cache'
 
+# Memcache
+CACHES = {
+    'default': {
+        'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
+        'LOCATION': 'localhost:11211',
+        'TIMEOUT': 500,
+        'BINARY': True,
+        'OPTIONS': { # Maps to pylibmc "behaviours"
+            'tcp_nodelay': True,
+            'ketama': True# }
+            }
+    }
+}
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '$&li378l3_8wform1%!hphxb3_#bqomk!302kplo)16j1tp)z#'
 
