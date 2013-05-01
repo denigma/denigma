@@ -181,6 +181,9 @@ MIDDLEWARE_CLASSES = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'track.middleware.VisitorTrackMiddleware',
     'track.middleware.BannedIPMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 #    #CMS:
 #    "cms.middleware.multilingual.MultilingualURLMiddleware',
 ]
