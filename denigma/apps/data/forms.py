@@ -64,7 +64,7 @@ class EntryForm(ModelForm):
 
     class Meta:
         model = Entry
-        exclude = ('slug', 'creator', 'updates', 'publisher', 'pub_date', 'tagged')
+        exclude = ('slug', 'creator', 'updates', 'publisher', 'pub_date', 'tagged', 'html', 'brief_html')
         #widgets = {'images': FilteredSelectMultiple(verbose_name="Images", is_stacked=True,)}
 #
 #    class Media:
