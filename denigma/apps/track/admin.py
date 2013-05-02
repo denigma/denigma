@@ -42,7 +42,7 @@ class ActivityAdmin(admin.ModelAdmin):
 
 
 class BannedIPAdmin(admin.ModelAdmin):
-    search_fields = ('io_address',)
+    search_fields = ('ip_address',)
 
 
 admin.site.register(Visitor, VisitorAdmin)
