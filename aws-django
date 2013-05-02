@@ -366,6 +366,23 @@ http://${PUBLIC_DNS}/
 EOF
 }
 
+setup_memcache() {
+    sudo aptitude install libmemcached-dev
+}
+
+setup_mailman() {
+    sudo apt-get install bzr python-setuptools python-dev build-essential
+    bzr branch lp:mailman
+    bzr branch lp:mailman.client
+    bzr branch lp:postorius
+    bzr branch lp:~mailman-coders/postorius/postorius_standalone
+    cd mailman
+    python bootstrap.py
+    bin/buildout
+    bin/test
+    bin/mailman start
+}
+
 get_options $*
 handle_defaults
 
@@ -385,5 +402,6 @@ setup_statics
 configure_local_settings
 activate_webserver
 install_mysql
+setup_memcache
 
 print_django_info
