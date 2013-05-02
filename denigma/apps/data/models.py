@@ -160,6 +160,27 @@ class Content(Title):
             text = self.text
         return text[:int(limit)].replace('Abstract\r\n========', '') + '...'
 
+    def save_html(self, *args, **kwargs):
+         print("save")
+         self.render()
+         #print(self.html)
+         super(Content, self.save(*args, **kwargs))
+
+    def is_rest(self):
+        """returns True if entry is tagged to be fully encoded in reStructuredText."""
+        if "rest" in [tag.name for tag in self.tags.all()] or "reST" in [category.name for category in self.categories.all()]:
+            return True
+        return False
+
+    def render(self):
+        print("render")
+        if self.is_rest():
+             self.html = mark_safe(pubmed_links(recross(markdown(reST(negle(hyper(self.text + "  <b><a href='/data/entry/update/%s'>o</a></b>" % self.slug)))))))
+             self.brief_html = mark_safe(pubmed_links(recross(markdown(reST(negle(hyper(self.brief())))))))
+        else:
+            self.html = mark_safe(pubmed_links(recross(hyper(markdown(self.text + "  <b><a href='/data/entry/update/%s'>o</a></b>" % self.slug)))))
+            self.brief_html = mark_safe(pubmed_links(recross(hyper(markdown(self.brief())))))
+
     class Meta:
         abstract = True
 
@@ -225,93 +246,87 @@ class Entry(Content):
             #parent, = Change.objects.filter(of=self.parent) or [None]
         return parent
 
-    # def save(self, *args, **kwargs):
-    #     #signals.tags_added.send("siste", tags="tags", instance="instance")
-    #     self.Change = Change
-    #     #print("entry model save() called.")
-    #     if not self.pk:
-    #         self.creator = self.creator or self.user
-    #         if self.published:
-    #             self.publisher = self.publisher or self.user
-    #         super(Content, self).save(*args, **kwargs)
-    #         if hasattr(self, 'post'): # Get initial data from post if available.
-    #             post = self.post
-    #             try:
-    #                 self.created = post.created
-    #                 self.updated = post.updated
-    #                 self.published = post.published
-    #                 self.title = post.title
-    #                 self.text = post.text
-    #                 parent = None
-    #                 self.change = Change(title=self.title, text=self.text, url=self.url, of=self,
-    #                     by=self.user, comment=self.comment, parent=parent, initial=True)
-    #                 self.change.save()
-    #
-    #                 tags = post.tags.all()
-    #                 if tags:
-    #                     signals.tags_added.send("Post", tags=tags, instance=self)
-    #                 for tag in tags:
-    #                     tag, created = Tag.objects.get_or_create(name=tag.name)
-    #                     self.tagged.add(tag)
-    #                     #self.tagged =  Tag.objects.all()
-    #                 self.tags_pre_clear = [tag.name for tag in self.tags.all()]
-    #
-    #                 # Deactivate.
-    #
-    #                 self.images = post.images.all()
-    #
-    #             except Exception as e:
-    #                 print("data.models.Entry.save: %s (%s %s)" % (e, post.pk, post.title))
-    #
-    #         else:
-    #             print("data.models.Entry.save(): Searching for parent")
-    #             parent = self.get_parent_change()
-    #             self.change = Change(title=self.title, text=self.text, url=self.url,
-    #                 of=self, by=self.user, comment=self.comment, parent=parent, initial=True)
-    #             #print("data.models.Entry.save(): self.change = %s" % self.change)
-    #             #initial.tags = self.tags.all()
-    #             self.change.save()
-    #             self.tags_pre_clear = [tag.name for tag in self.tags.all()]
-    #             self.categories_pre_clear = [category.name for category in
-    #                                          self.categories.all()]
-    #
-    #     else:
-    #         changes = []
-    #         #print("Title %s vs. %s" % (self.title, self.original.title))
-    #         if self.title != self.original.title:
-    #             changes.append('title')
-    #         if self.slug != self.original.slug:
-    #             changes.append('slug')
-    #         if self.text != self.original.text:
-    #             changes.append('text')
-    #         if self.url != self.original.url:
-    #             changes.append('urls')
-    #         if self.parent != self.original.parent:
-    #             changes.append('parent')
-    #
-    #         if changes:
-    #             #print(changes)
-    #             #parent = Change.objects.filter(of=self.parent)
-    #             parent = self.get_parent_change()
-    #             self.change = Change(title=self.title, slug=self.slug, text=self.text, url=self.url,
-    #                 of=self, by=self.user, comment=self.comment, parent=parent)
-    #
-    #             self.change.save()
-    #             self.change.images.add(*self.images.all())
-    #             self.change.tags.add(*self.tags.all())
-    #             #self.change.tagged.add(*self.tagged.all())
-    #             self.change.categories.add(*self.categories.all())
-    #
-    #     self.render()
-    #     super(Content, self).save(*args, **kwargs)
-    #     self.tags_pre_clear = [tag.name for tag in self.tags.all()]
-    #     self.categories_pre_clear = [category.name for category in self.categories.all()]
+    def save(self, *args, **kwargs):
+        #signals.tags_added.send("siste", tags="tags", instance="instance")
+        self.Change = Change
+        #print("entry model save() called.")
+        if not self.pk:
+            self.creator = self.creator or self.user
+            if self.published:
+                self.publisher = self.publisher or self.user
+            super(Content, self).save(*args, **kwargs)
+            if hasattr(self, 'post'): # Get initial data from post if available.
+                post = self.post
+                try:
+                    self.created = post.created
+                    self.updated = post.updated
+                    self.published = post.published
+                    self.title = post.title
+                    self.text = post.text
+                    parent = None
+                    self.change = Change(title=self.title, text=self.text, url=self.url, of=self,
+                        by=self.user, comment=self.comment, parent=parent, initial=True)
+                    self.change.save()
 
-    def save_html(self, *args, **kwargs):
-         print("save")
-         self.render()
-         #print(self.html)
-         super(Content, self.save(*args, **kwargs))
+                    tags = post.tags.all()
+                    if tags:
+                        signals.tags_added.send("Post", tags=tags, instance=self)
+                    for tag in tags:
+                        tag, created = Tag.objects.get_or_create(name=tag.name)
+                        self.tagged.add(tag)
+                        #self.tagged =  Tag.objects.all()
+                    self.tags_pre_clear = [tag.name for tag in self.tags.all()]
+
+                    # Deactivate.
+
+                    self.images = post.images.all()
+
+                except Exception as e:
+                    print("data.models.Entry.save: %s (%s %s)" % (e, post.pk, post.title))
+
+            else:
+                print("data.models.Entry.save(): Searching for parent")
+                parent = self.get_parent_change()
+                self.change = Change(title=self.title, text=self.text, url=self.url,
+                    of=self, by=self.user, comment=self.comment, parent=parent, initial=True)
+                #print("data.models.Entry.save(): self.change = %s" % self.change)
+                #initial.tags = self.tags.all()
+                self.change.save()
+                self.tags_pre_clear = [tag.name for tag in self.tags.all()]
+                self.categories_pre_clear = [category.name for category in
+                                             self.categories.all()]
+
+        else:
+            changes = []
+            #print("Title %s vs. %s" % (self.title, self.original.title))
+            if self.title != self.original.title:
+                changes.append('title')
+            if self.slug != self.original.slug:
+                changes.append('slug')
+            if self.text != self.original.text:
+                changes.append('text')
+            if self.url != self.original.url:
+                changes.append('urls')
+            if self.parent != self.original.parent:
+                changes.append('parent')
+
+            if changes:
+                #print(changes)
+                #parent = Change.objects.filter(of=self.parent)
+                parent = self.get_parent_change()
+                self.change = Change(title=self.title, slug=self.slug, text=self.text, url=self.url,
+                    of=self, by=self.user, comment=self.comment, parent=parent)
+
+                self.change.save()
+                self.change.images.add(*self.images.all())
+                self.change.tags.add(*self.tags.all())
+                #self.change.tagged.add(*self.tagged.all())
+                self.change.categories.add(*self.categories.all())
+
+        self.render()
+        super(Content, self).save(*args, **kwargs)
+        self.tags_pre_clear = [tag.name for tag in self.tags.all()]
+        self.categories_pre_clear = [category.name for category in self.categories.all()]
 
     def __unicode__(self):
         return self.title
@@ -340,20 +355,6 @@ class Entry(Content):
     def content_link(self):
         return self.text + "\n\n  <b><a href='/data/entry/update/%s'>o</a></b>" % self.slug
 
-    def is_rest(self):
-        """returns True if entry is tagged to be fully encoded in reStructuredText."""
-        if "rest" in [tag.name for tag in self.tags.all()] or "reST" in [category.name for category in self.categories.all()]:
-            return True
-        return False
-
-    def render(self):
-        print("render")
-        if self.is_rest():
-             self.html = mark_safe(pubmed_links(recross(markdown(reST(negle(hyper(self.text + "  <b><a href='/data/entry/update/%s'>o</a></b>" % self.slug)))))))
-             self.brief_html = mark_safe(pubmed_links(recross(markdown(reST(negle(hyper(self.brief())))))))
-        else:
-            self.html = mark_safe(pubmed_links(recross(hyper(markdown(self.text + "  <b><a href='/data/entry/update/%s'>o</a></b>" % self.slug)))))
-            self.brief_html = mark_safe(pubmed_links(recross(hyper(markdown(self.brief())))))
 
     class Meta:
         verbose_name_plural = "Entries"
