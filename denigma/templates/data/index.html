@@ -69,6 +69,10 @@
         </div>
     </div>
 
+    {% if user.is_superuser %}
+        <a href="{% url 'rendering' %}">Rendering</a>
+    {% endif %}
+
     {% with entry as object %}
         {% include "comments/wrapper.html" %}
     {% endwith %}
