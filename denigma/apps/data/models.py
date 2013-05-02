@@ -31,6 +31,74 @@ except Exception as e:
     print ("data.models: %s" % e)
 
 
+#from blog.templatetags.crosslink import recross
+from blog.templatetags.hyperlink import hyper
+#from blog.templatetags.negletion import negle, neglete
+#from lifespan.templatetags.pubmedlink import pubmed_links
+from data.templatetags.rendering import markdown, reST
+#
+###
+def pubmed_links(value):
+    rc = re.compile('(?P<pre>[\[\;\s])(?P<id>[1-9]\d{6,})(?P<post>[\]\;\s])')
+    def translate(match): #http://www.ncbi.nlm.nih.gov/pubmed/
+        return '%s<a href="/datasets/reference/%s">%s</a>%s' % \
+               (match.group('pre'), match.group('id'), match.group('id'), match.group('post'))
+    return mark_safe(rc.sub(translate, value))
+
+
+def recross(text):
+    """Takes a text and replaces words that match a key in the posts dictionary with
+    the associated cross-linked value, return the changed text."""
+    entries = dict([(e.title, u'<a href="{0}">{1}</a>'.format(e.get_absolute_url(), e.title))\
+            for e in Entry.objects.all()])
+    if entries: # Check if whether database is non-empty (as it is by setting up).
+
+        # Sorts according to term length (long terms first):
+        listed_entries = list(entries)
+        listed_entries.sort(key=len)
+        listed_entries.reverse()
+
+        rc = re.compile(r'(?P<pre>\W?)(?P<term>%s)(?P<post>\W|s)' % '|'.join(map(re.escape, listed_entries)))
+        def translate(match):
+            return match.group('pre')+entries[match.group('term')]+match.group('post')
+        return rc.sub(translate, text)
+    return text
+
+
+def negle(value):
+    """Presevers image urls in combination with neglete wrapped around
+    restructedtext."""
+    return value.replace('<http://', '#~#')\
+                .replace('http://', "linkaging")\
+                .replace('#~#', '<http://')\
+                .replace("<b><a href='/data/entry/update/", '\n\nStArTcOnTeNt')\
+                .replace("'>o</a></b>", 'EnDcOnTeNt')#.replace('src="http://', 'linkimage').
+    # Leaving off the src enables urls in [] but disables plain urls.
+    # Exchanging of the middle replace by the commented out leads to the opposite effect
+
+header1 = re.compile("<p>#(.+)</p>")
+header2 = re.compile("<p>##(.+)")
+header3 = re.compile("<p>###(.+)")
+header4 = re.compile("<p>####(.+)")
+
+
+def neglete(value):
+    """Negletes the from ReStructured Text performed html demarkuping."""
+    value = value.replace('&lt;', '<')\
+         .replace('&quot;', '"')\
+         .replace('&gt;', '>')\
+         .replace('linkaging', 'http://')\
+         .replace('\n\nStArTcOnTeNt', "<b><a href='/data/entry/update/")\
+         .replace('StArTcOnTeNt', "<b><a href='/data/entry/update/")\
+         .replace('</p>\n<p>StArTcOnTeNt', " <b><a href='/data/entry/update/")\
+         .replace('EnDcOnTeNt', "'>o</a></b>")  #.replace('linkimage', 'src="http://')\
+    value = header4.sub(r"<h4>\1</h4>", value)
+    value = header3.sub(r"<h3>\1</h3><p>", value)
+    value = header2.sub(r"<h2>\1</h2><p>", value)
+    value = header1.sub(r"<h1>\1</h1>", value)
+####
+
+
 class Title(MPTTModel):
     """Abstract title with capability of auto-generating a slug."""
     title = models.CharField(_('title'), max_length=255, db_index=True) #, unique=True?
@@ -71,6 +139,9 @@ class Content(Title):
     url = models.CharField(_('url'), max_length=255, blank=True, null=True) #,
     images = models.ManyToManyField('media.Image', blank=True, verbose_name=_('images'))
 
+    html = models.TextField(blank=True, null=True)
+    brief_html = models.TextField(blank=True, null=True)
+
     def save(self, *args, **kwargs):
         #print("%s content model save() called" % self.__class__)
         super(Title, self).save(*args, **kwargs)
@@ -79,7 +150,7 @@ class Content(Title):
         return "{0} {1} {2} {3}".format(self.title, len(self.text),
             len(self.tags.all()), len(self.images.all()))
 
-    def brief(self, limit=150):
+    def brief(self, limit=250):
         rc = re.compile(r'={2,}\r\n.{2,}\r\n={2,}')
         match = re.match(rc, self.text)
         if match:
@@ -154,86 +225,93 @@ class Entry(Content):
             #parent, = Change.objects.filter(of=self.parent) or [None]
         return parent
 
-    def save(self, *args, **kwargs):
-        #signals.tags_added.send("siste", tags="tags", instance="instance")
-        self.Change = Change
-        #print("entry model save() called.")
-        if not self.pk:
-            self.creator = self.creator or self.user
-            if self.published:
-                self.publisher = self.publisher or self.user
-            super(Content, self).save(*args, **kwargs)
-            if hasattr(self, 'post'): # Get initial data from post if available.
-                post = self.post
-                try:
-                    self.created = post.created
-                    self.updated = post.updated
-                    self.published = post.published
-                    self.title = post.title
-                    self.text = post.text
-                    parent = None
-                    self.change = Change(title=self.title, text=self.text, url=self.url, of=self,
-                        by=self.user, comment=self.comment, parent=parent, initial=True)
-                    self.change.save()
+    # def save(self, *args, **kwargs):
+    #     #signals.tags_added.send("siste", tags="tags", instance="instance")
+    #     self.Change = Change
+    #     #print("entry model save() called.")
+    #     if not self.pk:
+    #         self.creator = self.creator or self.user
+    #         if self.published:
+    #             self.publisher = self.publisher or self.user
+    #         super(Content, self).save(*args, **kwargs)
+    #         if hasattr(self, 'post'): # Get initial data from post if available.
+    #             post = self.post
+    #             try:
+    #                 self.created = post.created
+    #                 self.updated = post.updated
+    #                 self.published = post.published
+    #                 self.title = post.title
+    #                 self.text = post.text
+    #                 parent = None
+    #                 self.change = Change(title=self.title, text=self.text, url=self.url, of=self,
+    #                     by=self.user, comment=self.comment, parent=parent, initial=True)
+    #                 self.change.save()
+    #
+    #                 tags = post.tags.all()
+    #                 if tags:
+    #                     signals.tags_added.send("Post", tags=tags, instance=self)
+    #                 for tag in tags:
+    #                     tag, created = Tag.objects.get_or_create(name=tag.name)
+    #                     self.tagged.add(tag)
+    #                     #self.tagged =  Tag.objects.all()
+    #                 self.tags_pre_clear = [tag.name for tag in self.tags.all()]
+    #
+    #                 # Deactivate.
+    #
+    #                 self.images = post.images.all()
+    #
+    #             except Exception as e:
+    #                 print("data.models.Entry.save: %s (%s %s)" % (e, post.pk, post.title))
+    #
+    #         else:
+    #             print("data.models.Entry.save(): Searching for parent")
+    #             parent = self.get_parent_change()
+    #             self.change = Change(title=self.title, text=self.text, url=self.url,
+    #                 of=self, by=self.user, comment=self.comment, parent=parent, initial=True)
+    #             #print("data.models.Entry.save(): self.change = %s" % self.change)
+    #             #initial.tags = self.tags.all()
+    #             self.change.save()
+    #             self.tags_pre_clear = [tag.name for tag in self.tags.all()]
+    #             self.categories_pre_clear = [category.name for category in
+    #                                          self.categories.all()]
+    #
+    #     else:
+    #         changes = []
+    #         #print("Title %s vs. %s" % (self.title, self.original.title))
+    #         if self.title != self.original.title:
+    #             changes.append('title')
+    #         if self.slug != self.original.slug:
+    #             changes.append('slug')
+    #         if self.text != self.original.text:
+    #             changes.append('text')
+    #         if self.url != self.original.url:
+    #             changes.append('urls')
+    #         if self.parent != self.original.parent:
+    #             changes.append('parent')
+    #
+    #         if changes:
+    #             #print(changes)
+    #             #parent = Change.objects.filter(of=self.parent)
+    #             parent = self.get_parent_change()
+    #             self.change = Change(title=self.title, slug=self.slug, text=self.text, url=self.url,
+    #                 of=self, by=self.user, comment=self.comment, parent=parent)
+    #
+    #             self.change.save()
+    #             self.change.images.add(*self.images.all())
+    #             self.change.tags.add(*self.tags.all())
+    #             #self.change.tagged.add(*self.tagged.all())
+    #             self.change.categories.add(*self.categories.all())
+    #
+    #     self.render()
+    #     super(Content, self).save(*args, **kwargs)
+    #     self.tags_pre_clear = [tag.name for tag in self.tags.all()]
+    #     self.categories_pre_clear = [category.name for category in self.categories.all()]
 
-                    tags = post.tags.all()
-                    if tags:
-                        signals.tags_added.send("Post", tags=tags, instance=self)
-                    for tag in tags:
-                        tag, created = Tag.objects.get_or_create(name=tag.name)
-                        self.tagged.add(tag)
-                        #self.tagged =  Tag.objects.all()
-                    self.tags_pre_clear = [tag.name for tag in self.tags.all()]
-
-                    # Deactivate.
-
-                    self.images = post.images.all()
-
-                except Exception as e:
-                    print("data.models.Entry.save: %s (%s %s)" % (e, post.pk, post.title))
-
-            else:
-                print("data.models.Entry.save(): Searching for parent")
-                parent = self.get_parent_change()
-                self.change = Change(title=self.title, text=self.text, url=self.url,
-                    of=self, by=self.user, comment=self.comment, parent=parent, initial=True)
-                #print("data.models.Entry.save(): self.change = %s" % self.change)
-                #initial.tags = self.tags.all()
-                self.change.save()
-                self.tags_pre_clear = [tag.name for tag in self.tags.all()]
-                self.categories_pre_clear = [category.name for category in
-                                             self.categories.all()]
-
-        else:
-            changes = []
-            #print("Title %s vs. %s" % (self.title, self.original.title))
-            if self.title != self.original.title:
-                changes.append('title')
-            if self.slug != self.original.slug:
-                changes.append('slug')
-            if self.text != self.original.text:
-                changes.append('text')
-            if self.url != self.original.url:
-                changes.append('urls')
-            if self.parent != self.original.parent:
-                changes.append('parent')
-
-            if changes:
-                #print(changes)
-                #parent = Change.objects.filter(of=self.parent)
-                parent = self.get_parent_change()
-                self.change = Change(title=self.title, slug=self.slug, text=self.text, url=self.url,
-                    of=self, by=self.user, comment=self.comment, parent=parent)
-
-                self.change.save()
-                self.change.images.add(*self.images.all())
-                self.change.tags.add(*self.tags.all())
-                #self.change.tagged.add(*self.tagged.all())
-                self.change.categories.add(*self.categories.all())
-
-        super(Content, self).save(*args, **kwargs)
-        self.tags_pre_clear = [tag.name for tag in self.tags.all()]
-        self.categories_pre_clear = [category.name for category in self.categories.all()]
+    def save_html(self, *args, **kwargs):
+         print("save")
+         self.render()
+         #print(self.html)
+         super(Content, self.save(*args, **kwargs))
 
     def __unicode__(self):
         return self.title
@@ -267,6 +345,15 @@ class Entry(Content):
         if "rest" in [tag.name for tag in self.tags.all()] or "reST" in [category.name for category in self.categories.all()]:
             return True
         return False
+
+    def render(self):
+        print("render")
+        if self.is_rest():
+             self.html = mark_safe(pubmed_links(recross(markdown(reST(negle(hyper(self.text + "  <b><a href='/data/entry/update/%s'>o</a></b>" % self.slug)))))))
+             self.brief_html = mark_safe(pubmed_links(recross(markdown(reST(negle(hyper(self.brief())))))))
+        else:
+            self.html = mark_safe(pubmed_links(recross(hyper(markdown(self.text + "  <b><a href='/data/entry/update/%s'>o</a></b>" % self.slug)))))
+            self.brief_html = mark_safe(pubmed_links(recross(hyper(markdown(self.brief())))))
 
     class Meta:
         verbose_name_plural = "Entries"

@@ -645,3 +645,14 @@ class DictionaryView(ListView):
 def newEntry(request):
     return handlePopAdd(request, EntryForm, 'entry')
 
+def rendering(request):
+    entries = Entry.objects.all()
+    counter = 0
+    for entry in entries:
+        #print("%s: %s" % (counter, entry.title))
+        try: entry.save_html()
+        except Exception as e:
+            print(e)
+        counter += 1
+    return redirect('/')
+

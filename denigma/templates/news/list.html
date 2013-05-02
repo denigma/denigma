@@ -25,7 +25,7 @@
                 </div>
 
                 <div class="news_body">
-                    {{ anews.brief|markdown|hyper|recross|safe }}<b><a href="{{ anews.get_absolute_url }}">Read more</a></b>
+                    {{ anews.brief_html|safe }}<b><a href="{{ anews.get_absolute_url }}">Read more</a></b> {# |markdown|hyper|recross| #}
                 </div>
 
                 <div class="tags">

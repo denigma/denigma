@@ -23,7 +23,11 @@
 
         <div class="hero-unit well">
              <h2>{{ dashboard.title }}</h2>
-            {{ dashboard.content|markdown|hyper|recross|safe }}
+            {% if dashboard.html %}
+                {{ dashboard.html|safe }}
+            {% else %}
+                {{ dashboard.content|markdown|hyper|recross|safe }}
+            {% endif %}
             {% comment %}{% with dashboard as object %}
                 {% include "comments/wrapper.html" %}
             {% endwith %} {% endcomment %}
@@ -37,21 +41,33 @@
             <div class="span4">
             {% block column-1 %}
                 <h3>{{ research.title }}</h3>
-                {{ research.content|markdown|hyper|recross|safe }}
+                {% if research.html %}
+                    {{ research.html|safe }}
+                {% else %}
+                   {{ research.content|markdown|hyper|recross|safe }}
+                {% endif %}
                 <a class="btn" href="/about/matrix/I/">Become a Scientist &raquo;</a>
             {% endblock %}
             </div>
             <div class="span4">
             {% block column-2 %}
                 <h3>{{ programming.title }}</h3>
-                {{ programming.content|markdown|hyper|recross|safe }}
+                {% if programming.html %}
+                    {{ programming.html|safe }}
+                {% else %}
+                    {{ programming.content|markdown|hyper|recross|safe }}
+                {% endif %}
                 <a class="btn" href="/about/matrix/II/">Become a Developer &raquo;</a>
             {% endblock %}
             </div>
             <div class="span4">
             {% block column-3 %}
                 <h3>{{ design.title }}</h3>
-                {{ design.content|markdown|hyper|recross|safe }}
+                {% if design.html %}
+                    {{ design.html|safe }}
+                {% else %}
+                    {{ design.content|markdown|hyper|recross|safe }}
+                {% endif %}
                 <a class="btn" href="/about/matrix/III/">Become an Artist &raquo;</a>
             {% endblock %}
             </div>

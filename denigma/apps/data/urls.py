@@ -109,4 +109,6 @@ urlpatterns = patterns('data.views',
     url(r'viva/(?P<pk>\d?)', 'vivagraph', name='vivagraph'),
 
    # url(r'dictionary/$', DictionaryView.as_view(), name='dictionary')
+
+   url(r'rendering/$', 'rendering', name='rendering')
 )#234567891123456789212345678931234567894123456789512345678961234567897123456789

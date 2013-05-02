@@ -28,8 +28,16 @@
     <table width="100%">
         <tr>
             <td valign="top">
-                {{ denigma_description.content|markdown|hyper|recross|safe }} {# {% blocktrans %}{% endblocktrans %} #}
-                {{ denigma_rationality.content|markdown|hyper|recross|safe }} {#  {% blocktrans %}{% endblocktrans %} #}
+                {% if denigma_description.html %}
+                    {{ denigma_description.html|safe }}
+                {% else %}
+                    {{ denigma_description.content|markdown|hyper|recross|safe }} {# {% blocktrans %}{% endblocktrans %} #}
+                {% endif %}
+                {% if denigma_rationality.html %}
+                    {{ denigma_rationality.html|safe }}
+                {% else %}
+                    {{ denigma_rationality.content|markdown|hyper|recross|safe }} {#  {% blocktrans %}{% endblocktrans %} #}
+                {% endif %}
             </td>
             <td style="width: 500px">
                 <div>
