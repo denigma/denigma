@@ -37,6 +37,7 @@ from utils.count import Counter
 
 IDs = ['seq_id', 'entrez_gene_id']
 
+@login_required
 def functional_enrichment(terms, transcripts,  id='seq_id'):
     """Helper function to create annotation tables for functional enrichment."""
     if terms:
@@ -72,33 +73,39 @@ def functional_enrichment(terms, transcripts,  id='seq_id'):
         table = None
     return table
 
+@login_required
 def transcripts(request):
     filterset = TranscriptFilterSet(request.GET or None)
     return render_to_response('expressions/transcripts.html',
         {'filterset': filterset}, context_instance=RequestContext(request))
 
+@login_required
 def transcript_list(request):
     f = TranscriptFilterSet(request.GET, queryset=Transcript.objects.all())
     return render_to_response('expressions/transcripts.html', {'filter': f},
         context_instance=RequestContext(request))
 
+@login_required
 def index(request):
     entry = get("Expressions")
     return render_to_response('expressions/index.html', {'entry': entry},
                              context_instance=RequestContext(request))
 
+@login_required
 def profiles(request):
     profiles = Profile.objects.all()
     ctx = {'entry': get("Profiles"), 'profiles': profiles}
     return render_to_response('expressions/profiles.html', ctx,
         context_instance=RequestContext(request))
 
+@login_required
 def signatures(request):
     signatures = Signature.objects.all()
     ctx = {'entry': get("Signatures"), 'signatures': signatures}
     return render_to_response('expressions/signatures.html', ctx,
         context_instance=RequestContext(request))
 
+@login_required
 def signature(request, pk=None, ratio=2., pvalue=0.05, fold_change=None, exp=None, benjamini=None, name=None):
     terms = False
     id = 'seq_id'
@@ -244,7 +251,7 @@ class Intersection(object):
         return self.down# " ".join()
 
 
-
+@login_required
 def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, benjamini=None ):
     entry = get("Intersections")
     id = 'seq_id'
@@ -303,6 +310,7 @@ def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, se
     return render_to_response('expressions/intersections.html', ctx,
         context_instance=RequestContext(request))
 
+@login_required
 def intersections_table(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, benjamini=None):
     id = 'seq_id'
     ratio = float(ratio)
@@ -355,6 +363,7 @@ def intersections_table(request, ratio=2., pvalue=0.05, fold_change=None, exp=No
     }
     return render(request, 'expressions/intersections_table.html', ctx)
 
+@login_required
 def intersection(request, a, another, ratio=2., pvalue=0.05,
                  fold_change=None, exp=None, benjamini=None):
     terms = None
@@ -411,6 +420,7 @@ def intersection(request, a, another, ratio=2., pvalue=0.05,
     return render_to_response('expressions/intersection.html/', ctx,
         context_instance=RequestContext(request))
 
+@login_required
 def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, benjamini=None):
     """Common to all signature in a category."""
     terms = False
@@ -462,6 +472,7 @@ def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, b
     return render_to_response('expressions/meta.html', ctx,
         context_instance=RequestContext(request))
 
+@login_required
 def profile(request, pk):
     profile = Profile.objects.get(pk=pk)
     replicates = Replicate.objects.filter(profile=profile) #profile.replicates.all()
@@ -945,6 +956,7 @@ def calc_benjamini(signature):
         t[index].benjamini = benjamini_pvalue[1] #expression__
         t[index].save()
 
+@login_required
 def benjamini(request, pk):
     """This view takes a signature and calls a Benjamini Hochberg correction."""
     signature = Signature.objects.get(pk=pk)
@@ -953,6 +965,7 @@ def benjamini(request, pk):
     messages.add_message(request, messages.SUCCESS, _(msg))
     return redirect('/expressions/signatures/')
 
+@login_required
 def benjaminis(request):
     "Calls Benjamini Hochberg correction for all signatures in Denigma db."
     signatures = Signature.objects.all()
