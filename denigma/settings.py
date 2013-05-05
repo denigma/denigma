@@ -314,6 +314,7 @@ INSTALLED_APPS = [
     #'todo',
     'quests',
     'task',
+    #'files',
 
     # Communication
     'pastebin',
@@ -344,6 +345,7 @@ INSTALLED_APPS = [
     'alliance',
     'immuno',
     'ontology',
+    'network',
 
     'stats',
     'utils',

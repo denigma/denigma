@@ -119,6 +119,7 @@ urlpatterns += patterns("",
     url(r'^meta/', include('meta.urls')),
     url(r'^add/', include('add.urls')),
     url(r'^eva/', include('eva.urls')),
+    url(r'^network/', include('network.urls')),
 
     # Sites
     url(r'^alliance/', include('alliance.urls')),
