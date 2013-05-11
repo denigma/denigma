@@ -48,7 +48,7 @@ class TodoCreate(CreateView):
 class TodoList(TableFilter):
     model = Todo
     table_class = TodoTable
-    queryset = Todo.objects.all().order_by('-updated') #filter(done=False)
+    queryset = Todo.objects.all().order_by('-updated').filter(done=False)
     filterset = TodoFilterSet
     success_url = '/todos/'
 

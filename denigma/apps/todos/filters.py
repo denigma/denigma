@@ -19,6 +19,7 @@ class TodoFilterSet(FilterSet):
               'updated',
               'start_date',
               'stop_date',
+              'done',
 
               #'created', 'updated', 'start_date', 'stop_date'] #  rename to priority.
 )
