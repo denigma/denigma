@@ -95,3 +95,6 @@ sphinx-me
 # Video
 redis
 -e git://github.com/denigma/video#egg=video
+
+# Analytics
+-e git://github.com/clintecker/django-google-analytics.git#egg=google_analytics

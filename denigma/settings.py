@@ -278,6 +278,7 @@ INSTALLED_APPS = [
     #'ajax_filtered_fields',
     'mptt', # Hierarchy: Utilties for implementing a modified pre-order traversal tree.
     'pagedown', # Markdown preview editor
+    'google_analytics',
 
     # Comments and forms:
     'fluent_comments',
@@ -350,6 +351,7 @@ INSTALLED_APPS = [
     'stats',
     'utils',
     'add',
+
 
 ]
 
@@ -424,3 +426,5 @@ except ImportError:
 DONATION_NAME = 'Denigma'
 DONATION_NUMBER = 'The Digital Decipher Machine'
 PAYPAL_ID = 'daniel.wuttke@gmx.de'
+
+GOOGLE_ANALYTICS_MODEL = True
