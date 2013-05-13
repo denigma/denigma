@@ -5,6 +5,7 @@
 {% load render_table from django_tables2 %}
 {% load crispy_forms_tags %}
 {% load factor_linker %}
+{% load go_linker %}
 
 {% block head_title %}Signature: {{ signature.name }}{% endblock %}
 
@@ -45,6 +46,7 @@
                         {% endfor %}
                         </select>
                     </p>
+                    <p>Term: <input type="text" size="25" name="term" value={{ term }}></p>
                     <p>Terms: <input type="checkbox" name="terms" value="terms" /></p>
                     <input type="submit" value="Apply" />
                 </form>
@@ -58,7 +60,12 @@
     <h3>Upregulated entities</h3>
     <span style="color:red">
         {% if id == 'entrez_gene_id' %}
-            {{ transcripts_up|factor_links }}
+            {% if term == 'factors' %}
+                {{ transcripts_up|factor_links }}
+            {% else %}
+                {{ transcripts_up|go_links:term }}
+            {% endif %}
+
         {% else %}
             {{ transcripts_up|factor_links:"ensembl_gene_id" }}
         {% endif %}
@@ -67,7 +74,12 @@
     <h3>Downregulated entities</h3>
     <span style="color:green">
         {% if id == 'entrez_gene_id' %}
-            {{ transcripts_down|factor_links }}
+            {% if term == 'factors' %}
+                {{ transcripts_down|factor_links }}
+            {% else %}
+                {{ transcripts_down|go_links:term }}
+            {% endif %}
+
         {% else %}
             {{ transcripts_down|factor_links:"ensembl_gene_id" }}
             {% comment %}

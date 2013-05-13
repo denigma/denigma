@@ -37,7 +37,7 @@ from utils.count import Counter
 
 IDs = ['seq_id', 'entrez_gene_id']
 
-@login_required
+
 def functional_enrichment(terms, transcripts,  id='seq_id'):
     """Helper function to create annotation tables for functional enrichment."""
     if terms:
@@ -109,6 +109,8 @@ def signatures(request):
 def signature(request, pk=None, ratio=2., pvalue=0.05, fold_change=None, exp=None, benjamini=None, name=None):
     terms = False
     id = 'seq_id'
+    term = "factors"
+    print("Term %s " % request.GET['term'])
     if request.GET:
         if 'ratio' in request.GET and request.GET['ratio']:
             ratio = float(request.GET['ratio'])
@@ -124,8 +126,15 @@ def signature(request, pk=None, ratio=2., pvalue=0.05, fold_change=None, exp=Non
             terms = True
         else:
             terms = False
+        if 'term' in request.GET and request.GET['term']:
+            term = request.GET['term']
+        else:
+            term = "factors"
+    elif 'term' in request.POST:
+        term = request.POST['term']
+    print(term)
     if pk: signature = Signature.objects.get(pk=pk)
-    elif name:  signature = Signature.objects.get(name=name)
+    elif name: signature = Signature.objects.get(name=name)
 
     if not exp:
         transcripts = signature.transcripts.filter((Q(ratio__gt=ratio)
@@ -196,7 +205,8 @@ def signature(request, pk=None, ratio=2., pvalue=0.05, fold_change=None, exp=Non
            'table_down': table_down,
            'table_diff': table_diff,
            'ids': IDs,
-           'id': id
+           'id': id,
+           'term': term # GO term for go_filter
     }
     return render_to_response('expressions/signature.html', ctx,
         context_instance=RequestContext(request))
@@ -1086,6 +1096,7 @@ def map_signatures(request):
     mapped = 0
     total = 0
     for signature in signatures:
+        if not "Timeless" in signature.name: continue
         print("Signature: %s" % signature)
         taxid = signature.species.taxid
         transcripts = signature.transcripts.all()

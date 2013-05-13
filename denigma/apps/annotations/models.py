@@ -304,6 +304,9 @@ class GO(models.Model):
     def __unicode__(self):
         return u'%s, %s %s %s' % (self.go_id, self.go_term, self.entrez_gene_id, entrez_gene_id)
 
+    def get_absolute_url(self):
+        return u"http://www.ncbi.nlm.nih.gov/gene/%d" % self.entrez_gene_id
+
     class Meta:
          verbose_name = u"GO"
 
@@ -425,7 +428,7 @@ class Candidate(models.Model):
     p_value = models.FloatField(db_column='p-Value', null=True, blank=True)
     taxid = models.IntegerField()
     query = models.CharField(max_length = 50)
-    classification = models.CharField(max_length = 30)    
+    classification = models.CharField(max_length = 30)
     seed = models.BooleanField()
     yeast_homolog_id = models.CharField(max_length = 500, default='', blank=True)
     worm_homolog_id = models.CharField(max_length = 500, default='', blank=True)
@@ -493,9 +496,11 @@ class Ortholog(models.Model):
         return u"{0}: {1} {2} | {3}: {4} {5}".format(self.ortholog, 
                                                      self.ortholog_symbol,
                                                      self.ortholog_taxid,
-                                                     self.gene_id,
+                                                     self.gene,
                                                      self.gene_symbol,
                                                      self.gene_taxid)
+
+
 
 
 # The following modules are in development:

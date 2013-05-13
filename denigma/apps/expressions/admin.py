@@ -31,6 +31,7 @@ admin.site.register(Replicate)
 admin.site.register(Contrast)
 admin.site.register(Array)
 admin.site.register(Probe)
+admin.site.register(Set)
 
 
 ##class ChoiceInline(admin.TabularInline): #StackedInline
