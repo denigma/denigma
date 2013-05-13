@@ -110,7 +110,6 @@ def signature(request, pk=None, ratio=2., pvalue=0.05, fold_change=None, exp=Non
     terms = False
     id = 'seq_id'
     term = "factors"
-    print("Term %s " % request.GET['term'])
     if request.GET:
         if 'ratio' in request.GET and request.GET['ratio']:
             ratio = float(request.GET['ratio'])
