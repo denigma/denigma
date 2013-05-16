@@ -8,7 +8,6 @@ from django.utils.safestring import mark_safe
 from lifespan.models import Factor
 #except: Factor = None
 
-
 register = template.Library()
 
 @register.filter
@@ -21,7 +20,7 @@ def factor_links(value, id='entrez_gene_id'):
     def translate(match):
         if match.group(0) in factors:
             #print("lifespan.templatetag.factor_linker: Found factor %s" % match.group(0))
-            return "<a href=%s>%s</a>" % (factors[match.group(0)].get_absolute_url(), match.group(0), )
+            return "<a href=%s>%s</a>" % (factors[match.group(0)].get_absolute_url(), factors[match.group(0)].symbol, )
         else:
             return match.group(0)
     #if isinstance(value, str): pass
