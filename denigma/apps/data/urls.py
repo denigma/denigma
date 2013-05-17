@@ -28,7 +28,7 @@ urlpatterns = patterns('data.views',
 
     url(r'^entry/view/(?P<slug>.+)', EntryView.as_view(), name='view-entry'),
     url(r'^entry/create/$', EntryCreate.as_view(), name='create-entry'),
-    url(r'^entry/generate/(?P<title>.+)', Generate.as_view(), name='generate-entry'),
+    url(r'^entry/generate/(?P<title>.+)', login_required(Generate.as_view()), name='generate-entry'),
     url(r'^entry/update/(?P<pk>\d+)', login_required(EntryUpdate.as_view()), name='update-entry'),
     url(r'^entry/update/(?P<slug>.+)', login_required(EntryUpdate.as_view()), name='update-entry'),
     url(r'^entry/delete/(?P<pk>\d+)', login_required(EntryDelete.as_view()), name='delete-entry'),
