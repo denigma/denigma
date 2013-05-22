@@ -609,6 +609,7 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
     note = models.CharField(max_length=250, null=True, blank=True)
     type = models.CharField(max_length=25, null=True, blank=True) # Gene, or drug
     types = models.ManyToManyField(Type, blank=True)
+    pdb = models.CharField(max_length=10, blank=True, null=True)
     
     def __unicode__(self):
         return self.symbol

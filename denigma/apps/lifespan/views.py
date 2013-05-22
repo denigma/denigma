@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import json
+
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response,redirect
 from django.template import RequestContext
@@ -570,7 +572,7 @@ class FactorDetail(DetailView):
     context_object_name = 'factor'
     template_name = 'lifespan/factor.html'
     #
-#    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs):
 #        print("Get context data")
 #        if 'symbol' in kwargs:
 #            self.symbol = kwargs['symbol']
@@ -578,8 +580,10 @@ class FactorDetail(DetailView):
 #            del kwargs['symbol']
 #        else:
 #            self.symbol = None
-#        context = super(FactorDetail, self).get_context_data(**kwargs)
-#        return context
+        context = super(FactorDetail, self).get_context_data(**kwargs)
+        if self.object.pdb: context['pdb'] = json.dumps(self.object.pdb)
+        else: context['pdb'] = None
+        return context
 #
     #def get_queryset(self):
         #print("Getting queryset")
