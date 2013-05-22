@@ -33,12 +33,13 @@ def mapping():
     from lifespan.models import Factor
     factors = Factor.objects.all()
     for factor in factors:
-        pdb = entrez_id_to_pdb(factor.entrez_gene_id)
-        print("%s: %s" % (factor.symbol, pdb))
-        factor.pdb = pdb.split(';')[0]
-        if len(pdb) < 250:
-            try: factor.save()
-            except Exception as e: print e, pdb, factor.pdb
+        if factor.entrez_gene_id:
+            pdb = entrez_id_to_pdb(factor.entrez_gene_id)
+            print("%s: %s" % (factor.symbol, pdb))
+            factor.pdb = pdb.split(';')[0]
+            if len(pdb) < 250:
+                try: factor.save()
+                except Exception as e: print e, pdb, factor.pdb
 
 if __name__ == '__main__':
     print(entrez_id_to_pdb('856399'))
