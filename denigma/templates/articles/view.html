@@ -18,7 +18,7 @@
         {% include "articles/article.html" %}
     {% else %}
          {% if user.is_authenticated %}
-               {% include "data/entry.html" %}
+               {% include "articles/article.html" %}
          {% else %}
          SECRET!
         {% endif %}
