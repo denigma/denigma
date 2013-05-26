@@ -17,7 +17,7 @@ class EntryIndex(indexes.SearchIndex, indexes.Indexable):
         return Entry
 
     def index_queryset(self):
-        return self.get_model().objects.filter(created__lte=datetime.datetime.now(), published=True)
+        return self.get_model().objects.filter(created__lte=datetime.datetime.now()) #, published=True
 
 
 class ChangeIndex(indexes.SearchIndex, indexes.Indexable):

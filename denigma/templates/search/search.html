@@ -27,11 +27,23 @@
                         {% for result in page.object_list %}
                             {# {% if result.object.published %} #}
                             <p>
-                                <b><a href="{{ result.object.get_absolute_url }}">{{ result.object }}</a></b>
+                            {% if not result.object.published %}
                                 {% if result.object.categories %}
-                                    (<a href={% url 'detail-entry' result.object.slug %}>View</a> |
-                                    <a href={% url 'update-entry' result.object.pk %}>Update</a>)
+                                     {% if user.is_authenticated %}
+                                         <b><a href="{{ result.object.get_absolute_url }}">{{ result.object }}</a></b>
+                                         (<a href={% url 'detail-entry' result.object.slug %}>View</a> |
+                                          <a href={% url 'update-entry' result.object.pk %}>Update</a>) SECRET
+                                     {% endif %}
+                                {% else %}
+                                     <b><a href="{{ result.object.get_absolute_url }}">{{ result.object }}</a></b>
                                 {% endif %}
+                             {% else %}
+                                 <b><a href="{{ result.object.get_absolute_url }}">{{ result.object }}</a></b>
+                                 {% if result.object.categories %}
+                                     (<a href={% url 'detail-entry' result.object.slug %}>View</a> |
+                                      <a href={% url 'update-entry' result.object.pk %}>Update</a>)
+                                 {% endif %}
+                             {% endif %}
                             </p>
                         {% empty %}
                         {% endfor %}
