@@ -14,7 +14,7 @@
 {#{% block title %}{{ article.title }}{% endblock %}  #}
 
 {% block content %}
-    {% if object.published %}
+    {% if article.published %}
         {% include "articles/article.html" %}
     {% else %}
          {% if user.is_authenticated %}
