@@ -3,7 +3,7 @@ import os
 from random import random
 
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response, redirect, render
 from django.template import RequestContext
 from django.views.generic import  ListView, DetailView, CreateView, UpdateView, DeleteView, FormView, TemplateView
@@ -16,6 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import simplejson
 from django.conf import settings
 from django.http import Http404
+from django.core.servers.basehttp import FileWrapper
 
 import reversion
 from taggit.models import Tag, TaggedItem
@@ -678,9 +679,6 @@ def download(request, pk):
     input = open(os.path.join(settings.PROJECT_ROOT, 'documents', entry.slug+'.rst'), 'r')
 
     # Serve the file
-    from django.http import HttpResponse
-    from django.core.servers.basehttp import FileWrapper
-
     response = HttpResponse(FileWrapper(input), content_type='application/rst')
     response['Content-Disposition'] = 'attachment; filename="%s.rst"' % entry.slug
     return response
