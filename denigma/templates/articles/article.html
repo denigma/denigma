@@ -37,6 +37,9 @@
 {% if user.is_superuser %}
     | <b><a href={% url 'reference' article.slug %}>Reference</a></b>
 {% endif %}
+{% if user.is_authenticated %}
+| <b><a href="{% url 'download' article.pk %}">Download</a></b>
+{% endif %}
 {% if changes %}
     <hr>
     <h3>Revisions</h3>
@@ -44,6 +47,7 @@
         <li><a href="/data/change/{{ change.slug }}/">{{ change }}</a> {{ change.comment }}</li>
     {% endfor %}
 {% endif %}
+
 {% with article as object %}
     {% include "comments/wrapper.html" %}
 {% endwith %}

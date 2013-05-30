@@ -405,8 +405,7 @@ class GenerateRelation(Create):
         del self.target
 
         return initial
-
-
+    
 
 class Update(UpdateView):
     model = Entry
@@ -667,4 +666,22 @@ def rendering(request, entries=True, changes=True):
                 print(e)
             counter += 1
     return redirect('/')
+
+def download(request, pk):
+
+    # Generate the file
+    entry = Entry.objects.get(pk=pk)
+
+    output = open(os.path.join(settings.PROJECT_ROOT, 'documents', entry.slug+'.rst'), 'w')
+    output.write(entry.text.encode('ascii', 'ignore'))
+    output.close()
+    input = open(os.path.join(settings.PROJECT_ROOT, 'documents', entry.slug+'.rst'), 'r')
+
+    # Serve the file
+    from django.http import HttpResponse
+    from django.core.servers.basehttp import FileWrapper
+
+    response = HttpResponse(FileWrapper(input), content_type='application/rst')
+    response['Content-Disposition'] = 'attachment; filename="%s.rst"' % entry.slug
+    return response
 

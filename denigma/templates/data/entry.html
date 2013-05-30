@@ -56,6 +56,9 @@
 <br>
 <b><a href={% url 'update-entry' object.pk %}>Update entry</a></b>
 (<a href="/admin/data/entry/{{ object.pk }}/">Admin</a>) |
+{% if user.is_authenticated %}
+| <b><a href="{% url 'download' object.pk %}">Download</a></b>
+{% endif %}
 <b><a href={% url 'changes' object.pk %}>See changes</a></b>
 <b>{% if object.url %} | <a href={{ object.get_absolute_url }}>View on site</a>{% endif %}</b>
 {% if user.is_superuser %}

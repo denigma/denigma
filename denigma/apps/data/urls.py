@@ -110,5 +110,6 @@ urlpatterns = patterns('data.views',
 
    # url(r'dictionary/$', DictionaryView.as_view(), name='dictionary')
 
-   url(r'rendering/$', 'rendering', name='rendering')
+   url(r'rendering/$', 'rendering', name='rendering'),
+   url(r'download/(?P<pk>\d+)', 'download', name='download')
 )#234567891123456789212345678931234567894123456789512345678961234567897123456789
