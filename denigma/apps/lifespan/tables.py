@@ -4,7 +4,7 @@ import django_tables2 as tables
 
 from templatetags.pubmed_linker import pubmed_links
 
-from models import Intervention, Factor, Comparison
+from models import Intervention, Factor, Comparison, Variant
 
 
 class InterventionTable(tables.Table):
@@ -49,6 +49,41 @@ class FactorTable(tables.Table):
 #                   'alias', 'description', 'functional_description',
 #            'classification', 'manipulation,' 'observation',
 #            'mean','median', 'max', '_25', '_75')
+
+class VariantTable(tables.Table):
+
+    def render_polymorphism(self, value, record):
+         return mark_safe('''<a href=/lifespan/variant/%s>%s</a>''' % (record.id, value))
+
+    def render_name(self, value, record):
+        if not record.symbol:
+            return mark_safe('''<a href=/lifespan/factor/%s>%s</a>''' % (record.id, value))
+        return value
+
+    def render_factor(self, value, record):
+         return mark_safe('''<a href=/lifespan/factor/%s>%s</a>''' % (record.id, value))
+
+    def render_description(self, value, record):
+        return pubmed_links(value)
+
+    def render_ethnicity(self, value, record):
+         return mark_safe(", ".join([i.name for i in value.all()]))
+
+    def render_reference(self, value, record):
+         return mark_safe('''<a href=/datasets/reference/%s>%s</a>''' % (record.id, value.title))
+
+    class Meta:
+        model = Variant
+        attrs = {"class": "paleblue"}
+        fields = ('polymorphism', 'location', 'factor', 'odds_ratio', 'pvalue',
+                  'initial_number', 'replication_number', 'ethnicity',
+                  'age_of_cases',  'shorter_lived_allele', 'technology', 'study_type',
+                  'description', 'reference',  'choice')
+#        exclude = ('id', 'mapping', 'entrez_gene_id', 'ensembl_gene_id',
+#                   'alias', 'description', 'functional_description',
+#            'classification', 'manipulation,' 'observation',
+#            'mean','median', 'max', '_25', '_75')
+
 
 class ComparisonTable(tables.Table):
 

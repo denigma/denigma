@@ -4,6 +4,7 @@ import reversion
 
 from models import Study, Experiment, Measurement, Comparison, Epistasis, Strain
 from models import Type, Factor, Manipulation, Intervention, Regimen, Assay, Gender
+from models import Variant, StudyType, Population, State, Technology
 
 
 class StudyAdmin(reversion.VersionAdmin):
@@ -111,4 +112,9 @@ admin.site.register(Intervention, InterventionAdmin)
 admin.site.register(Regimen, RegimenAdmin)
 admin.site.register(Assay, AssayAdmin)
 admin.site.register(Gender)
+admin.site.register(Variant)
+admin.site.register(StudyType)
+admin.site.register(Population)
+admin.site.register(State)
+admin.site.register(Technology)
 

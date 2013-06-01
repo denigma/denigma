@@ -1,0 +1,16 @@
+{% extends "lifespan/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block head_title %}{{ action }} Variant{% endblock %}
+
+{% block hierarchy %}
+    » <a href="/lifespan/variants/">Variants</a>
+    » {{ action }}
+{% endblock %}
+
+{% block title %}{{ action }} Variant{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

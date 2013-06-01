@@ -2,7 +2,7 @@
 import json
 
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render_to_response,redirect
+from django.shortcuts import render_to_response,redirect, render
 from django.template import RequestContext
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
@@ -30,14 +30,14 @@ from data.views import Create, Update, Delete
 from data import get
 
 from models import (Study, Experiment, Measurement, Comparison, Intervention, Factor, Regimen, Strain,
-                   Manipulation)
+                   Manipulation, Variant)
 from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
                    ExperimentForm, DeleteExperimentForm,
                    ComparisonForm,
                    InterventionForm, DeleteInterventionForm, InterventionFilterSet,
-                   FactorForm, StrainForm,
-                   FilterForm, FactorFilterSet)
-from tables import ComparisonTable, InterventionTable, FactorTable
+                   FactorForm, StrainForm, StateForm, TechnologyForm, StudyTypeForm, PopulationForm,
+                   FilterForm, FactorFilterSet, VariantForm, VariantFilterSet)
+from tables import ComparisonTable, InterventionTable, FactorTable, VariantTable
 
 
 def index(request):
@@ -581,7 +581,7 @@ class FactorDetail(DetailView):
 #        else:
 #            self.symbol = None
         context = super(FactorDetail, self).get_context_data(**kwargs)
-        if self.object.pdb: context['pdb'] = json.dumps(self.object.pdb)
+        if self.object.pdb: context['pdb'] = json.dumps(self.object.pdb.split(';')[0])
         else: context['pdb'] = None
         return context
 #
@@ -635,6 +635,174 @@ class CreateFactor(Create):
     model = Factor
     form_class = FactorForm
     comment = 'Created factor.'
+
+
+"""Variants"""
+def variants(request, pk):
+    variant = Variant.objects.get(pk=pk)
+    return render(request, 'lifespan/variant.html', {'variant': variant})
+
+def add_variant(request):
+    form = VariantForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        with reversion.create_revision():
+            variant = form.save(commit=False)
+            form.save()
+            if isinstance(request.user, AnonymousUser):
+                request.user = User.objects.get(username="Anonymous")
+            reversion.set_user(request.user)
+            comment = "Added variant. %s" % request.POST['comment'] or ''
+            reversion.set_comment(comment)
+            log(request, variant, comment)
+            msg = "Successfully added variant."
+            messages.add_message(request, messages.SUCCESS, ugettext(msg))
+            return redirect('/lifespan/variant/%s' % variant.pk)
+    ctx = {'form': form, 'action': 'Add'}
+    return render(request, 'lifespan/variant_form.html', ctx)
+
+@login_required
+def edit_variant(request, pk):
+    variant = Variant.objects.get(pk=pk)
+    form = VariantForm(request.POST or None, instance=variant)
+    if request.method == "POST" and form.is_valid():
+        if "cancel" in request.POST:
+            return redirect('/lifespan/variant/%s' % pk)
+        with reversion.create_revision():
+            form.save()
+            reversion.set_user(request.user)
+            comment = request.POST['comment'] or "Changed variant"
+            reversion.set_comment(comment)
+            log(request, variant, comment)
+            return redirect('/lifespan/variant/%s' % pk)
+    ctx = {'variant': variant, 'form': form, 'action': 'Edit'}
+    return render(request, 'lifespan/variant_form.html', ctx)
+
+
+class VariantDetail(DetailView):
+    model = Variant
+    context_object_name = 'variant'
+    template_name = 'lifespan/variant.html'
+    #
+    def get_context_data(self, **kwargs):
+#        print("Get context data")
+#        if 'symbol' in kwargs:
+#            self.symbol = kwargs['symbol']
+#            #kwargs['slug'] = self.symbol
+#            del kwargs['symbol']
+#        else:
+#            self.symbol = None
+        context = super(VariantDetail, self).get_context_data(**kwargs)
+        return context
+#
+    #def get_queryset(self):
+        #print("Getting queryset")
+#        if self.symbol:
+#            qs = Factor.objects.filter(symbol__icontains=self.symbol)
+#        else:
+#            qs = Factor.objects.filter(pk=self.pk)
+#        return qs
+
+    def get_object(self, queryset=None):
+        """
+        Returns the object the view is displaying.
+        By default this requires `self.queryset` and a `pk` or `slug` argument
+        in the URLconf, but subclasses can override this to return
+        """
+        #print("Get object")
+        # Use a custom queryset if provided; this is required for subclasses
+        # like DateDetailView
+        if queryset is None:
+            queryset = self.get_queryset()
+        # Next, try looking up by primary key.
+        pk = self.kwargs.get('pk', None)
+        slug = self.kwargs.get('slug', None)
+        if pk is not None:
+            queryset = queryset.filter(pk=pk)
+        # Next, try looking up by slug.
+        elif slug is not None:
+            queryset = Variant.objects.filter(polymorphism=slug)
+            #slug_field = self.get_slug_field()
+            #queryset = queryset.filter(**{slug_field: slug})
+        # If none of those are defined, it's and error.
+        else:
+            raise AttributeError(u"Generic detail view %s must be called with "
+                                 u"either and object pk or a slug, you idiot!"
+                                 % self.__class__.__name__)
+        try:
+            obj = queryset.get()
+        except ObjectDoesNotExist:
+            raise Http404(_(u"No %(verbose_name)s found matching the query") %
+                          {'verbose_name': queryset.model._meta.verbose_name})
+        except MultipleObjectsReturned:
+            for obj in queryset:
+                if obj.polymorphism == slug:
+                    return obj
+        return obj
+
+
+class CreateVariant(Create):
+    model = Variant
+    form_class = VariantForm
+    comment = 'Created variant.'
+
+class VariantList(SingleTableView, FormView):
+    template_name = 'lifespan/variants.html'
+    context_object_name = 'variants'
+    table_class = VariantTable
+    form_class = FilterForm
+    success_url = '/lifespan/variants/'
+    model = Variant
+    query = None
+    symbol = None
+
+    def form_valid(self, form):
+        VariantList.query = form.cleaned_data['filter']
+        #FactorList.symbol = form.cleaned_data['symbol']
+        return super(VariantList, self).form_valid(form)
+
+    def form_invalid(self, form):
+        VariantList.query = None
+        return super(VariantList, self).form_valid(form)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(VariantList, self).get_context_data(*args, **kwargs)
+        context['form'] = FilterForm(initial={'filter': VariantList.query})
+        context['variantsfilter'] = self.variantsfilter
+        context['entry'] = get("Single Nucleotide Polymorphism")
+        return context
+
+    def get_queryset(self):
+        #if FactorList.symbol:
+        #   factors = factors.filter(symbol=FactorList.symbol)
+        if VariantList.query:
+            variants = Variant.objects.filter(Q(location_icontains=VariantList.query) |
+                                         Q(polymorphism__icontains=VariantList.query) |
+                                         Q(factor__ensembl_gene_id=VariantList.query) |
+                                         Q(description__icontains=VariantList.query) |
+                                         Q(ethnicity__name__icontains=VariantList.query)).order_by('-id')
+        else:
+            variants = Variant.objects.all().order_by('-id')
+        self.variantsfilter = VariantFilterSet(variants, self.request.GET)
+        return self.variantsfilter.qs
+
+
+class VariantView(object):
+    form_class = VariantForm
+    model = Variant
+
+
+class VariantDelete(Delete):
+    model = Variant
+    comment = 'Deleted variant'
+    success_url = reverse_lazy('variants')
+
+@login_required
+def remove_variant(request, pk):
+    variant = Variant.objects.get(pk=pk)
+    variant.delete()
+    msg = 'Successfully removed %s' % variant
+    messages.add_message(request, messages.SUCCESS, _(msg))
+    return redirect('/lifespan/')
 
 
 class ManipulationDetail(DetailView):
@@ -771,7 +939,34 @@ class UpdateStrain(Update):
 
 
 def newIntervention(request):
+    if isinstance(request.user, AnonymousUser):
+        request.user = User.objects.get(username="Anonymous")
     return handlePopAdd(request, InterventionForm, 'intervention')
+
+def newFactor(request):
+    if isinstance(request.user, AnonymousUser):
+        request.user = User.objects.get(username="Anonymous")
+    return handlePopAdd(request, FactorForm, 'factor')
+
+def newChoice(request):
+    if isinstance(request.user, AnonymousUser):
+        request.user = User.objects.get(username="Anonymous")
+    return handlePopAdd(request, StateForm, 'state')
+
+def newPopulation(request):
+    if isinstance(request.user, AnonymousUser):
+        request.user = User.objects.get(username="Anonymous")
+    return handlePopAdd(request, PopulationForm, 'population')
+
+def newTechnology(request):
+    if isinstance(request.user, AnonymousUser):
+        request.user = User.objects.get(username="Anonymous")
+    return handlePopAdd(request, TechnologyForm, 'technology')
+
+def newStudyType(request):
+    if isinstance(request.user, AnonymousUser):
+        request.user = User.objects.get(username="Anonymous")
+    return handlePopAdd(request, StudyTypeForm, 'study_type')
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
 

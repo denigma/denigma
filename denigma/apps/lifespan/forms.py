@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.forms import (Form, ModelForm, CharField, Textarea, IntegerField, BooleanField,
                           ModelChoiceField, ModelMultipleChoiceField)
 from crispy_forms.helper import FormHelper
@@ -8,10 +9,12 @@ from django_easyfilters import FilterSet
 
 from annotations.models import Species
 from datasets.models import Reference
-from add.forms import MultipleSelectWithPop
+from add.forms import SelectWithPop, MultipleSelectWithPop
 
 from models import (Study, Experiment, Measurement, Comparison, Intervention, Factor,\
-                   Strain, Epistasis, Regimen, Assay, Manipulation)
+                   Strain, Epistasis, Regimen, Assay, Manipulation,
+                   Variant, Population, State, Technology, StudyType)
+
 
 
 # Main:
@@ -304,6 +307,64 @@ class FactorForm(ModelForm):
                   'assay', 'classifications', 'intervention',
                   'function', 'mean','median','maximum',
                   'pubmed_id', 'references','types', 'note')
+
+
+class VariantForm(ModelForm):
+    comment = CharField(required=False)
+    factor = ModelChoiceField(Factor.objects, required=False, widget=SelectWithPop)
+    choice = ModelChoiceField(State.objects, required=False, widget=SelectWithPop)
+    ethnicity = ModelMultipleChoiceField(Population.objects, required=False, widget=MultipleSelectWithPop)
+    technology = ModelChoiceField(Technology.objects, required=False, widget=SelectWithPop)
+    study_type = ModelChoiceField(StudyType.objects, required=False, widget=SelectWithPop)
+    reference = ModelChoiceField(Reference.objects, required=False, widget=SelectWithPop)
+
+
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'polymorphism',
+                'location',
+                'factor',
+                'description',
+                'odds_ratio',
+                'pvalue',
+                'initial_number',
+                'replication_number',
+                'ethnicity',
+                'age_of_cases',
+                'technology',
+                'study_type',
+
+                'shorter_lived_allele',
+                'pmid',
+                'reference',
+                'choice',
+                'comment'
+            ),
+            FormActions(
+                Submit('save', 'Save', css_class="btn-primary"),
+                Submit('cancel', 'Cancel', css_class="btn-danger")
+            )
+        )
+        super(VariantForm, self).__init__(*args, **kwargs)
+
+    def clean_reference(self):
+         print("cleanign referneces")
+         pmid = self.cleaned_data.get('pmid', None)
+         if pmid:
+             reference, created = Reference.objects.get_or_create(pmid=pmid)
+         return reference
+
+    class Meta:
+        model = Variant
+        fields = ('polymorphism', 'location', 'factor',  'description',  'choice', 'odds_ratio', 'pvalue', 'initial_number',
+                  'replication_number', 'ethnicity', 'age_of_cases', 'technology', 'study_type',
+                'shorter_lived_allele', 'pmid', 'reference', 'comment')
+
+
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
 
 # Auxillary:
@@ -349,6 +410,92 @@ class ManipulationForm(ModelForm):
     class Meta:
         model = Manipulation
 
+class StateForm(ModelForm):
+    comment = CharField(required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'name',
+                'comment'
+            ),
+            FormActions(
+                Submit('save', 'Save', css_class="btn-primary"),
+                Submit('cancel', 'Cancel', css_class="btn-danger")
+            )
+        )
+        super(StateForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = State
+
+class TechnologyForm(ModelForm):
+    comment = CharField(required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'name',
+                'comment'
+            ),
+            FormActions(
+                Submit('save', 'Save', css_class="btn-primary"),
+                Submit('cancel', 'Cancel', css_class="btn-danger")
+            )
+        )
+        super(TechnologyForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Technology
+
+
+class StudyTypeForm(ModelForm):
+    comment = CharField(required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'name',
+                'comment'
+            ),
+            FormActions(
+                Submit('save', 'Save', css_class="btn-primary"),
+                Submit('cancel', 'Cancel', css_class="btn-danger")
+            )
+        )
+        super(StudyTypeForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = StudyType
+
+
+class PopulationForm(ModelForm):
+    comment = CharField(required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'name',
+                'comment'
+            ),
+            FormActions(
+                Submit('save', 'Save', css_class="btn-primary"),
+                Submit('cancel', 'Cancel', css_class="btn-danger")
+            )
+        )
+        super(PopulationForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Population
+
 
 class FilterForm(Form):
     filter = CharField()
@@ -360,3 +507,7 @@ class FactorFilterSet(FilterSet):
 
 class InterventionFilterSet(FilterSet):
     fields = ['species', 'manipulation']
+
+
+class VariantFilterSet(FilterSet):
+    fields = ['choice', 'ethnicity', 'technology', 'study_type']

@@ -1,0 +1,18 @@
+{% extends 'lifespan/base.html' %}
+
+{% load url from future %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}Delete Variant{% endblock %}
+
+{% block hierarchy %}
+    » <a href={% url 'variants' %}>Variants</a>
+    » <a href={% url 'variant' variant.pk %}>{{ variants.polymorphism }}</a>
+    » Delete
+{% endblock %}
+
+{% block title %}Delete Variant{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+{% endblock %}

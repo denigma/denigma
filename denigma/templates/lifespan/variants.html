@@ -1,0 +1,54 @@
+{%  extends "lifespan/base.html" %}
+
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
+
+{% block head_title %}Variants{% endblock %}
+
+{% block hierarchy %}
+    » <a href="/lifespan/variants/">Variants</a>
+{% endblock %}
+
+{% block options %}
+    <a href="/lifespan/variant/add">Add</a> /
+    <a href="/lifespan/variant/create">Create</a> |
+    </b>(<a href="/admin/lifespan/variant/">Admin</a>)<b>
+{% endblock %}
+
+{% block title %}Variants{% endblock %}
+
+{% block content %}
+    <table>
+        <tr>
+            <td>
+                {{ entry.content|markdown|hyper|recross|safe }}
+            </td>
+            <td style="width:250px">
+               {% for image in entry.images.all %}
+                   <img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250">
+               {% endfor %}
+            </td>
+        </tr>
+    </table>
+    <hr>
+    <form action="" method="POST">
+    {% csrf_token %}
+        <input type="submit" value="Filter" />{{ form.filter }}
+        {{ filter.form.as_p }}
+        {{ variantsfilter }}
+        <table width="100%">
+            <tr>
+                <td valign="top">
+                    {% render_table table %}
+                 </td>
+               </tr>
+        </table>
+    {% if entry.text %}
+        {% with entry as object %}
+            {% include "comments/wrapper.html" %}
+        {% endwith %}
+    {% endif %}
+{% endblock %}

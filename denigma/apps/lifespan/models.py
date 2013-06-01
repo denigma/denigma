@@ -610,7 +610,9 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
     type = models.CharField(max_length=25, null=True, blank=True) # Gene, or drug
     types = models.ManyToManyField(Type, blank=True)
     pdb = models.CharField(max_length=10, blank=True, null=True)
-    
+    #polymprhism
+
+
     def __unicode__(self):
         return self.symbol
 
@@ -663,6 +665,63 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
                             self.species = Species.objects.get(taxid=taxid)
 
         super(Factor, self).save(*args, **kwargs)
+
+
+class State(models.Model):
+    name = models.CharField(max_length=250)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Technology(models.Model): # PCR, array
+    name = models.CharField(max_length=250)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = 'Technologies'
+
+
+class StudyType(models.Model): # GWAS, Candidate genes
+    name = models.CharField(max_length=250)
+
+    def __unicode__(self):
+        return self.name
+
+class Population(models.Model):
+    name = models.CharField(max_length=250)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Variant(models.Model):
+    #id # Entrez Gene ID
+    #pmid
+    #symbol # Gene symbol (HGNC)
+    polymorphism = models.CharField(max_length=20)# genetic variant
+    location  = models.CharField(max_length=10, null=True, blank=True)# genomic location
+    factor = models.ForeignKey(Factor, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    odds_ratio = models.FloatField()
+    pvalue = models.CharField(max_length=10, null=True, blank=True)
+    significant = models.FloatField(max_length=10, null=True, blank=True)  #(redudant)
+    initial_number = models.CharField(max_length=250, null=True, blank=True) # of_cases_controls ( study)
+    replication_number = models.CharField(max_length=250, null=True, blank=True) #     _of_cases_controls ( study)
+    ethnicity = models.ManyToManyField(Population)# German
+    age_of_cases = models.CharField(max_length=250, null=True, blank=True)
+    technology = models.ForeignKey(Technology, null=True, blank=True)     # PCR, array
+    study_type = models.ForeignKey(StudyType, null=True, blank=True)    # GWAS, Candidate genes
+    shorter_lived_allele = models.CharField(max_length=20, blank=True, null=True)
+    pmid = models.IntegerField(blank=True, null=True)
+    reference = models.ForeignKey('datasets.Reference')
+    choice = models.ForeignKey(State) #[Curate/Review/Discard]
+
+    def __unicode__(self):
+        return self.polymorphism
+
 
 class Gender(models.Model):
     name = models.CharField(max_length=13)

@@ -1,0 +1,70 @@
+{% extends "lifespan/base.html" %}
+
+{% load url from future %}
+{% load staticfiles %}
+{% load pubmed_linker %}
+{% load rendering %}
+{% load hyperlink %}
+
+{% block head_title %}Factor{% endblock %}
+
+{% block hierarchy %}
+    » <a href="/lifespan/variants/">Variants</a>
+    » Variant
+    = {{ variant.polymorphism }}
+{% endblock %}
+
+{% block title %}
+   {{ variant.polymorphism  }}
+{% endblock %}
+
+{% block content %}
+
+            {% if variant.polymorphism %}<b>Polymorphism:</b> {{ variant.polymorphism }}<br>{% endif %}
+            {% if variant.location %}<b>Location:</b> {{ variant.location }}<br>{% endif %}
+            {% if variant.factor %}
+                <b>Gene Symbol:</b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.symbol }}</a><br>
+                <b>Gene Name:</b> {{ variant.factor.name }}<br>
+               {% if variant.factor.entrez_gene_id %}
+                    <b>Entrez gene ID:</b> <a href="http://www.ncbi.nlm.nih.gov/gene/{{ variant.factor.entrez_gene_id }}">{{ variant.factor.entrez_gene_id }}</a><br>
+                {% endif %}
+                {% if variant.factor.ensembl_gene_id %}
+                    <b>Ensembl gene ID:</b> <a href="http://www.ensembl.org/Multi/Search/Results?species=all;idx=;q={{ factor.ensembl_gene_id }}">{{ factor.ensembl_gene_id }}</a><br>
+                {% endif %}
+            <br>
+            {% endif %}
+            {% if variant.description %}
+                <br><b>Description:</b><br>
+                {{ variant.description|markdown|hyper|pubmed_links|safe }}<br>
+            {% endif %}
+
+{#            <br><b>Ethnicity:</b>#}
+{#            {% for ethnicity in variant.population.all %}#}
+{#                <a href="/lifespan/ethnicity/{{ ethnicity.pk }}">{{ ethnicity.name }}</a>#}
+{#            {% endfor %}<br>#}
+
+
+            {% if variant.odds_ratio %}<b>Odds ratio:</b> {{ variant.odds_ratio }}<br>{% endif %}
+            {% if variant.pvalue %}<b>p-value: </b> {{ variant.pvalue }}<br>{% endif %}
+            {% if variant.age_of_cases %}<b>Age of cases:</b> {{ variant.odds_ratio }}<br>{% endif %}
+            {% if variant.initial_number %}<b>Number of cases/controls (initial): </b> {{ variant.initial_number }}<br>{% endif %}
+            {% if variant.replication_number %}<b>Number of cases/controls (initial)</b> {{ variant.replication_number }}<br>{% endif %}
+            {% if variant.technology %}<b>Technology: </b> {{ variant.technology.name }}<br>{% endif %}
+            {% if variant.study_type %}<b>Study type: </b> {{ variant.study_type.name }}<br>{% endif %}
+            {% if variant.shorter_lived_allele %}<b>Shorter lived allele: </b> {{ variant.shorter_lived_allele }}<br>{% endif %}
+
+            {% if variant.reference %}
+                <br><b>Reference:</b><br>
+                    <a href="/datasets/reference/{{ variant.reference.id }}">{{ variant.reference.pmid }}: {{ variant.reference.title }}</a>
+                <br>
+            {% endif %}
+
+            <br><b><a href="/lifespan/variant/edit/{{ variant.pk }}">Edit</a></b>
+                (<a href="/admin/lifespan/variant/{{ variant.pk }}">Admin</a>) |
+            <b><a href="/lifespan/variant/delete/{{ variant.pk }}">Delete</a></b>
+
+
+    {% with variant as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
+{% endblock %}

@@ -1,12 +1,16 @@
-from django.conf.urls.defaults import patterns, url
-from django.views.generic import ListView, DetailView
+# -*- coding: utf-8 -*-
+from django.conf.urls import patterns, url
+from django.views.generic import ListView, DetailView, TemplateView
 from django.contrib.auth.decorators import login_required
 
 from models import Measurement, Intervention, Factor, Strain, Assay, Regimen, Epistasis, Manipulation
 from views import InterventionList, InterventionCreate, InterventionUpdate #, InterventionDelete
 from views import FactorList, CreateFactor, FactorDetail, FactorDelete#, FactorCreate, FactorUpdate
+from views import VariantList, CreateVariant, VariantDetail, VariantDelete#, FactorCreate, FactorUpdate
+
 from views import CreateStrain, UpdateStrain
 from views import ManipulationDetail
+
 
 
 from data.views import Delete
@@ -80,6 +84,16 @@ urlpatterns = patterns('lifespan.views',
     url(r'^factor/delete/(?P<pk>\d+)/$', FactorDelete.as_view(), name='delete-factor'),
     url(r'^factor/create/$', CreateFactor.as_view(), name='create-factor'),
     url(r'^factor/(?P<slug>.+)/$', FactorDetail.as_view(), name='factor'),
+
+    # Variants:
+    url(r'^variants/$', VariantList.as_view(), name='variants'),
+    url(r'^variant/(?P<pk>\d+)/$', VariantDetail.as_view(), name='variant'),
+    url(r'^variant/add/$', 'add_variant', name='add_variant'),
+    url(r'^variant/edit/(?P<pk>\d+)/$', 'edit_variant'),
+    url(r'^variant/remove/(?P<pk>\d+)/$', 'remove_variant', name='remove_variant'),
+    url(r'^variant/delete/(?P<pk>\d+)/$', VariantDelete.as_view(), name='delete-variant'),
+    url(r'^variant/create/$', CreateVariant.as_view(), name='create-variant'),
+    url(r'^variant/(?P<slug>.+)/$', VariantDetail.as_view(), name='variant'),
 
     # Strains;
     url(r'^strains/$', ListView.as_view(queryset=Strain.objects.all(),
