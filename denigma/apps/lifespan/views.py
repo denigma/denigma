@@ -768,15 +768,15 @@ class VariantList(SingleTableView, FormView):
         context = super(VariantList, self).get_context_data(*args, **kwargs)
         context['form'] = FilterForm(initial={'filter': VariantList.query})
         context['variantsfilter'] = self.variantsfilter
-        context['entry'] = get("Single Nucleotide Polymorphism")
+        context['entry'] = get("Aging Gene Variants")
         return context
 
     def get_queryset(self):
         #if FactorList.symbol:
         #   factors = factors.filter(symbol=FactorList.symbol)
         if VariantList.query:
-            variants = Variant.objects.filter(Q(location_icontains=VariantList.query) |
-                                         Q(polymorphism__icontains=VariantList.query) |
+            variants = Variant.objects.filter(Q(polymorphism__icontains=VariantList.query) |
+                                         Q(location__icontains=VariantList.query) |
                                          Q(factor__ensembl_gene_id=VariantList.query) |
                                          Q(description__icontains=VariantList.query) |
                                          Q(ethnicity__name__icontains=VariantList.query)).order_by('-id')
