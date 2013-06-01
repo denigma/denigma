@@ -38,7 +38,7 @@
     | <b><a href={% url 'reference' article.slug %}>Reference</a></b>
 {% endif %}
 {% if user.is_authenticated %}
-| <b><a href="{% url 'download' article.pk %}">Download</a></b>
+| <b><a href="{% url 'download' article.slug %}">Download</a></b>
 {% endif %}
 {% if changes %}
     <hr>

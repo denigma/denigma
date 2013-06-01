@@ -668,10 +668,11 @@ def rendering(request, entries=True, changes=True):
             counter += 1
     return redirect('/')
 
-def download(request, pk):
+def download(request, pk=None, slug=None):
 
     # Generate the file
-    entry = Entry.objects.get(pk=pk)
+    if pk: entry = Entry.objects.get(pk=pk)
+    else: entry = Entry.objects.get(slug=slug)
 
     output = open(os.path.join(settings.PROJECT_ROOT, 'documents', entry.slug+'.rst'), 'w')
     output.write(entry.text.encode('ascii', 'ignore'))
