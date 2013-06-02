@@ -29,7 +29,7 @@
                     <b>Entrez gene ID:</b> <a href="http://www.ncbi.nlm.nih.gov/gene/{{ variant.factor.entrez_gene_id }}">{{ variant.factor.entrez_gene_id }}</a><br>
                 {% endif %}
                 {% if variant.factor.ensembl_gene_id %}
-                    <b>Ensembl gene ID:</b> <a href="http://www.ensembl.org/Multi/Search/Results?species=all;idx=;q={{ factor.ensembl_gene_id }}">{{ factor.ensembl_gene_id }}</a><br>
+                    <b>Ensembl gene ID:</b> <a href="http://www.ensembl.org/Multi/Search/Results?species=all;idx=;q={{ variant.factor.ensembl_gene_id }}">{{ variant.factor.ensembl_gene_id }}</a><br>
                 {% endif %}
             <br>
             {% endif %}
