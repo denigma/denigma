@@ -43,12 +43,18 @@
 {#                <a href="/lifespan/ethnicity/{{ ethnicity.pk }}">{{ ethnicity.name }}</a>#}
 {#            {% endfor %}<br>#}
 
+            {% if variant.ethnicity.all %}
+                <b>Ethnicity:</b>
+                {% for population in variant.ethnicity.all %}
+                    {{ population.name }}{% if not forloop.last %},{% endif %}
+                {% endfor %}<br>
+            {% endif %}
 
             {% if variant.odds_ratio %}<b>Odds ratio:</b> {{ variant.odds_ratio }}<br>{% endif %}
             {% if variant.pvalue %}<b>p-value: </b> {{ variant.pvalue }}<br>{% endif %}
             {% if variant.age_of_cases %}<b>Age of cases:</b> {{ variant.odds_ratio }}<br>{% endif %}
             {% if variant.initial_number %}<b>Number of cases/controls (initial): </b> {{ variant.initial_number }}<br>{% endif %}
-            {% if variant.replication_number %}<b>Number of cases/controls (initial)</b> {{ variant.replication_number }}<br>{% endif %}
+            {% if variant.replication_number %}<b>Number of cases/controls (replication)</b> {{ variant.replication_number }}<br>{% endif %}
             {% if variant.technology %}<b>Technology: </b> {{ variant.technology.name }}<br>{% endif %}
             {% if variant.study_type %}<b>Study type: </b> {{ variant.study_type.name }}<br>{% endif %}
             {% if variant.shorter_lived_allele %}<b>Shorter lived allele: </b> {{ variant.shorter_lived_allele }}<br>{% endif %}
