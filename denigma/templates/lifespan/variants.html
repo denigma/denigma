@@ -21,12 +21,12 @@
 {% block title %}Variants{% endblock %}
 
 {% block content %}
-    <table>
+    <table width="100%">
         <tr>
-            <td>
+            <td valign="top">
                 {{ entry.content|markdown|hyper|recross|safe }}
             </td>
-            <td style="width:250px">
+         <td valign="top" align="right" style="width: 400px">
                {% for image in entry.images.all %}
                    <img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250">
                {% endfor %}
