@@ -21,31 +21,31 @@
 {% block title %}Variants{% endblock %}
 
 {% block content %}
-    <table width="100%">
+    <table width="100%" border="0">
         <tr>
             <td valign="top">
+                <table width="100%" border="1">
                 {{ entry.content|markdown|hyper|recross|safe }}
+                 <hr>
+                <form action="" method="POST">
+                {% csrf_token %}
+                    <input type="submit" value="Filter" />{{ form.filter }}
+                    {{ filter.form.as_p }}
+                    {{ variantsfilter }}
+                </table>
             </td>
-         <td valign="top" align="right" style="width: 400px">
+         <td valign="top" align="right" style="width: 200px">
                {% for image in entry.images.all %}
-                   <img src="{{ image.url }}" alt="{{ image.name }}" width="250" height="250">
+                   <img src="{{ image.url }}" alt="{{ image.name }}" width="125" height="125">
                {% endfor %}
             </td>
         </tr>
+        <tr>
+            <td valign="top">
+                {% render_table table %}
+             </td>
+        </tr>
     </table>
-    <hr>
-    <form action="" method="POST">
-    {% csrf_token %}
-        <input type="submit" value="Filter" />{{ form.filter }}
-        {{ filter.form.as_p }}
-        {{ variantsfilter }}
-        <table width="100%">
-            <tr>
-                <td valign="top">
-                    {% render_table table %}
-                 </td>
-               </tr>
-        </table>
     {% if entry.text %}
         {% with entry as object %}
             {% include "comments/wrapper.html" %}
