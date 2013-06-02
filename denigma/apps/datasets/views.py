@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response, render, redirect
 from django.template import RequestContext
 from django.views.generic.edit import FormView
 from django.db.models import Q
-
+from django.contrib.auth.models import User, AnonymousUser
 from django_tables2 import SingleTableView
 
 from forms import  FilterForm, UploadForm, ReferenceForm
@@ -16,6 +16,7 @@ from data.views import Create, Update
 
 from media.views import store_in_s3
 
+from add.forms import handlePopAdd
 
 bucket = "darticles"
 
@@ -148,3 +149,10 @@ def changes(request):
     changes_description = get(title='Biological Changes')
     ctx = {'changes': changes, 'changes_description': changes_description}
     return render(request, 'datasets/changes.html', ctx)
+
+
+
+def newReference(request):
+    if isinstance(request.user, AnonymousUser):
+        request.user = User.objects.get(username="Anonymous")
+    return handlePopAdd(request, ReferenceForm, 'reference')
