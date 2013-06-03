@@ -57,7 +57,7 @@ class VariantTable(tables.Table):
 
     def render_name(self, value, record):
         if not record.symbol:
-            return mark_safe('''<a href=/lifespan/factor/%s>%s</a>''' % (record.id, value))
+            return mark_safe('''<a href=/lifespan/factor/%s>%s</a>''' % (record.factor.id, value))
         return value
 
     def render_factor(self, value, record):
