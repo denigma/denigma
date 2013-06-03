@@ -20,7 +20,7 @@
 
 {% block content %}
 
-            {% if variant.polymorphism %}<b>Polymorphism:</b> {{ variant.polymorphism }}<br>{% endif %}
+            {% if variant.polymorphism %}<b>Polymorphism:</b> <a href="http://snpedia.com/index.php/{{ variant.polymorphism }}">{{ variant.polymorphism }}</a><br>{% endif %}
             {% if variant.location %}<b>Location:</b> {{ variant.location }}<br>{% endif %}
             <br>
             {% if variant.factor %}
@@ -56,7 +56,7 @@
 
             <b>Statistics</b><br>
             {% if variant.initial_number %}<b>- Number of cases/controls: </b> {{ variant.initial_number }} (initial) <b>|</b>{% endif %}
-            {% if variant.replication_number %}<b></b> {{ variant.replication_number }} (replication)<br>{% endif %}
+            {% if variant.replication_number %}<b></b> {{ variant.replication_number }} (replication){% endif %}<br>
             {% if variant.odds_ratio %}<b>- Odds ratio:</b> {{ variant.odds_ratio }}<br>{% endif %}
             {% if variant.pvalue %}<b>- p-value: </b> {{ variant.pvalue }}<br>{% endif %}
             {% if variant.significant %}<b>- Significant: </b> {{ variant.significant }}<br>{% endif %}
