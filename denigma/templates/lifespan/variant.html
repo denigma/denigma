@@ -55,8 +55,8 @@
             {% if variant.shorter_lived_allele %}<b>Shorter lived allele: </b> {{ variant.shorter_lived_allele }}<br>{% endif %}<br>
 
             <b>Statistics</b><br>
-            {% if variant.initial_number %}<b>- Number of cases/controls: </b> {{ variant.initial_number }} (initial) <b>|</b>{% endif %}
-            {% if variant.replication_number %}<b></b> {{ variant.replication_number }} (replication){% endif %}<br>
+            {% if variant.initial_number %}<b>- Number of cases/controls: </b> {{ variant.initial_number }} (initial){% endif %}
+            {% if variant.replication_number %}<b></b>  <b>|</b> {{ variant.replication_number }} (replication){% endif %}<br>
             {% if variant.odds_ratio %}<b>- Odds ratio:</b> {{ variant.odds_ratio }}<br>{% endif %}
             {% if variant.pvalue %}<b>- p-value: </b> {{ variant.pvalue }}<br>{% endif %}
             {% if variant.significant %}<b>- Significant: </b> {{ variant.significant }}<br>{% endif %}
