@@ -706,7 +706,7 @@ class Variant(models.Model):
     factor = models.ForeignKey(Factor, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     odds_ratio = models.FloatField(null=True, blank=True)
-    pvalue = models.CharField(max_length=10, null=True, blank=True)
+    pvalue = models.FloatField(null=True, blank=True)
     significant = models.CharField(max_length=10, null=True, blank=True)  #(redudant)
     initial_number = models.CharField(max_length=250, null=True, blank=True) # of_cases_controls ( study)
     replication_number = models.CharField(max_length=250, null=True, blank=True) #     _of_cases_controls ( study)
