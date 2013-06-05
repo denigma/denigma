@@ -8,7 +8,8 @@ from django.views.generic.edit import CreateView
 from django.contrib import messages
 from django.utils.translation import ugettext
 from django.utils.translation import ugettext as _
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
+from django.contrib.admin.views.decorators import staff_member_required
 from django.db import connection
 from django.db.models import Q
 from django.db import transaction
@@ -36,6 +37,13 @@ from utils.count import Counter
 
 
 IDs = ['seq_id', 'entrez_gene_id']
+
+
+def in_analyst_group(user):
+    if user:
+        print user.groups.filter(name='Analyst').count() != 0
+        return user.groups.filter(name='Analyst').count() != 0
+    return False
 
 
 def functional_enrichment(terms, transcripts,  id='seq_id'):
@@ -74,24 +82,28 @@ def functional_enrichment(terms, transcripts,  id='seq_id'):
     return table
 
 @login_required
+@user_passes_test(in_analyst_group, login_url='/login/')
 def transcripts(request):
     filterset = TranscriptFilterSet(request.GET or None)
     return render_to_response('expressions/transcripts.html',
         {'filterset': filterset}, context_instance=RequestContext(request))
 
 @login_required
+@user_passes_test(in_analyst_group, login_url='/login/')
 def transcript_list(request):
     f = TranscriptFilterSet(request.GET, queryset=Transcript.objects.all())
     return render_to_response('expressions/transcripts.html', {'filter': f},
         context_instance=RequestContext(request))
 
 @login_required
+@user_passes_test(in_analyst_group, login_url='/account/login/')
 def index(request):
     entry = get("Expressions")
     return render_to_response('expressions/index.html', {'entry': entry},
                              context_instance=RequestContext(request))
 
 @login_required
+@user_passes_test(in_analyst_group, login_url='/account/login/')
 def profiles(request):
     profiles = Profile.objects.all()
     ctx = {'entry': get("Profiles"), 'profiles': profiles}
@@ -99,6 +111,7 @@ def profiles(request):
         context_instance=RequestContext(request))
 
 @login_required
+@user_passes_test(in_analyst_group, login_url='/account/login/')
 def signatures(request):
     signatures = Signature.objects.all()
     ctx = {'entry': get("Signatures"), 'signatures': signatures}
@@ -106,6 +119,7 @@ def signatures(request):
         context_instance=RequestContext(request))
 
 @login_required
+@user_passes_test(in_analyst_group, login_url='/account/login/')
 def signature(request, pk=None, ratio=2., pvalue=0.05, fold_change=None, exp=None, benjamini=None, name=None):
     terms = False
     id = 'seq_id'
@@ -261,6 +275,7 @@ class Intersection(object):
 
 
 @login_required
+@user_passes_test(in_analyst_group, login_url='/account/login/')
 def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, benjamini=None ):
     entry = get("Intersections")
     id = 'seq_id'
@@ -320,6 +335,7 @@ def intersections(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, se
         context_instance=RequestContext(request))
 
 @login_required
+@user_passes_test(in_analyst_group, login_url='/account/login/')
 def intersections_table(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, benjamini=None):
     id = 'seq_id'
     ratio = float(ratio)
@@ -373,6 +389,7 @@ def intersections_table(request, ratio=2., pvalue=0.05, fold_change=None, exp=No
     return render(request, 'expressions/intersections_table.html', ctx)
 
 @login_required
+@user_passes_test(in_analyst_group, login_url='/account/login/')
 def intersection(request, a, another, ratio=2., pvalue=0.05,
                  fold_change=None, exp=None, benjamini=None):
     terms = None
@@ -430,6 +447,7 @@ def intersection(request, a, another, ratio=2., pvalue=0.05,
         context_instance=RequestContext(request))
 
 @login_required
+@user_passes_test(in_analyst_group, login_url='/account/login/')
 def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, benjamini=None):
     """Common to all signature in a category."""
     terms = False
@@ -482,6 +500,7 @@ def meta(request, ratio=2., pvalue=0.05, fold_change=None, exp=None, set=None, b
         context_instance=RequestContext(request))
 
 @login_required
+@user_passes_test(in_analyst_group, login_url='/account/login/')
 def profile(request, pk):
     profile = Profile.objects.get(pk=pk)
     replicates = Replicate.objects.filter(profile=profile) #profile.replicates.all()
@@ -492,6 +511,7 @@ def profile(request, pk):
         context_instance=RequestContext(request))
 
 @login_required
+@user_passes_test(in_analyst_group, login_url='/account/login/')
 def add_profile(request):
     form = ProfileForm(request.POST or None, request.FILES or None)
 
@@ -714,6 +734,7 @@ def create_signatures(request):
     return redirect('/expressions/signatures/')
 
 @login_required
+@user_passes_test(in_analyst_group, login_url='/account/login/')
 def add_signature(request):
     """The aim is to retrieve a list of differential expressed genes for certain
     criteria (e.g. fold_change, p-value, tissue).
@@ -966,6 +987,7 @@ def calc_benjamini(signature):
         t[index].save()
 
 @login_required
+@user_passes_test(in_analyst_group, login_url='/account/login/')
 def benjamini(request, pk):
     """This view takes a signature and calls a Benjamini Hochberg correction."""
     signature = Signature.objects.get(pk=pk)
@@ -975,6 +997,7 @@ def benjamini(request, pk):
     return redirect('/expressions/signatures/')
 
 @login_required
+@user_passes_test(in_analyst_group, login_url='/account/login/')
 def benjaminis(request):
     "Calls Benjamini Hochberg correction for all signatures in Denigma db."
     signatures = Signature.objects.all()
@@ -1152,3 +1175,5 @@ def map_signature(request, pk):
     return redirect('/expressions/signatures/')
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
+
+
