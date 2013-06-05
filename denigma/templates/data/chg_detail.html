@@ -1,0 +1,42 @@
+{% load url from future %}
+{% load markup %}
+{% load hyperlink %}
+{% load crosslink %}
+
+    <p>created on {{ object.of.created }} by <a href={% url 'profile_detail' object.of.creator %}>{{ object.of.creator }}</a>
+    & updated on {{ object.at }} by <a href={% url 'profile_detail' object.by %}>{{ object.by }}</a></p>
+    {{ object.text|markdown|hyper|recross|safe }}
+    <center>
+    {% for image in object.images.all %}
+        <img src="{{ image.url }}" alt="{{ image.name }}">
+    {% endfor %}
+    </center>
+    <br>
+    <div class="tags">
+        <b>Tags</b>:
+        {% for tag in object.tags.all %}
+            <a href={% url 'entry-tag' tag.slug %}>{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </div>
+    <div class="categories">
+        <b>Categories</b>:
+        {% for category in object.categories.all %}
+            <a href={{ category.get_absolute_url }}>{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </div>
+    <div class="parent">
+        {% if object.parent %}
+            <b>Parent</b>:
+            <a href="{{ object.parent.of.get_absolute_url }}">{{ object.parent.of.title }}</a>
+        {% endif %}
+    </div>
+    {% if object.url %}<a href={{ object.get_absolute_url }}>View on site</a>{% endif %}
+    <br>
+    {% if object.comment %}
+        <div class="comment">
+            <b>Comment</b>: {{ object.comment }}
+        </div>
+    {% endif %}
+    <hr>
+    <b><a href={% url 'detail-entry' object.of.pk %}>See entry</a></b>
+    | <a href="/admin/data/change/{{ object.pk }}">Admin</a>
