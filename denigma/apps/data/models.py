@@ -172,15 +172,6 @@ class Content(Title):
             return True
         return False
 
-    def render(self):
-        print("render")
-        if self.is_rest():
-             self.html = mark_safe(pubmed_links(recross(markdown(reST(negle(hyper(self.text + "  <b><a href='/data/entry/update/%s'>o</a></b>" % self.slug)))))))
-             self.brief_html = mark_safe(pubmed_links(recross(markdown(reST(negle(hyper(self.brief())))))))
-        else:
-            self.html = mark_safe(pubmed_links(recross(hyper(markdown(self.text + "  <b><a href='/data/entry/update/%s'>o</a></b>" % self.slug)))))
-            self.brief_html = mark_safe(pubmed_links(recross(hyper(markdown(self.brief())))))
-
     class Meta:
         abstract = True
 
@@ -355,9 +346,18 @@ class Entry(Content):
     def content_link(self):
         return self.text + "\n\n  <b><a href='/data/entry/update/%s'>o</a></b>" % self.slug
 
+    def render(self):
+        print("render")
+        if self.is_rest():
+             self.html = mark_safe(pubmed_links(recross(markdown(reST(negle(hyper(self.text + "  <b><a href='/data/entry/update/%s'>o</a></b>" % self.slug)))))))
+             self.brief_html = mark_safe(pubmed_links(recross(markdown(reST(negle(hyper(self.brief())))))))
+        else:
+            self.html = mark_safe(pubmed_links(recross(hyper(markdown(self.text + "  <b><a href='/data/entry/update/%s'>o</a></b>" % self.slug)))))
+            self.brief_html = mark_safe(pubmed_links(recross(hyper(markdown(self.brief())))))
 
     class Meta:
         verbose_name_plural = "Entries"
+        permissions = (('view_entry', 'View entry'),)
 
 
 class Change(Content):
@@ -527,6 +527,14 @@ class Change(Content):
 #            if letter not in self.text:
 #                print("-"+letter)
 
+    def render(self):
+        print("render")
+        if self.is_rest():
+             self.html = mark_safe(pubmed_links(recross(markdown(reST(negle(hyper(self.text)))))))
+             self.brief_html = mark_safe(pubmed_links(recross(markdown(reST(negle(hyper(self.brief())))))))
+        else:
+            self.html = mark_safe(pubmed_links(recross(hyper(markdown(self.text)))))
+            self.brief_html = mark_safe(pubmed_links(recross(hyper(markdown(self.brief())))))
 
 #class RelationshipType(models.Model):
 #    name = models.CharField(max_length=255, unique=True)
