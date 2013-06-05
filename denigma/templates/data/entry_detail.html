@@ -3,6 +3,7 @@
 {% load url from future %}
 {% load commentaries %}
 {% load relations %}
+{% load permissions %}
 
 {% block head_title %}{{ object.title }}{% endblock %}
 
@@ -20,10 +21,11 @@
 {% endblock %}
 
 {% block content %}
-        {% if object.published %}
+    {{ request.user|allowed:object }}
+    {% if object.published %}
         {% include "data/entry.html" %}
     {% else %}
-         {% if user.is_authenticated %}
+         {% if request.user|allowed:object  %}
                {% include "data/entry.html" %}
          {% else %}
          SECRET!

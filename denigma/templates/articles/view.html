@@ -1,6 +1,7 @@
 {% extends "articles/base.html" %}
 
 {% load url from future %}
+{% permissions %}
 
 {% block hierarchy %}
     > Article
@@ -17,7 +18,7 @@
     {% if article.published %}
         {% include "articles/article.html" %}
     {% else %}
-         {% if user.is_authenticated %}
+         {% if request.user|allowed:article %}
                {% include "articles/article.html" %}
          {% else %}
          SECRET!
