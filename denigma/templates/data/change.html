@@ -16,7 +16,7 @@
      {% if change.of.published %}
         {% include "data/chg.html" %}
     {% else %}
-         {% if request.user|allowed:object  %}
+         {% if request.user|allowed:change.of  %}
                {% include "data/chg.html" %}
          {% else %}
          SECRET!
