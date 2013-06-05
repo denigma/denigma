@@ -21,7 +21,6 @@
 {% endblock %}
 
 {% block content %}
-    {{ request.user|allowed:object }}
     {% if object.published %}
         {% include "data/entry.html" %}
     {% else %}

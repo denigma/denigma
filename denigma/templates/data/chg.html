@@ -1,0 +1,112 @@
+{% load url from future %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
+{% load negletion %}
+
+    <p>Created on {{ change.of.created }} by <a href={% url 'profile_detail' change.of.creator %}>{{ change.of.creator }}</a>
+    & updated on {{ change.at }} by <a href={%  url 'profile_detail' change.by %}>{{ change.by }}</a></p>
+    {% if change.is_rest %}
+        {{ changes.text|hyper|negle|reST|neglete|markdown|recross|safe }}
+    {% else %}
+        {{ changes.text|markdown|hyper|recross|safe }}
+    {% endif %}
+    <div class="tags">
+        <b>Tags</b>:
+        {% if changes.tags %}
+            {% for tag in changes.tags %}
+                {% if tag %}
+                     <a href={% url 'entry-tag' tag %}>{{ tag }}</a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if changes.tags_added %}
+            {% for tag in changes.tags_added %}
+                {% if tag %}
+                    <ins style="background:#e6ffe6;"><a href={% url 'entry-tag' tag %}>{{ tag }}</a></ins> {# Might fail if tag.name != tag.slug #}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if changes.tags_removed %}
+            {% for tag in changes.tags_removed %}
+                {% if tag %}
+                    <del style="background:#ffe6e6;"><a href={% url 'entry-tag' tag %}>{{ tag }}</a></del> {# Might fail if tag.name != tag.slug #}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+    {% if changes.categories_changed %}
+        <div class="categories">
+            <b>Categories</b>:
+            {% if changes.categories %}
+                {% for category in changes.categories %}
+                    {% if tag %}
+                        <a href={{ category.get_absolute_url }}>{{ category }}</a>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% if changes.categories_added %}
+                {% for category in changes.categories_added %}
+                    {% if category %}
+                        <ins style="background:#e6ffe6;"><a href={{ category.get_absolute_url }}>{{ category }}</a></ins>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% if changes.categories_removed %}
+                {% for category in changes.categories_removed %}
+                    {% if category %}
+                        <del style="background:#ffe6e6;"><a href={{ category.get_absolute_url }}>{{ category }}</a></del>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endif %}
+    <div>
+        {% if changes.parent_changed %}
+            <b>Parent</b>:
+            <del style="background:#ffe6e6;"><a href={{ changes.previous_parent.get_absolute_url }}>{{ changes.previous_parent.title }}</a></del>
+            <ins style="background:#e6ffe6;"><a href={{ changes.current_parent.get_absolute_url }}>{{ changes.current_parent.title }}</a></ins>
+        {% endif %}
+    </div>
+    {% if changes.url %}
+        <div>
+            <b>URL</b>: {{ changes.url }}
+        </div>
+    {% endif %}
+    {% if changes.images_changed %}
+        <div class="images">
+            <b>Images</b>:
+            {% if changes.images %}
+                {% for image in changes.images %}
+                    {% if image %}
+                        <a href={{ image.get_absolute_url }}>{{ image }}</a>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% if changes.images_added %}
+                {% for image in changes.images_added %}
+                    {% if image %}
+                        <ins style="background:#e6ffe6;"><a href={{ image.get_absolute_url }}>{{ image }}</a></ins>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% if changes.images_removed %}
+                {% for image in changes.images_removed %}
+                    {% if image %}
+                        <del style="background:#ffe6e6;"><a href={{ image.get_absolute_url }}>{{ image }}</a></del>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endif %}
+    <hr>
+    {% if change.comment %}
+        <div class="comment">
+            <b>Comment</b>: {{ change.comment }}
+        </div>
+    {% endif %}
+    {% if user.is_superuser %}
+        <br>
+        <b><a href={% url 'delete-change' change.pk %}>Delete</a></b> /
+        <b><a href={% url 'remove_change' change.slug %}>Remove</a></b> (i.e. accepting change)
+    {% endif %}
