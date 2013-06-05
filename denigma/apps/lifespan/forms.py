@@ -340,6 +340,7 @@ class VariantForm(ModelForm):
                 'study_type',
 
                 'shorter_lived_allele',
+                'longer_lived_allele',
                 'pmid',
                 'reference',
                 'choice',
@@ -353,10 +354,11 @@ class VariantForm(ModelForm):
         super(VariantForm, self).__init__(*args, **kwargs)
 
     def clean_reference(self):
-         print("cleanign referneces")
+         print("cleaning references")
          pmid = self.cleaned_data.get('pmid', None)
          if pmid:
              reference, created = Reference.objects.get_or_create(pmid=pmid)
+             print reference, created
          return reference
 
     class Meta:
@@ -364,7 +366,7 @@ class VariantForm(ModelForm):
         fields = ('polymorphism', 'location', 'factor',  'description',  'choice', 'odds_ratio',
                   'pvalue', 'significant', 'initial_number',
                   'replication_number', 'ethnicity', 'age_of_cases', 'technology', 'study_type',
-                'shorter_lived_allele', 'pmid', 'reference', 'comment')
+                'shorter_lived_allele', 'longer_lived_allele', 'pmid', 'reference', 'comment')
 
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789

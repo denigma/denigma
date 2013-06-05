@@ -715,9 +715,10 @@ class Variant(models.Model):
     technology = models.ForeignKey(Technology, null=True, blank=True)     # PCR, array
     study_type = models.ForeignKey(StudyType, null=True, blank=True)    # GWAS, Candidate genes
     shorter_lived_allele = models.CharField(max_length=20, blank=True, null=True)
+    longer_lived_allele = models.CharField(max_length=20, blank=True, null=True)
     pmid = models.IntegerField(blank=True, null=True)
     reference = models.ForeignKey('datasets.Reference')
-    choice = models.ForeignKey(State) #[Curate/Review/Discard]
+    choice = models.ForeignKey(State, default=1) #[Curate/Review/Discard]
 
     def __unicode__(self):
         return self.polymorphism
