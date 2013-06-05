@@ -73,7 +73,7 @@ class VariantTable(tables.Table):
         fields = ('polymorphism', 'location', 'factor', 'odds_ratio', 'pvalue',
                   'initial_number', 'replication_number', 'ethnicity',
                   'age_of_cases',  'shorter_lived_allele', 'technology', 'study_type',
-                  'description', 'reference',  'choice')
+                  'description', 'reference') # , 'choice'
 #        exclude = ('id', 'mapping', 'entrez_gene_id', 'ensembl_gene_id',
 #                   'alias', 'description', 'functional_description',
 #            'classification', 'manipulation,' 'observation',
