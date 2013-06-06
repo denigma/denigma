@@ -1,7 +1,7 @@
 {% extends "data/base.html" %}
 
 {% load url from future %}
-
+{% load permissions %}
 
 {% block head_title %}Change {{ change.title }}{% endblock %}
 
@@ -13,7 +13,8 @@
 {% block title %}Change - {{ changes.title|safe }}{% endblock %}
 
 {% block content %}
-     {% if change.of.published %}
+
+    {% if change.of.published %}
         {% include "data/chg.html" %}
     {% else %}
          {% if request.user|allowed:change.of  %}
