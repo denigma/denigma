@@ -66,6 +66,7 @@
                     {% endfor %}
                 {% endif %}
                 {% if references %}
+                    <br>
                     <b>References</b>:
                     {% for reference in references %}
                         <li><a href="{% url 'detail-reference' reference.pk %}">{{ reference }}</a></li>
