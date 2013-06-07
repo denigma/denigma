@@ -718,7 +718,7 @@ class Variant(models.Model):
     longer_lived_allele = models.CharField(max_length=20, blank=True, null=True)
     pmid = models.IntegerField(blank=True, null=True)
     reference = models.ForeignKey('datasets.Reference')
-    choice = models.ForeignKey(State, default=1) #[Curate/Review/Discard]
+    choice = models.ForeignKey(State, default=1, null=True, blank=True) #[Curate/Review/Discard]
 
     def __unicode__(self):
         return self.polymorphism
