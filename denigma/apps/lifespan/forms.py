@@ -359,6 +359,8 @@ class VariantForm(ModelForm):
          if pmid:
              reference, created = Reference.objects.get_or_create(pmid=pmid)
              print reference, created
+         else:
+             reference = self.cleaned_data.get('reference', None)
          return reference
 
     class Meta:
