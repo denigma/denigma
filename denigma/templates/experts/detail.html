@@ -87,7 +87,7 @@
                     {% include "comments/wrapper.html" %}
                 {% endwith %}
             </td>
-            <td valign="top" align="right">
+        <td valign="top" align="right" style="width: 100">
                 {% for image in expert.images.all %}
                     <a href="{{ image.get_absolute_url }}"><img src="{{ image.url }}" alt="{{ image.name }}"></a>
                 {% endfor %}
