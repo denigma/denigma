@@ -10,6 +10,7 @@ from django.views.generic import DetailView
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import  permission_required
+from django.utils.decorators import method_decorator
 
 import reversion
 
@@ -80,6 +81,11 @@ class ProfileList(TableFilter):
     success_url = '/experts/profiles/'
     model = Profile
     table_class = ProfileTable
+
+    @method_decorator(permission_required('is_superuser'))
+    def dispatch(self, *args, **kwargs):
+        return super(ProfileList, self).dispatch(*args, **kwargs)
+
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProfileList, self).get_context_data(*args, **kwargs)
