@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic import DetailView
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import  permission_required
 
 import reversion
 
@@ -47,15 +48,18 @@ def whoiswho(request):
             
     return HttpResponse("WhoIsWho completed (%s experts)" % len(experts))
 
+@permission_required('is_superuser')
 def index(request, template='experts/index.html'):
     entry = get('Experts')
     return render(request, template, {'entry': entry})
 
+@permission_required('is_superuser')
 def archive(request, template='experts/profiles.html'):
     """Lists all experts."""
     experts = Profile.objects.all()
     return render(request, template, {'experts':experts})
 
+@permission_required('is_superuser')
 def detail(request, expertname, template='experts/detail.html'):
     """Shows the detail view of an expert."""
     try:
