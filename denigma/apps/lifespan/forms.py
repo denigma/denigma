@@ -257,6 +257,7 @@ class FactorForm(ModelForm):
         required=False)
     comment = CharField(required=False)
     intervention = ModelMultipleChoiceField(Intervention.objects, required=False, widget=MultipleSelectWithPop)
+    assay = ModelMultipleChoiceField(Assay.objects, initial=[Assay.objects.get(name__startswith='Orga')])
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'

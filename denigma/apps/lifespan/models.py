@@ -577,20 +577,23 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
     #geneid = models.ForeignKey(Gene, blank=True)   # Or Genes
     mapping = models.IntegerField(null=True, blank=True)
     ensembl_gene_id = models.CharField("Ensembl gene ID", max_length=18, blank=True)
-    symbol = models.CharField(max_length=15, blank=True)   # Rename to symbol.
+    symbol = models.CharField(max_length=15, blank=True, help_text='In the case of genes providing the correct gene symbol and species name would be normally sufficient to identify a gene. '
+                'Other fields such as gene name and identifiers will be automatically populated.')   # Rename to symbol.
     name = models.CharField(max_length=244, blank=True)    # Rename to name.
     alias = models.CharField(max_length=270, blank=True)
     function = models.TextField(blank=True)    # Manually curated functional description field.
     description = models.TextField(blank=True) # Automatically populated field for functional descriptions.
     functional_description = models.TextField(blank=True)    
-    observation = models.TextField(blank=True)
+    observation = models.TextField(blank=True, help_text='Please provide references to the evidence why this factor was chosen to be classified. '
+                                                         'In the ideal case provide a PMID in square brackets at the end of the sentence. '
+                                                         'Multiple PMIDs can be separated by semicolon, e.g. "The gene XYZ was associated with aging in some way [12345; 67890].')
     classification = models.CharField(max_length=20, blank=True)
     classifications = models.ManyToManyField('annotations.Classification')
     regimen = models.ManyToManyField(Regimen, blank=True)
-    assay = models.ManyToManyField(Assay) # blank=True, null=True ?
+    assay = models.ManyToManyField(Assay, help_text='Choose the adequate lifespan, such as replicative (RLS), chronological (CLS) or organismal') # blank=True, null=True ?
     diet_regimen = models.CharField(max_length=250, blank=True)
     life_span = models.CharField("Tax ID", max_length=250, blank=True)
-    taxid = models.IntegerField(null=True, blank=True)
+    taxid = models.IntegerField(null=True, blank=True, help_text="This field will be autofilled if you provide a species name")
     species = models.ForeignKey('annotations.Species', blank=True, null=True)
     pubmed_id = models.CharField("PubMed ID", max_length=250, blank=True)
     reference = models.CharField(max_length=250, blank=True)
