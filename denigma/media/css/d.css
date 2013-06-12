@@ -4,17 +4,18 @@
 span.left {
     position: absolute;
     left: 0;
-
+    z-index: -1
 }
 span.right {
     position: absolute;
     right: 0;
-
+    z-index: -1
 }
 
 div.line {
     position: relative;
     text-align: center;
     width: 100%;
+    z-index: -1
 }
 
