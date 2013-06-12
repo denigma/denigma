@@ -1,0 +1,119 @@
+###CAKE FILE
+This file is to build and test the project
+----------
+this files makes all coffescript building process
+in order to run it you should have coffeescript and cake installed
+it can be done by by npm package manager
+npm install -g coffee-script
+npm install -g cake
+###
+
+#a task to explain what this cakefile does, kind of hello world=)
+task 'explain', 'Explains what this cakefile does', ->
+  console.log 'Ths cake compiles all models to models.js, the same for views and viewmodels'
+
+
+#child process variable
+{exec} = require 'child_process'
+
+fs           = require 'fs'
+path         = require 'path'
+
+
+execute = (str)->
+  exec str, (err, stdout, stderr) ->
+    throw err if err
+    console.log stdout + stderr
+
+
+#VARIABLES
+#----------
+#path where to take files from
+path = "./"
+coffees = "*.coffee"
+
+
+#CAKE TASKS TO BE EXECUTED WHEN CALLED cake <taskname>
+#-----
+
+
+withCoffee = (str)->
+  if str.indexOf(".coffee")==-1 then str+".coffee" else str
+
+
+concatStr = (folder,arr, out)->
+  str =""
+  if folder=="" then folder = "."
+  if out.indexOf(".coffee")==-1 then out = out+".coffee"
+  for key in arr
+    ###writes to str in reverse order###
+    str =" #{folder}/#{withCoffee(key)} "+str
+  "coffeescript-concat #{str} -o #{withCoffee(out)}"
+
+
+concat = ->
+  ###
+  concats coffeescript to make less files for compilation and copies to the js folder when they are compiled
+  ###
+  root = ""
+
+  collab = "collab/"
+  workers = "#{collab}workers/"
+  sockets = "#{collab}sockets/"
+  routers = "#{collab}routers/"
+  channels = "#{collab}channels/"
+
+  models = "models"
+  views = "views"
+  view_models = "view_models"
+
+
+  ### worker for production ###
+  execute concatStr(workers, ["abstract_socket_worker","basic_worker","socket_worker"] ,"js/socket_worker")
+
+  ### copies chat coffee ###
+  execute concatStr(root, ["denigma"] ,"js/denigma")
+
+
+  ### concats and copies collab coffees ###
+  collabArr = ["#{collab}socket_event",
+               "#{sockets}worker_socket","#{sockets}mock_socket","#{sockets}cache_socket",
+               "#{channels}channel","#{channels}video_channel","#{channels}video_slot_channel",
+               "#{routers}simple_router", "#{routers}chat_router",
+               "#{collab}socket","#{collab}socket_storage"]
+
+  execute concatStr(root, collabArr ,"js/collab")
+
+  ### concats and copies models coffees ###
+  modelsArr = ["user","message","task","search"] #,"gene"
+  execute concatStr("models", modelsArr,"js/models")
+
+  ### concats and copies views coffees ###
+  viewsArr = ["better_view","channel_view","user_view","message_view","task_view","search_view"]
+  execute concatStr(views, viewsArr,"js/views")
+
+  ### concats and copies views_models coffees ###
+  view_modelsArr = ["board","message_board","task_board","user_board"]
+
+  execute concatStr(view_models, view_modelsArr,"js/view_models")
+
+
+compile = ->
+  concat()
+  execute "coffee --map --compile js/"
+
+
+#makes compilation
+task 'compile', 'Compiles coffeescript files in the project and moves them to output dir', ->
+  compile()
+
+#makes cleanup,compile and documenting
+task 'build', 'Builds project from src/*.coffee to lib/*.js', ->
+
+  console.log "Build task started"
+
+  compile()
+
+  console.log "Build task completed"
+
+

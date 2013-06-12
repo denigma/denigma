@@ -1,0 +1,75 @@
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'semantic/resources/css/tasks.css'%}" type="text/css">
+<link rel="stylesheet" href="{% static 'semantic/resources/css/app.css'%}" type="text/css">
+<link rel="stylesheet" href="{% static 'semantic/resources/css/messages.css'%}" type="text/css">
+{#<link rel="stylesheet" href="{% static 'semantic/resources/css/jquery-ui-1.10.2.custom.css'%}" type="text/css">#}
+<link rel="stylesheet" href="{% static 'semantic/resources/css/jquery.gridster.css'%}" type="text/css">
+
+<script src="{% static 'semantic/lib/jquery-2.0.0.js'%}" type="text/javascript"></script>
+<script src="{% static 'semantic/lib/jquery-ui.js'%}" type="text/javascript"></script>
+
+<script src="{% static 'semantic/lib/batman.js'%}" type="text/javascript"></script>
+
+<script>
+    function getRandomArbitary(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+</script>
+
+
+{% if request.user.is_authenticated %}
+    <script>
+
+        var url = "ws://webintelligence.eu:9000/chat?username={{ request.user.username }}&amp;password={{ request.user.username }}";
+        //var workerURL = "/assets/semantictasks/js/socket_worker.js";
+        Batman.container.websocketURL = url;
+        Batman.container.resources = "{% static 'resources"'%}"
+        //Batman.container.workerURL = workerURL;
+        Batman.container.username = "{{ request.user.username }}"
+        Batman.container.password = "{{ request.user.username }}"
+
+{% comment %}Deactivated because it renders all links non-functional{% endcomment %}
+{#        $(function() {#}
+{#            $( "input[type=submit], a, button" )#}
+{#                    .button()#}
+{#                    .click(function( event ) {#}
+{#                        event.preventDefault();#}
+{#                    });#}
+{#        });#}
+
+    </script>
+{% else %}
+    hey{{ request.user }}
+        <script>
+
+        var url = "ws://webintelligence.eu:9000/chat?username=Guest" + getRandomInt(1, 99)+"&amp;password=Guest" + getRandomInt(1, 99);
+        //var workerURL = "/assets/semantictasks/js/socket_worker.js";
+        Batman.container.websocketURL = url;
+        Batman.container.resources = "{% static 'resources"'%}"
+        //Batman.container.workerURL = workerURL;
+        Batman.container.username = "Guest" + getRandomInt(1, 99)
+        Batman.container.password = "Guest" + getRandomInt(1, 99)
+
+{% comment %}Deactivated because it renders all links non-functional{% endcomment %}
+{#        $(function() {#}
+{#            $( "input[type=submit], a, button" )#}
+{#                    .button()#}
+{#                    .click(function( event ) {#}
+{#                        event.preventDefault();#}
+{#                    });#}
+{#        });#}
+
+    </script>
+{% endif %}
+
+
+<script src="{% static 'semantic/js/denigma.js'%}"></script>
+
+<script src="{% static 'semantic/js/collab.js'%}" type="text/javascript"></script>
+<script src="{% static 'semantic/js/models.js'%}" type="text/javascript"></script>
+<script src="{% static 'semantic/js/views.js'%}" type="text/javascript"></script>
+<script src="{% static 'semantic/js/view_models.js'%}" type="text/javascript"></script>
+

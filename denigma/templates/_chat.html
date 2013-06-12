@@ -1,0 +1,85 @@
+<section id="bottombar">
+
+<div class="dashboard" id="taskboard">
+
+    <div class="pageheader"  data-event-click="TaskBoard.toggle">
+        <h1>Task list</h1>
+    </div>
+    <section data-showif="TaskBoard.expanded">
+
+
+        <section class="board" data-showif="Task.all.length">
+
+            <table border="1">
+                <tr><th><input type="checkbox" data-bind="TaskBoard.hideCompleted" /></th><th>user</th><th>task</th>
+                <tr class="task" data-foreach-task="TaskBoard.items">
+
+                    <td><input type="checkbox" data-bind="task.completed" /></td>
+                    <td data-bind="task.owner"></td>
+                    <td data-bind="task.title"  data-event-click="click"></td>
+                </tr>
+            </table>
+        </section>
+
+        <div class="toolbar">
+            <textarea id="newTaskText" data-bind="TaskBoard.title"  data-event-keypress="TaskBoard.pressKey"></textarea>
+            <br>
+            <button id = "newTaskBtn"  class="btn" data-event-click="TaskBoard.addNew">Add task</button>
+        </div>
+
+
+    </section>
+
+</div>
+
+
+
+<div  class="dashboard" id="messageboard">
+
+    <div class="pageheader" data-event-click="MessageBoard.toggle">
+        <h1>Messages list</h1>
+    </div>
+    <section data-showif="MessageBoard.expanded">
+
+
+        <section class="board"  data-showif="Message.all.length">
+            <div class="message" data-foreach-message="Message.all">
+                <div data-view="MessageView">
+                    <title data-bind="message.user"></title>
+                    <p data-bind="message.text"></p>
+                </div>
+            </div>
+
+        </section>
+
+        <div class="toolbar" data-event-keypress="MessageBoard.pressKey">
+            <textarea  id="newMessageText" data-bind="MessageBoard.text" data-event-keypress="MessageBoard.pressKey"></textarea>
+            <br>
+            <button type="submit" id="newMessageBtn"  class="btn" data-event-click="MessageBoard.addNew">Say</button>
+        </div>
+
+
+    </section>
+
+
+</div>
+<div class="dashboard" id="userboard">
+    <div class="pageheader" data-event-click="UserBoard.toggle">
+        <h1>Users list</h1>
+    </div>
+    <section data-showif="UserBoard.expanded">
+
+    <section class="board"  data-showif="User.all.length">
+        <div class="user" data-foreach-user="User.all">
+            <div data-view="UserView">
+
+                <h4 data-bind="user.username"></h4>
+                <h4 data-bind="user.userstatus"></h4>
+            </div>
+        </div>
+    </section>
+    </section>
+</div>
+
+
+</section>
