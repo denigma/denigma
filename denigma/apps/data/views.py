@@ -33,7 +33,7 @@ from tables import EntryTable
 from filters import TableFilter, EntryFilterSet, FilterForm
 from templatetags.rendering import markdown
 
-
+@login_required
 def graph(request, template='data/graph.html'):
     """View that generates a data graph connecting data entries with relations."""
     network = {
@@ -329,7 +329,7 @@ class Create(CreateView):
     message = 'Successfully created %s'
     action = 'Create'
 
-    def post(self, request):
+    def post(self, request, **kwargs):
         self.request = request
         super(Create, self).post(request)
         return HttpResponseRedirect(self.get_success_url())

@@ -102,7 +102,7 @@ urlpatterns = patterns('data.views',
     url(r'^category/update/(?P<pk>\d+)', login_required(CategoryUpdate.as_view()), name='update-category'),
     url(r'^category/feed/$', CategoryFeed(), name='data-category-feed'),
 
-    url(r'^graph/$', login_required('graph'), name='data-graph'),
+    url(r'^graph/$', 'graph', name='data-graph'),
     url(r'map/$', 'hierarchy', {'template': 'data/map.html'}, name='data-map'),
     url(r'vivagraph/(?P<slug>[a-zA-Z\_]+)', VivaGraph.as_view(), name='data-vivagraph'),
     url(r'vivagraph/(?P<pk>\d?)', VivaGraph.as_view(), name='data-vivagraph'),
