@@ -100,4 +100,8 @@ redis
 -e git://github.com/clintecker/django-google-analytics.git#egg=google_analytics
 
 # Permissions
--e git+https://github.com/lukaszb/django-guardian.git#guardian
+-e git+https://github.com/lukaszb/django-guardian.git#egg=guardian
+
+django-jsonfield==0.8.12
+django-less==0.7.1
+-e git+https://github.com/denigma/django-coffeescript.git#egg=coffescript

@@ -1,25 +1,25 @@
-/*styles/app.less generates resources/css/app.css if you want to add some changes - edit less */
-/*html,*/
-/*body {*/
-  /*margin: 0;*/
-  /*padding: 0;*/
-/*}*/
-/*button {*/
-  /*margin: 0;*/
-  /*padding: 0;*/
-  /*border: 0;*/
-  /*background: none;*/
-  /*font-size: 100%;*/
-  /*vertical-align: baseline;*/
-  /*font-family: inherit;*/
-  /*color: inherit;*/
-/*}*/
-/*body {*/
-  /*font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
-  /*line-height: 1.4em;*/
-  /*color: #4d4d4d;*/
-  /*margin: 0 auto;*/
-/*}*/
+/*styles/app.less generates resources/css/app.css if you want to add some changes - edit less*/
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 100%;
+  vertical-align: baseline;
+  font-family: inherit;
+  color: inherit;
+}
+body {
+  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  line-height: 1.4em;
+  color: #4d4d4d;
+  margin: 0 auto;
+}
 header {
   padding-top: 10px;
   z-index: 2;

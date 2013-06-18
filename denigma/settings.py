@@ -116,7 +116,6 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'site_media', 'static')
 #STATIC_URL = "/site_media/static/"
 STATIC_URL = '/s/'
 
-
 # Additional directories which hold static files
 STATICFILES_DIRS = [
     #os.path.join(PROJECT_ROOT, "static"),
@@ -125,17 +124,26 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'semantictasks')
 ]
 
-STATICFILES_FINDERS = [
-    'staticfiles.finders.FileSystemFinder',
-    'staticfiles.finders.AppDirectoriesFinder',
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder', #    'staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder', #     'staticfiles.finders.AppDirectoriesFinder',
     'staticfiles.finders.LegacyAppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
-]
+    'coffeescript.finders.CoffeescriptFinder',
+    'less.finders.LessFinder',
+)
+
+COFFEESCRIPT_MTIME_DELAY = 1
+COFFEESCRIPT_OUTPUT_DIR = os.path.join(PROJECT_ROOT, "media/js")
+
+LESS_MTIME_DELAY = 1
+LESS_OUTPUT_DIR = os.path.join(PROJECT_ROOT, "media/css")
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, 'admin/')
+
 
 # Subdirectory of COMPRESS_ROOT to store the cached media files in
 COMPRESS_OUTPUT_DIR = 'cache'
@@ -209,6 +217,7 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     'django.core.context_processors.debug', # Redundant?
     #'django.core.context_processors.i18n',
     'django.core.context_processors.media',
+    'django.core.context_processors.static',#
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
     
@@ -243,10 +252,10 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django.contrib.flatpages',
     'django.contrib.messages',
+    'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django.contrib.markup',
 
-    
     'pinax.templatetags',
     
     # theme
@@ -256,8 +265,8 @@ INSTALLED_APPS = [
     
     # external
     'notification', # must be first
-    'staticfiles',
-    'compressor',
+    #'staticfiles',
+    #'compressor',
     'debug_toolbar',
     'mailer',
     'django_openid',
@@ -281,6 +290,9 @@ INSTALLED_APPS = [
     'google_analytics',
 
     'guardian', # Permissions
+
+    'coffeescript',
+    'less',
 
     # Comments and forms:
     'fluent_comments',
