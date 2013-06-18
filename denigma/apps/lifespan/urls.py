@@ -137,5 +137,7 @@ urlpatterns = patterns('lifespan.views',
     url(r'^gendr/dump', 'dump'),
     url(r'^map/species/(?P<model>.+)', 'map_species', name='map_species'),
     url(r'^correct/$', 'correct_classes', name='correct_classes'),
+
+    url(r'^bars$',  TemplateView.as_view(template_name='lifespan/bars.html'), name='bars'),
 )
 ##234567891123456789212345678931234567894123456789512345678961234567897123456789

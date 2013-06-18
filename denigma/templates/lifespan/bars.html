@@ -1,0 +1,79 @@
+{% load staticfiles %}
+
+{% load coffeescript%}
+
+{% load less %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+        <link rel="stylesheet" href="{% less 'static/interventions/styles/lifespan.less' %}"/>
+        <link rel="stylesheet" href="{% less 'static/interventions/styles/lifespan_bars.less' %}"/>
+        <link rel="stylesheet" href="{% less 'static/interventions/styles/lifespan_curves.less' %}"/>
+
+
+    <script src="{% static 'semantic/lib/jquery-2.0.0.js'%}" type="text/javascript"></script>
+
+        <script src="{% static 'interventions/lib/d3.js'%}" type="text/javascript"></script>
+
+        <script src="{% static 'semantic/lib/jquery-2.0.0.js'%}" type="text/javascript"></script>
+
+        <script src="{% static 'semantic/lib/batman.js'%}" type="text/javascript"></script>
+
+        <!-- look down and you will understand why I am interested in concatenations =)) -->
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/denigma.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/models/species.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/models/manipulation.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/models/experiment.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/models/intervention.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/utils/poser.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/views/basic_view.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/views/decor_view.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/views/icon_view.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/views/bars/experiment_bar.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/views/bars/labeled_bar.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/views/bar_view.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/charts.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/bar_charts.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/fixture.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/lifespan.coffee" %}"> </script>
+
+        <script type="text/javascript" src="{% coffeescript "static/interventions/curves.coffee" %}"> </script>
+
+
+
+</head>
+<body>
+<table  id="generator">
+<td id="lifespanbars" class="chart">
+    <h2>Lifespan bars</h2>
+    <button data-event-click="LifeSpan.generateBars">Generate bars</button>
+</td>
+    <td id="lifespancurves" class="chart">
+        <h2>Lifespan curves</h2>
+        <button data-event-click="LifeSpan.generateCurves">Generate curves</button>
+    </td>
+
+</tr>
+</table>
+
+</body>
+</html>
