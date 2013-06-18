@@ -43,8 +43,7 @@ When you do this ``env`` folder will be created with separate python interpreter
 4. Prepare Environment::
 
     $ apt-get update
-    $ apt-get install python-dev libmysqlclient-dev     # Latter is an optional database-backend
-    $ apt-get install -y subversion
+    $ apt-get install python-dev libmysqlclient-dev     # Latter one is an optional database-backend
     $ pip install -r denigma/requirements/pre.txt       # Prerequisite
     $ pip install -r denigma/requirements/project.txt
 
