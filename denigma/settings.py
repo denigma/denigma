@@ -127,8 +127,8 @@ STATICFILES_DIRS = [
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder', #    'staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder', #     'staticfiles.finders.AppDirectoriesFinder',
-    'staticfiles.finders.LegacyAppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
+    #'staticfiles.finders.LegacyAppDirectoriesFinder',
+    #'compressor.finders.CompressorFinder',
     'coffeescript.finders.CoffeescriptFinder',
     'less.finders.LessFinder',
 )
@@ -143,7 +143,6 @@ LESS_OUTPUT_DIR = os.path.join(PROJECT_ROOT, "media/css")
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, 'admin/')
-
 
 # Subdirectory of COMPRESS_ROOT to store the cached media files in
 COMPRESS_OUTPUT_DIR = 'cache'
