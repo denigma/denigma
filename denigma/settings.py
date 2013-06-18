@@ -134,10 +134,11 @@ STATICFILES_FINDERS = (
 )
 
 COFFEESCRIPT_MTIME_DELAY = 1
-COFFEESCRIPT_OUTPUT_DIR = os.path.join(PROJECT_ROOT, "media/js")
+COFFEESCRIPT_OUTPUT_DIR =  "media/js" #os.path.join(PROJECT_ROOT,)
+COFFEESCRIPT_ROOT = '/s/'
 
 LESS_MTIME_DELAY = 1
-LESS_OUTPUT_DIR = os.path.join(PROJECT_ROOT, "media/css")
+LESS_OUTPUT_DIR =  "media/css" #os.path.join(PROJECT_ROOT,)
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
