@@ -109,7 +109,7 @@ MEDIA_URL = '/site_media/media/'
 
 # Absolute path to the directory that holds static files like app media.
 # Example: "/home/media/media.lawrence.com/apps/"
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'site_media', 'static')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'meda') #'site_media', 'static')
 
 # URL that handles the static files like app media.
 # Example: "http://media.lawrence.com"
@@ -134,10 +134,12 @@ STATICFILES_FINDERS = (
 )
 
 COFFEESCRIPT_MTIME_DELAY = 1
-COFFEESCRIPT_OUTPUT_DIR =  "media/js" #os.path.join(PROJECT_ROOT,)
 COFFEESCRIPT_ROOT = '/s/'
+COFFEESCRIPT_OUTPUT_DIR =  "media/js" #os.path.join(PROJECT_ROOT,)
+
 
 LESS_MTIME_DELAY = 1
+LESS_ROOT = '/s/'
 LESS_OUTPUT_DIR =  "media/css" #os.path.join(PROJECT_ROOT,)
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
