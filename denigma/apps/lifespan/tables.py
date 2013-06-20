@@ -65,14 +65,14 @@ class VariantTable(tables.Table):
          return mark_safe(", ".join([i.name for i in value.all()]))
 
     def render_reference(self, value, record):
-         return mark_safe('''<a href=/datasets/reference/%s>%s</a>''' % (record.id, value.title))
+         return mark_safe('''<a href=/datasets/reference/%s>%s</a>''' % (record.id, value.pmid))
 
     class Meta:
         model = Variant
         attrs = {"class": "paleblue"}
         fields = ('polymorphism', 'location', 'factor', 'odds_ratio', 'pvalue',
                   'initial_number', 'replication_number', 'ethnicity',
-                  'age_of_cases',  'shorter_lived_allele', 'technology', 'study_type',
+                  'age_of_cases',  'shorter_lived_allele', 'longer_lived_allele', 'technology', 'study_type',
                   'description', 'reference') # , 'choice'
 #        exclude = ('id', 'mapping', 'entrez_gene_id', 'ensembl_gene_id',
 #                   'alias', 'description', 'functional_description',
