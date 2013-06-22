@@ -1,5 +1,6 @@
 {%  extends "lifespan/base.html" %}
 
+{% load url from future %}
 {% load staticfiles %}
 {% load render_table from django_tables2 %}
 {% load rendering %}
@@ -15,10 +16,11 @@
 {% block options %}
     <a href="/lifespan/variant/add">Add</a> /
     <a href="/lifespan/variant/create">Create</a> |
+    <a href="{% url 'variant-bulk-insert' %}">Bulk Insert</a> |
     </b>(<a href="/admin/lifespan/variant/">Admin</a>)<b>
 {% endblock %}
 
-{% block title %}Variants{% endblock %}
+{% block title %}Aging Variants Database{% endblock %}
 
 {% block content %}
     <table width="100%">
