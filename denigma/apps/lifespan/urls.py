@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from models import Measurement, Intervention, Factor, Strain, Assay, Regimen, Epistasis, Manipulation
 from views import InterventionList, InterventionCreate, InterventionUpdate #, InterventionDelete
 from views import FactorList, CreateFactor, FactorDetail, FactorDelete#, FactorCreate, FactorUpdate
-from views import VariantList, CreateVariant, VariantDetail, VariantDelete#, FactorCreate, FactorUpdate
+from views import VariantList, CreateVariant, VariantDetail, VariantDelete, VariantBulkInsert#, FactorCreate, FactorUpdate
 
 from views import CreateStrain, UpdateStrain
 from views import ManipulationDetail
@@ -94,6 +94,7 @@ urlpatterns = patterns('lifespan.views',
     url(r'^variant/delete/(?P<pk>\d+)/$', VariantDelete.as_view(), name='delete-variant'),
     url(r'^variant/create/$', CreateVariant.as_view(), name='create-variant'),
     url(r'^variant/(?P<slug>.+)/$', VariantDetail.as_view(), name='variant'),
+    url(r'^variants/bulk_insert/$', VariantBulkInsert.as_view(), name='variant-bulk-insert'),
 
     # Strains;
     url(r'^strains/$', ListView.as_view(queryset=Strain.objects.all(),

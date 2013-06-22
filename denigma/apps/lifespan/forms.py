@@ -506,9 +506,48 @@ class PopulationForm(ModelForm):
         model = Population
 
 
+class VariantBulkInsertForm(ModelForm):
+    data = CharField(label='data', widget=Textarea(attrs={'cols': 20, 'rows': 20}))
+    def ___init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                ''
+                'data'
+            ),
+            FormActions(
+                Submit('save', 'Save', css_class='btn-primary'),
+                Submit('cancel', 'Cancel', css_class='btn-danger')
+            )
+        )
+        super(VariantBulkInsertForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Population
+
+
+class VariantBulkInsertForm(Form):
+    data = CharField(label='data', widget=Textarea(attrs={'cols': 20, 'rows': 20}))
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                'Please provide a tab separeted list of the varaints (copied from an spreadsheet for instance) with the following fields in the header as first line:\n'
+                '"Choice" "PMID" "Link" "Gene symbol (HGNC)" "Entrez Gene ID" "Polymorphism" "Shorter-lived allele" "Odds ratio" "P value" "Significant?" "Number of cases / controls (initial study)" "Ethnicity" "Age of cases" "Number of cases/controls (replication study)" "Technology" "Study type" "Notes"',
+                'data',
+            ),
+            FormActions(
+                Submit('save', 'Save', css_class="btn-primary"),
+                Submit('cancel', 'Cancel', css_class="btn-danger")
+            )
+        )
+        super(VariantBulkInsertForm, self).__init__(*args, **kwargs)
+
+
 class FilterForm(Form):
     filter = CharField()
-    #symbol = CharField()
 
 
 class FactorFilterSet(FilterSet):
