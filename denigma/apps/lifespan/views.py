@@ -751,7 +751,7 @@ class VariantBulkInsert(FormView):
     def form_valid(self, form):
         data = form.cleaned_data['data']
         keywords = ['curate', 'pmid', 'links', 'symbol', 'entrez', 'poylmporphism', 'shorter', 'odds', 'value', 'signficant', 'initial' , 'ethnicity', 'age', 'replication', 'type', 'notes']
-        print(data)
+        #print(data)
         headers = {}
         header = data.split('\n')[0]
         for head in header:
@@ -809,7 +809,7 @@ class VariantBulkInsert(FormView):
                     #print("Found factor: %s" % factor)
                     if factor: d.update({'factor':factor})
                 except Exception as e:
-                    print("factor", e)
+                    #print("factor", e)
                     factor = ''
                     notes.append("gene symbol = %s (%s)" % (columns[3], e))
                     notes.append("entrez gene id = %s (%s)" % (columns[4], e))
@@ -888,7 +888,7 @@ class VariantBulkInsert(FormView):
                     technology = ''
                     #notes.append("technology = %s (%s)" % (columns[13], e))
                 try:
-                    print('study type: %s' % columns[15])
+                    #print('study type: %s' % columns[15])
                     study_type = StudyType.objects.get_or_create(name=columns[15])[0]
                     if study_type: d.update({'study_type':study_type})
                 except Exception as e:
@@ -906,8 +906,8 @@ class VariantBulkInsert(FormView):
                     reference = Reference.objects.get_or_create(pmid=columns[1])[0]
                     if reference: d.update({'reference':reference})
                 except Exception as e:
-                    print("reference", e)
-                    r#eference = ''
+                    #print("reference", e)
+                    #eference = ''
                     #notes.append("reference = %s (%s)" % (columns[1], e))
                 if 'description' in d:
                     d['description'] = d['description'] + '\n\n'+'\n\n'.join(notes)
