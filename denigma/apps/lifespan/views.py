@@ -907,7 +907,7 @@ class VariantBulkInsert(FormView):
                     if reference: d.update({'reference':reference})
                 except Exception as e:
                     #print("reference", e)
-                    #eference = ''
+                    reference = ''
                     #notes.append("reference = %s (%s)" % (columns[1], e))
                 if 'description' in d:
                     d['description'] = d['description'] + '\n\n'+'\n\n'.join(notes)
