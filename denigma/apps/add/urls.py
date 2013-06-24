@@ -21,4 +21,6 @@ urlpatterns = patterns('',
     url(r'technology/?', 'lifespan.views.newTechnology', name="new-technology"),
     url(r'study_type/?', 'lifespan.views.newStudyType', name="new-study_type"),
     url(r'^reference/?', 'datasets.views.newReference', name="new-reference"),
+    url(r'^classifications/?', 'annotations.views.newClassification', name="new-classification"),
+
 )

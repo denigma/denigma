@@ -9,6 +9,9 @@ from django.contrib.auth.models import User, AnonymousUser
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.edit import CreateView, UpdateView
 from django.db.models import Q
+from django.db import connection
+from django.contrib.auth.decorators import permission_required
+
 from django_tables2 import RequestConfig
 
 import reversion
@@ -58,6 +61,8 @@ def bulk_upload(request):
 #def bulk_upload(request):
 #   return render_to_response('annotations/bulk_upload.html',
 #                             context_instance=RequestContext(request))
+
+
 
 
 def classifications(request):
@@ -362,6 +367,13 @@ def tissue_hierarchy(request):
 
 
 def newAnimal(request):
+    if isinstance(request.user, AnonymousUser):
+        request.user = User.objects.get(username="Anonymous")
     return handlePopAdd(request, AnimalForm, 'alternative_names')
+
+def newClassification(request):
+    if isinstance(request.user, AnonymousUser):
+        request.user = User.objects.get(username="Anonymous")
+    return handlePopAdd(request, ClassificationForm, 'classifications')
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789

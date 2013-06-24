@@ -15,7 +15,7 @@ from models import (Study, Experiment, Measurement, Comparison, Intervention, Fa
                    Strain, Epistasis, Regimen, Assay, Manipulation,
                    Variant, Population, State, Technology, StudyType)
 
-
+from annotations.models import Classification
 
 # Main:
 class StudyForm(ModelForm):
@@ -257,6 +257,8 @@ class FactorForm(ModelForm):
         required=False)
     comment = CharField(required=False)
     intervention = ModelMultipleChoiceField(Intervention.objects, required=False, widget=MultipleSelectWithPop)
+    classifications = ModelMultipleChoiceField(Classification.objects, required=False, widget=MultipleSelectWithPop)
+
     try: assay = ModelMultipleChoiceField(Assay.objects, initial=[Assay.objects.get(name__startswith='Orga')])
     except Exception as e:
         print(e)
@@ -320,6 +322,11 @@ class VariantForm(ModelForm):
     technology = ModelChoiceField(Technology.objects, required=False, widget=SelectWithPop)
     study_type = ModelChoiceField(StudyType.objects, required=False, widget=SelectWithPop)
     reference = ModelChoiceField(Reference.objects, required=False, widget=SelectWithPop)
+    try:
+        classifications = ModelMultipleChoiceField(Classification.objects, required=False, widget=MultipleSelectWithPop,
+                                               initial=[Classification.objects.get(title__startswith='Longevity-Associated')])
+    except Exception as e:
+        print(e)
 
 
     def __init__(self, *args, **kwargs):
@@ -335,6 +342,7 @@ class VariantForm(ModelForm):
                 'odds_ratio',
                 'pvalue',
                 'significant',
+                'classifications',
                 'initial_number',
                 'replication_number',
                 'ethnicity',
@@ -368,7 +376,7 @@ class VariantForm(ModelForm):
 
     class Meta:
         model = Variant
-        fields = ('polymorphism', 'location', 'factor',  'description',  'choice', 'odds_ratio',
+        fields = ('polymorphism', 'location', 'factor',  'description',  'choice', 'classifications', 'odds_ratio',
                   'pvalue', 'significant', 'initial_number',
                   'replication_number', 'ethnicity', 'age_of_cases', 'technology', 'study_type',
                 'shorter_lived_allele', 'longer_lived_allele', 'pmid', 'reference', 'comment')
@@ -506,27 +514,6 @@ class PopulationForm(ModelForm):
         model = Population
 
 
-class VariantBulkInsertForm(ModelForm):
-    data = CharField(label='data', widget=Textarea(attrs={'cols': 20, 'rows': 20}))
-    def ___init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_class = 'form-horizontal'
-        self.helper.layout = Layout(
-            Fieldset(
-                ''
-                'data'
-            ),
-            FormActions(
-                Submit('save', 'Save', css_class='btn-primary'),
-                Submit('cancel', 'Cancel', css_class='btn-danger')
-            )
-        )
-        super(VariantBulkInsertForm, self).__init__(*args, **kwargs)
-
-    class Meta:
-        model = Population
-
-
 class VariantBulkInsertForm(Form):
     data = CharField(label='data', widget=Textarea(attrs={'cols': 20, 'rows': 20}))
     def __init__(self, *args, **kwargs):
@@ -558,4 +545,4 @@ class InterventionFilterSet(FilterSet):
 
 
 class VariantFilterSet(FilterSet):
-    fields = ['choice', 'ethnicity', 'technology', 'study_type']
+    fields = ['classifications', 'choice', 'ethnicity', 'technology', 'study_type']

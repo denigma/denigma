@@ -64,7 +64,16 @@
             {% if variant.significant %}<b>- Significant: </b> {{ variant.significant }}<br>{% endif %}
             <br>
 
+
             <b>Study Design</b><br>
+            {% with variant.classifications.all as classifications %}
+               {% if classifications %}
+                <b>- Classifications:</b>
+                {% for classification in classifications %}
+                    <a href="{{ classification.get_absolute_url }}">{{ classification.title }}</a>{% if not forloop.last %},{% endif %}
+            {% endfor %}<br>
+            {% endif %}
+            {% endwith %}
             {% if variant.study_type %}<b>- Study type: </b> {{ variant.study_type.name }}<br>{% endif %}
             {% if variant.technology %}<b>- Technology: </b> {{ variant.technology.name }}<br>{% endif %}
 
