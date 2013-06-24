@@ -722,7 +722,7 @@ class Variant(models.Model):
     pmid = models.IntegerField(blank=True, null=True)
     reference = models.ForeignKey('datasets.Reference')
     choice = models.ForeignKey(State, default=1, null=True, blank=True) #[Curate/Review/Discard]
-    classifications = models.ManyToManyField('annotations.Classification')
+    classifications = models.ManyToManyField('annotations.Classification', blank=True, null=True, default=None)
 
     def __unicode__(self):
         return self.polymorphism
