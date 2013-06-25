@@ -47,7 +47,7 @@
         {% block extra_head_base %}
             {% block extra_head %}{% endblock %}
         {% endblock %}
-        {% include '_chatscript.html' %}
+{#        {% include '_chatscript.html' %}#}
     </head>
     <body class="{% block body_class %}{% endblock %}" id="{% block body_id %}{% endblock %}">
 
@@ -119,11 +119,11 @@
                                         <div id="site_wide_announcements">
                                             <ul>
                                                 {% for announcement in site_wide_announcements %}
-                                                    {% if forloop.counter <= 2 %}
+                                                    {% if forloop.counter <= 1 %}
                                                         <li>
                                                             <a href="{{ announcement.get_absolute_url }}">{{ announcement }}</a>
                                                             (<a href="{% url 'announcement_hide' announcement.pk %}?next={{ request.path }}">Hide</a>)
-                                                            {% if not forloop.last %}|{% endif %}
+{#                                                            {% if not forloop.last %}|{% endif %}#}
                                                         </li>
                                                     {% endif %}
                                                 {% endfor %}
@@ -249,7 +249,7 @@ div.btn-group ul.dropdown-menu{
                         <h2>{% block title %}{% endblock %}</h2>
                         <h3>{% block subtitle %}{% endblock %}</h3>
                         {% block content %}{% endblock %}
-                         {% include '_chat.html' %}
+{#                         {% include '_chat.html' %}#}
                    </div>
                 </div>
             </div>
