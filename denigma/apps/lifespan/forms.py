@@ -13,7 +13,7 @@ from add.forms import SelectWithPop, MultipleSelectWithPop
 
 from models import (Study, Experiment, Measurement, Comparison, Intervention, Factor,\
                    Strain, Epistasis, Regimen, Assay, Manipulation,
-                   Variant, Population, State, Technology, StudyType)
+                   Variant, Population, State, Technology, StudyType, Type)
 
 from annotations.models import Classification
 
@@ -531,6 +531,28 @@ class VariantBulkInsertForm(Form):
             )
         )
         super(VariantBulkInsertForm, self).__init__(*args, **kwargs)
+
+
+class OntologyForm(Form):
+    classifications = ModelMultipleChoiceField(Classification.objects, required=False)
+    species = ModelMultipleChoiceField(Species.objects, required=False)
+    types = ModelMultipleChoiceField(Type.objects, required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'classifications',
+                'species',
+                'types',
+            ),
+            FormActions(
+                Submit('Query', 'Query', css_class="btn-primary")
+            )
+        )
+        super(OntologyForm, self).__init__(*args, **kwargs)
+
 
 
 class FilterForm(Form):

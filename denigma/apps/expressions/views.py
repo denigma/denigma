@@ -66,14 +66,19 @@ def functional_enrichment(terms, transcripts,  id='seq_id'):
         if id != 'seq_id':
             idType = id.upper()
         else:
-            if entity_id.startswith('FBtr'):
-                idType = 'ENSEMBL_TRANSCRIPT_ID'
-            else:
+            print(type(entity_id))
+            if isinstance(entity_id, long):
+                idType = 'ENTREZ_GENE_ID'
+            elif not isinstance(entity_id, long):
+                if entity_id.startswith('FBtr'):
+                    idType = 'ENSEMBL_TRANSCRIPT_ID'
+            elif not isinstance(entity_id, long):
                 idType = 'ENSEMBL_GENE_ID'
         print idType
         ## Create tables:
         if transcripts:
             terms = enrich(ids, idType=idType )
+            #print(terms.data())
             table = AnnotationTable(terms.data())
         else:
             table = None

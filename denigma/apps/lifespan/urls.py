@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from models import Measurement, Intervention, Factor, Strain, Assay, Regimen, Epistasis, Manipulation
 from views import InterventionList, InterventionCreate, InterventionUpdate #, InterventionDelete
-from views import FactorList, CreateFactor, FactorDetail, FactorDelete#, FactorCreate, FactorUpdate
+from views import FactorList, CreateFactor, FactorDetail, FactorDelete, FactorOntology#, FactorCreate, FactorUpdate
 from views import VariantList, CreateVariant, VariantDetail, VariantDelete, VariantBulkInsert#, FactorCreate, FactorUpdate
 
 from views import CreateStrain, UpdateStrain
@@ -83,6 +83,7 @@ urlpatterns = patterns('lifespan.views',
     url(r'^factor/remove/(?P<pk>\d+)/$', 'remove_factor', name='remove_factor'),
     url(r'^factor/delete/(?P<pk>\d+)/$', FactorDelete.as_view(), name='delete-factor'),
     url(r'^factor/create/$', CreateFactor.as_view(), name='create-factor'),
+    url(r'^factor/ontology/$', login_required(FactorOntology.as_view()), name='factor-ontology'),
     url(r'^factor/(?P<slug>.+)/$', FactorDetail.as_view(), name='factor'),
 
     # Variants:

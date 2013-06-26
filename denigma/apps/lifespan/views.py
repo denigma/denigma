@@ -37,10 +37,14 @@ from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
                    ComparisonForm,
                    InterventionForm, DeleteInterventionForm, InterventionFilterSet,
                    FactorForm, StrainForm, StateForm, TechnologyForm, StudyTypeForm, PopulationForm,
-                   FilterForm, FactorFilterSet, VariantForm, VariantFilterSet, VariantBulkInsertForm)
+                   FilterForm, FactorFilterSet, VariantForm, VariantFilterSet, VariantBulkInsertForm, OntologyForm)
 from tables import ComparisonTable, InterventionTable, FactorTable, VariantTable
 
 from annotations.models import Classification
+
+import data
+
+from expressions.views import functional_enrichment
 
 
 def index(request):
@@ -1270,9 +1274,62 @@ def functional_description(request):
         gene.save()
     return HttpResponse('%s functions and description united.' % count)
 
-class EnrichmentView(FormView): pass
 
 
+class FactorOntology(FormView):
+    form_class = OntologyForm
+    template_name='lifespan/ontology.html'
+    success_url= '/lifespan/factor/ontology'
+    table = None
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(FactorOntology, self).get_context_data(*args, **kwargs)
+        context['result'] = FactorOntology.table
+        return context
+
+    def form_valid(self, form):
+        classifications = form.cleaned_data['classifications']
+        species = form.cleaned_data['species']
+        types = form.cleaned_data['types']
+        statement = []
+        factors = []
+        for s in species:
+            statement.append('Q(species=%s)' % s.pk)
+        species_query = ' | '.join(statement)
+        statement = []
+        #print(species_query)
+        for c in classifications:
+            statement.append('Q(classifications=%s)' % c.pk)
+        classifications_query = ' | '.join(statement)
+        if classifications:
+            factors = eval('Factor.objects.filter((' + species_query + ') & ' + classifications_query+')')
+        else:
+           factors = eval('Factor.objects.filter(' + species_query + ')')
+        statement = []
+        #print(species_query)
+        for t in types:
+            statement.append('Q(types=%s)' % t.pk)
+        type_query = ' | '.join(statement)
+
+        #print(type_query)
+        if type_query:
+            factors = eval('factors.filter(' + type_query + ')')
+       # print(len(factors))
+        #print(factors)
+
+        # for organism in species:
+        #     print organism
+        #     query = Factor.objects.filter(species=organism)
+        #     for classification in classifications:
+        #         print(classification)
+        #         query = query.filter(classifications=classifications)
+        #         f  = [factor.entrez_gene_id for factor in query]
+        #         print(len(f))
+        #         factors.extend(f)#, types=types)
+        #print(factors)
+
+        if factors: FactorOntology.table = functional_enrichment(True, [factor.entrez_gene_id for factor in factors])
+        return super(FactorOntology, self).form_valid(form)
 
 
 def integrity(request):

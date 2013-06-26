@@ -1,0 +1,27 @@
+{% extends 'site_base.html' %}
+
+{% load crispy_forms_tags %}
+{% load render_table from django_tables2 %}
+
+{% block head_title %}Factor Ontology{% endblock %}
+
+{% block title %}Factor Ontology{% endblock %}
+
+{% block extra_script %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+{% endblock %}
+
+{% block options %}
+    <a href="/lifespan/factor/add">Add</a> /
+    <a href="/lifespan/factor/create">Create</a> |
+    </b>(<a href="admin/lifespan/factors/">Admin</a>)<b> |
+    <a href="/lifespan/factors/archive/">Archive</a> |
+    <a href="/lifespan/factor/ontology/">Ontology</a>
+{% endblock %}
+
+{% block content %}
+    {% crispy form %}
+    {% if result %}
+        {% render_table result %}
+    {% endif %}
+{% endblock %}
