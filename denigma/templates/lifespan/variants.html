@@ -35,8 +35,9 @@
         {{ variantsfilter }}
             </td>
          <td valign="top" align="right" style="width: 400px">
-               {% for image in entry.images.all %}
+               {% for image in entry.images.all reversed %}
                    <img src="{{ image.url }}" alt="{{ image.name }}" width="125" height="125">
+                   ..
                {% endfor %}
             </td>
         </tr>
