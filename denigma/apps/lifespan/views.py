@@ -762,11 +762,16 @@ class VariantBulkInsert(FormView):
             if head in header: pass
 
 
+        classification = Classification.objects.get(title="Longevity-Associated")
+        species = Species.objects.get(taxid=9606)
+        assay = Assay.objects.get(name__startswith='Organi')
+
         # row-number -> ['value']
         # ['choice'] - row-number
 
         lines = data.split('\n')[1:]
         for line in lines:
+            factors = []
             d = {}
             try:
                 notes = []
@@ -803,14 +808,14 @@ class VariantBulkInsert(FormView):
                     pmid = ''
                     notes.append("pmid = %s (%s)" % (columns[1], e))
                 try:
-                    classification = Classification.objects.get(title="Longevity-Associated")
-                    factor, created = Factor.objects.get_or_create(entrez_gene_id=columns[4], symbol=columns[3]) #& Q(taxid=9606)
-                    factor.observation += columns[3] + ' was found to be associated with longevity [%s].' % pmid
-                    assay = Assay.objects.get(name__startswith='Organi')
+
+                    factor, created = Factor.objects.get_or_create(entrez_gene_id=columns[4], symbol=columns[3], species=species) #& Q(taxid=9606)
+                    factor.observation += columns[3] + ' was found to be associated with longevity [%s]. ' % pmid
                     factor.assay.add(assay)
                     factor.classifications.add(classification)
                     factor.save()
                     #print("Found factor: %s" % factor)
+                    factors.append(factor)
                     if factor: d.update({'factor':factor})
                 except Exception as e:
                     #print("factor", e)
@@ -934,6 +939,9 @@ class VariantBulkInsert(FormView):
                 ethnicity = [Population.objects.get_or_create(name=population)[0] for population in ethnicity.replace(';', ',').replace(', ', ',').split(',')]
                 for e in ethnicity:
                     variant.ethnicity.add(e)
+                    variant.save()
+                for f in factors:
+                    variant.factors.add(f)
                     variant.save()
             except Exception as e:
                 print(e)

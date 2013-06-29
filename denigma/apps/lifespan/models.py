@@ -706,7 +706,8 @@ class Variant(models.Model):
     #symbol # Gene symbol (HGNC)
     polymorphism = models.CharField(max_length=20)# genetic variant
     location  = models.CharField(max_length=10, null=True, blank=True)# genomic location
-    factor = models.ForeignKey(Factor, null=True, blank=True)
+    factor = models.ForeignKey(Factor, null=True, blank=True, related_name='variant')
+    factors = models.ManyToManyField(Factor, null=True, blank=True, related_name='variance')
     description = models.TextField(null=True, blank=True)
     odds_ratio = models.FloatField(null=True, blank=True)
     pvalue = models.FloatField(null=True, blank=True)
