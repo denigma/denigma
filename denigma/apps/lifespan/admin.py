@@ -133,14 +133,14 @@ class VariantAdmin(admin.ModelAdmin):
     #form = VariantAdminForm
     list_display = ('polymorphism', 'factor', 'odds_ratio', 'pvalue', 'significant', 'description', # 'qvalue',
                     'initial_number', 'replication_number', 'age_of_cases', 'technology',
-                    'study_type',  'pmid', ) #'reference',
+                    'study_type',  'pmid', 'created', 'updated' ) #'reference',
     fields = ('polymorphism', 'location', 'factor', 'factors', 'description', 'odds_ratio', 'pvalue', 'qvalue',
               'significant','initial_number', 'replication_number', 'ethnicity', 'age_of_cases', 'study_type',
               'technology', 'pmid', 'reference', 'choice', 'classifications')
     search_fields = ['polymorphism', 'factor', 'odds_ratio', 'pvalue', 'qvalue', 'significant',
                     'initial_number', 'replication_number', 'age_of_cases', 'technology',
                     'study_type', 'pmid', 'reference',  'choice']
-    list_filter = ('choice', 'ethnicity', 'classifications')#'factors',
+    list_filter = ('choice', 'created', 'updated', 'ethnicity', 'classifications',)#'factors',
     filter_horizontal = ('factors', 'ethnicity', 'classifications')
 
 admin.site.register(Study, StudyAdmin)
