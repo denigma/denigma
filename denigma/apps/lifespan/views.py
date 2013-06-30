@@ -870,7 +870,9 @@ class VariantBulkInsert(FormView):
                         odds_ratio = ''
                         notes.append("odds_ratio = %s (%s)" % (columns[7], e))
                     try:
-                        if columns[8] != 'NS' and columns[8] != 'N/A':
+                        if columns[8] == 'NS':
+                            pvalue = 1
+                        elif columns[8] != 'N/A':
                             pvalue = float(columns[8].replace('x', '*').replace('^', '**'))
                         else:
                             pvalue = None
@@ -988,6 +990,7 @@ class CreateVariant(Create):
     model = Variant
     form_class = VariantForm
     comment = 'Created variant.'
+    message = 'Successfully created %s'
 
     def form_valid(self, form):
         with reversion.create_revision():
@@ -1058,6 +1061,24 @@ class VariantDelete(Delete):
     model = Variant
     comment = 'Deleted variant'
     success_url = reverse_lazy('variants')
+    message = 'Successfully deleted %s'
+
+    def delete(self, request, *args, **kwargs):
+        #print("data.views.Delete.delete()")
+        with reversion.create_revision():
+            self.object = self.get_object()
+            if isinstance(self.request.user, AnonymousUser):
+                self.request.user = User.objects.get(username='Anonymous')
+            self.object.user = self.request.user
+            comment = self.request.POST['comment'] or self.comment
+            reversion.set_comment(comment)
+            self.object.delete()
+            log(self.request, self.object, comment, 3)
+            reversion.set_user(self.request.user)
+            self.success_url = self.success_url or self.object.get_absolute_url()
+            messages.add_message(self.request, messages.SUCCESS,
+                _(self.message % self.object))
+            return HttpResponseRedirect(self.get_success_url())
 
 @login_required
 def remove_variant(request, pk):
@@ -1255,6 +1276,8 @@ def correct_classes(request):
     for factor in factors:
         factor.classifications.add(agingSuppressor)
     return redirect("lifespan")
+
+
 
 def describe(request):
     """Annotates the AgeFactor table with description from various sources.
