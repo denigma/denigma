@@ -762,6 +762,9 @@ class VariantBulkInsert(FormView):
             if head in header: pass
 
 
+
+
+
         classification = Classification.objects.get(title="Longevity-Associated")
         no_age_effect = Classification.objects.get(title="No Age Effect")
         species = Species.objects.get(taxid=9606)
@@ -771,202 +774,213 @@ class VariantBulkInsert(FormView):
         # ['choice'] - row-number
 
         lines = data.split('\n')[1:]
-        for line in lines:
-            created = False
-            factors = []
-            d = {}
-            try:
-                notes = []
-                columns = line.replace('\r', '').split('\t')
-                #print(columns)
-                #print([name for name in columns[10].split(', ')])
-                # print("pmid", columns[1])
-                # print("entrez_gene_id", columns[4],Factor.objects.get_or_create(entrez_gene_id=columns[4]),
-                #       type(Factor.objects.get_or_create(entrez_gene_id=columns[4])))
-                # print("polymorphism", columns[5])
-                # print("shorter_lived_allele", columns[6])
-                # print("odds_ratio", columns[7])
-                # print("pvalue", columns[8])
-                # print("significant", columns[9])
-                # print("number_of_cases", columns[10])
-                # print("ethnicity", [columns[11]])
-                # print("age_of_cases", columns[12])
-                # print("technology", columns[13])
-                # print("study_type", columns[14])
-                # print("description", columns[15])
 
+        with reversion.create_revision():
+            if isinstance(self.request.user, AnonymousUser):
+                self.request.user = User.objects.get(username="Anonymous")
+            reversion.set_user(self.request.user)
+            #comment = "Added factor. %s" % self.request.POST['comment'] or ''
+            #reversion.set_comment(comment)
+            #log(self.request, factor, comment)
+            msg = "Successfully added varaints."
+            messages.add_message(self.request, messages.SUCCESS, ugettext(msg))
+            for line in lines:
+                created = False
+                factors = []
+                d = {}
                 try:
-                    choice = State.objects.get_or_create(name=columns[0])[0]
-                    if choice: d.update({'choice':choice})
-                except Exception as e:
-                    #print("choice", e)
-                    choice = ''
-                    notes.append("choice = %s (%s)" % (columns[0], e))
-                try:
-                    pmid = int(columns[1].replace('N/A', ''))
-                    if pmid: d.update({'pmid':pmid})
-                except Exception as e:
-                    #print("pmid", e)
-                    pmid = ''
-                    notes.append("pmid = %s (%s)" % (columns[1], e))
-                try:
-                    if columns[4]:
-                        factor, created = Factor.objects.get_or_create(entrez_gene_id=columns[4], symbol=columns[3], species=species) #& Q(taxid=9606)
-                    else:
-                        factor, created = Factor.objects.get_or_create(symbol=columns[3], species=species) #& Q(taxid=9606)
-                    print("Get or created factor: %s %s" % (factor, created))
-                    factor.observation += columns[3] + ' was found to be associated with longevity [%s]. ' % pmid
-                    factor.assay.add(assay)
-                    factor.classifications.add(classification)
-                    print(factor.classification)
-                    factor.save()
-                    #print("Found factor: %s" % factor)
-                    factors.append(factor)
-                    print("Created factor")
-                    if factor: d.update({'factor':factor})
-                except Exception as e:
-                    #print("factor", e)
-                    factor = ''
-                    notes.append("gene symbol = %s (%s)" % (columns[3], e))
-                    notes.append("entrez gene id = %s (%s)" % (columns[4], e))
-                try:
-                    polymorphism = columns[5].replace('N/A', '')
-                    if polymorphism: d.update({'polymorphism':polymorphism})
-                except Exception as e:
-                    #print("polymorphism", e)
-                    polymorphism = '-'
-                    notes.append("polymorphism = %s (%s)" % (columns[5], e))
-                if polymorphism == '':
-                    polymorphism = '-'
-                    d.update({'polymorphism':polymorphism})
-                try:
-                    shorter_lived_allele = columns[6].replace('N/A', '')
-                    if shorter_lived_allele: d.update({'shorter_lived_allele':shorter_lived_allele})
-                except Exception as e:
-                    #print("shorter_lived_allele", e)
-                    shorter_lived_allele = ''
-                    notes.append("shorter_lived_allele = %s (%s)" % (columns[6], e))
-                try:
-                    if columns[7] != 'N/A' and columns[7] != 'NA' and columns[7] != '':
-                        odds_ratio = float(columns[7])
-                    else:
-                        odds_ratio = None
-                    if odds_ratio: d.update({'odds_ratio':odds_ratio})
-                except Exception as e:
-                    odds_ratio = ''
-                    notes.append("odds_ratio = %s (%s)" % (columns[7], e))
-                try:
-                    if columns[8] != 'NS' and columns[8] != 'N/A':
-                        pvalue = float(columns[8].replace('x', '*').replace('^', '**'))
-                    else:
-                        pvalue = None
-                    if pvalue: d.update({'pvalue':pvalue})
-                except Exception as e:
-                    #print("odds ratio", e)
-                    pvalue = ''
-                    notes.append("pvalue = %s (%s)" % (columns[8], e))
-                try:
-                    significant = columns[9].replace('N/A', '')
-                    if significant: d.update({'significant':significant})
-                except Exception as e:
-                    #print("significant", e)
-                    significant = ''
-                    notes.append("significant = %s (%s)" % (columns[9], e))
-                try:
-                    initial_number = columns[10].replace('N/A', '')
-                    if initial_number: d.update({'initial_number':initial_number})
-                except Exception as e:
-                    #print("initial number", e)
-                    initial_number = ''
-                    notes.append("initial number = %s (%s)" % (columns[10], e))
-                try:
-                    ethnicity = columns[11].replace('N/A', '')
-                    #if ethnicity: d.update({'ethnicity':ethnicity})
-                except Exception as e:
-                    #print("ethnicity", e)
-                    ethnicity = ''
-                    #notes.append("ethnicity = %s (%s)" % (columns[11], e))
-                try:
-                    age_of_cases = columns[12].replace('N/A', '')
-                    if age_of_cases: d.update({'age_of_cases':age_of_cases})
-                except Exception as e:
-                    #print("age of cases", e)
-                    age_of_cases = ''
-                    #notes.append("age of cases = %s (%s)" % (columns[12], e))
-                try:
-                    replication_number = columns[13].replace('N/A', '')
-                    if replication_number: d.update({'replication_number':replication_number})
-                except Exception as e:
-                    #print("replication_number", e)
-                    replication_number = ''
-                    #notes.append("replication_number = %s (%s)" % (columns[13], e))
+                    notes = []
+                    columns = line.replace('\r', '').split('\t')
+                    #print(columns)
+                    #print([name for name in columns[10].split(', ')])
+                    # print("pmid", columns[1])
+                    # print("entrez_gene_id", columns[4],Factor.objects.get_or_create(entrez_gene_id=columns[4]),
+                    #       type(Factor.objects.get_or_create(entrez_gene_id=columns[4])))
+                    # print("polymorphism", columns[5])
+                    # print("shorter_lived_allele", columns[6])
+                    # print("odds_ratio", columns[7])
+                    # print("pvalue", columns[8])
+                    # print("significant", columns[9])
+                    # print("number_of_cases", columns[10])
+                    # print("ethnicity", [columns[11]])
+                    # print("age_of_cases", columns[12])
+                    # print("technology", columns[13])
+                    # print("study_type", columns[14])
+                    # print("description", columns[15])
 
-                try:
-                    print('technology: %s' % columns[14])
-                    technology = Technology.objects.get_or_create(name=columns[14])[0]
-                    if technology: d.update({'technology':technology})
+                    try:
+                        choice = State.objects.get_or_create(name=columns[0])[0]
+                        if choice: d.update({'choice':choice})
+                    except Exception as e:
+                        #print("choice", e)
+                        choice = ''
+                        notes.append("choice = %s (%s)" % (columns[0], e))
+                    try:
+                        pmid = int(columns[1].replace('N/A', ''))
+                        if pmid: d.update({'pmid':pmid})
+                    except Exception as e:
+                        #print("pmid", e)
+                        pmid = ''
+                        notes.append("pmid = %s (%s)" % (columns[1], e))
+                    try:
+                        if columns[4]:
+                            factor, created = Factor.objects.get_or_create(entrez_gene_id=columns[4], symbol=columns[3], species=species) #& Q(taxid=9606)
+                        else:
+                            factor, created = Factor.objects.get_or_create(symbol=columns[3], species=species) #& Q(taxid=9606)
+                        if factor:
+                            print("Get or created factor: %s %s" % (factor, created))
+                            factor.observation += columns[3] + ' was found to be associated with longevity [%s]. ' % pmid
+                            factor.assay.add(assay)
+                            factor.classifications.add(classification)
+                            print(factor.classification)
+                            factor.save()
+                            #print("Found factor: %s" % factor)
+                            factors.append(factor)
+                            print("Created factor")
+                        if factor: d.update({'factor':factor})
+                    except Exception as e:
+                        #print("factor", e)
+                        factor = ''
+                        notes.append("gene symbol = %s (%s)" % (columns[3], e))
+                        notes.append("entrez gene id = %s (%s)" % (columns[4], e))
+                    try:
+                        polymorphism = columns[5].replace('N/A', '')
+                        if polymorphism: d.update({'polymorphism':polymorphism})
+                    except Exception as e:
+                        #print("polymorphism", e)
+                        polymorphism = '-'
+                        notes.append("polymorphism = %s (%s)" % (columns[5], e))
+                    if polymorphism == '':
+                        polymorphism = '-'
+                        d.update({'polymorphism':polymorphism})
+                    try:
+                        shorter_lived_allele = columns[6].replace('N/A', '')
+                        if shorter_lived_allele: d.update({'shorter_lived_allele':shorter_lived_allele})
+                    except Exception as e:
+                        #print("shorter_lived_allele", e)
+                        shorter_lived_allele = ''
+                        notes.append("shorter_lived_allele = %s (%s)" % (columns[6], e))
+                    try:
+                        if columns[7] != 'N/A' and columns[7] != 'NA' and columns[7] != '':
+                            odds_ratio = float(columns[7])
+                        else:
+                            odds_ratio = None
+                        if odds_ratio: d.update({'odds_ratio':odds_ratio})
+                    except Exception as e:
+                        odds_ratio = ''
+                        notes.append("odds_ratio = %s (%s)" % (columns[7], e))
+                    try:
+                        if columns[8] != 'NS' and columns[8] != 'N/A':
+                            pvalue = float(columns[8].replace('x', '*').replace('^', '**'))
+                        else:
+                            pvalue = None
+                        if pvalue: d.update({'pvalue':pvalue})
+                    except Exception as e:
+                        #print("odds ratio", e)
+                        pvalue = ''
+                        notes.append("pvalue = %s (%s)" % (columns[8], e))
+                    try:
+                        significant = columns[9].replace('N/A', '')
+                        if significant: d.update({'significant':significant})
+                    except Exception as e:
+                        #print("significant", e)
+                        significant = ''
+                        notes.append("significant = %s (%s)" % (columns[9], e))
+                    try:
+                        initial_number = columns[10].replace('N/A', '')
+                        if initial_number: d.update({'initial_number':initial_number})
+                    except Exception as e:
+                        #print("initial number", e)
+                        initial_number = ''
+                        notes.append("initial number = %s (%s)" % (columns[10], e))
+                    try:
+                        ethnicity = columns[11].replace('N/A', '')
+                        #if ethnicity: d.update({'ethnicity':ethnicity})
+                    except Exception as e:
+                        #print("ethnicity", e)
+                        ethnicity = ''
+                        #notes.append("ethnicity = %s (%s)" % (columns[11], e))
+                    try:
+                        age_of_cases = columns[12].replace('N/A', '')
+                        if age_of_cases: d.update({'age_of_cases':age_of_cases})
+                    except Exception as e:
+                        #print("age of cases", e)
+                        age_of_cases = ''
+                        #notes.append("age of cases = %s (%s)" % (columns[12], e))
+                    try:
+                        replication_number = columns[13].replace('N/A', '')
+                        if replication_number: d.update({'replication_number':replication_number})
+                    except Exception as e:
+                        #print("replication_number", e)
+                        replication_number = ''
+                        #notes.append("replication_number = %s (%s)" % (columns[13], e))
+
+                    try:
+                        print('technology: %s' % columns[14])
+                        technology = Technology.objects.get_or_create(name=columns[14])[0]
+                        if technology: d.update({'technology':technology})
+                    except Exception as e:
+                        #print("technology", e)
+                        technology = ''
+                        #notes.append("technology = %s (%s)" % (columns[13], e))
+                    try:
+                        #print('study type: %s' % columns[15])
+                        study_type = StudyType.objects.get_or_create(name=columns[15])[0]
+                        if study_type: d.update({'study_type':study_type})
+                    except Exception as e:
+                        #print("study type", e)
+                        study_type = ''
+                        #notes.append("study type = %s (%s)" % (columns[14], e))
+                    try:
+                        description = columns[16].replace('N/A', '')
+                        if description: d.update({'description':description})
+                    except Exception as e:
+                        #print("description", e)
+                        description = ''
+                        #notes.append("description = %s (%s)" % (columns[15], e))
+                    try:
+                        reference = Reference.objects.get_or_create(pmid=columns[1])[0]
+                        if reference: d.update({'reference':reference})
+                    except Exception as e:
+                        #print("reference", e)
+                        reference = ''
+                        #notes.append("reference = %s (%s)" % (columns[1], e))
+                    if 'description' in d:
+                        d['description'] = d['description'] + '\n\n'+'\n\n'.join(notes)
+                    else:
+                        d.update({'description':  '\n\n'.join(notes)})
+                    variant = Variant.objects.create(**d) #choice=choice,
+                                           # pmid=pmid,
+                                           # factor=factor,
+                                           # polymorphism=polymorphism,
+                                           # shorter_lived_allele=shorter_lived_allele,
+                                           # odds_ratio=odds_ratio,
+                                           # pvalue=pvalue,
+                                           # significant=significant,
+                                           # initial_number=initial_number,
+                                           # age_of_cases=age_of_cases,
+                                           # technology=technology,
+                                           # study_type=study_type,
+                                           # description=description,
+                                           # reference=reference)
+                    ethnicity = [Population.objects.get_or_create(name=population)[0] for population in ethnicity.replace(';', ',').replace(', ', ',').split(',')]
+                    for e in ethnicity:
+                        variant.ethnicity.add(e)
+                        #variant.save()
+                    if created:
+                        variant.factor = factor
+                        variant.factor.add(factor)
+                        #variant.save()
+                    for f in factors:
+                        variant.factors.add(f)
+                        #variant.save()
+                    if 'yes' in significant.lower():
+                        variant.classifications.add(classification)
+                    else:
+                        variant.classifications.add(no_age_effect)
+                    variant.save()
                 except Exception as e:
-                    #print("technology", e)
-                    technology = ''
-                    #notes.append("technology = %s (%s)" % (columns[13], e))
-                try:
-                    #print('study type: %s' % columns[15])
-                    study_type = StudyType.objects.get_or_create(name=columns[15])[0]
-                    if study_type: d.update({'study_type':study_type})
-                except Exception as e:
-                    #print("study type", e)
-                    study_type = ''
-                    #notes.append("study type = %s (%s)" % (columns[14], e))
-                try:
-                    description = columns[16].replace('N/A', '')
-                    if description: d.update({'description':description})
-                except Exception as e:
-                    #print("description", e)
-                    description = ''
-                    #notes.append("description = %s (%s)" % (columns[15], e))
-                try:
-                    reference = Reference.objects.get_or_create(pmid=columns[1])[0]
-                    if reference: d.update({'reference':reference})
-                except Exception as e:
-                    #print("reference", e)
-                    reference = ''
-                    #notes.append("reference = %s (%s)" % (columns[1], e))
-                if 'description' in d:
-                    d['description'] = d['description'] + '\n\n'+'\n\n'.join(notes)
-                else:
-                    d.update({'description':  '\n\n'.join(notes)})
-                variant = Variant.objects.create(**d) #choice=choice,
-                                       # pmid=pmid,
-                                       # factor=factor,
-                                       # polymorphism=polymorphism,
-                                       # shorter_lived_allele=shorter_lived_allele,
-                                       # odds_ratio=odds_ratio,
-                                       # pvalue=pvalue,
-                                       # significant=significant,
-                                       # initial_number=initial_number,
-                                       # age_of_cases=age_of_cases,
-                                       # technology=technology,
-                                       # study_type=study_type,
-                                       # description=description,
-                                       # reference=reference)
-                ethnicity = [Population.objects.get_or_create(name=population)[0] for population in ethnicity.replace(';', ',').replace(', ', ',').split(',')]
-                for e in ethnicity:
-                    variant.ethnicity.add(e)
-                    #variant.save()
-                if created:
-                    variant.factor = factor
-                    variant.factor.add(factor)
-                    #variant.save()
-                for f in factors:
-                    variant.factors.add(f)
-                    #variant.save()
-                if 'yes' in significant.lower():
-                    variant.classifications.add(classification)
-                else:
-                    variant.classifications.add(no_age_effect)
-                variant.save()
-            except Exception as e:
-                print(e)
+                    print(e)
         return super(VariantBulkInsert, self).form_valid(form)
 
 
@@ -974,6 +988,24 @@ class CreateVariant(Create):
     model = Variant
     form_class = VariantForm
     comment = 'Created variant.'
+
+    def form_valid(self, form):
+        with reversion.create_revision():
+            self.object = form.save(commit=False)
+            if isinstance(self.request.user, AnonymousUser):
+                self.request.user = User.objects.get(username='Anonymous')
+            self.object.user = self.request.user
+            comment = self.request.POST['comment'] or self.comment
+            reversion.set_comment(comment)
+            self.object.comment = comment
+            self.object.save()
+            log(self.request, self.object, comment)
+            reversion.set_user(self.request.user)
+            form.save_m2m()
+            self.success_url = self.object.get_absolute_url()
+            messages.add_message(self.request, messages.SUCCESS,
+                _(self.message % self.object))
+            return HttpResponseRedirect(self.get_success_url())
 
 
 class VariantList(SingleTableView, FormView):
