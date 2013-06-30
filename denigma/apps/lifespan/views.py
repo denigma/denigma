@@ -813,10 +813,11 @@ class VariantBulkInsert(FormView):
                         factor, created = Factor.objects.get_or_create(entrez_gene_id=columns[4], symbol=columns[3], species=species) #& Q(taxid=9606)
                     else:
                         factor, created = Factor.objects.get_or_create(symbol=columns[3], species=species) #& Q(taxid=9606)
-
+                    print("Get or created factor: %s %s" % (factor, created))
                     factor.observation += columns[3] + ' was found to be associated with longevity [%s]. ' % pmid
                     factor.assay.add(assay)
                     factor.classifications.add(classification)
+                    print(factor.classification)
                     factor.save()
                     #print("Found factor: %s" % factor)
                     factors.append(factor)
@@ -847,6 +848,8 @@ class VariantBulkInsert(FormView):
                 try:
                     if columns[7] != 'N/A' and columns[7] != 'NA' and columns[7] != '':
                         odds_ratio = float(columns[7])
+                    else:
+                        odds_ratio = None
                     if odds_ratio: d.update({'odds_ratio':odds_ratio})
                 except Exception as e:
                     odds_ratio = ''
