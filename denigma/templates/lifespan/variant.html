@@ -29,7 +29,7 @@
             <br>
 
             {% if variant.factor %}
-                <b>Factor</b><br>
+                <b>Factor:</b><br>
 
                 <b>- Symbol:</b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.symbol }}</a><br>
                 <b>- Name:</b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.name }}</a><br>
@@ -41,7 +41,7 @@
                 {% endif %}
 
            {% with variant.factors as factors %}
-               {% if factors %}
+               {% if factors.all %}
                     <br>
                     <b>Factors:</b><br>
                     {% for factor in factors.all %}
