@@ -700,26 +700,31 @@ class Population(models.Model):
         return self.name
 
 
+# class Association(models.Model):
+#     def __unicode__(self):
+#         return self.polymorphism
+
+
 class Variant(models.Model):
-    #id # Entrez Gene ID
-    #pmid
-    #symbol # Gene symbol (HGNC)
-    polymorphism = models.CharField(max_length=20)# genetic variant
+    #polymorphism = models.CharField(max_length=20)# genetic variant
     location  = models.CharField(max_length=10, null=True, blank=True)# genomic location
     factor = models.ForeignKey(Factor, null=True, blank=True, related_name='variant')
+    shorter_lived_allele = models.CharField(max_length=20, blank=True, null=True)
+    longer_lived_allele = models.CharField(max_length=20, blank=True, null=True)
+
+    polymorphism = models.CharField(max_length=250)# genetic variant
+    #variants = models.ManyToManyField(Variant)
     factors = models.ManyToManyField(Factor, null=True, blank=True, related_name='variance')
     description = models.TextField(null=True, blank=True)
     odds_ratio = models.FloatField(null=True, blank=True)
     pvalue = models.FloatField(null=True, blank=True)
-    significant = models.CharField(max_length=10, null=True, blank=True)  #(redudant)
-    initial_number = models.CharField(max_length=250, null=True, blank=True) # of_cases_controls ( study)
-    replication_number = models.CharField(max_length=250, null=True, blank=True) #     _of_cases_controls ( study)
+    significant = models.CharField(max_length=10, null=True, blank=True)  # (redudant)
+    initial_number = models.CharField(max_length=250, null=True, blank=True) # _of_cases_controls (study)
+    replication_number = models.CharField(max_length=250, null=True, blank=True) #     _of_cases_controls (study)
     ethnicity = models.ManyToManyField(Population)# German
     age_of_cases = models.CharField(max_length=250, null=True, blank=True)
     technology = models.ForeignKey(Technology, null=True, blank=True)     # PCR, array
     study_type = models.ForeignKey(StudyType, null=True, blank=True)    # GWAS, Candidate genes
-    shorter_lived_allele = models.CharField(max_length=20, blank=True, null=True)
-    longer_lived_allele = models.CharField(max_length=20, blank=True, null=True)
     pmid = models.IntegerField(blank=True, null=True)
     reference = models.ForeignKey('datasets.Reference')
     choice = models.ForeignKey(State, default=1, null=True, blank=True) #[Curate/Review/Discard]
