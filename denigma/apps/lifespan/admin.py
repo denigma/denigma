@@ -129,7 +129,7 @@ class AssayAdmin(reversion.VersionAdmin):
 
 
 
-class VariantAdmin(admin.ModelAdmin):
+class VariantAdmin(reversion.VersionAdmin):
     #form = VariantAdminForm
     list_display = ('polymorphism', 'factor', 'odds_ratio', 'pvalue', 'significant', 'description', # 'qvalue',
                     'initial_number', 'replication_number', 'age_of_cases', 'technology',
@@ -142,6 +142,11 @@ class VariantAdmin(admin.ModelAdmin):
                     'study_type', 'pmid', 'reference',  'choice']
     list_filter = ('choice', 'created', 'updated', 'ethnicity', 'classifications',)#'factors',
     filter_horizontal = ('factors', 'ethnicity', 'classifications')
+
+class StudyTypeAdmin(reversion.VersionAdmin): pass
+class PopulationAdmin(reversion.VersionAdmin): pass
+class StateAdmin(reversion.VersionAdmin): pass
+class TechnologyAdmin(reversion.VersionAdmin): pass
 
 admin.site.register(Study, StudyAdmin)
 admin.site.register(Experiment, ExperimentAdmin)
@@ -157,8 +162,9 @@ admin.site.register(Regimen, RegimenAdmin)
 admin.site.register(Assay, AssayAdmin)
 admin.site.register(Gender)
 admin.site.register(Variant, VariantAdmin)
-admin.site.register(StudyType)
-admin.site.register(Population)
-admin.site.register(State)
-admin.site.register(Technology)
+admin.site.register(StudyType, StudyTypeAdmin)
+admin.site.register(Population, PopulationAdmin)
+admin.site.register(State, StateAdmin)
+admin.site.register(Technology, TechnologyAdmin)
+
 
