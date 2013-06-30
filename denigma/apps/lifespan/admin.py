@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 
 import reversion
 
@@ -99,6 +100,49 @@ class AssayAdmin(reversion.VersionAdmin):
     list_display = ('shortcut', 'name')
 
 
+# class VariantAdminForm(forms.ModelForm):
+#     formfield_overrides = {
+#         models.TextField: {'widget': AdminPagedownWidget},
+#     }
+#     text = forms.CharField(widget=AdminPagedownWidget(
+#         attrs={'rows': 30, 'cols': 80, 'style': 'font-family:monospace'}),
+#         help_text='<a href="http://docutils.sourceforge.net/docs/user/rst/'
+#                   'quickref.html">reStructuredText Quick Reference</a>'
+#     )
+#     references = forms.ModelMultipleChoiceField(
+#         label='Factors',
+#         queryset=Factor.objects.all(),
+#         required=False,
+#         help_text='Lifespan factors.',
+#         widget=admin.widgets.FilteredSelectMultiple('references', False)
+#     )
+#
+#
+# class EntryAdmin(reversion.VersionAdmin):
+#     search_fields = ('title', 'text', 'url')
+#     ordering = ('-created',)
+#     list_filter = ('published',)
+#     #inlines = [ChangeInline]
+#     #inlines = [RelationInline]
+#
+#     form = EntryAdminForm
+
+
+
+class VariantAdmin(admin.ModelAdmin):
+    #form = VariantAdminForm
+    list_display = ('polymorphism', 'factor', 'odds_ratio', 'pvalue', 'significant', 'description', # 'qvalue',
+                    'initial_number', 'replication_number', 'age_of_cases', 'technology',
+                    'study_type',  'pmid', ) #'reference',
+    fields = ('polymorphism', 'location', 'factor', 'factors', 'description', 'odds_ratio', 'pvalue', 'qvalue',
+              'significant','initial_number', 'replication_number', 'ethnicity', 'age_of_cases', 'study_type',
+              'technology', 'pmid', 'reference', 'choice', 'classifications')
+    search_fields = ['polymorphism', 'factor', 'odds_ratio', 'pvalue', 'qvalue', 'significant',
+                    'initial_number', 'replication_number', 'age_of_cases', 'technology',
+                    'study_type', 'pmid', 'reference',  'choice']
+    list_filter = ('choice', 'ethnicity', 'classifications')#'factors',
+    filter_horizontal = ('factors', 'ethnicity', 'classifications')
+
 admin.site.register(Study, StudyAdmin)
 admin.site.register(Experiment, ExperimentAdmin)
 admin.site.register(Measurement, MeasurementAdmin)
@@ -112,7 +156,7 @@ admin.site.register(Intervention, InterventionAdmin)
 admin.site.register(Regimen, RegimenAdmin)
 admin.site.register(Assay, AssayAdmin)
 admin.site.register(Gender)
-admin.site.register(Variant)
+admin.site.register(Variant, VariantAdmin)
 admin.site.register(StudyType)
 admin.site.register(Population)
 admin.site.register(State)
