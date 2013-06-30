@@ -758,12 +758,15 @@ class VariantBulkInsert(FormView):
         #print(data)
         headers = {}
         header = data.split('\n')[0]
-        for head in header:
+        long_lived = False
+        n = 1
+        for head in header.split('\t'):
+            print(head)
+            if "onger" in head:
+                long_lived = True
+                n = 2
+
             if head in header: pass
-
-
-
-
 
         classification = Classification.objects.get(title="Longevity-Associated")
         no_age_effect = Classification.objects.get(title="No Age Effect")
@@ -807,6 +810,8 @@ class VariantBulkInsert(FormView):
                     # print("technology", columns[13])
                     # print("study_type", columns[14])
                     # print("description", columns[15])
+
+
 
                     try:
                         choice = State.objects.get_or_create(name=columns[0])[0]
@@ -860,66 +865,75 @@ class VariantBulkInsert(FormView):
                         #print("shorter_lived_allele", e)
                         shorter_lived_allele = ''
                         notes.append("shorter_lived_allele = %s (%s)" % (columns[6], e))
+                    if long_lived:
+                        try:
+                            longer_lived_allele = columns[7].replace('N/A', '')
+                            if longer_lived_allele: d.update({'longer_lived_allele': longer_lived_allele})
+                        except Exception as e:
+                            #print("shorter_lived_allele", e)
+                            longer_lived_allele = ''
+                            notes.append("longer_lived_allele = %s (%s)" % (columns[7], e))
+
                     try:
-                        if columns[7] != 'N/A' and columns[7] != 'NA' and columns[7] != '':
-                            odds_ratio = float(columns[7])
+                        if columns[n+6] != 'N/A' and columns[n+6] != 'NA' and columns[n+6] != '':
+                            odds_ratio = float(columns[n+6])
                         else:
                             odds_ratio = None
                         if odds_ratio: d.update({'odds_ratio':odds_ratio})
                     except Exception as e:
                         odds_ratio = ''
-                        notes.append("odds_ratio = %s (%s)" % (columns[7], e))
+                        notes.append("odds_ratio = %s (%s)" % (columns[n+6], e))
                     try:
-                        if columns[8] == 'NS':
+                        if columns[n+7] == 'NS':
                             pvalue = 1
-                        elif columns[8] != 'N/A':
-                            pvalue = float(columns[8].replace('x', '*').replace('^', '**'))
+                        elif columns[n+7] != 'N/A':
+                            pvalue = float(columns[n+7].replace('x', '*').replace('^', '**'))
                         else:
                             pvalue = None
                         if pvalue: d.update({'pvalue':pvalue})
                     except Exception as e:
                         #print("odds ratio", e)
                         pvalue = ''
-                        notes.append("pvalue = %s (%s)" % (columns[8], e))
+                        notes.append("pvalue = %s (%s)" % (columns[n+7], e))
                     try:
-                        significant = columns[9].replace('N/A', '')
+                        significant = columns[n+8].replace('N/A', '')
                         if significant: d.update({'significant':significant})
                     except Exception as e:
                         #print("significant", e)
                         significant = ''
-                        notes.append("significant = %s (%s)" % (columns[9], e))
+                        notes.append("significant = %s (%s)" % (columns[n+8], e))
                     try:
-                        initial_number = columns[10].replace('N/A', '')
+                        initial_number = columns[n+9].replace('N/A', '')
                         if initial_number: d.update({'initial_number':initial_number})
                     except Exception as e:
                         #print("initial number", e)
                         initial_number = ''
-                        notes.append("initial number = %s (%s)" % (columns[10], e))
+                        notes.append("initial number = %s (%s)" % (columns[n+9], e))
                     try:
-                        ethnicity = columns[11].replace('N/A', '')
+                        ethnicity = columns[n+10].replace('N/A', '')
                         #if ethnicity: d.update({'ethnicity':ethnicity})
                     except Exception as e:
                         #print("ethnicity", e)
                         ethnicity = ''
                         #notes.append("ethnicity = %s (%s)" % (columns[11], e))
                     try:
-                        age_of_cases = columns[12].replace('N/A', '')
+                        age_of_cases = columns[n+11].replace('N/A', '')
                         if age_of_cases: d.update({'age_of_cases':age_of_cases})
                     except Exception as e:
                         #print("age of cases", e)
                         age_of_cases = ''
-                        #notes.append("age of cases = %s (%s)" % (columns[12], e))
+                        notes.append("age of cases = %s (%s)" % (columns[n+11], e))
                     try:
-                        replication_number = columns[13].replace('N/A', '')
+                        replication_number = columns[n+12].replace('N/A', '')
                         if replication_number: d.update({'replication_number':replication_number})
                     except Exception as e:
                         #print("replication_number", e)
                         replication_number = ''
-                        #notes.append("replication_number = %s (%s)" % (columns[13], e))
+                        notes.append("replication_number = %s (%s)" % (columns[n+12], e))
 
                     try:
-                        print('technology: %s' % columns[14])
-                        technology = Technology.objects.get_or_create(name=columns[14])[0]
+                        print('technology: %s' % columns[n+13])
+                        technology = Technology.objects.get_or_create(name=columns[n+13])[0]
                         if technology: d.update({'technology':technology})
                     except Exception as e:
                         #print("technology", e)
@@ -927,12 +941,12 @@ class VariantBulkInsert(FormView):
                         #notes.append("technology = %s (%s)" % (columns[13], e))
                     try:
                         #print('study type: %s' % columns[15])
-                        study_type = StudyType.objects.get_or_create(name=columns[15])[0]
+                        study_type = StudyType.objects.get_or_create(name=columns[n+14])[0]
                         if study_type: d.update({'study_type':study_type})
                     except Exception as e:
                         #print("study type", e)
                         study_type = ''
-                        #notes.append("study type = %s (%s)" % (columns[14], e))
+                        notes.append("study type = %s (%s)" % (columns[n+14], e))
                     try:
                         description = columns[16].replace('N/A', '')
                         if description: d.update({'description':description})
