@@ -18,6 +18,10 @@
    {{ variant.polymorphism  }}
 {% endblock %}
 
+{% block options %}
+    | <a href="/admin/lifespan/variant/{{ variant.pk }}">Admin</a>
+{% endblock %}
+
 {% block content %}
 
             {% if variant.polymorphism %}<b>Polymorphism:</b> <a href="http://snpedia.com/index.php/{{ variant.polymorphism }}">{{ variant.polymorphism }}</a><br>{% endif %}
@@ -74,7 +78,7 @@
             {% endif %}
             {% if variant.age_of_cases %}<b>Age of cases:</b> {{ variant.age_of_cases }}<br>{% endif %}
             {% if variant.shorter_lived_allele %}<b>Shorter lived allele: </b> {{ variant.shorter_lived_allele }}<br>{% endif %}<br>
-            {% if variant.longer_lived_allele %}<b>Shorter lived allele: </b> {{ variant.shorter_lived_allele }}<br>{% endif %}<br>
+            {% if variant.longer_lived_allele %}<b>Longer lived allele: </b> {{ variant.longer_lived_allele }}<br>{% endif %}<br>
 
 
             <b>Statistics</b><br>
@@ -85,7 +89,6 @@
             {% if variant.qvalue %}<b>- q-value: </b> {{ variant.qvalue }}<br>{% endif %}
             {% if variant.significant %}<b>- Significant: </b> {{ variant.significant }}<br>{% endif %}
             <br>
-
 
             <b>Study Design</b><br>
             {% with variant.classifications.all as classifications %}
