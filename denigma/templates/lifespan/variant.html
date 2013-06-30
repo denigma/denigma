@@ -23,8 +23,10 @@
             {% if variant.polymorphism %}<b>Polymorphism:</b> <a href="http://snpedia.com/index.php/{{ variant.polymorphism }}">{{ variant.polymorphism }}</a><br>{% endif %}
             {% if variant.location %}<b>Location:</b> {{ variant.location }}<br>{% endif %}
             <br>
+
             {% if variant.factor %}
                 <b>Gene</b><br>
+
                 <b>- Symbol:</b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.symbol }}</a><br>
                 <b>- Name:</b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.name }}</a><br>
                {% if variant.factor.entrez_gene_id %}
@@ -80,6 +82,7 @@
             {% if variant.replication_number %}<b></b>  <b>|</b> {{ variant.replication_number }} (replication){% endif %}<br>
             {% if variant.odds_ratio %}<b>- Odds ratio:</b> {{ variant.odds_ratio }}<br>{% endif %}
             {% if variant.pvalue %}<b>- p-value: </b> {{ variant.pvalue }}<br>{% endif %}
+            {% if variant.qvalue %}<b>- q-value: </b> {{ variant.qvalue }}<br>{% endif %}
             {% if variant.significant %}<b>- Significant: </b> {{ variant.significant }}<br>{% endif %}
             <br>
 
