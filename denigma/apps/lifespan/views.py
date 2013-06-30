@@ -763,6 +763,7 @@ class VariantBulkInsert(FormView):
 
 
         classification = Classification.objects.get(title="Longevity-Associated")
+        no_age_effect = Classification.objects.get(title="No Age Effect")
         species = Species.objects.get(taxid=9606)
         assay = Assay.objects.get(name__startswith='Organi')
 
@@ -951,14 +952,19 @@ class VariantBulkInsert(FormView):
                 ethnicity = [Population.objects.get_or_create(name=population)[0] for population in ethnicity.replace(';', ',').replace(', ', ',').split(',')]
                 for e in ethnicity:
                     variant.ethnicity.add(e)
-                    variant.save()
+                    #variant.save()
                 if created:
                     variant.factor = factor
                     variant.factor.add(factor)
-                    variant.save()
+                    #variant.save()
                 for f in factors:
                     variant.factors.add(f)
-                    variant.save()
+                    #variant.save()
+                if 'yes' in significant.lower():
+                    variant.classifications.add(classification)
+                else:
+                    variant.classifications.add(no_age_effect)
+                variant.save()
             except Exception as e:
                 print(e)
         return super(VariantBulkInsert, self).form_valid(form)
