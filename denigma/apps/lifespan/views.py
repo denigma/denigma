@@ -785,7 +785,7 @@ class VariantBulkInsert(FormView):
             #comment = "Added factor. %s" % self.request.POST['comment'] or ''
             #reversion.set_comment(comment)
             #log(self.request, factor, comment)
-            msg = "Successfully added varaints."
+            msg = "Successfully added variants."
             messages.add_message(self.request, messages.SUCCESS, ugettext(msg))
             for line in lines:
                 created = False
@@ -995,8 +995,11 @@ class VariantBulkInsert(FormView):
                     else:
                         variant.classifications.add(no_age_effect)
                     variant.save()
+                    messages.add_message(self.request, messages.SUCCESS, "%s" % (line))
                 except Exception as e:
+                    messages.add_message(self.request, messages.ERROR, "%s %s" % (e, line))
                     print(e)
+
         return super(VariantBulkInsert, self).form_valid(form)
 
 
