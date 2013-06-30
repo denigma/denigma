@@ -524,8 +524,8 @@ class VariantBulkInsertForm(Form):
         self.helper.layout = Layout(
             Fieldset(
                 'Please provide a tab separeted list of the varaints (copied from an spreadsheet for instance) with the following fields in the header as first line:\n'
-                '"Choice" "PMID" "Link" "Gene symbol (HGNC)" "Entrez Gene ID" "Polymorphism" "Shorter-lived allele" "Odds ratio" "P value" "Significant?" "Number of cases / controls (initial study)" "Ethnicity" "Age of cases" "Number of cases/controls (replication study)" "Technology" "Study type" "Notes"',
-                'data. An optional "Longer-lived allele" field might be included right after the "Shorter-lived allele" field',
+                '"Choice" "PMID" "Link" "Gene symbol (HGNC)" "Entrez Gene ID" "Polymorphism" "Shorter-lived allele" "Odds ratio" "P value" "Significant?" "Number of cases / controls (initial study)" "Ethnicity" "Age of cases" "Number of cases/controls (replication study)" "Technology" "Study type" "Notes" (An optional "Longer-lived allele" field might be included right after the "Shorter-lived allele" field)'',
+                'data',
             ),
             FormActions(
                 Submit('save', 'Save', css_class="btn-primary"),
