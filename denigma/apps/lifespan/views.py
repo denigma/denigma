@@ -985,7 +985,7 @@ class VariantBulkInsert(FormView):
                         #variant.save()
                     if created:
                         variant.factor = factor
-                        variant.factor.add(factor)
+                        variant.factors.add(factor)
                         #variant.save()
                     for f in factors:
                         variant.factors.add(f)
