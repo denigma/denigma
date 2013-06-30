@@ -65,7 +65,7 @@ class VariantTable(tables.Table):
          return mark_safe(", ".join([i.name for i in value.all()]))
 
     def render_reference(self, value, record):
-         return mark_safe('''<a href=/datasets/reference/%s>%s</a>''' % (record.id, value.pmid))
+         return mark_safe('''<a href=/datasets/reference/%s>%s</a>''' % (record.pmid, value.pmid))
 
     class Meta:
         model = Variant
