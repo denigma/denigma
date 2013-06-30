@@ -29,7 +29,7 @@
             <br>
 
             {% if variant.factor %}
-                <b>Gene</b><br>
+                <b>Factor</b><br>
 
                 <b>- Symbol:</b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.symbol }}</a><br>
                 <b>- Name:</b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.name }}</a><br>
@@ -43,7 +43,7 @@
            {% with variant.factors as factors %}
                {% if factors %}
                     <br>
-                    <b>Genes:</b><br>
+                    <b>Factors:</b><br>
                     {% for factor in factors.all %}
                         <li><a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.symbol }}</a>
                         </b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.name }}</a> (
@@ -77,7 +77,7 @@
                 {% endfor %}<br>
             {% endif %}
             {% if variant.age_of_cases %}<b>Age of cases:</b> {{ variant.age_of_cases }}<br>{% endif %}
-            {% if variant.shorter_lived_allele %}<b>Shorter lived allele: </b> {{ variant.shorter_lived_allele }}<br>{% endif %}<br>
+            {% if variant.shorter_lived_allele %}<b>Shorter lived allele: </b> {{ variant.shorter_lived_allele }}<br>{% endif %}
             {% if variant.longer_lived_allele %}<b>Longer lived allele: </b> {{ variant.longer_lived_allele }}<br>{% endif %}<br>
 
 
