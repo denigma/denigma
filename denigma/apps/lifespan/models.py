@@ -719,13 +719,13 @@ class Variant(models.Model):
     odds_ratio = models.FloatField(null=True, blank=True)
     pvalue = models.FloatField(null=True, blank=True)
     qvalue = models.FloatField(null=True, blank=True)
-    significant = models.CharField(max_length=10, null=True, blank=True)  # (redudant)
+    significant = models.CharField(max_length=255, null=True, blank=True)  # (redudant)
     initial_number = models.CharField(max_length=250, null=True, blank=True) # _of_cases_controls (study)
     replication_number = models.CharField(max_length=250, null=True, blank=True) #     _of_cases_controls (study)
     ethnicity = models.ManyToManyField(Population)# German
     age_of_cases = models.CharField(max_length=250, null=True, blank=True)
-    technology = models.ForeignKey(Technology, null=True, blank=True)     # PCR, array
     study_type = models.ForeignKey(StudyType, null=True, blank=True)    # GWAS, Candidate genes
+    technology = models.ForeignKey(Technology, null=True, blank=True)     # PCR, array
     pmid = models.IntegerField(blank=True, null=True)
     reference = models.ForeignKey('datasets.Reference')
     choice = models.ForeignKey(State, default=1, null=True, blank=True) #[Curate/Review/Discard]
