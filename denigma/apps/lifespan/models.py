@@ -577,7 +577,7 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
     #geneid = models.ForeignKey(Gene, blank=True)   # Or Genes
     mapping = models.IntegerField(null=True, blank=True)
     ensembl_gene_id = models.CharField("Ensembl gene ID", max_length=18, blank=True)
-    symbol = models.CharField(max_length=25, blank=True, help_text='In the case of genes providing the correct gene symbol and species name would be normally sufficient to identify a gene. ' #15
+    symbol = models.CharField(max_length=255, blank=True, help_text='In the case of genes providing the correct gene symbol and species name would be normally sufficient to identify a gene. ' #15
                 'Other fields such as gene name and identifiers will be automatically populated.')   # Rename to symbol.
     name = models.CharField(max_length=244, blank=True)    # Rename to name.
     alias = models.CharField(max_length=270, blank=True)
