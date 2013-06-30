@@ -948,7 +948,7 @@ class VariantBulkInsert(FormView):
                         study_type = ''
                         notes.append("study type = %s (%s)" % (columns[n+14], e))
                     try:
-                        description = columns[16].replace('N/A', '')
+                        description = columns[n+15].replace('N/A', '')
                         if description: d.update({'description':description})
                     except Exception as e:
                         #print("description", e)
