@@ -712,12 +712,13 @@ class Variant(models.Model):
     shorter_lived_allele = models.CharField(max_length=20, blank=True, null=True)
     longer_lived_allele = models.CharField(max_length=20, blank=True, null=True)
 
-    polymorphism = models.CharField(max_length=250)# genetic variant
+    polymorphism = models.CharField(max_length=255)# genetic variant
     #variants = models.ManyToManyField(Variant)
     factors = models.ManyToManyField(Factor, null=True, blank=True, related_name='variance')
     description = models.TextField(null=True, blank=True)
     odds_ratio = models.FloatField(null=True, blank=True)
     pvalue = models.FloatField(null=True, blank=True)
+    qvalue = models.FloatField(null=True, blank=True)
     significant = models.CharField(max_length=10, null=True, blank=True)  # (redudant)
     initial_number = models.CharField(max_length=250, null=True, blank=True) # _of_cases_controls (study)
     replication_number = models.CharField(max_length=250, null=True, blank=True) #     _of_cases_controls (study)

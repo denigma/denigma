@@ -771,6 +771,7 @@ class VariantBulkInsert(FormView):
 
         lines = data.split('\n')[1:]
         for line in lines:
+            created = False
             factors = []
             d = {}
             try:
@@ -808,14 +809,18 @@ class VariantBulkInsert(FormView):
                     pmid = ''
                     notes.append("pmid = %s (%s)" % (columns[1], e))
                 try:
+                    if columns[4]:
+                        factor, created = Factor.objects.get_or_create(entrez_gene_id=columns[4], symbol=columns[3], species=species) #& Q(taxid=9606)
+                    else:
+                        factor, created = Factor.objects.get_or_create(symbol=columns[3], species=species) #& Q(taxid=9606)
 
-                    factor, created = Factor.objects.get_or_create(entrez_gene_id=columns[4], symbol=columns[3], species=species) #& Q(taxid=9606)
                     factor.observation += columns[3] + ' was found to be associated with longevity [%s]. ' % pmid
                     factor.assay.add(assay)
                     factor.classifications.add(classification)
                     factor.save()
                     #print("Found factor: %s" % factor)
                     factors.append(factor)
+                    print("Created factor")
                     if factor: d.update({'factor':factor})
                 except Exception as e:
                     #print("factor", e)
@@ -840,13 +845,17 @@ class VariantBulkInsert(FormView):
                     shorter_lived_allele = ''
                     notes.append("shorter_lived_allele = %s (%s)" % (columns[6], e))
                 try:
-                    odds_ratio = float(columns[7].replace('N/A', ''))
+                    if columns[7] != 'N/A' and columns[7] != 'NA' and columns[7] != '':
+                        odds_ratio = float(columns[7])
                     if odds_ratio: d.update({'odds_ratio':odds_ratio})
                 except Exception as e:
                     odds_ratio = ''
                     notes.append("odds_ratio = %s (%s)" % (columns[7], e))
                 try:
-                    pvalue = float(columns[8].replace('x', '*').replace('^', '**'))
+                    if columns[8] != 'NS' and columns[8] != 'N/A':
+                        pvalue = float(columns[8].replace('x', '*').replace('^', '**'))
+                    else:
+                        pvalue = None
                     if pvalue: d.update({'pvalue':pvalue})
                 except Exception as e:
                     #print("odds ratio", e)
@@ -939,6 +948,10 @@ class VariantBulkInsert(FormView):
                 ethnicity = [Population.objects.get_or_create(name=population)[0] for population in ethnicity.replace(';', ',').replace(', ', ',').split(',')]
                 for e in ethnicity:
                     variant.ethnicity.add(e)
+                    variant.save()
+                if created:
+                    variant.factor = factor
+                    variant.factor.add(factor)
                     variant.save()
                 for f in factors:
                     variant.factors.add(f)
