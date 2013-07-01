@@ -1,5 +1,5 @@
+# -*- coding: utf-8 -*-
 from django.contrib import admin
-from django import forms
 
 import reversion
 
@@ -137,9 +137,9 @@ class VariantAdmin(reversion.VersionAdmin):
     fields = ('polymorphism', 'location', 'factor', 'factors', 'description', 'odds_ratio', 'pvalue', 'p_value', 'qvalue',
               'significant','initial_number', 'replication_number', 'ethnicity', 'age_of_cases', 'study_type',
               'technology', 'pmid', 'reference', 'choice', 'classifications')
-    search_fields = ['polymorphism', 'factor', 'odds_ratio', 'pvalue', 'p_value',  'qvalue', 'significant',
-                    'initial_number', 'replication_number', 'age_of_cases', 'technology',
-                    'study_type', 'pmid', 'reference',  'choice']
+    search_fields = ['polymorphism',  'odds_ratio', 'pvalue', 'p_value',  'qvalue', 'significant', #'factor', 'technology', 'study_type',  'reference',
+                    'initial_number', 'replication_number', 'age_of_cases',
+                     'pmid'] #, 'choice'
     list_filter = ('choice', 'created', 'updated', 'ethnicity', 'classifications',)#'factors',
     filter_horizontal = ('factors', 'ethnicity', 'classifications')
 
