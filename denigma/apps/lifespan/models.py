@@ -711,8 +711,8 @@ class Variant(models.Model):
     updated = models.DateTimeField(_('updated'), auto_now=True)
     location  = models.CharField(max_length=10, null=True, blank=True)# genomic location
     factor = models.ForeignKey(Factor, null=True, blank=True, related_name='variant')
-    shorter_lived_allele = models.CharField(max_length=20, blank=True, null=True)
-    longer_lived_allele = models.CharField(max_length=20, blank=True, null=True)
+    shorter_lived_allele = models.CharField(max_length=255, blank=True, null=True)
+    longer_lived_allele = models.CharField(max_length=255, blank=True, null=True)
 
     polymorphism = models.CharField(max_length=255)# genetic variant
     #variants = models.ManyToManyField(Variant)
@@ -720,6 +720,7 @@ class Variant(models.Model):
     description = models.TextField(null=True, blank=True)
     odds_ratio = models.FloatField(null=True, blank=True)
     pvalue = models.FloatField(null=True, blank=True)
+    p_value = models.CharField(max_length=255, null=True, blank=True)# genetic variant
     qvalue = models.FloatField(null=True, blank=True)
     significant = models.CharField(max_length=255, null=True, blank=True)  # (redudant)
     initial_number = models.CharField(max_length=250, null=True, blank=True) # _of_cases_controls (study)

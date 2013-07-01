@@ -131,13 +131,13 @@ class AssayAdmin(reversion.VersionAdmin):
 
 class VariantAdmin(reversion.VersionAdmin):
     #form = VariantAdminForm
-    list_display = ('polymorphism', 'factor', 'odds_ratio', 'pvalue', 'significant', 'description', # 'qvalue',
+    list_display = ('polymorphism', 'factor', 'odds_ratio', 'pvalue', 'p_value', 'significant', 'description', # 'qvalue',
                     'initial_number', 'replication_number', 'age_of_cases', 'technology',
                     'study_type',  'pmid', 'created', 'updated' ) #'reference',
-    fields = ('polymorphism', 'location', 'factor', 'factors', 'description', 'odds_ratio', 'pvalue', 'qvalue',
+    fields = ('polymorphism', 'location', 'factor', 'factors', 'description', 'odds_ratio', 'pvalue', 'p_value', 'qvalue',
               'significant','initial_number', 'replication_number', 'ethnicity', 'age_of_cases', 'study_type',
               'technology', 'pmid', 'reference', 'choice', 'classifications')
-    search_fields = ['polymorphism', 'factor', 'odds_ratio', 'pvalue', 'qvalue', 'significant',
+    search_fields = ['polymorphism', 'factor', 'odds_ratio', 'pvalue', 'p_value',  'qvalue', 'significant',
                     'initial_number', 'replication_number', 'age_of_cases', 'technology',
                     'study_type', 'pmid', 'reference',  'choice']
     list_filter = ('choice', 'created', 'updated', 'ethnicity', 'classifications',)#'factors',

@@ -85,7 +85,8 @@
             {% if variant.initial_number %}<b>- Number of cases/controls: </b> {{ variant.initial_number }} (initial){% endif %}
             {% if variant.replication_number %}<b></b>  <b>|</b> {{ variant.replication_number }} (replication){% endif %}<br>
             {% if variant.odds_ratio %}<b>- Odds ratio:</b> {{ variant.odds_ratio }}<br>{% endif %}
-            {% if variant.pvalue %}<b>- p-value: </b> {{ variant.pvalue }}<br>{% endif %}
+            {% if variant.pvalue %}<b>- p-value: </b> {{ variant.pvalue }}{% endif %}
+            {% if variant.p_value %} ({{ variant.p_value }})<br>{% endif %}
             {% if variant.qvalue %}<b>- q-value: </b> {{ variant.qvalue }}<br>{% endif %}
             {% if variant.significant %}<b>- Significant: </b> {{ variant.significant }}<br>{% endif %}
             <br>
@@ -106,7 +107,10 @@
                 <br><b>Reference:</b><br>
                     <a href="/datasets/reference/{{ variant.reference.id }}">{{ variant.reference.pmid }}: {{ variant.reference.title }}</a>
                 <br>
-            {% endif %}
+            {% endif %}<br>
+
+            <b>Created: </b>{{ variant.created }}<br>
+            <b>Updated: </b>{{ variant.updated }}<br>
 
             <br><b><a href="/lifespan/variant/edit/{{ variant.pk }}">Edit</a></b>
                 (<a href="/admin/lifespan/variant/{{ variant.pk }}">Admin</a>) |

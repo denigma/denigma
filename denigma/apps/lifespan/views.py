@@ -886,11 +886,16 @@ class VariantBulkInsert(FormView):
                     try:
                         if columns[n+7] == 'NS':
                             pvalue = 1
+                            p_value = 'NS'
                         elif columns[n+7] != 'N/A':
-                            pvalue = float(columns[n+7].replace('x', '*').replace('*10^', 'E'))
+                            p_value = columns[n+7]
+                            pvalue = float(columns[n+7].replace('x', '*').replace('*10^', 'E').replace('=', '')
+                            .replace(' ', '').replace('P', '').replace('p', '').replace('>', '').replace('<', '').replace(',', ''))
                         else:
                             pvalue = None
+                            p_value = None
                         if pvalue: d.update({'pvalue':pvalue})
+                        if p_value: d.update({'p_value': pvalue})
                     except Exception as e:
                         #print("odds ratio", e)
                         pvalue = ''

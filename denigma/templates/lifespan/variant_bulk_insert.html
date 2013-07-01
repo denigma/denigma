@@ -1,11 +1,21 @@
 {% extends "lifespan/base.html" %}
 
+{% load url from future %}
 {% load crispy_forms_tags %}
 
 {% block hierarchy %}
    » <a href="/lifespan/variants/">Variants</a>
-    » Bulk Inserts
+   » <a href="{% url 'variant-bulk-insert' %}">Bulk Insert</a>
 {% endblock %}
+
+{% block options %}
+    <a href="/lifespan/variant/add">Add</a> /
+    <a href="/lifespan/variant/create">Create</a> |
+    <a href="{% url 'variant-bulk-insert' %}">Bulk Insert</a> |
+    </b>(<a href="/admin/lifespan/variant/">Admin</a>)<b>
+{% endblock %}
+
+{% block head_title %}Aging Variants Database{% endblock %}
 
 {% block title %}Variants Bulk Inserts{% endblock %}
 
