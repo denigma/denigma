@@ -27,21 +27,24 @@
         <tr>
             <td valign="top">
                 {{ entry.content|markdown|hyper|recross|safe }}
+                    </td>
+             <td valign="top" align="right" style="width: 400px">
+               {% for image in entry.images.all reversed %}
+                   <img src="{{ image.url }}" alt="{{ image.name }}" width="125" height="125">
+                   {% if not forloop.last %} ... ... ...{% endif %}
+               {% endfor %}
+            </td>
+                    </table>
                 <hr>
                     <form action="" method="POST">
     {% csrf_token %}
         <input type="submit" value="Filter" />{{ form.filter }}
         {{ filter.form.as_p }}
         {{ variantsfilter }}
-            </td>
-         <td valign="top" align="right" style="width: 400px">
-               {% for image in entry.images.all reversed %}
-                   <img src="{{ image.url }}" alt="{{ image.name }}" width="125" height="125">
-                   {% if not forloop.last %} ... ... ...{% endif %}
-               {% endfor %}
-            </td>
+
+
         </tr>
-    </table>
+
 
         <table width="100%">
             <tr>
