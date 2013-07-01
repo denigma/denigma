@@ -6,7 +6,7 @@
    » <a href="{% url 'variants' %}">Variants</a>
    » States (Choices)
 {% endblock %}
-{% block options %}| <a href="admin/lifespan/state">Admin</a>{% endblock %}
+{% block options %}| <a href="/admin/lifespan/state">Admin</a>{% endblock %}
 {% block content %}
     {% for object in object_list %}
         <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
