@@ -569,4 +569,4 @@ class InterventionFilterSet(FilterSet):
 
 
 class VariantFilterSet(FilterSet):
-    fields = ['classifications', 'choice', 'ethnicity', 'study_type', 'technology']
+    fields = ['classifications', 'study_type'] #, 'choice', 'ethnicity',  'technology']
