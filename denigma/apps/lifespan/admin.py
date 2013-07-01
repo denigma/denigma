@@ -143,10 +143,17 @@ class VariantAdmin(reversion.VersionAdmin):
     list_filter = ('choice', 'created', 'updated', 'ethnicity', 'classifications',)#'factors',
     filter_horizontal = ('factors', 'ethnicity', 'classifications')
 
-class StudyTypeAdmin(reversion.VersionAdmin): pass
-class PopulationAdmin(reversion.VersionAdmin): pass
-class StateAdmin(reversion.VersionAdmin): pass
-class TechnologyAdmin(reversion.VersionAdmin): pass
+class StudyTypeAdmin(reversion.VersionAdmin):
+    search_fields = ['name']
+    
+class PopulationAdmin(reversion.VersionAdmin):
+    search_fields = ['name']
+
+class StateAdmin(reversion.VersionAdmin):
+    search_fields = ['name']
+
+class TechnologyAdmin(reversion.VersionAdmin):
+    search_fields = ['name']
 
 admin.site.register(Study, StudyAdmin)
 admin.site.register(Experiment, ExperimentAdmin)
