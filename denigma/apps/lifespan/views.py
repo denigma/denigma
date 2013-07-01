@@ -889,8 +889,7 @@ class VariantBulkInsert(FormView):
                             p_value = 'NS'
                         elif columns[n+7] != 'N/A':
                             p_value = columns[n+7]
-                            pvalue = float(columns[n+7].replace('x', '*').replace('*10^', 'E').replace('=', '')
-                            .replace(' ', '').replace('P', '').replace('p', '').replace('>', '').replace('<', '').replace(',', ''))
+                            pvalue = float(columns[n+7].replace('x', '*').replace('*10^', 'E').replace('*10**', 'E').replace('=', '').replace(' ', '').replace('P', '').replace('p', '').replace('>', '').replace('<', '').replace(',', ''))
                         else:
                             pvalue = None
                             p_value = None
