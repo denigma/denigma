@@ -1,0 +1,16 @@
+{% extends "lifespan/base.html" %}
+{% load url from future %}
+{% block head_title %}Study Types{% endblock %}
+{% block title %}Study Types{% endblock %}
+{% block hierarchy %}
+   » <a href="{% url 'variants' %}">Variants</a>
+   » Study Types
+{% endblock %}
+{% block options %}
+    | <a href="/admin/lifespan/studytype">Admin</a>
+{% endblock %}
+{% block content %}
+    {% for object in object_list %}
+        <li><a href="{{ object.get_absolute_url }}">{{ object }}</li>
+    {% endfor %}
+{% endblock %}

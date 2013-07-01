@@ -1,0 +1,32 @@
+{% extends 'lifespan/base.html' %}
+{% block head_title %}Variant Assocation List{% endblock %}
+{% block title %}Variant Assocation List{% endblock %}
+{% block hierarchy %}
+    » <a href="/lifespan/variants/">Variants</a>
+    » List
+{% endblock %}
+{% block content %}
+{#        <li><a href="{{ object.get_absolute_url }}">{{ object }}</a> {{ object.factor }} {{ object.pvalue }}</li>#}
+        <table border="0">
+            <tr>
+                <td><b>Polymorphism</b></td>
+                <td><b>Factor</b></td>
+                <td><b>odds_ratio</b></td>
+                <td><b>p-value</b></td>
+                <td><b>Population</b></td>
+                <td><b>Reference</b></td>
+            </tr>
+                {% for object in object_list %}
+                     <tr>
+                    <td><a href="{{ object.get_absolute_url }}">{{ object }}</a></td>
+                    <td><a href="{{ object.factor.get_absolute_url }}">{{ object.factor }}</a></td>
+                    <td>{% if odds_ratio %}{{ object.odds_ratio }}{% endif %}</td>
+                    <td>{{ object.pvalue }}</td>
+                    <td>{% for population in object.ethnicity.all %}
+                            <a href="{{ population.get_absolute_url }}">{{ population }}</a>{% if not forloop.last %},{% endif %}
+                        {% endfor %}</td>
+                    <td><a href="{{ object.reference.get_absolute_url }}">{{ object.reference.pmid }}</a></td>
+                {% endfor %}
+            </tr>
+        </table>
+{% endblock %}

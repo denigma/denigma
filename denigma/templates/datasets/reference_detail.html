@@ -66,12 +66,28 @@
             <b>PDF</b>: <a href="{{ object.url }}">Download</a><br><br>
         {% endif %}
     {% endif %}
+
     <b>Citation</b>: {{ object.ref|markdown }}<br>
     {% if object.study_set.all %}
         {% for study in object.study_set.all %}
             <a href={{ study.get_absolute_url }}>Study</a>
         {% endfor %}
     {% endif %}
+
+     {% if object.factor_set.all %}
+        <b>Factors:</b>
+        {% for factor in object.factor_set.all %}
+            <li><a href="{{ factor.get_absolute_url }}">{{ factor }}</a></li>
+        {% endfor %}
+    {% endif %}
+
+    {% if object.variant_set.all %}
+        <b>Variants:</b>
+        {% for variant in object.variant_set.all %}
+            <li><a href="{{ variant.get_absolute_url }}">{{ variant }}</a></li>
+        {% endfor %}
+    {% endif %}
+
     <hr>
     <div>
         <b><a href={% url 'update-reference' object.pk %}>Update</a></b>

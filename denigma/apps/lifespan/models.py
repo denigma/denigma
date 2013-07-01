@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models.signals import m2m_changed
+from django.core.urlresolvers import reverse
 
 from datasets.models import Reference
 
@@ -676,12 +677,18 @@ class State(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('state', args=[self.pk])
+
 
 class Technology(models.Model): # PCR, array
     name = models.CharField(max_length=250)
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('technology', args=[self.pk])
 
     class Meta:
         verbose_name_plural = 'Technologies'
@@ -693,12 +700,18 @@ class StudyType(models.Model): # GWAS, Candidate genes
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('study_type', args=[self.pk])
+
+
 class Population(models.Model):
     name = models.CharField(max_length=250)
 
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('population', args=[self.pk])
 
 # class Association(models.Model):
 #     def __unicode__(self):
@@ -710,13 +723,13 @@ class Variant(models.Model):
     created = models.DateTimeField(_('created'), auto_now_add=True, db_index=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
     location  = models.CharField(max_length=10, null=True, blank=True)# genomic location
-    factor = models.ForeignKey(Factor, null=True, blank=True, related_name='variant')
+    factor = models.ForeignKey(Factor, null=True, blank=True, related_name='variants')
     shorter_lived_allele = models.CharField(max_length=255, blank=True, null=True)
     longer_lived_allele = models.CharField(max_length=255, blank=True, null=True)
 
     polymorphism = models.CharField(max_length=255)# genetic variant
     #variants = models.ManyToManyField(Variant)
-    factors = models.ManyToManyField(Factor, null=True, blank=True, related_name='variance')
+    factors = models.ManyToManyField(Factor, null=True, blank=True, related_name='variances')
     description = models.TextField(null=True, blank=True)
     odds_ratio = models.FloatField(null=True, blank=True)
     pvalue = models.FloatField(null=True, blank=True)
@@ -736,6 +749,9 @@ class Variant(models.Model):
 
     def __unicode__(self):
         return self.polymorphism
+
+    def get_absolute_url(self):
+        return reverse('variant', args=[self.pk])
 
 
 class Gender(models.Model):

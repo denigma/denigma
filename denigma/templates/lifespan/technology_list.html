@@ -1,0 +1,16 @@
+{% extends "lifespan/base.html" %}
+{% load url from future %}
+{% block head_title %}Technologies{% endblock %}
+{% block title %}Technologies{% endblock %}
+{% block hierarchy %}
+   » <a href="{% url 'variants' %}">Variants</a>
+   » Technologies
+{% endblock %}
+{% block options %}
+    | <a href="/admin/lifespan/technology">Admin</a>
+{% endblock %}
+{% block content %}
+    {% for object in object_list %}
+        <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
+    {% endfor %}
+{% endblock %}

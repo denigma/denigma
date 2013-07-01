@@ -72,6 +72,15 @@
             {% if factor.median %}<b>Median: </b> {{ factor.median }}<br>{% endif %}
             {% if factor.maximum %}<b>Maximum: </b> {{ factor.maximum }}<br>{% endif %}
 
+            {% with factor.variants as variants %}
+                {% if variants %}<br>
+                    <b>Longevity Associated Variants:</b>
+                    {% for variant in variants.all %}
+                        <li><a href="{{ variant.get_absolute_url }}">{{ variant }}</a> {{ variant.pvalue }} [<a href="{{ variant.reference.get_absolute_url }}">{{ variant.reference.pmid }}</a>]</li>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
             <br><b>Classification:</b>
             {% for classification in factor.classifications.all %}
                 <li><a href="/annotations/classification/{{ classification.pk }}/">{{ classification.title }}</a><br></li>
@@ -92,6 +101,7 @@
             {% endif %}
 
             {% if factor.human_homolog %}<b>Human homolog:</b> {{ factor.human_homolog }}{% endif %}<br>
+}
 
             {% if factor.note %}<b>Note: </b>{{ factor.note }}{% endif %}<br>
 

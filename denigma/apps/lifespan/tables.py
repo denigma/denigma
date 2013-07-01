@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.utils.safestring import mark_safe
 
 import django_tables2 as tables
@@ -70,7 +71,7 @@ class VariantTable(tables.Table):
     class Meta:
         model = Variant
         attrs = {"class": "paleblue"}
-        fields = ('polymorphism', 'location', 'factor', 'odds_ratio', 'pvalue',
+        fields = ('polymorphism',  'factor', 'odds_ratio', 'pvalue', #'location',
                   'initial_number', 'replication_number', 'ethnicity',
                   'age_of_cases',  'shorter_lived_allele', 'longer_lived_allele', 'study_type', 'technology',
                   'reference') # , 'choice'

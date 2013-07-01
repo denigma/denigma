@@ -834,9 +834,18 @@ class VariantBulkInsert(FormView):
                             factor, created = Factor.objects.get_or_create(symbol=columns[3], species=species) #& Q(taxid=9606)
                         if factor:
                             print("Get or created factor: %s %s" % (factor, created))
-                            factor.observation += columns[3] + ' was found to be associated with longevity [%s]. ' % pmid
+                            significancy = columns[n+8].lower()
+                            if 'yes' in significancy:
+                                observation = ' was found to be associated with longevity [%s]. ' % pmid
+                                if not observation in factor.observation:
+                                    factor.observation += columns[3] + observation
+                                factor.classifications.add(classification)
+                            elif 'no' in significancy:
+                                observation = ' was not found to be associated with longevity [%s]. ' % pmid
+                                if observation not in factor.observation:
+                                    factor.observation += columns[3] + observation
+                                factor.classifications.add(no_age_effect)
                             factor.assay.add(assay)
-                            factor.classifications.add(classification)
                             print(factor.classification)
                             factor.save()
                             #print("Found factor: %s" % factor)
@@ -846,8 +855,9 @@ class VariantBulkInsert(FormView):
                     except Exception as e:
                         #print("factor", e)
                         factor = ''
-                        notes.append("gene symbol = %s (%s)" % (columns[3], e))
-                        notes.append("entrez gene id = %s (%s)" % (columns[4], e))
+                        if columns[4] != "N/A":
+                            notes.append("gene symbol = %s (%s)" % (columns[3], e))
+                            notes.append("entrez gene id = %s (%s)" % (columns[4], e))
                     try:
                         polymorphism = columns[5].replace('N/A', '')
                         if polymorphism: d.update({'polymorphism':polymorphism})
@@ -877,7 +887,7 @@ class VariantBulkInsert(FormView):
                     try:
                         if columns[n+6] != 'N/A' and columns[n+6] != 'NA' and columns[n+6] != '':
                             odds_ratio = float(columns[n+6])
-                        else:
+                        else: #rs1042719
                             odds_ratio = None
                         if odds_ratio: d.update({'odds_ratio':odds_ratio})
                     except Exception as e:
@@ -889,16 +899,18 @@ class VariantBulkInsert(FormView):
                             p_value = 'NS'
                         elif columns[n+7] != 'N/A':
                             p_value = columns[n+7]
+                            d.update({'p_value': p_value})
                             pvalue = float(columns[n+7].replace('x', '*').replace('*10^', 'E').replace('*10**', 'E').replace('=', '').replace(' ', '').replace('P', '').replace('p', '').replace('>', '').replace('<', '').replace(',', ''))
                         else:
                             pvalue = None
                             p_value = None
                         if pvalue: d.update({'pvalue':pvalue})
-                        if p_value: d.update({'p_value': pvalue})
+                        if p_value: d.update({'p_value': p_value})
                     except Exception as e:
                         #print("odds ratio", e)
                         pvalue = ''
                         notes.append("pvalue = %s (%s)" % (columns[n+7], e))
+                        if p_value: d.update({'p_value': p_value})
                     try:
                         significant = columns[n+8].replace('N/A', '')
                         if significant: d.update({'significant':significant})

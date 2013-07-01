@@ -73,7 +73,7 @@
             {% if variant.ethnicity.all %}
                 <b>Ethnicity:</b>
                 {% for population in variant.ethnicity.all %}
-                    {{ population.name }}{% if not forloop.last %},{% endif %}
+                    <a href="{{ population.get_absolute_url }}">{{ population }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}<br>
             {% endif %}
             {% if variant.age_of_cases %}<b>Age of cases:</b> {{ variant.age_of_cases }}<br>{% endif %}
@@ -85,8 +85,10 @@
             {% if variant.initial_number %}<b>- Number of cases/controls: </b> {{ variant.initial_number }} (initial){% endif %}
             {% if variant.replication_number %}<b></b>  <b>|</b> {{ variant.replication_number }} (replication){% endif %}<br>
             {% if variant.odds_ratio %}<b>- Odds ratio:</b> {{ variant.odds_ratio }}<br>{% endif %}
-            {% if variant.pvalue %}<b>- p-value: </b> {{ variant.pvalue }}{% endif %}
-            {% if variant.p_value %} ({{ variant.p_value }})<br>{% endif %}
+            {% if variant.pvalue or variant.p_value %}<b>- p-value: </b>
+                {% if variant.pvalue %}{{ variant.pvalue }}{% endif %}
+                {% if variant.p_value %} [{{ variant.p_value }}]{% endif %}
+            <br>{% endif %}
             {% if variant.qvalue %}<b>- q-value: </b> {{ variant.qvalue }}<br>{% endif %}
             {% if variant.significant %}<b>- Significant: </b> {{ variant.significant }}<br>{% endif %}
             <br>
@@ -100,8 +102,8 @@
             {% endfor %}<br>
             {% endif %}
             {% endwith %}
-            {% if variant.study_type %}<b>- Study type: </b> {{ variant.study_type.name }}<br>{% endif %}
-            {% if variant.technology %}<b>- Technology: </b> {{ variant.technology.name }}<br>{% endif %}
+            {% if variant.study_type %}<b>- Study type: </b> <a href="{{ variant.study_type.get_absolute_url }}">{{ variant.study_type }}</a><br>{% endif %}
+            {% if variant.technology %}<b>- Technology: </b> <a href="{{ variant.technology.get_absolute_url }}">{{ variant.technology }}</a><br>{% endif %}
 
             {% if variant.reference %}
                 <br><b>Reference:</b><br>

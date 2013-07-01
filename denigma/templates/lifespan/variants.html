@@ -17,19 +17,13 @@
     <a href="/lifespan/variant/add">Add</a> /
     <a href="/lifespan/variant/create">Create</a> |
     <a href="{% url 'variant-bulk-insert' %}">Bulk Insert</a> |
+    <a href="{% url 'variant-index' %}">Index</a> |
     </b>(<a href="/admin/lifespan/variant/">Admin</a>)<b>
-{% endblock %}
-
-{% block extra_scripts %}
-
 {% endblock %}
 
 {% block title %}
     <div id=title-header><span style="font-family: 'Copperplate Gothic Light'; color: #669966; font-size: 52px" >
-    Aging Variant Database / LongeviGene</span>
-{% endblock %}
-
-
+    Aging Variant Database / LongeviGene</span>{% endblock %}
 
 {% block content %}
     <br>
@@ -37,7 +31,14 @@
         <tr>
             <td valign="top">
                 {{ entry.content|markdown|hyper|recross|safe }}
-                    </td>
+                 <center>
+                    <h3><a href="{% url 'variant-list' %}">Variant List</a> |
+                    <a href="{% url 'populations' %}">Populations</a> |
+                    <a href="{% url 'study_types' %}">Study Types</a> |
+                    <a href="{% url 'technologies' %}">Technologies</a> |
+                    <a href="{% url 'states' %}">States (Choices)</a></h3>
+                </center>
+             </td>
              <td valign="top" align="right" style="width: 400px">
                {% for image in entry.images.all reversed %}
                    <img src="{{ image.url }}" alt="{{ image.name }}" width="125" height="125">
@@ -51,11 +52,7 @@
         <input type="submit" value="Filter" />{{ form.filter }}
         {{ filter.form.as_p }}
         {{ variantsfilter }}
-
-
         </tr>
-
-
         <table width="100%">
             <tr>
                 <td valign="top">
