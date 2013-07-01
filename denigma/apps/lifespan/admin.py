@@ -137,7 +137,7 @@ class VariantAdmin(reversion.VersionAdmin):
     fields = ('polymorphism', 'location', 'factor', 'factors', 'description', 'odds_ratio', 'pvalue', 'p_value', 'qvalue',
               'significant','initial_number', 'replication_number', 'ethnicity', 'age_of_cases', 'study_type',
               'technology', 'pmid', 'reference', 'choice', 'classifications')
-    search_fields = ['polymorphism',  'odds_ratio', 'pvalue', 'p_value',  'qvalue', 'significant', #'factor', 'technology', 'study_type',  'reference',
+    search_fields = ['description', 'polymorphism',  'odds_ratio', 'pvalue', 'p_value',  'qvalue', 'significant', #'factor', 'technology', 'study_type',  'reference',
                     'initial_number', 'replication_number', 'age_of_cases',
                      'pmid'] #, 'choice'
     list_filter = ('choice', 'created', 'updated', 'ethnicity', 'classifications',)#'factors',
@@ -145,7 +145,7 @@ class VariantAdmin(reversion.VersionAdmin):
 
 class StudyTypeAdmin(reversion.VersionAdmin):
     search_fields = ['name']
-    
+
 class PopulationAdmin(reversion.VersionAdmin):
     search_fields = ['name']
 
