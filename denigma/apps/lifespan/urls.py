@@ -131,7 +131,7 @@ urlpatterns = patterns('lifespan.views',
 
     url(r'^regimens/$', ListView.as_view(queryset=Regimen.objects.all(),
         template_name='lifespan/regimens.html', context_object_name='regimens'),
-        name='regimen'),
+        name='regimens'),
     url(r'^regimen/(?P<pk>\d+)', 'regimen', name='regimen'),
     url(r'^manipulations/$', ListView.as_view(queryset=Manipulation.objects.all(),
         template_name='lifespan/manipulations.html',
