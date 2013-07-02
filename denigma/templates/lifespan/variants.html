@@ -21,8 +21,9 @@
     </b>(<a href="/admin/lifespan/variant/">Admin</a>)<b>
 {% endblock %}
 
-{% block title %}{% endblock %}
-{#    <div id=title-header><span style="font-family: 'Copperplate Gothic Light'; color: #669966; font-size: 30px" >#}
+{% block title %}
+    <div id=title-header><span style="font-family: 'Copperplate Gothic Light'; color: #669966; font-size: 30px" >
+{% endblock %}
 {#    Longevity Variant Database</span>#}
 
 
@@ -31,9 +32,9 @@
     <table width="100%">
         <tr>
             <td valign="top">
-                <img src="http://dgallery.s3.amazonaws.com/LVDB_logo.svg" alt="LVDB - Longevity Variants Datbase" height="600" width="600">
+{#                <img src="http://dgallery.s3.amazonaws.com/LVDB_logo.svg" alt="LVDB - Longevity Variants Datbase" height="600" width="600">#}
                 {{ entry.content|markdown|hyper|recross|safe }}
-    
+
                      <h3>
 {#                    <a href="{% url 'variant-list' %}">Variant List</a> |#}
                         <a href="{% url 'populations' %}">Populations</a> |
