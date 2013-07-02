@@ -855,7 +855,7 @@ class VariantBulkInsert(FormView):
                     except Exception as e:
                         #print("factor", e)
                         factor = ''
-                        if columns[4] != "N/A":
+                        if columns[4] != "N/A" or (columns[3] or columns[4]):
                             notes.append("gene symbol = %s (%s)" % (columns[3], e))
                             notes.append("entrez gene id = %s (%s)" % (columns[4], e))
                     try:
@@ -897,7 +897,7 @@ class VariantBulkInsert(FormView):
                         if columns[n+7] == 'NS':
                             pvalue = 1
                             p_value = 'NS'
-                        elif columns[n+7] != 'N/A':
+                        elif columns[n+7] != 'N/A' and columns[n+7]:
                             p_value = columns[n+7]
                             d.update({'p_value': p_value})
                             pvalue = float(columns[n+7].replace('x', '*').replace('*10^', 'E').replace('*10**', 'E').replace('=', '').replace(' ', '').replace('P', '').replace('p', '').replace('>', '').replace('<', '').replace(',', ''))
