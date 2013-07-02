@@ -72,7 +72,7 @@
             {% if factor.median %}<b>Median: </b> {{ factor.median }}<br>{% endif %}
             {% if factor.maximum %}<b>Maximum: </b> {{ factor.maximum }}<br>{% endif %}
 
-            {% with factor.variants as variants %}
+            {% with factor.variances as variants %}
                 {% if variants %}<br>
                     <b>Longevity Associated Variants:</b>
                     {% for variant in variants.all %}
