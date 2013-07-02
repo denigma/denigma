@@ -39,7 +39,7 @@
                 {% if variant.factor.ensembl_gene_id %}
                     <b>- Ensembl ID:</b> <a href="http://www.ensembl.org/Multi/Search/Results?species=all;idx=;q={{ variant.factor.ensembl_gene_id }}">{{ variant.factor.ensembl_gene_id }}</a><br>
                 {% endif %}
-
+           {% endif %}
            {% with variant.factors as factors %}
                {% if factors.all %}
                     <br>
@@ -62,7 +62,7 @@
                {% endif %}<br>
            {% endwith %}
 
-            {% endif %}
+
             {% if variant.description %}
                 <br><b>Description:</b>
                 {{ variant.description|markdown|hyper|pubmed_links|safe }}
