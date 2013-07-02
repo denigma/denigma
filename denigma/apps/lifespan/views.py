@@ -1076,6 +1076,7 @@ class VariantList(SingleTableView, FormView):
         if VariantList.query:
             variants = Variant.objects.filter(Q(polymorphism__icontains=VariantList.query) |
                                          Q(location__icontains=VariantList.query) |
+                                         Q(factor__symbol=VariantList.query) |
                                          Q(factor__ensembl_gene_id=VariantList.query) |
                                          Q(description__icontains=VariantList.query) |
                                          Q(ethnicity__name__icontains=VariantList.query)).order_by('-id')
