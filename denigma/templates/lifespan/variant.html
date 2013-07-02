@@ -45,13 +45,13 @@
                     <br>
                     <b>Factors:</b><br>
                     {% for factor in factors.all %}
-                        <li><a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.symbol }}</a>
-                        </b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.name }}</a> (
+                        <li><a href="{% url 'factor' factor.id %}">{{ factor.symbol }}</a>
+                        </b> <a href="{% url 'factor' factor.id %}">{{ factor.name }}</a> (
                        {% if variant.factor.entrez_gene_id %}
-                           </b> <a href="http://www.ncbi.nlm.nih.gov/gene/{{ variant.factor.entrez_gene_id }}">{{ variant.factor.entrez_gene_id }}</a>
+                           </b> <a href="http://www.ncbi.nlm.nih.gov/gene/{{ factor.entrez_gene_id }}">{{ factor.entrez_gene_id }}</a>
                         {% endif %}/
-                        {% if variant.factor.ensembl_gene_id %}
-                            <a href="http://www.ensembl.org/Multi/Search/Results?species=all;idx=;q={{ variant.factor.ensembl_gene_id }}">{{ variant.factor.ensembl_gene_id }}</a>
+                        {% if factor.ensembl_gene_id %}
+                            <a href="http://www.ensembl.org/Multi/Search/Results?species=all;idx=;q={{ factor.ensembl_gene_id }}">{{ factor.ensembl_gene_id }}</a>
                             )
                         {% endif %}
                         </li>
