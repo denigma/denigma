@@ -21,15 +21,17 @@
     </b>(<a href="/admin/lifespan/variant/">Admin</a>)<b>
 {% endblock %}
 
-{% block title %}
-    <div id=title-header><span style="font-family: 'Copperplate Gothic Light'; color: #669966; font-size: 30px" >
-    Longevity Variant Database</span>{% endblock %}
+{% block title %}{% endblock %}
+{#    <div id=title-header><span style="font-family: 'Copperplate Gothic Light'; color: #669966; font-size: 30px" >#}
+{#    Longevity Variant Database</span>#}
+
 
 {% block content %}
     <br>
     <table width="100%">
         <tr>
-            <td valign="top">
+            <td valign="top"><center>
+                <img src="http://dgallery.s3.amazonaws.com/LVDB_logo.svg" alt="LVDB - Longevity Variants Datbase" height="600" width="600">
                 {{ entry.content|markdown|hyper|recross|safe }}
                  <center>
                      <h3>
