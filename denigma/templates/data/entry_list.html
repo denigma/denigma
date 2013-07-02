@@ -61,7 +61,7 @@
                         {% endif %}
                         {#  Published on {{ entry.pub_date }} by {{ entry.publisher }} #}
 
-                        {{ entry.brief|markdown|hyper|recross|safe }}
+                        {{ entry.brief_html|safe }}
 
                         <b>Tags</b>:
                         {% for tag in entry.tags.all %}
