@@ -14,7 +14,8 @@
 
 {% block content %}
         {% for object in object_list %}
-            {% if object.published %}
+            {% if object.content_type_id == 280 %}
+{#            {% if object.object_published %}#}
                 <li>{# {{ object.created|date:"Y-m-d" }}: #}
                     <a href={% url 'detail-entry' object.object_id %}>{{ object}}</a>
                 {# ({{ object.updated|date:"Y-m-d" }}) #}</li>
