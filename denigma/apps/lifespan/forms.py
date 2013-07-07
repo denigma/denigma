@@ -340,6 +340,7 @@ class VariantForm(ModelForm):
                 'factor',
                 'factors',
                 'description',
+                'finding',
                 'odds_ratio',
                 'pvalue',
                 'qvalue',
@@ -378,7 +379,7 @@ class VariantForm(ModelForm):
 
     class Meta:
         model = Variant
-        fields = ('polymorphism', 'location', 'factor', 'factors', 'description',  'choice', 'classifications', 'odds_ratio',
+        fields = ('polymorphism', 'location', 'factor', 'factors', 'description', 'finding', 'choice', 'classifications', 'odds_ratio',
                   'pvalue', 'qvalue', 'significant', 'initial_number',
                   'replication_number', 'ethnicity', 'age_of_cases', 'technology', 'study_type',
                 'shorter_lived_allele', 'longer_lived_allele', 'pmid', 'reference', 'comment')
@@ -569,4 +570,4 @@ class InterventionFilterSet(FilterSet):
 
 
 class VariantFilterSet(FilterSet):
-    fields = ['classifications', 'study_type', 'significant'] #, 'location'] #, 'choice', 'ethnicity',  'technology']
+    fields = ['classifications', 'study_type', 'significant', 'finding'] #, 'location'] #, 'choice', 'ethnicity',  'technology']

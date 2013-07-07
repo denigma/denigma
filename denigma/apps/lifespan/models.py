@@ -719,6 +719,15 @@ class Population(models.Model):
 
 
 class Variant(models.Model):
+
+    CHOICES = (
+        (1, _('Positive')),
+        (2, _('Negative')),
+    #    (3, _('Multiplicative'))
+               )
+
+    finding = models.PositiveSmallIntegerField(max_length=1, blank=True, null=True, choices=CHOICES,
+                                               help_text="Whether finding was positive or negative.")
     #polymorphism = models.CharField(max_length=20)# genetic variant
     created = models.DateTimeField(_('created'), auto_now_add=True, db_index=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)

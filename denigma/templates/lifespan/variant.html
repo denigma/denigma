@@ -81,8 +81,8 @@
             {% endif %}
             {% if variant.age_of_cases %}<b>Age of cases:</b> {{ variant.age_of_cases }}<br>{% endif %}
             {% if variant.shorter_lived_allele %}<b>Shorter lived allele: </b> {{ variant.shorter_lived_allele }}<br>{% endif %}
-            {% if variant.longer_lived_allele %}<b>Longer lived allele: </b> {{ variant.longer_lived_allele }}<br>{% endif %}<br>
-
+            {% if variant.longer_lived_allele %}<b>Longer lived allele: </b> {{ variant.longer_lived_allele }}<br>{% endif %}
+            {% if variant.finding %}<b>Finding: </b> {{ variant.get_finding_display }}<br>{% endif %}<br>
 
             <b>Statistics</b><br>
             {% if variant.initial_number %}<b>- Number of cases/controls: </b> {{ variant.initial_number }} (initial){% endif %}
