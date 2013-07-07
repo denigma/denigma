@@ -1074,12 +1074,18 @@ class VariantList(SingleTableView, FormView):
         #if FactorList.symbol:
         #   factors = factors.filter(symbol=FactorList.symbol)
         if VariantList.query:
-            variants = Variant.objects.filter(Q(polymorphism__icontains=VariantList.query) |
-                                         Q(location__icontains=VariantList.query) |
-                                         Q(factor__symbol=VariantList.query) |
-                                         Q(factor__ensembl_gene_id=VariantList.query) |
-                                         Q(description__icontains=VariantList.query) |
-                                         Q(ethnicity__name__icontains=VariantList.query)).order_by('-id')
+            try:
+                query = float(VariantList.query)
+                variants = Variant.objects.filter(Q(odds_ratio=query) |
+                                                Q(pvalue=query) |
+                                                Q(pmid=query))
+            except Exception as e:
+                variants = Variant.objects.filter(Q(polymorphism__icontains=VariantList.query) |
+                                             Q(location__icontains=VariantList.query) |
+                                             Q(factor__symbol=VariantList.query) |
+                                             Q(factor__ensembl_gene_id=VariantList.query) |
+                                             Q(description__icontains=VariantList.query) |
+                                             Q(ethnicity__name__icontains=VariantList.query)).order_by('-id')
         else:
             variants = Variant.objects.all().order_by('pvalue').exclude(pvalue=None) #, 'longer_lived_allele')
         self.variantsfilter = VariantFilterSet(variants, self.request.GET)
