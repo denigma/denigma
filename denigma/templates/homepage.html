@@ -27,6 +27,15 @@
 {% block banner %}
     <table width="100%">
         <tr>
+                    </td>
+            <td style="width: 500px">
+                <div>
+                    <a href="{% url 'detail-entry' 'denigmas-logo' %}">
+                        <img src="http://dgallery.s3.amazonaws.com/denigma_pos.svg" alt="Denigma - The Digital Enigma" height="500" width="500" style="float:right">
+                    </a>
+                </div>
+
+            </td>
             <td valign="top">
                 {% if denigma_description.html %}
                     {{ denigma_description.html|safe }}
@@ -38,20 +47,12 @@
                 {% else %}
                     {{ denigma_rationality.content|markdown|hyper|recross|safe }} {#  {% blocktrans %}{% endblocktrans %} #}
                 {% endif %}
-            </td>
-            <td style="width: 500px">
-                <div>
-                    <a href="{% url 'detail-entry' 'denigmas-logo' %}">
-                        <img src="http://dgallery.s3.amazonaws.com/denigma_pos.svg" alt="Denigma - The Digital Enigma" height="500" width="500" style="float:right">
-                    </a>
-                </div>
 
-            </td>
         </tr>
     </table >
     <table width="100%">
         <tr>
-            <td>
+            <td align="centre" valign=1>
                 {% if user.is_authenticated %}
                     {% url 'what_next' as what_next_url %}
                     <p class="what_next">{% blocktrans %}Wondering <a href="{{ what_next_url }}" class="btn primary large">What Next</a>?{% endblocktrans %}</p>
