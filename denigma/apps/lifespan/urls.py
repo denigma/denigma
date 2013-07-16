@@ -88,6 +88,7 @@ urlpatterns = patterns('lifespan.views',
 
     # Variants:
     url(r'^variants/$', VariantList.as_view(), name='variants'),
+    url(r'^variant/issues/$', VariantIssues.as_view(), name='variant-issues'),
     url(r'^variant/(?P<pk>\d+)/$', VariantDetail.as_view(), name='variant'),
     url(r'^variant/add/$', 'add_variant', name='add_variant'),
     url(r'^variant/edit/(?P<pk>\d+)/$', 'edit_variant'),
@@ -106,8 +107,6 @@ urlpatterns = patterns('lifespan.views',
     url(r'^study_type/(?P<pk>\d+)/$', DetailView.as_view(model=StudyType), name='study_type'),
     url(r'^state/(?P<pk>\d+)/$', DetailView.as_view(model=State), name='state'),
     url(r'^variants/index/$', TemplateView.as_view(template_name='lifespan/variant_index.html'), name='variant-index'),
-    url(r'^variants/issues/$', VariantIssues.as_view(queryset=Variant.objects.filter(pvalue=None),
-                                                template_name='lifespan/variant_issue.html',), name='variant-issue'),
 
     # Strains;
     url(r'^strains/$', ListView.as_view(queryset=Strain.objects.all(),

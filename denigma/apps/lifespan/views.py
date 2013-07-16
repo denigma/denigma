@@ -1129,7 +1129,7 @@ def remove_variant(request, pk):
 
 class VariantIssues(ListView):
     model = Variant
-    template_name='lifespan/variant_index.html'
+    template_name='lifespan/variant_issues.html'
     queryset=Variant.objects.filter(pvalue=None)
     def get_context_data(self, **kwargs):
         context = super(VariantIssues, self).get_context_data(**kwargs)
