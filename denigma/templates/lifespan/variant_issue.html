@@ -1,0 +1,33 @@
+{% extends 'lifespan/base.html' %}
+{% load url from future %}
+{% block head_title %}Variants Issues{% endblock %}
+{% block title %}Variants Issues{% endblock %}
+{% block hierarchy %}
+   » <a href="{{ 'variants' }}">Variants</a>
+   » Issues
+{% endblock %}
+{% block options %}
+    <a href="/lifespan/variant/add">Add</a> /
+    <a href="/lifespan/variant/create">Create</a> |
+    <a href="{% url 'variant-bulk-insert' %}">Bulk Insert</a> |
+    <a href="{% url 'variant-index' %}">Index</a> |
+    </b>(<a href="/admin/lifespan/variant/">Admin</a>)<b>
+{% endblock %}
+{% block content %}
+    <hr>
+{#    <h3>Detailed List</h3>#}
+    <ul>
+    {% for reference, objs in pmids.items %}
+        <li><b><a href="{{ reference.get_absolute_url }}">{{ reference.pmid }}</a>: {{ reference.title }}</b>
+        <ul>
+        {% for obj in objs %}
+            <li><a href="{{ obj.get_absolute_url }}">{{ obj }}</a> {{ obj.pvalue }}</li>
+        {% endfor %}</ul></li>
+    {% endfor %}
+    </ul>
+    <hr>
+    <h3>Simple List</h3>
+    {% for reference, objs in pmids.items %}
+        <li><a href="{{ reference.get_absolute_url }}">{{ reference.pmid }}</a></li>
+    {% endfor %}
+{% endblock %}

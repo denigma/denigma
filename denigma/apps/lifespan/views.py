@@ -1071,8 +1071,6 @@ class VariantList(SingleTableView, FormView):
         return context
 
     def get_queryset(self):
-        #if FactorList.symbol:
-        #   factors = factors.filter(symbol=FactorList.symbol)
         if VariantList.query:
             try:
                 query = float(VariantList.query)
@@ -1125,9 +1123,26 @@ def remove_variant(request, pk):
     variant = Variant.objects.get(pk=pk)
     variant.delete()
     msg = 'Successfully removed %s' % variant
-    messages.add_message(request, messages.SUCCESS, _(msg))
+    messages.add_messagme(request, messages.SUCCESS, _(msg))
     return redirect('/lifespan/')
 
+
+class VariantIssues(ListView):
+    model = Variant
+    template_name='lifespan/variant_index.html'
+    queryset=Variant.objects.filter(pvalue=None)
+    def get_context_data(self, **kwargs):
+        context = super(VariantIssues, self).get_context_data(**kwargs)
+        ids = [(obj.reference, obj) for obj in self.queryset]
+        dict = {}
+        for reference, obj in ids:
+            if reference not in dict:
+                dict[reference] = [obj]
+            else:
+                dict[reference].append(obj)
+        context['pmids'] = dict
+        #print context['pmids']
+        return context
 
 class ManipulationDetail(DetailView):
     model=Manipulation
