@@ -1,13 +1,13 @@
 {% extends "lifespan/base.html" %}
 {% load url from future %}
-{% block head_title %}Study Types{% endblock %}
-{% block title %}Study Types{% endblock %}
+{% block head_title %}Odds Ratio Types{% endblock %}
+{% block title %}Odds Ratio Types{% endblock %}
 {% block hierarchy %}
    » <a href="{% url 'variants' %}">Variants</a>
-   » Study Types
+   » Odds Ratio Types
 {% endblock %}
 {% block options %}
-    | <a href="/admin/lifespan/studytype">Admin</a>
+    | <a href="/admin/lifespan/ortype">Admin</a>
 {% endblock %}
 {% block content %}
     {% for object in object_list %}

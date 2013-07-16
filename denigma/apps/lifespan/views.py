@@ -34,7 +34,7 @@ from models import (Study, Experiment, Measurement, Comparison, Intervention, Fa
                    Manipulation, Variant, State, Population, Technology, StudyType)
 from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
                    ExperimentForm, DeleteExperimentForm,
-                   ComparisonForm,
+                   ComparisonForm, VariantTypeForm, ORTypeForm,
                    InterventionForm, DeleteInterventionForm, InterventionFilterSet,
                    FactorForm, StrainForm, StateForm, TechnologyForm, StudyTypeForm, PopulationForm,
                    FilterForm, FactorFilterSet, VariantForm, VariantFilterSet, VariantBulkInsertForm, OntologyForm)
@@ -1306,6 +1306,16 @@ def newStudyType(request):
     if isinstance(request.user, AnonymousUser):
         request.user = User.objects.get(username="Anonymous")
     return handlePopAdd(request, StudyTypeForm, 'study_type')
+
+def newVariantType(request):
+    if isinstance(request.user, AnonymousUser):
+        request.user = User.objects.get(username="Anonymous")
+    return handlePopAdd(request, VariantTypeForm, 'variant_type')
+
+def newORType(request):
+    if isinstance(request.user, AnonymousUser):
+        request.user = User.objects.get(username="Anonymous")
+    return handlePopAdd(request, ORTypeForm, 'or_type')
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
 

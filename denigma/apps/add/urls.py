@@ -20,6 +20,9 @@ urlpatterns = patterns('',
     url(r'ethnicity/?', 'lifespan.views.newPopulation', name="new-population"),
     url(r'technology/?', 'lifespan.views.newTechnology', name="new-technology"),
     url(r'study_type/?', 'lifespan.views.newStudyType', name="new-study_type"),
+    url(r'variant_type/?', 'lifespan.views.newVariantType', name="new-variant_type"),
+    url(r'or_type/?', 'lifespan.views.newORType', name="new-or_type"),
+
     url(r'^reference/?', 'datasets.views.newReference', name="new-reference"),
     url(r'^classifications/?', 'annotations.views.newClassification', name="new-classification"),
 

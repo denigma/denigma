@@ -3,7 +3,7 @@ from django.conf.urls import patterns, url
 from django.views.generic import ListView, DetailView, TemplateView
 from django.contrib.auth.decorators import login_required
 
-from models import Measurement, Intervention, Factor, Strain, Assay, Regimen, Epistasis, Manipulation, Variant, Population, StudyType, Technology, State
+from models import Measurement, Intervention, Factor, Strain, Assay, Regimen, Epistasis, Manipulation, Variant, Population, StudyType, Technology, State, VariantType, ORType
 from views import InterventionList, InterventionCreate, InterventionUpdate #, InterventionDelete
 from views import FactorList, CreateFactor, FactorDetail, FactorDelete, FactorOntology#, FactorCreate, FactorUpdate
 from views import VariantList, CreateVariant, VariantDetail, VariantDelete, VariantBulkInsert, VariantIssues#, FactorCreate, FactorUpdate
@@ -101,10 +101,17 @@ urlpatterns = patterns('lifespan.views',
     url(r'^populations/$', ListView.as_view(queryset=Population.objects.all()), name='populations'),
     url(r'^technologies/$', ListView.as_view(queryset=Technology.objects.all()), name='technologies'),
     url(r'^study_types/$', ListView.as_view(queryset=StudyType.objects.all()), name='study_types'),
+    url(r'^variant_types/$', ListView.as_view(queryset=VariantType.objects.all()), name='variant_types'),
+    url(r'^or_types/$', ListView.as_view(queryset=ORType.objects.all()), name='or_types'),
+
     url(r'^states/$', ListView.as_view(queryset=State.objects.all()), name='states'),
     url(r'^population/(?P<pk>\d+)/$', DetailView.as_view(model=Population), name='population'),
     url(r'^technology/(?P<pk>\d+)/$', DetailView.as_view(model=Technology), name='technology'),
     url(r'^study_type/(?P<pk>\d+)/$', DetailView.as_view(model=StudyType), name='study_type'),
+    url(r'^variant_type/(?P<pk>\d+)/$', DetailView.as_view(model=VariantType), name='variant_type'),
+    url(r'^or_type/(?P<pk>\d+)/$', DetailView.as_view(model=ORType), name='or_type'),
+
+
     url(r'^state/(?P<pk>\d+)/$', DetailView.as_view(model=State), name='state'),
     url(r'^variants/index/$', TemplateView.as_view(template_name='lifespan/variant_index.html'), name='variant-index'),
 

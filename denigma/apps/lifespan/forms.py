@@ -13,7 +13,7 @@ from add.forms import SelectWithPop, MultipleSelectWithPop
 
 from models import (Study, Experiment, Measurement, Comparison, Intervention, Factor,\
                    Strain, Epistasis, Regimen, Assay, Manipulation,
-                   Variant, Population, State, Technology, StudyType, Type)
+                   Variant, Population, State, Technology, StudyType, Type, VariantType, ORType)
 
 from annotations.models import Classification
 
@@ -321,6 +321,8 @@ class VariantForm(ModelForm):
     ethnicity = ModelMultipleChoiceField(Population.objects, required=False, widget=MultipleSelectWithPop)
     technology = ModelChoiceField(Technology.objects, required=False, widget=SelectWithPop)
     study_type = ModelChoiceField(StudyType.objects, required=False, widget=SelectWithPop)
+    variant_type = ModelChoiceField(VariantType.objects, required=False, widget=SelectWithPop)
+    or_type = ModelChoiceField(ORType.objects, required=False, widget=SelectWithPop)
     reference = ModelChoiceField(Reference.objects, required=False, widget=SelectWithPop)
     try:
         classifications = ModelMultipleChoiceField(Classification.objects, required=False, widget=MultipleSelectWithPop,
@@ -336,12 +338,14 @@ class VariantForm(ModelForm):
             Fieldset(
                 '',
                 'polymorphism',
+                'variant_type',
                 'location',
                 'factor',
                 'factors',
                 'description',
                 'finding',
                 'odds_ratio',
+                'or_type',
                 'pvalue',
                 'qvalue',
                 'significant',
@@ -379,10 +383,10 @@ class VariantForm(ModelForm):
 
     class Meta:
         model = Variant
-        fields = ('polymorphism', 'location', 'factor', 'factors', 'description', 'finding', 'choice', 'classifications', 'odds_ratio',
-                  'pvalue', 'qvalue', 'significant', 'initial_number',
+        fields = ('polymorphism', 'variant_type', 'location', 'factor', 'factors', 'description', 'finding', 'choice', 'classifications',
+                  'odds_ratio', 'or_type', 'pvalue', 'qvalue', 'significant', 'initial_number',
                   'replication_number', 'ethnicity', 'age_of_cases', 'technology', 'study_type',
-                'shorter_lived_allele', 'longer_lived_allele', 'pmid', 'reference', 'comment')
+                  'shorter_lived_allele', 'longer_lived_allele', 'pmid', 'reference', 'comment')
 
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
@@ -516,6 +520,49 @@ class PopulationForm(ModelForm):
     class Meta:
         model = Population
 
+class VariantTypeForm(ModelForm):
+    comment = CharField(required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'name',
+                'comment'
+            ),
+            FormActions(
+                Submit('save', 'Save', css_class="btn-primary"),
+                Submit('cancel', 'Cancel', css_class="btn-danger")
+            )
+        )
+        super(VariantTypeForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = VariantType
+
+
+class ORTypeForm(ModelForm):
+    comment = CharField(required=False)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'name',
+                'comment'
+            ),
+            FormActions(
+                Submit('save', 'Save', css_class="btn-primary"),
+                Submit('cancel', 'Cancel', css_class="btn-danger")
+            )
+        )
+        super(ORTypeForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = ORType
+
 
 class VariantBulkInsertForm(Form):
     data = CharField(label='data', widget=Textarea(attrs={'cols': 20, 'rows': 20}))
@@ -570,4 +617,4 @@ class InterventionFilterSet(FilterSet):
 
 
 class VariantFilterSet(FilterSet):
-    fields = ['classifications', 'study_type', 'significant', 'finding', 'created', 'updated'] #, 'location'] #, 'choice', 'ethnicity',  'technology']
+    fields = ['classifications', 'study_type', 'variant_type', 'or_type', 'significant', 'finding', 'created', 'updated'] #, 'location'] #, 'choice', 'ethnicity',  'technology']

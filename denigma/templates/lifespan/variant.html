@@ -25,6 +25,7 @@
 {% block content %}
 
             {% if variant.polymorphism %}<b>Polymorphism:</b> <a href="http://snpedia.com/index.php/{{ variant.polymorphism }}">{{ variant.polymorphism }}</a><br>{% endif %}
+            {% if variant.variant_type %}<b>Variant Type:</b> <a href="{{ variant.get_absolute_url }}">{{ variant.variant_type }}</a><br>{% endif %}
             {% if variant.location %}<b>Location:</b> {{ variant.location }}<br>{% endif %}
             <br>
 
@@ -88,6 +89,8 @@
             {% if variant.initial_number %}<b>- Number of cases/controls: </b> {{ variant.initial_number }} (initial){% endif %}
             {% if variant.replication_number %}<b></b>  <b>|</b> {{ variant.replication_number }} (replication){% endif %}<br>
             {% if variant.odds_ratio %}<b>- Odds ratio:</b> {{ variant.odds_ratio }}<br>{% endif %}
+            {% if variant.or_type %}<b>- Odds ratio type:</b> {{ variant.or_type }}<br>{% endif %}
+
             {% if variant.pvalue or variant.p_value %}<b>- p-value: </b>
                 {% if variant.pvalue %}{{ variant.pvalue }}{% endif %}
                 {% if variant.p_value %} [{{ variant.p_value }}]{% endif %}

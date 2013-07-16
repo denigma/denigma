@@ -1,0 +1,18 @@
+{% extends "lifespan/base.html" %}
+{% load url from future %}
+{% block head_title %}{{ object }}{% endblock %}
+{% block title %}{{ object }}{% endblock %}
+{% block hierarchy %}
+   » <a href="{% url 'variants' %}">Variants</a>
+   » <a href="{% url 'or-types' %}">Odds Ratio Types</a>
+   » {{ object }}
+{% endblock %}
+{% block options %}
+    | <a href="/admin/lifespan/ortype/{{ object.pk }}">Admin</a>
+{% endblock %}
+{% block content %}
+    {% for variant in object.variant_set.all %}
+        <li><a href="{{ variant.get_absolute_url }}">{{ variant }}</a></li>
+    {% endfor %}
+    {% include "comments/wrapper.html" %}
+{% endblock %}

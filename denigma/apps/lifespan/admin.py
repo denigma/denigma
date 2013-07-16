@@ -5,7 +5,7 @@ import reversion
 
 from models import Study, Experiment, Measurement, Comparison, Epistasis, Strain
 from models import Type, Factor, Manipulation, Intervention, Regimen, Assay, Gender
-from models import Variant, StudyType, Population, State, Technology
+from models import Variant, StudyType, Population, State, Technology, VariantType, ORType
 
 
 class StudyAdmin(reversion.VersionAdmin):
@@ -131,16 +131,16 @@ class AssayAdmin(reversion.VersionAdmin):
 
 class VariantAdmin(reversion.VersionAdmin):
     #form = VariantAdminForm
-    list_display = ('polymorphism', 'factor', 'odds_ratio', 'pvalue', 'p_value', 'significant', 'description', # 'qvalue',
+    list_display = ('polymorphism', 'variant_type', 'factor', 'odds_ratio', 'or_type', 'pvalue', 'p_value', 'significant', 'description', # 'qvalue',
                     'initial_number', 'replication_number', 'age_of_cases', 'technology',
                     'study_type',  'pmid', 'created', 'updated' ) #'reference',
-    fields = ('polymorphism', 'location', 'factor', 'factors', 'description', 'odds_ratio', 'pvalue', 'p_value', 'qvalue',
+    fields = ('polymorphism', 'variant_type', 'location', 'factor', 'factors', 'description', 'odds_ratio', 'or_type', 'pvalue', 'p_value', 'qvalue',
               'significant','initial_number', 'replication_number', 'ethnicity', 'age_of_cases', 'study_type',
               'technology', 'pmid', 'reference', 'choice', 'classifications')
     search_fields = ['description', 'polymorphism',  'odds_ratio', 'pvalue', 'p_value',  'qvalue', 'significant', #'factor', 'technology', 'study_type',  'reference',
-                    'initial_number', 'replication_number', 'age_of_cases',
+                    'initial_number', 'replication_number', 'age_of_cases',  'finding', 'variant_type', 'or_type',
                      'pmid'] #, 'choice'
-    list_filter = ('choice', 'created', 'updated', 'ethnicity', 'classifications',)#'factors',
+    list_filter = ('choice', 'finding', 'variant_type', 'or_type', 'created', 'updated', 'ethnicity', 'classifications',)#'factors',
     filter_horizontal = ('factors', 'ethnicity', 'classifications')
 
 class StudyTypeAdmin(reversion.VersionAdmin):
@@ -153,6 +153,12 @@ class StateAdmin(reversion.VersionAdmin):
     search_fields = ['name']
 
 class TechnologyAdmin(reversion.VersionAdmin):
+    search_fields = ['name']
+
+class VariantTypeAdmin(reversion.VersionAdmin):
+    search_fields = ['name']
+
+class ORTypeAdmin(reversion.VersionAdmin):
     search_fields = ['name']
 
 admin.site.register(Study, StudyAdmin)
@@ -173,5 +179,5 @@ admin.site.register(StudyType, StudyTypeAdmin)
 admin.site.register(Population, PopulationAdmin)
 admin.site.register(State, StateAdmin)
 admin.site.register(Technology, TechnologyAdmin)
-
-
+admin.site.register(VariantType, VariantTypeAdmin)
+admin.site.register(ORType, ORTypeAdmin)

@@ -718,6 +718,34 @@ class Population(models.Model):
 #         return self.polymorphism
 
 
+class VariantType(models.Model):
+    name = models.CharField(max_length=250)
+
+    class Meta:
+        verbose_name = 'Variant Type'
+        verbose_name_plural = 'Variant Types'
+
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('variant_type', args=[self.pk])
+
+
+class ORType(models.Model):
+    name = models.CharField(max_length=250)
+
+    class Meta:
+        verbose_name = 'Odds ratio Type'
+        verbose_name_plural = 'Odds ratio Types'
+
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('or_type', args=[self.pk])
+
+
 class Variant(models.Model):
 
     CHOICES = (
@@ -735,6 +763,9 @@ class Variant(models.Model):
     factor = models.ForeignKey(Factor, null=True, blank=True, related_name='variants')
     shorter_lived_allele = models.CharField(max_length=255, blank=True, null=True)
     longer_lived_allele = models.CharField(max_length=255, blank=True, null=True)
+    variant_type = models.ForeignKey('VariantType', blank=True, null=True)
+    or_type = models.ForeignKey('ORType', help_text='Odds Ratio Type', blank=True, null=True)
+
 
     polymorphism = models.CharField(max_length=255)# genetic variant
     #variants = models.ManyToManyField(Variant)
