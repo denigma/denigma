@@ -1087,7 +1087,7 @@ class VariantList(SingleTableView, FormView):
         else:
             variants = Variant.objects.all().order_by('pvalue').exclude(pvalue=None) #, 'longer_lived_allele')
         self.variantsfilter = VariantFilterSet(variants, self.request.GET)
-        return self.variantsfilter.qs
+        return self.variantsfilter.qs.exclude(choice__name__contains='Review')
 
 
 class VariantView(object):
@@ -1130,7 +1130,7 @@ def remove_variant(request, pk):
 class VariantIssues(ListView):
     model = Variant
     template_name='lifespan/variant_issues.html'
-    queryset=Variant.objects.filter(pvalue=None)
+    queryset=Variant.objects.filter(pvalue=None).exclude(choice__name__contains='Review')
     def get_context_data(self, **kwargs):
         context = super(VariantIssues, self).get_context_data(**kwargs)
         ids = [(obj.reference, obj) for obj in self.queryset]
@@ -1221,7 +1221,7 @@ class FactorList(SingleTableView, FormView):
         else:
             factors = Factor.objects.all().order_by('-id')
         self.factorsfilter = FactorFilterSet(factors, self.request.GET)
-        return self.factorsfilter.qs
+        return self.factorsfilter.qs.exclude(choice_name__contains='Review')
 
 
 class FactorView(object):

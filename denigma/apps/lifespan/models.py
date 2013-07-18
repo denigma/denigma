@@ -24,6 +24,12 @@ import handlers
 WT = ['wt', 'WT' 'wild type']
 
 
+
+class VariantManager(models.Manager):
+    def get_queryset(self):
+        return self.model.objects.exclude(choice__name__contains='Review')
+
+
 # Helper functions:
 def examine(value):
     """Examines a string value whether it is None, float, or int."""
@@ -786,6 +792,8 @@ class Variant(models.Model):
     reference = models.ForeignKey('datasets.Reference')
     choice = models.ForeignKey(State, default=1, null=True, blank=True) #[Curate/Review/Discard]
     classifications = models.ManyToManyField('annotations.Classification', blank=True, null=True, default=None)
+
+    objects = VariantManager()
 
     def __unicode__(self):
         return self.polymorphism
