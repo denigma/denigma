@@ -985,21 +985,21 @@ class VariantBulkInsert(FormView):
                     except Exception as e:
                         finding = ''
                         notes.append("finding = %s (%s)" % (columns[n+16], e))
-                    print("16 %s" % columns[n+16])
+                    #print("16 %s" % columns[n+16])
                     try:
                         variant_type = VariantType.objects.get_or_create(name=columns[n+17])[0]
                         if variant_type: d.update({'variant_type': variant_type})
                     except Exception as e:
                         variant_type = None
                         notes.append("variant type = %s (%s)" % (columns[n+17], e))
-                    print("17 %s" % columns[n+17])
+                    #print("17 %s" % columns[n+17])
                     try:
                         or_type = ORType.objects.get_or_create(name=columns[n+18])[0]
                         if or_type: d.update({'or_type': or_type})
                     except Exception as e:
                         or_type = None
                         notes.append("or type = %s (%s)" % (columns[n+18], e))
-                    print("18 %s" % columns[n+18])
+                    #print("18 %s" % columns[n+18])
 
 
                     if 'description' in d:
