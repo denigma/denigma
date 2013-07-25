@@ -31,7 +31,8 @@ from data import get
 from datasets.models import Reference
 
 from models import (Study, Experiment, Measurement, Comparison, Intervention, Factor, Regimen, Strain, Assay,
-                   Manipulation, Variant, State, Population, Technology, StudyType)
+                   Manipulation, Variant, State, Population, Technology, StudyType, ORType, VariantType)
+
 from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
                    ExperimentForm, DeleteExperimentForm,
                    ComparisonForm, VariantTypeForm, ORTypeForm,
@@ -969,7 +970,7 @@ class VariantBulkInsert(FormView):
                     except Exception as e:
                         #print("description", e)
                         description = ''
-                        #notes.append("description = %s (%s)" % (columns[15], e))
+                        #notes.append("description = %s (%s)" % (columns[15], e)
                     try:
                         reference = Reference.objects.get_or_create(pmid=columns[1])[0]
                         if reference: d.update({'reference':reference})
@@ -977,6 +978,30 @@ class VariantBulkInsert(FormView):
                         #print("reference", e)
                         reference = ''
                         #notes.append("reference = %s (%s)" % (columns[1], e))
+                    try:
+                        choices = {'Positive': 1, 'Negative': 2}
+                        finding = choices[columns[n+16]]
+                        if finding: d.update({'finding': finding})
+                    except Exception as e:
+                        finding = ''
+                        notes.append("finding = %s (%s)" % (columns[n+16], e))
+                    print("16 %s" % columns[n+16])
+                    try:
+                        variant_type = VariantType.objects.get_or_create(name=columns[n+17])[0]
+                        if variant_type: d.update({'variant_type': variant_type})
+                    except Exception as e:
+                        variant_type = None
+                        notes.append("variant type = %s (%s)" % (columns[n+17], e))
+                    print("17 %s" % columns[n+17])
+                    try:
+                        or_type = ORType.objects.get_or_create(name=columns[n+18])[0]
+                        if or_type: d.update({'or_type': or_type})
+                    except Exception as e:
+                        or_type = None
+                        notes.append("or type = %s (%s)" % (columns[n+18], e))
+                    print("18 %s" % columns[n+18])
+
+
                     if 'description' in d:
                         d['description'] = d['description'] + '\n\n'+'\n\n'.join(notes)
                     else:
