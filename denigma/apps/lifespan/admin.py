@@ -134,10 +134,10 @@ class VariantAdmin(reversion.VersionAdmin):
     list_display = ('polymorphism', 'variant_type', 'factor', 'odds_ratio', 'or_type', 'pvalue', 'p_value', 'significant', 'description', # 'qvalue',
                     'initial_number', 'replication_number', 'age_of_cases', 'technology',
                     'study_type',  'pmid', 'created', 'updated' ) #'reference',
-    fields = ('polymorphism', 'variant_type', 'location', 'factor', 'factors', 'description', 'odds_ratio', 'or_type', 'pvalue', 'p_value', 'qvalue',
+    fields = ('polymorphism', 'alias', 'variant_type', 'location', 'factor', 'factors', 'description', 'odds_ratio', 'or_type', 'pvalue', 'p_value', 'qvalue',
               'significant','initial_number', 'replication_number', 'ethnicity', 'age_of_cases', 'study_type',
               'technology', 'pmid', 'reference', 'choice', 'classifications')
-    search_fields = ['description', 'polymorphism',  'odds_ratio', 'pvalue', 'p_value',  'qvalue', 'significant', #'factor', 'technology', 'study_type',  'reference',
+    search_fields = ['description', 'alias', 'polymorphism',  'odds_ratio', 'pvalue', 'p_value',  'qvalue', 'significant', #'factor', 'technology', 'study_type',  'reference',
                     'initial_number', 'replication_number', 'age_of_cases',  'finding', 'variant_type', 'or_type',
                      'pmid'] #, 'choice'
     list_filter = ('choice', 'finding', 'variant_type', 'or_type', 'created', 'updated', 'ethnicity', 'classifications',)#'factors',

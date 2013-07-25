@@ -30,6 +30,12 @@ class VariantManager(models.Manager):
         return self.model.objects.exclude(choice__name__contains='Review')
 
 
+class StateManager(models.Manager):
+    def get_queryset(self):
+        print("get queryset")
+        return self.model.objects.exclude(variant__choice__name__contains='Review')
+
+
 # Helper functions:
 def examine(value):
     """Examines a string value whether it is None, float, or int."""
@@ -680,6 +686,8 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
 class State(models.Model):
     name = models.CharField(max_length=250)
 
+    objects = StateManager()
+
     def __unicode__(self):
         return self.name
 
@@ -774,6 +782,8 @@ class Variant(models.Model):
 
 
     polymorphism = models.CharField(max_length=255)# genetic variant
+    alias = models.CharField(max_length=255, blank=True, null=True,
+                             help_text='Individual alias names should be seperated by semicolon ";"')
     #variants = models.ManyToManyField(Variant)
     factors = models.ManyToManyField(Factor, null=True, blank=True, related_name='variances')
     description = models.TextField(null=True, blank=True)

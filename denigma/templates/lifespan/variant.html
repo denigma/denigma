@@ -25,6 +25,7 @@
 {% block content %}
 
             {% if variant.polymorphism %}<b>Polymorphism:</b> <a href="http://snpedia.com/index.php/{{ variant.polymorphism }}">{{ variant.polymorphism }}</a><br>{% endif %}
+            {% if variant.alias %}<b>Alias:</b> {{ variant.alias }}<br>{% endif %}
             {% if variant.variant_type %}<b>Variant Type:</b> <a href="{{ variant.get_absolute_url }}">{{ variant.variant_type }}</a><br>{% endif %}
             {% if variant.location %}<b>Location:</b> {{ variant.location }}<br>{% endif %}
             <br>
