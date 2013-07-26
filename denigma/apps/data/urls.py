@@ -22,7 +22,8 @@ urlpatterns = patterns('data.views',
     # Entries:
     ## Class-Views
     url(r'^entries/list/$', login_required(EntryList.as_view(paginate_by=10)), name='list-entries'),
-    url(r'^entry/table/$', Entries.as_view(template_name='data/entry_table.html'), name='entry-table'),
+    url(r'^entry/table/$', login_required(Entries.as_view(template_name='data/entry_table.html')),
+        name='entry-table'),
     #url(r'^entry/table/$', EntryList.as_view(template_name='data/entry_table.html'), name='entry-table'),
     url(r'^entry/(?P<pk>\d+)$', DetailView.as_view(model=Entry), name='detail-entry'), # User generic class-based view # template_name='entry_detail.html' # use defaults
 
