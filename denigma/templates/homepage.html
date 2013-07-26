@@ -25,9 +25,8 @@
 {% endblock %}
 
 {% block banner %}
-    <table width="100%">
+    <table width="100%" >
         <tr>
-                    </td>
             <td style="width: 500px">
                 <div>
                     <a href="{% url 'detail-entry' 'denigmas-logo' %}">
@@ -47,6 +46,7 @@
                 {% else %}
                     {{ denigma_rationality.content|markdown|hyper|recross|safe }} {#  {% blocktrans %}{% endblocktrans %} #}
                 {% endif %}
+                    </td>
 
         </tr>
     </table >
@@ -57,7 +57,7 @@
                     {% url 'what_next' as what_next_url %}
                     <p class="what_next">{% blocktrans %}Wondering <a href="{{ what_next_url }}" class="btn primary large">What Next</a>?{% endblocktrans %}</p>
                 {% else %}
-                    {% url acct_login as login_url %}
+                    {% url 'acct_login' as login_url %}
                     {% ifsetting ACCOUNT_OPEN_SIGNUP %}
                         {% url 'acct_signup' as signup_url %}
                         <p>{% blocktrans %}You can <a href="{{ login_url }}" class="btn">Log In</a>
