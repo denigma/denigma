@@ -1246,7 +1246,7 @@ class FactorList(SingleTableView, FormView):
         else:
             factors = Factor.objects.all().order_by('-id')
         self.factorsfilter = FactorFilterSet(factors, self.request.GET)
-        return self.factorsfilter.qs.exclude(choice_name__contains='Review')
+        return self.factorsfilter.qs
 
 
 class FactorView(object):
