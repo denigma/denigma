@@ -21,7 +21,7 @@ urlpatterns = patterns('data.views',
 
     # Entries:
     ## Class-Views
-    url(r'^entries/list/$', EntryList.as_view(paginate_by=10), name='list-entries'),
+    url(r'^entries/list/$', login_required(EntryList.as_view(paginate_by=10)), name='list-entries'),
     url(r'^entry/table/$', Entries.as_view(template_name='data/entry_table.html'), name='entry-table'),
     #url(r'^entry/table/$', EntryList.as_view(template_name='data/entry_table.html'), name='entry-table'),
     url(r'^entry/(?P<pk>\d+)$', DetailView.as_view(model=Entry), name='detail-entry'), # User generic class-based view # template_name='entry_detail.html' # use defaults
@@ -48,7 +48,7 @@ urlpatterns = patterns('data.views',
 
     # Changes:
     ## Class-Views
-    url(r'^changes/list/$', ChangeList.as_view(), name='list-changes'),
+    url(r'^changes/list/$', login_required(ChangeList.as_view()), name='list-changes'),
     url(r'^change/details/(?P<pk>\d+)', DetailView.as_view(model=Change), name='detail-change'), #detail-change
     url(r'^change/delete/(?P<pk>\d+)', DeleteView.as_view(model=Change), name='delete-change'),
     ## Function-Views:
