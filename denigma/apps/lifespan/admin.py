@@ -3,6 +3,8 @@ from django.contrib import admin
 
 import reversion
 
+from mptt.admin import MPTTModelAdmin
+
 from models import Study, Experiment, Measurement, Comparison, Epistasis, Strain
 from models import Type, Factor, Manipulation, Intervention, Regimen, Assay, Gender
 from models import Variant, StudyType, Population, State, Technology, VariantType, ORType
@@ -146,7 +148,7 @@ class VariantAdmin(reversion.VersionAdmin):
 class StudyTypeAdmin(reversion.VersionAdmin):
     search_fields = ['name']
 
-class PopulationAdmin(reversion.VersionAdmin):
+class PopulationAdmin(MPTTModelAdmin):
     search_fields = ['name']
 
 class StateAdmin(reversion.VersionAdmin):

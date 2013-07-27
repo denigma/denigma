@@ -717,15 +717,25 @@ class StudyType(models.Model): # GWAS, Candidate genes
     def get_absolute_url(self):
         return reverse('study_type', args=[self.pk])
 
+from mptt.models import MPTTModel, TreeForeignKey
 
-class Population(models.Model):
+
+
+
+# Classifications Ontology:
+
+class Population(MPTTModel):
     name = models.CharField(max_length=250)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
 
     def __unicode__(self):
         return self.name
 
     def get_absolute_url(self):
         return reverse('population', args=[self.pk])
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
 
 # class Association(models.Model):
 #     def __unicode__(self):

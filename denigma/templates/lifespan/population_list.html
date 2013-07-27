@@ -1,5 +1,7 @@
 {% extends "lifespan/base.html" %}
 {% load url from future %}
+{% load mptt_tags %}
+
 {% block head_title %}Populations{% endblock %}
 {% block title %}Populations{% endblock %}
 {% block hierarchy %}
@@ -10,7 +12,18 @@
     | <a href="/admin/lifespan/population/{{ object.pk }}">Admin</a>
 {% endblock %}
 {% block content %}
-    {% for object in object_list %}
-        <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
-    {% endfor %}
+{#    {% for object in object_list %}#}
+{#        <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>#}
+{#    {% endfor %}#}
+      {% recursetree object_list %}
+        <li>
+            <a href="{{ node.get_absolute_url }}">{{ node }}</a>
+            {% if not node.is_leaf_node %}
+                <ul class="children">
+                    <a href="{{ node.get_absolute_url }}">{{ children }}</a>
+                </ul>
+            {% endif %}
+        </li>
+    {% endrecursetree %}
+
 {% endblock %}
