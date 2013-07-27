@@ -11,7 +11,7 @@ from models import Link
 
 urlpatterns = patterns('',
     url(r'^$', Links.as_view(), name='links'),
-    url(r'list^$', LinkList.as_view(), name='link-list'), # Depricated
+    url(r'list^$', login_required(LinkList.as_view()), name='link-list'), # Depricated
     #url(r'^language/$', links_by_language, name='links_list'), # Depricated
     url(r'^update/(?P<pk>\d+)', login_required(LinkUpdate.as_view()),
         name='update-link'),
