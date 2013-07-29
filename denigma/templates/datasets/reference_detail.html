@@ -77,14 +77,14 @@
      {% if object.factor_set.all %}
         <b>Factors:</b>
         {% for factor in object.factor_set.all %}
-            <li><a href="{{ factor.get_absolute_url }}">{{ factor }}</a></li>
-        {% endfor %}
+            <li><a href="{{ factor.get_absolute_url }}">{{ factor }}</a> {{ factor.name }}</li>
+        {% endfor %}<br>
     {% endif %}
 
     {% if object.variant_set.all %}
-        <b>Variants:</b>
+        <b>Variant Associations (p-value):</b>
         {% for variant in object.variant_set.all %}
-            <li><a href="{{ variant.get_absolute_url }}">{{ variant }}</a></li>
+            <li><a href="{{ variant.get_absolute_url }}">{{ variant }}</a> {% if variant.pvalue %} ({{ variant.pvalue }}){% endif %}</li>
         {% endfor %}
     {% endif %}
 
