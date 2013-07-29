@@ -798,8 +798,8 @@ class Variant(models.Model):
     factors = models.ManyToManyField(Factor, null=True, blank=True, related_name='variances')
     description = models.TextField(null=True, blank=True)
     odds_ratio = models.FloatField(null=True, blank=True)
-    pvalue = models.FloatField(null=True, blank=True)
-    p_value = models.CharField(max_length=255, null=True, blank=True)# genetic variant
+    pvalue = models.FloatField(null=True, blank=True, help_text="Numerical value of the p-value")
+    p_value = models.CharField(max_length=255, null=True, blank=True, help_text="String representation of the p-value, e.g. > 0.05 (females)")# genetic variant
     qvalue = models.FloatField(null=True, blank=True)
     significant = models.CharField(max_length=255, null=True, blank=True)  # (redudant)
     initial_number = models.CharField(max_length=250, null=True, blank=True) # _of_cases_controls (study)

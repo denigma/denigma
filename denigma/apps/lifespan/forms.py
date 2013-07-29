@@ -347,6 +347,7 @@ class VariantForm(ModelForm):
                 'odds_ratio',
                 'or_type',
                 'pvalue',
+                'p_value',
                 'qvalue',
                 'significant',
                 'classifications',
@@ -384,7 +385,7 @@ class VariantForm(ModelForm):
     class Meta:
         model = Variant
         fields = ('polymorphism', 'alias', 'variant_type', 'location', 'factor', 'factors', 'description', 'finding', 'choice', 'classifications',
-                  'odds_ratio', 'or_type', 'pvalue', 'qvalue', 'significant', 'initial_number',
+                  'odds_ratio', 'or_type', 'pvalue', 'p_value', 'qvalue', 'significant', 'initial_number',
                   'replication_number', 'ethnicity', 'age_of_cases', 'technology', 'study_type',
                   'shorter_lived_allele', 'longer_lived_allele', 'pmid', 'reference', 'comment')
 
