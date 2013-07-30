@@ -34,7 +34,7 @@
                 <b>Factor:</b><br>
 
                 <b>- Symbol:</b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.symbol }}</a><br>
-                <b>- Name:</b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.name }}</a><br>
+               {% if variant.factor.name %} <b>- Name:</b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.name }}</a><br>{% endif %}
                {% if variant.factor.entrez_gene_id %}
                     <b>- Entrez ID:</b> <a href="http://www.ncbi.nlm.nih.gov/gene/{{ variant.factor.entrez_gene_id }}">{{ variant.factor.entrez_gene_id }}</a><br>
                 {% endif %}
