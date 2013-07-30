@@ -16,6 +16,14 @@ from sitemaps import SiteMap, SiteSiteMap
 #from haystack.views import SearchView
 #from forms import DateRangeSearchForm
 
+from tastypie.api import Api
+from lifespan.api.resources import FactorResource
+
+
+lifespan_api = Api(api_name='lifespan')
+lifespan_api.register(FactorResource())
+#factor_resource = FactorResource()
+
 sitemaps = {
    'Denigma': SiteMap,
    'pages': SiteSiteMap(['contact', 'archive']),
@@ -25,12 +33,14 @@ handler500 = "pinax.views.server_error"
 
 urlpatterns = patterns("denigma.views",
     url(r'^$', 'home', name="home"),
-    url(r'^search/', include('haystack.urls')),
+    #url(r'^search/', include('haystack.urls')),
     #url(r'^search/', SearchView(form_class=DateRangeSearchForm)),
     url(r'^content/', 'content', name='content'),
     url(r'^404/$', TemplateView.as_view(), {'template':'404.html'}, name='404'),
     url(r'^500/$', TemplateView.as_view(), {'template':'500.html'}, name='505'),
     url(r'^repository/$', 'repository', name='repository'),
+    url(r'^api/', include(lifespan_api.urls))
+    #url(r'api/', include(factor_resource.urls)),
     #url(r'^google(?P<term>\w+)', 'google'),
     #url(r'^search/(?P<term>.*)', 'search'), # Side-wide search
 #    url(r'^', include('cms.urls')),
@@ -97,6 +107,7 @@ urlpatterns += patterns("",
     url(r'^channel/', include('channel.urls')),
     url(r'^chat/', include('chat.urls')),
     url(r'^video/', include('video.urls')),
+    url(r'^c/', TemplateView.as_view(template_name='chat.html')),
 
     # Integrator
     url(r'^annotations/', include('annotations.urls')),

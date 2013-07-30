@@ -28,7 +28,7 @@ INTERNAL_IPS = [
 ]
 
 ADMINS = [
-     #('Hevok', 'hevok@denigma.de'),
+     ('Hevok', 'hevok@denigma.de'),
 ]
 
 CONTACT_EMAIL = 'hevok@denigma.de'
@@ -295,6 +295,8 @@ INSTALLED_APPS = [
 
     'coffeescript',
     'less',
+
+    'tastypie',
 
     # Comments and forms:
     'fluent_comments',

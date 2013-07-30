@@ -105,3 +105,6 @@ redis
 django-jsonfield==0.8.12
 django-less==0.7.1
 -e git+https://github.com/denigma/django-coffeescript.git#egg=coffescript
+
+# API
+-e git+https://github.com/toastdriven/django-tastypie.git#egg=tastypie
