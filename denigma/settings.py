@@ -119,7 +119,7 @@ STATIC_URL = '/s/'
 # Additional directories which hold static files
 STATICFILES_DIRS = [
     #os.path.join(PROJECT_ROOT, "static"),
-    os.path.join(PROJECT_ROOT, 'media'),
+    #os.path.join(PROJECT_ROOT, 'media'),
     os.path.join(PINAX_ROOT, 'media', PINAX_THEME),
     os.path.join(BASE_DIR, 'semantictasks')
 ]
