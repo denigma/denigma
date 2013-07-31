@@ -18,7 +18,8 @@ class FactorSerializer(serializers.HyperlinkedModelSerializer):
                   #'classification',
                   'types',
                   'intervention',
-                  'classifications'
+                  'classifications',
+                  'references'
         )
 
 # class TypeSerializer(serializers.HyperlinkedModelSerializer):
