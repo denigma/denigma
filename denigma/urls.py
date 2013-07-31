@@ -24,23 +24,51 @@ from lifespan.api.resources import FactorResource
 ## REST Framework
 from rest_framework import routers
 # from account.rest import UserViewSet, GroupViewSet
-from lifespan.rest import FactorViewSet, TypeViewSet
-from annotations.rest import ClassificationViewSet, SpeciesViewSet
+from lifespan.rest import (StudyViewSet, ExperimentViewSet, StrainViewSet,
+    MeasurementViewSet, EpistasisViewSet, ComparisonViewSet,
+    ManipulationViewSet, RegimenViewSet, AssayViewSet, InterventionViewSet,
+    FactorViewSet, TypeViewSet, StateViewSet,  TechnologyViewSet,
+    StudyTypeViewSet, VariantTypeViewSet, ORTypeViewSet, PopulationViewSet,
+    VariantViewSet, GenderViewSet)
+from datasets.rest import ReferenceViewSet
+from annotations.rest import ClassificationViewSet, SpeciesViewSet, AnimalViewSet
+from media.rest import ImageViewSet
 
 admin.autodiscover()
 
 lifespan_api = Api(api_name='lifespan')
 lifespan_api.register(FactorResource())
-
+#
 
 # Routers provide an easy way of automatically determining the URL conf
 router = routers.DefaultRouter()
 # router.register(r'users', UserViewSet)
 # router.register(r'groups', GroupViewSet)
+router.register(r'studies', StudyViewSet)
+router.register(r'experiments', ExperimentViewSet)
+router.register(r'strains', StrainViewSet)
+router.register(r'measurements', MeasurementViewSet)
+router.register(r'epistases', EpistasisViewSet)
+router.register(r'manipulations', ManipulationViewSet)
+router.register(r'regimens', InterventionViewSet)
+router.register(r'assays', AssayViewSet)
+
+router.register(r'interventions', InterventionViewSet)
 router.register(r'factors', FactorViewSet)
 router.register(r'types', TypeViewSet)
+router.register(r'states', StateViewSet)
+router.register(r'technologies', TechnologyViewSet)
+router.register(r'studytypes', StudyTypeViewSet)
+router.register(r'varianttypes', VariantTypeViewSet)
+router.register(r'or-types', ORTypeViewSet)
+router.register(r'populations', PopulationViewSet)
+router.register(r'variants', VariantViewSet)
+router.register(r'genders', GenderViewSet)
 router.register(r'classifications', ClassificationViewSet)
 router.register(r'species', SpeciesViewSet)
+router.register(r'animals', AnimalViewSet)
+router.register(r'references', ReferenceViewSet)
+router.register(r'images', ImageViewSet)
 
 sitemaps = {
    'Denigma': SiteMap,

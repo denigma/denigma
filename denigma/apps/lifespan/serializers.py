@@ -1,5 +1,6 @@
-from lifespan.models import Factor, Type
 from rest_framework import serializers
+
+from models import Factor #, Type
 
 
 class FactorSerializer(serializers.HyperlinkedModelSerializer):
@@ -16,6 +17,7 @@ class FactorSerializer(serializers.HyperlinkedModelSerializer):
                   # 'note', 'type', #'pdb',
                   #'classification',
                   'types',
+                  'intervention',
                   'classifications'
         )
 

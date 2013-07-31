@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 
-from annotations.models import Classification, Species
+from models import Classification, Species, Animal
 
 
 class ClassificationViewSet(viewsets.ModelViewSet):
@@ -9,3 +9,6 @@ class ClassificationViewSet(viewsets.ModelViewSet):
 
 class SpeciesViewSet(viewsets.ModelViewSet):
     model = Species
+
+class AnimalViewSet(viewsets.ModelViewSet):
+    model = Animal
