@@ -5,7 +5,6 @@ from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
 
 from django.contrib import admin
-admin.autodiscover()
 
 from staticfiles.urls import staticfiles_urlpatterns
 
@@ -16,13 +15,32 @@ from sitemaps import SiteMap, SiteSiteMap
 #from haystack.views import SearchView
 #from forms import DateRangeSearchForm
 
+# API Frameworks
+
+## Tastypie
 from tastypie.api import Api
 from lifespan.api.resources import FactorResource
 
+## REST Framework
+from rest_framework import routers
+# from account.rest import UserViewSet, GroupViewSet
+from lifespan.rest import FactorViewSet, TypeViewSet
+from annotations.rest import ClassificationViewSet, SpeciesViewSet
+
+admin.autodiscover()
 
 lifespan_api = Api(api_name='lifespan')
 lifespan_api.register(FactorResource())
-#factor_resource = FactorResource()
+
+
+# Routers provide an easy way of automatically determining the URL conf
+router = routers.DefaultRouter()
+# router.register(r'users', UserViewSet)
+# router.register(r'groups', GroupViewSet)
+router.register(r'factors', FactorViewSet)
+router.register(r'types', TypeViewSet)
+router.register(r'classifications', ClassificationViewSet)
+router.register(r'species', SpeciesViewSet)
 
 sitemaps = {
    'Denigma': SiteMap,
@@ -39,8 +57,15 @@ urlpatterns = patterns("denigma.views",
     url(r'^404/$', TemplateView.as_view(), {'template':'404.html'}, name='404'),
     url(r'^500/$', TemplateView.as_view(), {'template':'500.html'}, name='505'),
     url(r'^repository/$', 'repository', name='repository'),
-    url(r'^api/', include(lifespan_api.urls))
-    #url(r'api/', include(factor_resource.urls)),
+
+    # API Frameworks
+    url(r'^api/', include(lifespan_api.urls)),
+
+    # Wire up our API using automatic URL routing.
+    # Additionally, we include login URLs for the browserable API.
+    url(r'^', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
     #url(r'^google(?P<term>\w+)', 'google'),
     #url(r'^search/(?P<term>.*)', 'search'), # Side-wide search
 #    url(r'^', include('cms.urls')),
