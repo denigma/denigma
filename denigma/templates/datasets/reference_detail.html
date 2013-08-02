@@ -17,7 +17,7 @@
 
 {% block content %}
     <p><b>Authors</b>: {{ object.authors|authors }}</p>
-    <p><b>Abstract</b>: {{ object.abstract }}</p>
+    {% if object.abstract %}<p><b>Abstract</b>: {{ object.abstract }}</p>{% endif %}
     {% if object.keywords %}<b>Keywords</b>: {{ object.keywords }}<br>{% endif %}
     <table width="100%">
         <tr>
