@@ -50,6 +50,32 @@ label input, label textarea, label select {
     -moz-border-radius: 6px;
     border-radius: 6px;
 }
+label {
+  /* display: block; */
+  margin-bottom: 1px;
+  color: #333333;
+}
+input,
+textarea,
+select,
+.uneditable-input {
+  display: inline-block;
+  width: 660px; #210
+  height: 18px;
+  padding: 4px;
+  margin-bottom: 9px;
+  font-size: 13px;
+  line-height: 18px;
+  color: #555555;
+  border: 1px solid #ccc;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+label input, label textarea, label select {
+  /* display: block; */
+}
 
-#id_honeypot { display: none; label: none}
-#div_id_honeypot  {display: none}
+
+/*#id_honeypot { display: none; label: none}*/
+/*#div_id_honeypot  {display: none}*/
