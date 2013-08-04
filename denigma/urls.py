@@ -79,7 +79,7 @@ handler500 = "pinax.views.server_error"
 
 urlpatterns = patterns("denigma.views",
     url(r'^$', 'home', name="home"),
-    #url(r'^search/', include('haystack.urls')),
+    url(r'^search/', include('haystack.urls')),
     #url(r'^search/', SearchView(form_class=DateRangeSearchForm)),
     url(r'^content/', 'content', name='content'),
     url(r'^404/$', TemplateView.as_view(), {'template':'404.html'}, name='404'),
