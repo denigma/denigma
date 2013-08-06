@@ -73,16 +73,23 @@
             {% if factor.maximum %}<b>Maximum: </b> {{ factor.maximum }}<br>{% endif %}
 
             {% with factor.variances as variants %}
-                {% if variants %}<br>
+               {% if variants.all %}<br>
                     <b>Longevity Associated Variants:</b>
                     {% for variant in variants.all %}
                         <li><a href="{{ variant.get_absolute_url }}">{{ variant }}</a> {{ variant.pvalue }} [<a href="{{ variant.reference.get_absolute_url }}">{{ variant.reference.pmid }}</a>]</li>
                     {% endfor %}
-                {% elif factor.variants %}
-                   {% with factor.variants as variant %}
-                    <b>Longevity Associated Variants:</b>
-                        <li><a href="{{ variant.get_absolute_url }}">{{ variant }}</a> {{ variant.pvalue }} [<a href="{{ variant.reference.get_absolute_url }}">{{ variant.reference.pmid }}</a>]</li>
-                     {% endwith %}
+{#                {% elif factor.variant_set.all %}#}
+{#                   {% with factor.variants_set.all as vs %}#}
+{#                       {{ vs }}#}
+{#                    {% for v in vs %}#}
+{#                        {{ v }}#}
+{#                    <b>Longevity Associated Variants:</b>#}
+{##}
+{#                        <li><a href="{{ variant.get_absolute_url }}">{{ variant }}</a> {{ variant.pvalue }} [<a href="{{ variant.reference.get_absolute_url }}">{{ variant.reference.pmid }}</a>]</li>#}
+{#                   {% endfor %}#}
+{##}
+{#                     {% endwith %}#}
+{##}
                    {% endif %}
             {% endwith %}
 
