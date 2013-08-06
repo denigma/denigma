@@ -78,8 +78,8 @@
                     {% for variant in variants.all %}
                         <li><a href="{{ variant.get_absolute_url }}">{{ variant }}</a> {{ variant.pvalue }} [<a href="{{ variant.reference.get_absolute_url }}">{{ variant.reference.pmid }}</a>]</li>
                     {% endfor %}
-                {% elif factor.variance %}
-                   {% with factor.variant as variant %}
+                {% elif factor.variants %}
+                   {% with factor.variants as variant %}
                     <b>Longevity Associated Variants:</b>
                         <li><a href="{{ variant.get_absolute_url }}">{{ variant }}</a> {{ variant.pvalue }} [<a href="{{ variant.reference.get_absolute_url }}">{{ variant.reference.pmid }}</a>]</li>
                      {% endwith %}
