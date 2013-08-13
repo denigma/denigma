@@ -140,8 +140,9 @@ class VariantAdmin(reversion.VersionAdmin):
               'significant','initial_number', 'replication_number', 'ethnicity', 'age_of_cases', 'study_type',
               'technology', 'pmid', 'reference', 'choice', 'classifications')
     search_fields = ['description', 'alias', 'polymorphism',  'odds_ratio', 'pvalue', 'p_value',  'qvalue', 'significant', #'factor', 'technology', 'study_type',  'reference',
-                    'initial_number', 'replication_number', 'age_of_cases',  'finding', 'variant_type', 'or_type',
-                     'pmid'] #, 'choice'
+                    'initial_number', 'replication_number', 'age_of_cases',  'finding', #'variant_type', 'or_type',
+                     'pmid', 'shorter_lived_allele', 'longer_lived_allele',
+                     'odds_ratio', 'pvalue', 'p_value', 'qvalue', 'significant', 'initial_number', 'age_of_cases'] #, 'choice'
     list_filter = ('choice', 'finding', 'variant_type','finding', 'or_type', 'created', 'updated', 'ethnicity', 'classifications',)#'factors',
     filter_horizontal = ('factors', 'ethnicity', 'classifications')
 
