@@ -63,7 +63,7 @@
     {% endwith %}
     {% if object.url %}
         {% if user.is_authenticated %}
-            <b>PDF</b>: <button class="btn btn-default"><a href="{{ object.url }}">Download</a></button><br><br>
+            <b>PDF</b>: <b><a href="{{ object.url }}">Download</a></b><br>
         {% endif %}
     {% endif %}
 
