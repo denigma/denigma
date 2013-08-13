@@ -1125,7 +1125,7 @@ class VariantList(SingleTableView, FormView):
         else:
             variants = Variant.objects.all().order_by('pvalue').exclude(pvalue=None) #, 'longer_lived_allele')
         self.variantsfilter = VariantFilterSet(variants, self.request.GET)
-        return self.variantsfilter.qs.exclude(choice__name__contains='Review')
+        return self.variantsfilter.qs.exclude(choice__name__contains='Review').distinct()
 
 
 class VariantView(object):
