@@ -952,19 +952,22 @@ class VariantBulkInsert(FormView):
                         print('technology: %s' % columns[n+13])
                         technology = Technology.objects.get_or_create(name=columns[n+13])[0]
                         if technology: d.update({'technology':technology})
+                        print("Technology was successfully applied.")
                     except Exception as e:
-                        #print("technology", e)
+                        print("technology", e)
                         technology = ''
                         #notes.append("technology = %s (%s)" % (columns[13], e))
                     try:
-                        #print('study type: %s' % columns[15])
+                        print('study type: %s' % columns[n+14])
                         study_type = StudyType.objects.get_or_create(name=columns[n+14])[0]
+                        print("Study type is %s %s" % (str(study_type), study_type))
                         if study_type: d.update({'study_type':study_type})
                     except Exception as e:
-                        #print("study type", e)
+                        print("study type", e)
                         study_type = ''
                         notes.append("study type = %s (%s)" % (columns[n+14], e))
                     try:
+                        print("Description: %s" % columns[n+15])
                         description = columns[n+15].replace('N/A', '')
                         if description: d.update({'description':description})
                     except Exception as e:
@@ -972,34 +975,44 @@ class VariantBulkInsert(FormView):
                         description = ''
                         #notes.append("description = %s (%s)" % (columns[15], e)
                     try:
+                        print("References: %s" % columns[1])
                         reference = Reference.objects.get_or_create(pmid=columns[1])[0]
                         if reference: d.update({'reference':reference})
                     except Exception as e:
-                        #print("reference", e)
+                        print("reference", e)
                         reference = ''
                         #notes.append("reference = %s (%s)" % (columns[1], e))
                     try:
+                        print("Finding: %s" % columns[n+16])
                         choices = {'Positive': 1, 'Negative': 2}
                         finding = choices[columns[n+16]]
                         if finding: d.update({'finding': finding})
                     except Exception as e:
                         finding = ''
                         notes.append("finding = %s (%s)" % (columns[n+16], e))
-                    #print("16 %s" % columns[n+16])
+                        print("16 %s" % columns[n+16])
                     try:
+                        print("Variant type: %s" % columns[n+17])
                         variant_type = VariantType.objects.get_or_create(name=columns[n+17])[0]
+                        print("Fetched variant type: %s" % str(variant_type))
                         if variant_type: d.update({'variant_type': variant_type})
                     except Exception as e:
                         variant_type = None
+                        print("17 %s" % columns[n+17])
                         notes.append("variant type = %s (%s)" % (columns[n+17], e))
-                    #print("17 %s" % columns[n+17])
-                    try:
-                        or_type = ORType.objects.get_or_create(name=columns[n+18])[0]
-                        if or_type: d.update({'or_type': or_type})
-                    except Exception as e:
-                        or_type = None
-                        notes.append("or type = %s (%s)" % (columns[n+18], e))
-                    #print("18 %s" % columns[n+18])
+                    print(len(columns), n+18)
+                    if len(columns) > n+18:
+                        print("Trying")
+                        print  columns[n+18]
+                        try:
+
+                            print("OR type: %s" % columns[n+18])
+                            or_type = ORType.objects.get_or_create(name=columns[n+18])[0]
+                            if or_type: d.update({'or_type': or_type})
+                        except Exception as e:
+                            or_type = None
+                            notes.append("or type = %s (%s)" % (columns[n+18], e))
+                        #print("18 %s" % columns[n+18])
 
 
                     if 'description' in d:
