@@ -4,6 +4,11 @@ label {
     color: #333333;
 }
 
+
+ label input, label textarea, label select {
+  /* display: block; */
+ }
+
 /*
 input,
 textarea,
