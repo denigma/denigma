@@ -63,10 +63,16 @@ class VariantTable(tables.Table):
         return pubmed_links(value)
 
     def render_ethnicity(self, value, record):
-         return mark_safe(", ".join([i.name for i in value.all()]))
+         return mark_safe(", ".join(["<a href='%s'>%s</a>" % (i.get_absolute_url(), i.name) for i in value.all()]))
 
     def render_reference(self, value, record):
-         return mark_safe('''<a href=/datasets/reference/%s>%s</a>''' % (record.pmid, value.pmid))
+         return mark_safe('''<a href="/datasets/reference/%s>%s"</a>''' % (record.pmid, value.pmid))
+
+    def render_study_type(self, value, record):
+        return mark_safe('''<a href="%s">%s</a>''' % (value.get_absolute_url(), value.name))
+
+    def render_technology(self, value, record):
+        return mark_safe('''<a href="%s">%s</a>''' % (value.get_absolute_url(), value.name))
 
     class Meta:
         model = Variant
