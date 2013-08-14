@@ -10,6 +10,7 @@ from django.utils.translation import ugettext
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 #from django.core.urlresolvers import reverse # reverse_lazy (Django 1.4)
+from django.conf import settings
 from django.contrib.auth.models import AnonymousUser, User
 from django.views.generic.edit import CreateView, UpdateView, FormView # DeleteView
 from django.views.generic import ListView, DetailView, TemplateView
@@ -22,13 +23,19 @@ import reversion
 from django_tables2 import SingleTableView, RequestConfig
 
 from blog.models import Post
-from annotations.models import Species
+from annotations.models import Species, GO
+
 from add.forms import handlePopAdd
 from meta.view import log
 from home.views import LoginRequiredMixin
-from data.views import Create, Update, Delete
+import data
 from data import get
+from data.views import Create, Update, Delete
+
 from datasets.models import Reference
+from annotations.models import Classification
+from expressions.views import functional_enrichment
+from utils.dumper import dump
 
 from models import (Study, Experiment, Measurement, Comparison, Intervention, Factor, Regimen, Strain, Assay,
                    Manipulation, Variant, State, Population, Technology, StudyType, ORType, VariantType)
@@ -41,11 +48,8 @@ from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
                    FilterForm, FactorFilterSet, VariantForm, VariantFilterSet, VariantBulkInsertForm, OntologyForm)
 from tables import ComparisonTable, InterventionTable, FactorTable, VariantTable
 
-from annotations.models import Classification
 
-import data
 
-from expressions.views import functional_enrichment
 
 
 def index(request):
@@ -1082,6 +1086,7 @@ class CreateVariant(Create):
             return HttpResponseRedirect(self.get_success_url())
 
 
+
 class VariantList(SingleTableView, FormView):
     template_name = 'lifespan/variants.html'
     context_object_name = 'variants'
@@ -1091,25 +1096,73 @@ class VariantList(SingleTableView, FormView):
     model = Variant
     query = None
     symbol = None
+    variants = None
+    output = False
 
     def form_valid(self, form):
+        # print("Form valid is triggered")
+        # print(VariantList.variants)
+
         VariantList.query = form.cleaned_data['filter']
+        VariantList.term = form.cleaned_data['term']
+        output = form.cleaned_data['output']
+        self.output = output
+        VariantList.output = output
+        #print(output)
+        # print(VariantList.term)
+        if VariantList.term:
+            terms = GO.objects.filter(go_term__icontains=self.term)
+            ids  = ["Q(factor__entrez_gene_id=%s)" % go.entrez_gene_id for go in terms]
+            #print(ids)
+            VariantList.sql = " | ".join(ids)
+            variants = eval("Variant.objects.filter("+self.sql+")")
+            self.kwargs['variants'] = variants
+            if not VariantList.variants:
+                 VariantList.variants = variants
         #FactorList.symbol = form.cleaned_data['symbol']
         return super(VariantList, self).form_valid(form)
 
     def form_invalid(self, form):
+        # print("Form is invalid is triggered")
+        # print(VariantList.variants)
+
         VariantList.query = None
+        #print self.variants
         return super(VariantList, self).form_valid(form)
 
     def get_context_data(self, *args, **kwargs):
+        # print("Get context data is triggered")
+        # print(VariantList.variants)
+
         context = super(VariantList, self).get_context_data(*args, **kwargs)
         context['form'] = FilterForm(initial={'filter': VariantList.query})
         context['variantsfilter'] = self.variantsfilter
         context['entry'] = get("Aging Gene Variants")
+        # print("Get context data")
+        # print self.variants
+        # print("Variants in %s" % 'variants' in self.kwargs)
+        # if 'variants' in self.kwargs:
+        #     print("Variants %s" % self.kwargs['variants'])
         return context
 
+    def render_to_response(self, context, **response_kwargs):
+        if VariantList.output:
+            VariantList.output = False
+            if self.request.user.is_authenticated():
+                 data = dump(self.qs, write=False)
+                 #print(data)
+                 return HttpResponse(data)
+            else:
+                return redirect(settings.LOGIN_URL)
+        else:
+            return super(VariantList, self).render_to_response(context, **response_kwargs)
+
     def get_queryset(self):
+        print("Get queryset is triggered")
+        print(VariantList.variants)
+
         if VariantList.query:
+            #VariantList.variants = None
             try:
                 query = float(VariantList.query)
                 variants = Variant.objects.filter(Q(odds_ratio=query) |
@@ -1125,7 +1178,28 @@ class VariantList(SingleTableView, FormView):
         else:
             variants = Variant.objects.all().order_by('pvalue').exclude(pvalue=None) #, 'longer_lived_allele')
         self.variantsfilter = VariantFilterSet(variants, self.request.GET)
-        return self.variantsfilter.qs.exclude(choice__name__contains='Review').distinct()
+        #if self.variants:
+        #    return self.variants
+        #else:
+
+
+        if VariantList.variants:
+            #print(VariantList.sql)
+            variants =   eval("self.variantsfilter.qs.filter("+VariantList.sql+")")
+            #VariantList.variants = None
+            return variants
+
+        #     print("VariantList.variants: %s" % VariantList.variants)
+        #     variants = VariantList.variants
+        #     # print(variants)
+        #     #VariantList.variants = None
+        #     return variants
+        # # if 'variants' in self.kwargs:
+        # #     print("Variants %s" % self.kwargs['variants'])
+        #print("variantsfilter")
+        self.qs = self.variantsfilter.qs.exclude(choice__name__contains='Review').distinct()
+
+        return self.qs
 
 
 class VariantView(object):
@@ -1655,7 +1729,7 @@ def replace(request, table, field, term, by):
         result += '\n'.join([pre[index]+'\n'+post[index]])#
     return HttpResponse("Replace in table %s field %s the term %s by %s\n%s" % (table, field, term, by, result))
 
-def dump(request):
+def dumper(request):
     """Dumps information from GenAge out to a file (GenDR by default)."""
     import re
     from scripts.c import multiple_replace

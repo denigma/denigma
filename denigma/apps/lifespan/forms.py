@@ -607,7 +607,9 @@ class OntologyForm(Form):
 
 
 class FilterForm(Form):
-    filter = CharField()
+    filter = CharField(required=False)
+    term = CharField(required=False)
+    output = BooleanField(required=False)
 
 
 class FactorFilterSet(FilterSet):

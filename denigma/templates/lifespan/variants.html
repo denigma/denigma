@@ -25,7 +25,6 @@
     <div id=title-header><span style="font-family: 'Copperplate Gothic Light'; color: #669966; font-size: 30px" >
     Longevity Variant Database</span>
 {% endblock %}
-{#    #}
 
 
 {% block content %}
@@ -47,7 +46,16 @@
                         <a href="{% url 'variant-issues' %}">Issues</a>
                      </h3>
                 </center>
+                <br>
+                <center>
+{#                <div class="btn-group">#}
+                    <a href="{% url 'add_variant' %}" class="btn btn-success btn-large">Suggest a new study</a>
+                    <a href="{% url 'contact'  %}" class="btn btn-danger btn-large">Report a database issue</a>
+{#                </div>#}
+                    </center>
              </td>
+        "" and "
+
              <td valign="top" align="right" style="width: 400px">
                {% for image in entry.images.all reversed %}
                    <img src="{{ image.url }}" alt="{{ image.name }}" width="125" height="125">
@@ -56,9 +64,16 @@
             </td>
                     </table>
                 <hr>
-                    <form action="" method="POST">
-    {% csrf_token %}
-        <input type="submit" value="Filter" />{{ form.filter }}
+
+                    <form action="" method="POST">{% csrf_token %}
+                        <input type="submit" value="Filter" />{{ form.filter }}<input type="submit" value="Output" />{{ form.output }}<br>
+                        <input type="submit" value="Term" />{{ form.term }}
+
+                    </form>
+{#                    <form action="" method="POST">{% csrf_token %}#}
+{#                        <div style='display:none'><input type='hidden' name='term' value='' /></div>#}
+{#                        <input type="submit" value="Term" /><input type="text" name="term" id="id_term" />#}
+
         {{ filter.form.as_p }}
         {{ variantsfilter }}
         </tr>
