@@ -52,9 +52,13 @@
                     <a href="{% url 'add_variant' %}" class="btn btn-success btn-large">Suggest a new study</a>
                     <a href="{% url 'contact'  %}" class="btn btn-danger btn-large">Report a database issue</a>
 {#                </div>#}
-                    </center>
-             </td>
-        "" and "
+              </center>
+              <center>
+                <br>
+
+
+               </center>
+            </td>
 
              <td valign="top" align="right" style="width: 400px">
                {% for image in entry.images.all reversed %}
@@ -65,17 +69,20 @@
                     </table>
                 <hr>
 
-                    <form action="" method="POST">{% csrf_token %}
-                        <input type="submit" value="Filter" />{{ form.filter }}<input type="submit" value="Output" />{{ form.output }}<br>
-                        <input type="submit" value="Term" />{{ form.term }}
 
-                    </form>
 {#                    <form action="" method="POST">{% csrf_token %}#}
 {#                        <div style='display:none'><input type='hidden' name='term' value='' /></div>#}
 {#                        <input type="submit" value="Term" /><input type="text" name="term" id="id_term" />#}
-
-        {{ filter.form.as_p }}
-        {{ variantsfilter }}
+          <form action="" method="POST">{% csrf_token %}
+                  {% for choice, chr in form.chromosome.field.choices %}
+                    <a href="{% url 'variants' choice %}"><img src="https://s3.amazonaws.com/denigma/{{ choice }}.png" alt="{{ choice }}" width="50px" height="100px" ></a>
+                     <label for="id_chromosome_{{ choice }}"><input type="checkbox" name="chromosome" value="{{ choice }}" id="id_chromosome_{{ choice }}" /> </label>
+                 {% endfor %}<br>
+                        <input type="submit" value="Filter" />{{ form.filter }}<input type="submit" value="Output" />{{ form.output }}<br>
+                        <input type="submit" value="Term" />{{ form.term }}
+                        {{ filter.form.as_p }}
+                        {{ variantsfilter }}
+          </form>
         </tr>
         <table width="100%">
             <tr>

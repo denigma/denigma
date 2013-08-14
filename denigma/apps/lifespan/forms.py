@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from django.forms import (Form, ModelForm, CharField, Textarea, IntegerField, BooleanField,
+from django.forms import (Form, ModelForm, CharField, Textarea, IntegerField, BooleanField, MultipleChoiceField,
                           ModelChoiceField, ModelMultipleChoiceField)
+from django.forms import CheckboxSelectMultiple
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Div, HTML, Button, Row, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
@@ -606,11 +607,14 @@ class OntologyForm(Form):
 
 
 
+CHROMOSOMES = [(x,x) for x in range(1,22)]+[('X', 'X'), ('Y', 'Y')]
+
 class FilterForm(Form):
     filter = CharField(required=False)
     term = CharField(required=False)
     output = BooleanField(required=False)
-
+    chromosome = MultipleChoiceField(widget=CheckboxSelectMultiple(),
+                                     choices=CHROMOSOMES, required=False)
 
 class FactorFilterSet(FilterSet):
     fields = ['species', 'classifications', 'types']

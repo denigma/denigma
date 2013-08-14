@@ -1098,6 +1098,24 @@ class VariantList(SingleTableView, FormView):
     symbol = None
     variants = None
     output = False
+    chromosome = None
+    chromosome_number = None
+    #
+    # def get(self, request, *args, **kwargs):
+    #     VariantList.query = None
+    #     VariantList.symbol = None
+    #     VariantList.variants = None
+    #     VariantList.output = False
+    #     VariantList.chromosome = None
+    #     return super(VariantList, self).get(request, *args, **kwargs)
+
+    def dispatch(self, request, *args, **kwargs):
+        print("outer")
+        if 'chromosome' in kwargs:
+            print(kwargs['chromosome'])
+            print("inner")
+            VariantList.chromosome_number = kwargs['chromosome']
+        return super(VariantList, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         # print("Form valid is triggered")
@@ -1105,6 +1123,7 @@ class VariantList(SingleTableView, FormView):
 
         VariantList.query = form.cleaned_data['filter']
         VariantList.term = form.cleaned_data['term']
+        VariantList.chromosome = form.cleaned_data['chromosome']
         output = form.cleaned_data['output']
         self.output = output
         VariantList.output = output
@@ -1143,9 +1162,20 @@ class VariantList(SingleTableView, FormView):
         # print("Variants in %s" % 'variants' in self.kwargs)
         # if 'variants' in self.kwargs:
         #     print("Variants %s" % self.kwargs['variants'])
+
+        # print("Chromosome: %s" % self.chromosome)
+        # if VariantList.chromosome and self.queryset:
+        #     if VariantList.chromosome == 'X' or VariantList.chromosome == 'Y':
+        #         self.queryset.filter(location=self.chromosome)
+        #     else:
+        #         self.queryset.filter(Q(location__startswith=self.chromosome+'q')|Q(location__startswith=self.chromosome+'p'))
+        # print self.queryset
+
+
         return context
 
     def render_to_response(self, context, **response_kwargs):
+
         if VariantList.output:
             VariantList.output = False
             if self.request.user.is_authenticated():
@@ -1197,8 +1227,27 @@ class VariantList(SingleTableView, FormView):
         # # if 'variants' in self.kwargs:
         # #     print("Variants %s" % self.kwargs['variants'])
         #print("variantsfilter")
-        self.qs = self.variantsfilter.qs.exclude(choice__name__contains='Review').distinct()
 
+
+        self.qs = self.variantsfilter.qs.exclude(choice__name__contains='Review').distinct()
+        print("Chromosome: %s" % self.chromosome)
+        print(VariantList.chromosome)
+        print("Number %s" % VariantList.chromosome_number)
+        if VariantList.chromosome_number:
+            self.qs = self.qs.filter(Q(location__startswith=str(VariantList.chromosome_number)+'q')|
+            Q(location__startswith=str(VariantList.chromosome_number)+'p'))
+                
+        if VariantList.chromosome:
+            chromosomes = ["Q(location__startswith='%sq')|Q(location__startswith='%sp')" % (c,c)
+                           for c in VariantList.chromosome if c not in ['X', 'Y']]
+            if 'X' in VariantList.chromosome:
+                #self.qs.filter(location=self.chromosome)
+                chromosomes.append("Q(location__icontains='X')")
+            if 'Y' in VariantList.chromosome:
+                chromosomes.append("Q(location__icontains='Y')")
+            print(chromosomes)
+            self.qs = eval("self.qs.filter("+'|'.join(chromosomes)+")")
+            #VariantList.chromosome = False
         return self.qs
 
 
