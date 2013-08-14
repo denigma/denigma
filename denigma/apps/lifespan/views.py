@@ -1257,8 +1257,11 @@ class VariantList(SingleTableView, FormView):
         print(VariantList.chromosome)
         print("Number %s" % VariantList.chromosome_number)
         if VariantList.chromosome_number:
-            self.qs = self.qs.filter(Q(location__startswith=str(VariantList.chromosome_number)+'q')|
-            Q(location__startswith=str(VariantList.chromosome_number)+'p'))
+            if VariantList.chromosome_number == 'MT':
+                self.qs = self.qs.filter(Q(location__startswith='MT'))
+            else:
+                self.qs = self.qs.filter(Q(location__startswith=str(VariantList.chromosome_number)+'q')|
+                Q(location__startswith=str(VariantList.chromosome_number)+'p'))
 
         if VariantList.chromosome:
             chromosomes = ["Q(location__startswith='%sq')|Q(location__startswith='%sp')" % (c,c)
@@ -1268,6 +1271,8 @@ class VariantList(SingleTableView, FormView):
                 chromosomes.append("Q(location__icontains='X')")
             if 'Y' in VariantList.chromosome:
                 chromosomes.append("Q(location__icontains='Y')")
+            if 'MT' in VariantList.chromosome:
+                chromosomes.append("Q(location__icontains='MT')")
             print(chromosomes)
             self.qs = eval("self.qs.filter("+'|'.join(chromosomes)+")")
             #VariantList.chromosome = False

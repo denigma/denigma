@@ -66,7 +66,7 @@
 {#                   {% if not forloop.last %} ... ... ...{% endif %}#}
                {% endfor %}
             </td>
-                    </table>
+        </table>
                 <hr>
 
 
@@ -75,7 +75,11 @@
 {#                        <input type="submit" value="Term" /><input type="text" name="term" id="id_term" />#}
           <form action="" method="POST">{% csrf_token %}
                   {% for choice, chr in form.chromosome.field.choices %}
-                    <a href="{% url 'variants' choice %}"><img src="https://s3.amazonaws.com/denigma/{{ choice }}.png" alt="{{ choice }}" width="50px" height="100px" ></a>
+                      {% if choice == 'MT' %}
+                         <a href="{% url 'variants' choice %}"><img src="https://s3.amazonaws.com/denigma/{{ choice }}.gif" alt="{{ choice }}" width="54px" height="90px" ></a>
+                      {% else %}
+                           <a href="{% url 'variants' choice %}"><img src="https://s3.amazonaws.com/denigma/{{ choice }}.png" alt="{{ choice }}" width="50px" height="100px" ></a>
+                      {% endif %}
                      <label for="id_chromosome_{{ choice }}"><input type="checkbox" name="chromosome" value="{{ choice }}" id="id_chromosome_{{ choice }}" /> </label>
                  {% endfor %}<br>
                         <input type="submit" value="Filter" />{{ form.filter }}<input type="submit" value="Output" />{{ form.output }}<br>
@@ -83,7 +87,7 @@
                         {{ filter.form.as_p }}
                         {{ variantsfilter }}
           </form>
-        </tr>
+
         <table width="100%">
             <tr>
                 <td valign="top">
