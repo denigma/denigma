@@ -100,7 +100,7 @@ USE_I18N = False
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(PROJECT_ROOT,  'site_media', 'media') #'site_media',
+MEDIA_ROOT = os.path.join(PROJECT_ROOT,  'media') #'site_media',
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -109,7 +109,7 @@ MEDIA_URL = '/site_media/media/'
 
 # Absolute path to the directory that holds static files like app media.
 # Example: "/home/media/media.lawrence.com/apps/"
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'media') #'site_media', 'static') # mdia
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static') #'site_media', 'static')
 
 # URL that handles the static files like app media.
 # Example: "http://media.lawrence.com"
@@ -119,7 +119,7 @@ STATIC_URL = '/s/'
 # Additional directories which hold static files
 STATICFILES_DIRS = [
     #os.path.join(PROJECT_ROOT, "static"),
-    #os.path.join(PROJECT_ROOT, 'media'),
+    os.path.join(PROJECT_ROOT, 'media'),
     os.path.join(PINAX_ROOT, 'media', PINAX_THEME),
     os.path.join(BASE_DIR, 'semantictasks')
 ]
@@ -134,13 +134,13 @@ STATICFILES_FINDERS = (
 )
 
 COFFEESCRIPT_MTIME_DELAY = 1
-COFFEESCRIPT_ROOT = '/s/'
-COFFEESCRIPT_OUTPUT_DIR =  "media/js" #os.path.join(PROJECT_ROOT,)
+#COFFEESCRIPT_ROOT = '/s/'
+COFFEESCRIPT_OUTPUT_DIR =  "js" #os.path.join(PROJECT_ROOT,)
 
 
 LESS_MTIME_DELAY = 1
-LESS_ROOT = '/s/'
-LESS_OUTPUT_DIR =  "media/css" #os.path.join(PROJECT_ROOT,)
+#LESS_ROOT = '/s/'
+LESS_OUTPUT_DIR =  "css" #os.path.join(PROJECT_ROOT,)
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
