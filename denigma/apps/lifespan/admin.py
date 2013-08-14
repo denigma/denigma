@@ -132,12 +132,8 @@ class AssayAdmin(reversion.VersionAdmin):
 #
 #     form = EntryAdminForm
 
-from admin_mixin import MixinModelAdmin
-from admin_class import MixinAdmin
-# class VariantAdmin(MixinModelAdmin):
-#     #form = VariantAdminForm
-#     mixins = (TablibAdmin, reversion.VersionAdmin)
-class VariantAdmin(MixinAdmin): # reversion.VersionAdmin, TablibAdmin):
+
+class VariantAdmin(reversion.VersionAdmin) #, TablibAdmin):
 
     list_display = ('polymorphism', 'variant_type', 'factor', 'odds_ratio', 'or_type', 'pvalue', 'p_value', 'significant', 'description', # 'qvalue',
                     'initial_number', 'replication_number', 'age_of_cases', 'technology',
@@ -151,7 +147,7 @@ class VariantAdmin(MixinAdmin): # reversion.VersionAdmin, TablibAdmin):
                      'odds_ratio', 'pvalue', 'p_value', 'qvalue', 'significant', 'initial_number', 'age_of_cases'] #, 'choice'
     list_filter = ('choice', 'finding', 'variant_type','finding', 'or_type', 'created', 'updated', 'ethnicity', 'classifications',)#'factors',
     filter_horizontal = ('factors', 'ethnicity', 'classifications')
-    formats = ['xls', 'json', 'yaml', 'csv', 'html']
+    #formats = ['xls', 'json', 'yaml', 'csv', 'html']
 
 class StudyTypeAdmin(reversion.VersionAdmin):
     search_fields = ['name']
