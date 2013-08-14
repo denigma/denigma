@@ -33,7 +33,7 @@ from data import get
 from data.views import Create, Update, Delete
 
 from datasets.models import Reference
-from annotations.models import Classification
+from annotations.models import Classification, Ortholog, HomoloGene, InParanoid, gene2ensembl
 from expressions.views import functional_enrichment
 from utils.dumper import dump
 
@@ -595,6 +595,29 @@ class FactorDetail(DetailView):
         context = super(FactorDetail, self).get_context_data(**kwargs)
         if self.object.pdb: context['pdb'] = json.dumps(self.object.pdb.split(';')[0])
         else: context['pdb'] = None
+        if self.object.entrez_gene_id:
+            homolog = HomoloGene.objects.filter(entrez_gene_id=self.object.entrez_gene_id)[0]
+            homologs = HomoloGene.objects.filter(hid=homolog.hid)
+            orthologs = Ortholog.objects.filter(Q(gene=self.object.entrez_gene_id)|Q(ortholog=self.object.entrez_gene_id)).distinct()
+         # Protein Ids:
+            inparanoids = []
+            proteins = gene2ensembl.objects.filter(entrez_gene_id=self.object.entrez_gene_id)
+            print(proteins)
+            for protein in proteins:
+                inparanoid_list = InParanoid.objects.filter(Q(ensembl_gene_id_a=protein.ensembl_protein_id)|Q(ensembl_gene_id_b=protein.ensembl_protein_id)).distinct()
+                print(inparanoid_list)
+                for inparanoid in inparanoid_list:
+                    inparanoids.append(inparanoid)
+        elif self.object.ensembl_gene_id:
+            inparanoids = []
+            proteins = gene2ensembl.objects.filter(ensembl_gene_id=self.object.ensembl_gene_id)
+            for protein in proteins:
+                inparanoid_list = InParanoid.objects.filter(Q(ensembl_gene_id_a=protein.ensembl_protein_id)|Q(ensembl_gene_id_b=protein.ensembl_protein_id)).distinct()
+                for inparanoid in inparanoid_list:
+                    inparanoids.append(inparanoid)
+        context['orthologs'] = orthologs
+        context['homologs'] = homologs
+        context['inparanoids'] = inparanoids
         return context
 #
     #def get_queryset(self):
@@ -1236,7 +1259,7 @@ class VariantList(SingleTableView, FormView):
         if VariantList.chromosome_number:
             self.qs = self.qs.filter(Q(location__startswith=str(VariantList.chromosome_number)+'q')|
             Q(location__startswith=str(VariantList.chromosome_number)+'p'))
-                
+
         if VariantList.chromosome:
             chromosomes = ["Q(location__startswith='%sq')|Q(location__startswith='%sp')" % (c,c)
                            for c in VariantList.chromosome if c not in ['X', 'Y']]
@@ -1388,6 +1411,8 @@ class FactorList(SingleTableView, FormView):
 class FactorView(object):
     form_class = FactorForm
     model = Factor
+
+
 
 
 class FactorDelete(Delete):

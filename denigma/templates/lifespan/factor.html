@@ -114,6 +114,41 @@
 
             {% if factor.human_homolog %}<b>Human homolog:</b> {{ factor.human_homolog }}{% endif %}<br>
 
+            {% if homologs %}
+                <b>Homologs</b>
+                {% for homolog in homologs %}
+                    <li><a href="http://www.ncbi.nlm.nih.gov/gene/{{ homolog.entrez_gene_id }}">{{ homolog.gene_symbol }}</a>
+                        (<a href="http://www.ncbi.nlm.nih.gov/taxonomy/{{ homolog.taxid }}/">{{ homolog.taxid }}</a>)</li>
+                {% endfor %}<br>
+            {% endif %}
+
+           {% if orthologs %}
+            <b>Orthologs</b>
+                {% for ortholog in orthologs %}
+                     <li>
+                    {% if factor.entrez_gene_id == ortholog.gene %}
+                        <a href="http://www.ncbi.nlm.nih.gov/gene/{{ ortholog_gene }}">{{ ortholog.ortholog_symbol }}</a>
+                        (<a href="http://www.ncbi.nlm.nih.gov/taxonomy/{{ ortholog.ortholog_taxid }}">{{ ortholog.ortholog_taxid }}</a>)
+                    {% else %}
+                        <a href="http://www.ncbi.nlm.nih.gov/gene/{{ ortholog_gene }}">{{ ortholog.gene_symbol }}</a>
+                        (<a href="http://www.ncbi.nlm.nih.gov/taxonomy/{{ ortholog.gene_taxid }}">{{ ortholog.gene_taxid }}</a>)
+                    {% endif %}
+                    </li>
+                {% endfor %}<br>
+            {% endif %}
+
+            {% if inparanoids %}
+                <b>Inparanoids</b>
+            {% for inparanoid in inparanoids %}
+                <li>
+                {% if factor.ensembl_gene_id_b == inparanoid.ensembl_gene_id_b %}
+                    {{ inparanoid.ensembl_gene_id_a }} (<a href="http://www.ncbi.nlm.nih.gov/taxonomy/{{ inparanoid.taxid_a }}">{{ inparanoid.taxid_a }}</a>)
+                {% else %}
+                      {{ inparanoid.ensembl_gene_id_b }} (<a href="http://www.ncbi.nlm.nih.gov/taxonomy/{{ inparanoid.taxid_b }}">{{ inparanoid.taxid_b }}</a>)</a>
+                {% endif %}
+                </li>
+            {% endfor %}<br>
+            {% endif %}
 
             {% if factor.note %}<b>Note: </b>{{ factor.note }}{% endif %}<br>
 
