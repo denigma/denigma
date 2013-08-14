@@ -5,7 +5,6 @@ import reversion
 
 from mptt.admin import MPTTModelAdmin
 
-from django_tablib.admin import TablibAdmin
 
 from models import Study, Experiment, Measurement, Comparison, Epistasis, Strain
 from models import Type, Factor, Manipulation, Intervention, Regimen, Assay, Gender
