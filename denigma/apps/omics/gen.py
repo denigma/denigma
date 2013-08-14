@@ -11,7 +11,7 @@ try:
 except:
     def msg(message): print message
 
-from annotations.taxonomy import organisms, species_translation
+#from denigma.apps.annotations.taxonomy import organisms, species_translation
 from utils import evalu, roman_to_int
 
 if os.name == 'posix':
@@ -1234,6 +1234,11 @@ class Gene(object):
             for i in self.expressions: self.variance = (self.expression-i)**2
         except ZeroDivisionError: self.variance = 0
 
+    def average(self):
+        #print(self.exp_variance, self.ctr_variance)
+        self.exp = sum(self.exp_variance)/len(self.exp_variance)
+        self.ctr = sum(self.ctr_variance)/len(self.ctr_variance)
+        self.ratio = self.exp/self.ctr
 
     def pValue(self):
         """Calculates the p-value of expression change.

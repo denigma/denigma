@@ -5,17 +5,16 @@ import shelve
 
 from numpy import arange
 
-from omics.gen import Genes, Gene, genes
+from gen import Genes, Gene, genes
 #from utils import intersect # Replaced by build-in set functions.
-from stats.pValue import hyperg
-try: from annotations.mapper import m
-except: "Print failed to import mapping"
+#from denigma.apps.stats.pValue import hyperg
+#try: from denigma.apps.annotations.mapper import m
+#except: "Print failed to import mapping"
 
 if os.name == 'posix':
     PATH = '/media/SDATA1'
 elif os.name == 'nt':
     PATH = 'D:/Signatures/'
-
 
 def up(name):
 	print ' '.join(S[name].up)
@@ -387,12 +386,15 @@ class Signatures(dict):
         """Prints out name, tissue, and how many genes were differentially expressed."""
         for v in signatures.values():
             print v.name, v.tissue, v.expression(pvalue=0.05)  
-                    
+
+    def average(self):
+        for k,v in self.items():
+            v.average()
 
 class Signature(dict):
     '''A molecular signature is like a fingerprint, basicely its just a list of genes'''
     def __init__(self, title='', name='', taxid=0, factor='', age='',diet='',gene='',strain='',tissue='', cell_type='', intervention='',
-                 type=None, genotype='', sex='', method='', mark=None, process=None, control=None):
+                 type=None, genotype='', sex='', time=None, method='', mark=None, process=None, control=None):
         dict.__init__(self)
         self.title = title
         self.name = name
@@ -409,11 +411,12 @@ class Signature(dict):
         self.method = method
         self.factor = factor
         self.sex = sex
+        self.time = time
         self.intervention = intervention
         self.mark = mark
         self.process = process
         self.control = control
-        
+
         self.genes = {}
         
         self.cutoff = 5.0
@@ -640,6 +643,22 @@ class Signature(dict):
                 if index == limit:
                     break
         return results
+
+    def average(self):
+        for k,v in self.items():
+            v.average()
+
+    def output(self):
+        output = open('name=%s;diet=%s;tissue=whole body.txt' % (" ".join(self.name), self.diet), 'w')
+        output.write('seq_id\tsymbol\tfold_change\texp\tctr\texp1\texp2\texp3\texp4\tctr1\tctr2\tctr3\tctr4\n')
+        for k,v in self.items():
+            #if len(v.ctr_variance) != 4 or len(v.exp_variance) != 4:
+              #  print k, v.exp_variance, v.ctr_variance
+
+            output.write("\t".join(map(str, ([v.id, self.id_symbol[v.id].replace('\n', '').replace('\r', ''), v.ratio, v.exp, v.ctr] + v.exp_variance + v.ctr_variance))) +"\n")
+        output.close()
+
+
 
 
 def germline(signatures):

@@ -141,7 +141,7 @@ var chat = function(options) {
 
         // Took too long to connect.
         var timeout = setTimeout(function() {
-            error('Took too long to connect, please try again');
+            error('Took too long to connect, please try again or connect via <http://webchat.freenode.net/?channels=denigma>');
         }, connectTimeout);
 
         // Name in use, too long, invalid chars.

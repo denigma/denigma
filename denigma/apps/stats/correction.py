@@ -51,6 +51,7 @@ def fdr(pvalues, produce_ranking=False):
 
     Uses the Bejamini-Hochberg algorthim
     cf.  http://en.wikipedia.org/wiki/False_discovery_rate """
+    print(pvalues)
     # Multiply p-values by  a corrective factor, ignore null entries
     n, c = len(filter(lambda x: x != None, pvalues)), 0
     m = []
@@ -59,7 +60,7 @@ def fdr(pvalues, produce_ranking=False):
     for i, (i_, pvalue) in enumerate(sorted(enumerate(pvalues), lambda x, y: cmp(y[1], x[1]))):
         m.append(i_)
         if not pvalue:
-            qvalues.apend(None)
+            qvalues.append(None)
         else:
             qvalues.append(min(pvalue * n / (n - c), 1))
             c += 1

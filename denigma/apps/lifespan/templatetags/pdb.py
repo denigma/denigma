@@ -1,4 +1,8 @@
-"""http://www.uniprot.org/faq/28#id_mapping_examples"""
+# -*- coding: utf-8 -*-
+"""
+http://boscoh.com/protein/fetching-pdb-files-remotely-in-pure-python-code
+http://www.uniprot.org/faq/28#id_mapping_examples
+"""
 import urllib, urllib2
 
 
@@ -48,3 +52,5 @@ if __name__ == '__main__':
     #print(type(mapit()))
     #print(mapit('P00447', fr='ACC', to='PDB_ID'))
 
+i = float("1.8 x 10^-10".replace('x', '*').replace('^', '**').replace('-', '-').replace(' ', '').replace('.', '.')[:5])
+print(i)

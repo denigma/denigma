@@ -13,7 +13,7 @@
 
 from signature import *
 from gen import *
-from stats.pValue import ttest
+#from denigma.apps.stats.pValue import ttest
 
 
 class Data():
@@ -76,14 +76,130 @@ class Profiles(dict):
             for gene in self[profile]:
                 print gene, self[profile][gene].expression, self[profile][gene].variance
 
+#name=Control Fly on DR Food Control Fly on AL Food 8:00 PM;diet=DR;tissue=whole body
+
+#name=Timeless Mutant Fly on AL Food Control Fly on AL Food 8:00 PM;diet=AL;tissue=whole body
+
+#name=Timeless Mutant Fly on DR Food Control Fly on DR Food 8:00 PM;diet=DR;tissue=whole body
+# name=Timeless Mutant Fly on DR Food Timeless Mutant Fly on AL Food 8:00 PM;diet=DR;tissue=whole body
+    def compress(self):
+        """Compresses profiles of the same experimental condition by listening the replicates>"""
+        compress_counter = 0
+        compressed_counter = 0
+        additional_counter = 0
+        profiles = Profiles()
+        for key, profile in self.items():
+            print key,profile.group
+            if "Control Fly on AL Food" in profile.name: print profile.name
+            if "8:00 PM" in profile.time:
+               # print("compress: %s %s " % (profile.name, profile.group))
+                compress_counter += 1
+
+            if (profile.group, profile.time) not in profiles:
+                if "8:00 PM" in profile.time:
+                    #print profile.name, profile.group
+                    compressed_counter += 1
+                if "Control Fly on AL Food" in profile.name: print profile.name
+                profiles[(profile.group, profile.time)] = Profile(id=profile.name, name=profile.group, time=profile.time, group=profile.group)
+                for k, gene in profile.items():
+                    profiles[(profile.group, profile.time)][k] = [gene]
+                #print("Creating signature %s %s" % profile.name, profile)
+            else:
+                for k, gene in profile.items():
+                    profiles[(profile.group, profile.time)][k].append(gene)
+                    if "8:00 PM" in profile.time: print len(profiles[(profile.group, profile.time)][k]),
+                if "8:00 PM" in profile.time:
+                    additional_counter += 1
+            del self[key]
+        self.update(profiles)
+        print len(profiles)
+        print profiles.keys()
+        print("Compress_counter: %s" % compress_counter)
+        print("Compressed_counter: %s" % compressed_counter)
+        print("Additional_counter: %s" % additional_counter)
+        for key, profile in self.items():
+            if not profile.group: print profile.name
+            #continue
+
+            # Already only 3
+            for k, gene in profile.items():
+
+                if "8:00 PM" in profile.time:
+                   print profiles[(profile.group, profile.time)][k]
+#
+        return profiles
+
+    def generateSignatures(self, comparisons=None):
+        comparisons = {'Control Fly on DR Food':'Control Fly on AL Food',
+                      'Timeless Mutant Fly on DR Food':'Timeless Mutant Fly on AL Food',
+                      'Timeless Mutant Fly on AL Food':'Control Fly on AL Food'}
+        extra_comparisons = {'Timeless Mutant Fly on DR Food':'Control Fly on DR Food'}
+        #import difflib
+        #conditions = list(set([k for (k,v) in self.keys()]))
+
+        #print(conditions)
+        signatures = Signatures()
+        for key, profile in self.items():
+            #print key, profile.name
+            #others = conditions[:]
+            #name = key[0]
+            #print(others)
+            #print("pop %s" % others.pop(conditions.index(name)))
+            #print(others)
+            #print("difflib: %s %s" % (name, difflib.get_close_matches(name, others, 1)))
+            if profile.name in comparisons:
+                #print profile.name
+                if 'DR' in profile.name: diet = 'DR'
+                else: diet = 'AL'
+                if 'Timeless' in profile.name: genotype = 'Timeless'
+                else: genotype = None
+
+                title = profile.name, comparisons[profile.name], profile.time
+                signatures[title] = Signature(title=title, name=title,diet=diet, genotype=genotype, time=profile.time)
+                for key, value in profile.items():
+                    #print value
+                    signatures[title][key] = Gene(id=key,exp_variance=value)
+                    control = self.find(comparisons[profile.name], profile.time)
+                    #if not control: print("Alert!")
+                for key, value in control.items():
+                    signatures[title][key].ctr_variance = value
+                    #if len(value) != 4: print control.name, value
+            if profile.name in extra_comparisons:
+                #print profile.name
+                if 'DR' in profile.name: diet = 'DR'
+                else: diet = 'AL'
+                if 'Timeless' in profile.name: genotype = 'Timeless'
+                else: genotype = None
+
+                title = profile.name, extra_comparisons[profile.name], profile.time
+                signatures[title] = Signature(title=title, name=title,diet=diet, genotype=genotype, time=profile.time)
+                for key, value in profile.items():
+                #print value
+                    signatures[title][key] = Gene(id=key,exp_variance=value)
+                control = self.find(extra_comparisons[profile.name], profile.time)
+                #if not control: print("Alert!")
+                for key, value in control.items():
+                    signatures[title][key].ctr_variance = value
+                    #if len(value) != 4: print control.name, value
+        return signatures
+
+    def find(self, name=None, time=None):
+            for k,v in self.items():
+                if name in k and time in k:
+                    return v
+
+
 
 class Profile(dict):
     """A moleculare profile (i.e. gene lists with expression values)."""
-    def __init__(self, name=None, taxid=None, method=None):
+    def __init__(self, name=None, taxid=None, method=None, group=None, time=None, id=None):
         dict.__init__(self)
+        id = None
         self.name = name
         self.taxid = taxid
         self.method = method
+        self.group = group
+        self.time = time
 ##        probe_id
 ##        entrez_gene_id
 ##        mapping

@@ -5,7 +5,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from mptt.models import MPTTModel, TreeForeignKey
 
-
 # Classifications Ontology:
 
 class Classification(MPTTModel):
@@ -302,7 +301,7 @@ class GO(models.Model):
     category = models.CharField(max_length=9)
 
     def __unicode__(self):
-        return u'%s, %s %s %s' % (self.go_id, self.go_term, self.entrez_gene_id, entrez_gene_id)
+        return u'%s, %s %s %s' % (self.go_id, self.go_term, self.entrez_gene_id, self.pmid)
 
     def get_absolute_url(self):
         return u"http://www.ncbi.nlm.nih.gov/gene/%d" % self.entrez_gene_id

@@ -171,10 +171,12 @@ def write(name, content, folder='.', header=None, ending='.txt', modus='w'):
     print content
     f.close()
 
-def md5(name, folder='.'):
+def md5(name, folder='.', path=None):
     """Generates a hash for a file.
     Here it creates a md5 checksum"""
-    if os.path.isdir(os.path.join(folder, name)):         # Don't try to checksum directories.
+    if not path:
+        path = os.path.join(folder, name)
+    if os.path.isdir(path):         # Don't try to checksum directories.
         return '1'
     f = file(os.path.join(folder, name)) # Open file.
     h = hashlib.md5()                    # Create hash object.

@@ -5,9 +5,12 @@ import reversion
 
 from mptt.admin import MPTTModelAdmin
 
+from django_tablib.admin import TablibAdmin
+
 from models import Study, Experiment, Measurement, Comparison, Epistasis, Strain
 from models import Type, Factor, Manipulation, Intervention, Regimen, Assay, Gender
 from models import Variant, StudyType, Population, State, Technology, VariantType, ORType
+
 
 
 class StudyAdmin(reversion.VersionAdmin):
@@ -129,10 +132,13 @@ class AssayAdmin(reversion.VersionAdmin):
 #
 #     form = EntryAdminForm
 
+from admin_mixin import MixinModelAdmin
+from admin_class import MixinAdmin
+# class VariantAdmin(MixinModelAdmin):
+#     #form = VariantAdminForm
+#     mixins = (TablibAdmin, reversion.VersionAdmin)
+class VariantAdmin(MixinAdmin): # reversion.VersionAdmin, TablibAdmin):
 
-
-class VariantAdmin(reversion.VersionAdmin):
-    #form = VariantAdminForm
     list_display = ('polymorphism', 'variant_type', 'factor', 'odds_ratio', 'or_type', 'pvalue', 'p_value', 'significant', 'description', # 'qvalue',
                     'initial_number', 'replication_number', 'age_of_cases', 'technology',
                     'study_type',  'pmid', 'created', 'updated' ) #'reference',
@@ -145,6 +151,7 @@ class VariantAdmin(reversion.VersionAdmin):
                      'odds_ratio', 'pvalue', 'p_value', 'qvalue', 'significant', 'initial_number', 'age_of_cases'] #, 'choice'
     list_filter = ('choice', 'finding', 'variant_type','finding', 'or_type', 'created', 'updated', 'ethnicity', 'classifications',)#'factors',
     filter_horizontal = ('factors', 'ethnicity', 'classifications')
+    formats = ['xls', 'json', 'yaml', 'csv', 'html']
 
 class StudyTypeAdmin(reversion.VersionAdmin):
     search_fields = ['name']

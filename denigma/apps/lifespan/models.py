@@ -784,7 +784,7 @@ class Variant(models.Model):
     created = models.DateTimeField(_('created'), auto_now_add=True, db_index=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
     location  = models.CharField(max_length=10, null=True, blank=True)# genomic location
-    factor = models.ForeignKey(Factor, null=True, blank=True, related_name='variants')
+    factor = models.ForeignKey(Factor, null=True, blank=True)
     shorter_lived_allele = models.CharField(max_length=255, blank=True, null=True)
     longer_lived_allele = models.CharField(max_length=255, blank=True, null=True)
     variant_type = models.ForeignKey('VariantType', blank=True, null=True)
@@ -820,6 +820,11 @@ class Variant(models.Model):
 
     def get_absolute_url(self):
         return reverse('variant', args=[self.pk])
+
+
+
+
+
 
 
 class Gender(models.Model):

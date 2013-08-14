@@ -3,6 +3,7 @@ from django.conf.urls import patterns, url
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView
 
+
 from utils.ajax import HybridDetailView
 
 from views import ProfileList, CreateProfile, UpdateProfile

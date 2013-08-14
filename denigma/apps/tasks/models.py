@@ -7,7 +7,7 @@ class Task(models.Model):
     session = models.ForeignKey(Session)
     label = models.CharField(max_length=100)
     done = models.BooleanField(default=False)
-    #user/creator = models.ForeignKeyField(User)
+    #user = models.ForeignKeyField(User) #/creator
 
     def __unicode__(self):
         return self.label

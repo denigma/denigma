@@ -9,8 +9,9 @@ from django.conf import settings
 
 try:
    import article as a
+   print("Imported article")
 except ImportError as e:
-  print("No article module available. %s" % e)
+   print("No article module available. %s" % e)
 
 try:
     import denigma.library as library #denigma.library as

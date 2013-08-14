@@ -69,46 +69,6 @@ class DiscontinuedIdAdmin(admin.ModelAdmin):
     list_display = ('discontinued_id', 'entrez_gene_id')
 
 
-class CandidateAdmin(admin.ModelAdmin):
-    list_display = ('entrez_gene_id',
-                    'gene_symbol',
-                    'gene_name',
-                    's',
-                    't',
-                    'specificity',
-                    'p_value',
-                    'classification',
-                    'query',
-                    'seed',
-                    'taxid',
-                    'dr',
-                    'NCBI',
-                    'wiki',
-                    'SGD',
-                    'yeast_homolog_symbol',
-                    'worm_homolog_symbol',
-                    'fly_homolog_symbol',
-                    'mouse_homolog_symbol',
-                    'human_homolog_symbol')
-    list_filter = ['taxid', 'seed', 'query',]
-    search_fields = ['gene_symbol', 'gene_name', 'entrez_gene_id']
-
-    def wiki(self,obj):     #add a string from model admin method and model method
-        return u"<a href='http://en.wikipedia.org/wiki/%s'>link</a>" % obj.gene_symbol.replace(" ","_")
-    wiki.allow_tags = True     #allow tags to a string
-    
-    def NCBI(self,obj):     #add a string from model admin method and model method
-        return u"<a href='http://www.ncbi.nlm.nih.gov/gene/%s'>link</a>" % obj.entrez_gene_id
-    NCBI.allow_tags = True     #allow tags to a string
-    
-    def SGD(self,obj):
-        return u"<a href='http://www.yeastgenome.org/cgi-bin/locus.fpl?locus=%s'>link</a>" % obj.gene_symbol.replace(" ","_")
-    SGD.allow_tags = True    #allow tags to a string
-
-    #allow editing of filed
-    #list_editable = ('gene_name',)
-
-
 class EntrezAdmin(admin.ModelAdmin):
     list_display = ('entrez_gene_id', 'gene_symbol', 'gene_name', 'locus_tag', 'symbol_from_nomeclature_authority', 'full_name_from_nomenclature_autority', 'ensembl_gene_id', 'mirbase', 'mgi', 'hgnc', 'mim', 'hprd', 'rgd', 'ratmap', 'wormbase_id', 'imgt_gene_db', 'taxid')
     search_fields = ['gene_symbol', 'locus_tag','ensembl_gene_id']
@@ -246,7 +206,6 @@ admin.site.register(Species, SpeciesAdmin)
 admin.site.register(Classification, ClassificationAdmin)
 admin.site.register(Gene, GeneAdmin)
 admin.site.register(DiscontinuedId, DiscontinuedIdAdmin)
-admin.site.register(Candidate, CandidateAdmin)
 admin.site.register(Entrez, EntrezAdmin)
 admin.site.register(GO, GOAdmin)
 admin.site.register(SGD_features, SGD_featuresAdmin)

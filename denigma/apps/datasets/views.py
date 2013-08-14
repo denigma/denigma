@@ -26,8 +26,9 @@ def index(request):
     return render_to_response('datasets/index.html', {'datasets': datasets},
         context_instance=RequestContext(request))
 
+from django.views.generic import CreateView
 
-class ReferenceCreate(Create):
+class ReferenceCreate(CreateView):
     model = Reference
     form_class = ReferenceForm
     comment = "Created reference"
@@ -38,7 +39,6 @@ class ReferenceUpdate(Update):
     model = Reference
     form_class = ReferenceForm
     comment = "Updated reference"
-
 
 
 class ReferenceList(SingleTableView, FormView):

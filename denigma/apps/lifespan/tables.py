@@ -74,6 +74,9 @@ class VariantTable(tables.Table):
     def render_technology(self, value, record):
         return mark_safe('''<a href="%s">%s</a>''' % (value.get_absolute_url(), value.name))
 
+    def render_reference(self, value, record):
+        return mark_safe('''<a href="%s">%s</a>''' % (value.get_absolute_url(), value.pmid))
+
     class Meta:
         model = Variant
         attrs = {"class": "paleblue"}

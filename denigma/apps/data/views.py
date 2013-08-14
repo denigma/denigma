@@ -164,6 +164,7 @@ def changes(request, pk=None, template_name='data/change_list.html'):
         #queryset = query.updates.all()#.order_by('-created')
     else:
         queryset = Change.objects.filter(of__published=True).order_by('-at')
+        query = None
     ctx = {'object_list': queryset, 'object': query}
     return render_to_response(template_name, ctx,
         context_instance=RequestContext(request))
@@ -277,10 +278,12 @@ class TagDetail(ListView):
 
     def dispatch(self, request, *args, **kwargs):
         if 'slug' in kwargs:
-            tag = Tag.objects.get(slug=kwargs['slug'])
+            tag = Tag.objects.get(slug=kwargs['slug'].replace(' ', '-'))
         else:
             tag = Tag.objects.get(pk=kwargs['pk'])
         items = TaggedItem.objects.filter(tag__pk=tag.pk)
+        for i in items:
+            print vars(i)
         #for item in items:
         #    print("Item: %s;" % vars(item))
         ctx = {'object_list': items, 'object': tag}

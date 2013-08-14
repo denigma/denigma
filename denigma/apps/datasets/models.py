@@ -96,6 +96,7 @@ class Reference(models.Model):
         return reverse('detail-reference', args=[self.pk])
 
     def save(self, update=False, *args, **kwargs):
+        print('Saving')
         if not self.pk or update:
             # This code only happens if the objects is not in the database yet.
             # Otherwise it would have pk.

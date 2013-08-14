@@ -23,7 +23,7 @@ def main(generator=False):
             break
     print VERSION
 
-    # Urls:
+    # Urlsexi:
     url = 'http://thebiogrid.org/downloads/archives/Release%20Archive/BIOGRID-'
     tab2url = url+VERSION+'/BIOGRID-ALL-'+VERSION+'.tab2.zip'
     mitaburl = url+VERSION+'/BIOGRID-ALL-'+VERSION+'.mitab.zip'
@@ -101,7 +101,7 @@ def main(generator=False):
     for filename in filenames:
         if "BIOGRID" in filename:
             print("Deleting %s" % filename)
-            os.remove(os.path.join(filename))
+            #os.remove(os.path.join(filename))
             
 if __name__ == '__main__': path = '.'; main()
 else: path = os.path.join(os.path.split(__file__)[:-1])[0]

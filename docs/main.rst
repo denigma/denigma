@@ -467,7 +467,7 @@ First of all a Email address was added to the SES account and verified.
 django-ses was added to the requirements/project.txt and installed locally.
 
 Both the Email address of ADMINS and CONTACT_EMAIL was set to the Email 
-address, but neither one appeared to be cruical.
+address, but neither one appeared to be crucial.
 AWS access and secret keys were defined in key.py as well as email backend 
 (nothing else):
 
@@ -488,7 +488,7 @@ $ ./manage.py shell
 >>> from django.core.mail import send_mail
 >>> send_mail("Subject", "Text", 'name@xyz.com', ['name@xyz.com'], fail_silently)
 
-Testing now wether the server need to run to get it working.
+Testing now whether the server need to run to get it working.
 
 Messaging via pasted items only works by placing DEFAULT_FROM_EMAIL constant 
 into the settings.
@@ -499,10 +499,12 @@ For this purpose gmail is suitable
 In such AWS SES will be used to send mail and mail will be recieved by the 
 domain's Gmail user.
 
-After creating by account by Google APPs, domains can be added by visiting 
+After creating an account by Google APPs, domains can be added by visiting
 www.google.com/a/domain.tld. Following the instruction a html Email 
-conformation can bea ccomplished. Then MX records if the domain provider need 
+conformation can bea complished. Then MX records if the domain provider need
 to be changed as instructed. This may take up to 24 hours.
+
+http://www.youtube.com/watch?v=wWnf2kXOKqM
 
 DNS stands for Domain Name System (Internet address book). CNAME are for 
 subdomain [http://support.google.com/a/bin/answer.py?hl=en&answer=53340].
@@ -520,7 +522,7 @@ SES can alternatively also be used with Postman and Postix
 For sending Emails via gmail account a few settings need to be declared
 [http://stackoverflow.com/questions/6914687/django-sending-email].
 
-Gmail can be used to send Emails of a specfific domain via SES. However,
+Gmail can be used to send Emails of a specific domain via SES. However,
 the Email address of this domain can not be addressed via SES as it is sayed to be blacklisted. Fortunately, it is not necessary to send Emails from Denigma to Denigma so far.  
 
 
@@ -529,6 +531,21 @@ For debugging set the following::
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 This will have the effect that it tires to send to the console instead.
+
+Email Bounce
+============
+Recieved Email from SES sayng that SES account is on probationary status.
+
+MX entries in 1&1 were gone. Reentering the values form google app gmail control panel.
+Informed 1&1 service via phone and Email.
+
+http://www.linuxquestions.org/questions/linux-server-73/gmail-rejects-email-from-my-server-why-614882/
+
+http://www.coffeecup.com/help/articles/set-up-gmail-for-your-own-domain/
+
+http://support.google.com/a/bin/answer.py?hl=en&answer=174125
+
+http://support.google.com/a/bin/answer.py?hl=en&answer=37673
 
 Django Verbose Names
 ====================
@@ -1380,7 +1397,7 @@ The folder's path is then add to STATICFILES_DIRS_.
 This static folder is different than STATIC_ROOT folder where the collectstatic
 management command collects all `static files for deployment`_.
 
-These need to be separeted becuase the first onse is checked into version control,
+These need to be separated because the first once is checked into version control,
 while the second is not.
 
 .. _STATICFILES_DIRS: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-dirs
@@ -1832,14 +1849,6 @@ AWS
 Best database solution for Django on AWS [http://stackoverflow.com/questions/9842961/best-database-solution-for-django-on-aws].
 
 
-Chat
-====
-Installation of gnotty via pip failed due to compilation error during gevent installation.
-[http://stackoverflow.com/questions/11094718/error-command-gcc-failed-with-exit-status-1-while-installing-eventlet]/
-installing libevent solves this issue [https://groups.google.com/forum/?fromgroups=#!topic/gevent/xrl72-I0ciM]:
-
-    sudo apt-get install libevent-dev
-
 
 Wrong Permission
 ================
@@ -1865,3 +1874,12 @@ Appearentely it is duo to having the wrong mod on the file which was solved by
     chmod 400 dp.pem
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789
+
+Circular import
+===============
+The caching of the rendered data entries
+http://stackoverflow.com/questions/6923042/avoid-circular-model-imports-in-django-apps
+
+update-apt-xapi
+===============
+The update-apt-xapi started without any reason and took all the resources: http://ubuntuforums.org/showthread.php?t=1086435

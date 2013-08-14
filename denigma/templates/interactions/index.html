@@ -35,7 +35,9 @@
         <br>
     {% endif %}
     <center><img src="http://dgallery.s3.amazonaws.com/building.png" alt="building initialized ..." width=200 height=200></center>
-    {% with entry as object %}
-        {% include "comments/wrapper.html" %}
-    {% endwith %}
+    {% if entry.text %}
+        {% with entry as object %}
+            {% include "comments/wrapper.html" %}
+        {% endwith %}
+    {% endif %}
 {% endblock %}

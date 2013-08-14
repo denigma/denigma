@@ -7,5 +7,11 @@
             "name": "Denigma"
         }
     },
+    {
+        "pk": 1,
+        "model": "lifespan.assay",
+        "fields": {
+            "name": "Organismal",
+        }
     {"pk": 2, "model": "auth.user", "fields": {"username": "Anonymous", "first_name": "", "last_name": "", "is_active": false, "is_superuser": false, "is_staff": false, "last_login": "2008-09-05 12:43:43", "groups": [], "user_permissions": [], "password": "sha1$e03c9$55ca48e5767c6e39d423098926a43260324e05a6", "email": "anonyomus@example.com", "date_joined": "2008-09-05 12:43:43"}}
 ]
