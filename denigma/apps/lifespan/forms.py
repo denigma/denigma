@@ -607,7 +607,7 @@ class OntologyForm(Form):
 
 
 
-CHROMOSOMES = [(x,x) for x in range(1,22)]+[('X', 'X'), ('Y', 'Y')]
+CHROMOSOMES = [(x,x) for x in range(1,22)]+[('X', 'X'), ('Y', 'Y'), ('MT', 'MT')]
 
 class FilterForm(Form):
     filter = CharField(required=False)
