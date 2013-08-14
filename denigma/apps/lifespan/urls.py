@@ -87,7 +87,9 @@ urlpatterns = patterns('lifespan.views',
     url(r'^factor/(?P<slug>.+)/$', FactorDetail.as_view(), name='factor'),
 
     # Variants:
-    url(r'^variants/$', VariantList.as_view(), name='variants'),
+    url(r'^variants/bulk_insert/$', VariantBulkInsert.as_view(), name='variant-bulk-insert'),
+
+    url(r'^variants/(?P<chromosome>.+)?', VariantList.as_view(), name='variants'),
     url(r'^variant/issues/$', VariantIssues.as_view(), name='variant-issues'),
     url(r'^variant/(?P<pk>\d+)/$', VariantDetail.as_view(), name='variant'),
     url(r'^variant/add/$', 'add_variant', name='add_variant'),
@@ -96,7 +98,6 @@ urlpatterns = patterns('lifespan.views',
     url(r'^variant/delete/(?P<pk>\d+)/$', VariantDelete.as_view(), name='delete-variant'),
     url(r'^variant/create/$', CreateVariant.as_view(), name='create-variant'),
     url(r'^variant/(?P<slug>.+)/$', VariantDetail.as_view(), name='variant'),
-    url(r'^variants/bulk_insert/$', VariantBulkInsert.as_view(), name='variant-bulk-insert'),
     #url(r'^variants/list/$', login_required(ListView.as_view(queryset=Variant.objects.all())), name='variant-list'),
     url(r'^populations/$', ListView.as_view(queryset=Population.objects.all()), name='populations'),
     url(r'^technologies/$', ListView.as_view(queryset=Technology.objects.all()), name='technologies'),
