@@ -133,7 +133,7 @@ class AssayAdmin(reversion.VersionAdmin):
 #     form = EntryAdminForm
 
 
-class VariantAdmin(reversion.VersionAdmin) #, TablibAdmin):
+class VariantAdmin(reversion.VersionAdmin): #, TablibAdmin):
 
     list_display = ('polymorphism', 'variant_type', 'factor', 'odds_ratio', 'or_type', 'pvalue', 'p_value', 'significant', 'description', # 'qvalue',
                     'initial_number', 'replication_number', 'age_of_cases', 'technology',
