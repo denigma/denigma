@@ -45,8 +45,7 @@
                         <a href="{% url 'states' %}">States (Choices)</a> |
                         <a href="{% url 'variant-issues' %}">Issues</a>
                      </h3>
-                </center>
-                <br>
+
                 <hr>
               <form action="" method="POST">{% csrf_token %}
                   {% for choice, chr in form.chromosome.field.choices %}
@@ -61,6 +60,7 @@
                       {% endif %}
                      <label for="id_chromosome_{{ choice }}"><input type="checkbox" name="chromosome" value="{{ choice }}" id="id_chromosome_{{ choice }}" /> </label>
                  {% endfor %}<br>
+
                 <input type="submit" value="Filter" />{{ form.filter }}{{ form.output }}Export results<br>
                 <input type="submit" value="Term" />{{ form.term }}
                 {{ filter.form.as_p }}
