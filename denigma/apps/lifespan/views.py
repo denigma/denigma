@@ -1127,6 +1127,7 @@ class VariantList(SingleTableView, FormView):
     output = False
     chromosome = None
     chromosome_number = None
+    term = None
     #
     # def get(self, request, *args, **kwargs):
     #     VariantList.query = None
@@ -1138,10 +1139,18 @@ class VariantList(SingleTableView, FormView):
 
     def dispatch(self, request, *args, **kwargs):
         print("outer")
+        print(args, kwargs)
         if 'chromosome' in kwargs:
             print(kwargs['chromosome'])
             print("inner")
             VariantList.chromosome_number = kwargs['chromosome']
+        print('kwargs/output %s' % kwargs['output'])
+        if 'output' in kwargs:
+            if kwargs['output'] == 'output':
+                self.download = True
+            else:
+                self.download = False
+        print("Output %s" % self.download)
         return super(VariantList, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -1181,7 +1190,7 @@ class VariantList(SingleTableView, FormView):
         # print(VariantList.variants)
 
         context = super(VariantList, self).get_context_data(*args, **kwargs)
-        context['form'] = FilterForm(initial={'filter': VariantList.query})
+        context['form'] = FilterForm(initial={'filter': VariantList.query, 'term':VariantList.term})
         context['variantsfilter'] = self.variantsfilter
         context['entry'] = get("Aging Gene Variants")
         # print("Get context data")
@@ -1202,8 +1211,8 @@ class VariantList(SingleTableView, FormView):
         return context
 
     def render_to_response(self, context, **response_kwargs):
-
-        if VariantList.output:
+        print("Render to response")
+        if VariantList.output: # or self.download:
             VariantList.output = False
             if self.request.user.is_authenticated():
                  response = HttpResponse(content_type='text/csv')
@@ -1240,11 +1249,12 @@ class VariantList(SingleTableView, FormView):
         #if self.variants:
         #    return self.variants
         #else:
+        self.qs = self.variantsfilter.qs.exclude(choice__name__contains='Review').distinct()
 
 
         if VariantList.variants:
             #print(VariantList.sql)
-            variants =   eval("self.variantsfilter.qs.filter("+VariantList.sql+")")
+            variants =  eval("self.qs.filter("+VariantList.sql+")")
             #VariantList.variants = None
             return variants
 
@@ -1258,7 +1268,6 @@ class VariantList(SingleTableView, FormView):
         #print("variantsfilter")
 
 
-        self.qs = self.variantsfilter.qs.exclude(choice__name__contains='Review').distinct()
         print("Chromosome: %s" % self.chromosome)
         print(VariantList.chromosome)
         print("Number %s" % VariantList.chromosome_number)

@@ -47,12 +47,6 @@
                      </h3>
                 </center>
                 <br>
-                <center>
-{#                <div class="btn-group">#}
-                    <a href="{% url 'add_variant' %}" class="btn btn-success btn-large">Suggest a new study</a>
-                    <a href="{% url 'contact'  %}" class="btn btn-danger btn-large">Report a database issue</a>
-{#                </div>#}
-              </center>
               <center>
                 <br>
 
@@ -82,11 +76,15 @@
                       {% endif %}
                      <label for="id_chromosome_{{ choice }}"><input type="checkbox" name="chromosome" value="{{ choice }}" id="id_chromosome_{{ choice }}" /> </label>
                  {% endfor %}<br>
-                        <input type="submit" value="Filter" />{{ form.filter }}<input type="submit" value="Output" />{{ form.output }}<br>
+                        <input type="submit" value="Filter" />{{ form.filter }}{{ form.output }}Download<br>
                         <input type="submit" value="Term" />{{ form.term }}
+
                         {{ filter.form.as_p }}
                         {{ variantsfilter }}
           </form>
+
+        <a href="{% url 'variants' output='output' %}">Download</a>
+
 
         <table width="100%">
             <tr>
@@ -95,6 +93,14 @@
                  </td>
                </tr>
         </table>
+    <hr>
+    <center>
+{#                <div class="btn-group">#}
+        <a href="{% url 'add_variant' %}" class="btn btn-success btn-large">Suggest a new study</a>
+        <a href="{% url 'contact'  %}" class="btn btn-danger btn-large">Report a database issue</a>
+{#                </div>#}
+    </center>
+
     {% if entry.text %}
         {% with entry as object %}
             {% include "comments/wrapper.html" %}
