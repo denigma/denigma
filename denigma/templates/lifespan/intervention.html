@@ -6,43 +6,43 @@
 {% load rendering %}
 
 {% load staticfiles %}
-{% load coffeescript %}
-{% load less %}
+{#{% load coffeescript %}#}
+{#{% load less %}#}
 
 {% block head_title %}Intervention{% endblock %}
 
-{% block extra_style %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}{% less 'interventions/styles/lifespan.less' %}"/>
-    <link rel="stylesheet" href="{{ STATIC_URL }}{% less 'interventions/styles/lifespan_bars.less' %}"/>
-    <link rel="stylesheet" href="{{ STATIC_URL }}{% less 'interventions/styles/lifespan_curves.less' %}"/>
-{% endblock extra_style %}
-
-{% block extra_script %}
-    <script src="{% static 'semantic/lib/jquery-2.0.0.js'%}" type="text/javascript"></script>
-    <script src="{% static 'interventions/lib/d3.js'%}" type="text/javascript"></script>
-    <script src="{% static 'semantic/lib/jquery-2.0.0.js'%}" type="text/javascript"></script>
-    <script src="{% static 'semantic/lib/batman.js'%}" type="text/javascript"></script>
-
-    <!-- look down and you will understand why I am interested in concatenations =)) -->
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/denigma.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/models/species.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/models/manipulation.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/models/experiment.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/models/intervention.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/utils/poser.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/views/basic_view.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/views/decor_view.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/views/icon_view.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/views/bars/experiment_bar.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/views/bars/labeled_bar.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/views/bar_view.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/charts.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/bar_charts.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/fixture.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/lifespan.coffee" %}"> </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/curves.coffee" %}"> </script>
-
-{% endblock extra_script %}
+{#{% block extra_style %}#}
+{#    <link rel="stylesheet" href="{{ STATIC_URL }}{% less 'interventions/styles/lifespan.less' %}"/>#}
+{#    <link rel="stylesheet" href="{{ STATIC_URL }}{% less 'interventions/styles/lifespan_bars.less' %}"/>#}
+{#    <link rel="stylesheet" href="{{ STATIC_URL }}{% less 'interventions/styles/lifespan_curves.less' %}"/>#}
+{#{% endblock extra_style %}#}
+{##}
+{#{% block extra_script %}#}
+{#    <script src="{% static 'semantic/lib/jquery-2.0.0.js'%}" type="text/javascript"></script>#}
+{#    <script src="{% static 'interventions/lib/d3.js'%}" type="text/javascript"></script>#}
+{#    <script src="{% static 'semantic/lib/jquery-2.0.0.js'%}" type="text/javascript"></script>#}
+{#    <script src="{% static 'semantic/lib/batman.js'%}" type="text/javascript"></script>#}
+{##}
+{#    <!-- look down and you will understand why I am interested in concatenations =)) -->#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/denigma.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/models/species.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/models/manipulation.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/models/experiment.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/models/intervention.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/utils/poser.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/views/basic_view.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/views/decor_view.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/views/icon_view.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/views/bars/experiment_bar.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/views/bars/labeled_bar.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/views/bar_view.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/charts.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/bar_charts.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/fixture.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/lifespan.coffee" %}"> </script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}{% coffeescript "interventions/curves.coffee" %}"> </script>#}
+{##}
+{#{% endblock extra_script %}#}
 
 
 {% block hierarchy %}
