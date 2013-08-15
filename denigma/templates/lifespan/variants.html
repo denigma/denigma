@@ -76,15 +76,14 @@
                       {% endif %}
                      <label for="id_chromosome_{{ choice }}"><input type="checkbox" name="chromosome" value="{{ choice }}" id="id_chromosome_{{ choice }}" /> </label>
                  {% endfor %}<br>
-                        <input type="submit" value="Filter" />{{ form.filter }}{{ form.output }}Download<br>
+                        <input type="submit" value="Filter" />{{ form.filter }}{{ form.output }}Export results<br>
                         <input type="submit" value="Term" />{{ form.term }}
 
                         {{ filter.form.as_p }}
                         {{ variantsfilter }}
           </form>
 
-        <a href="{% url 'variants' output='output' %}">Download</a>
-
+{#        <a href="{% url 'variants' output='output' %}">Download</a>#}
 
         <table width="100%">
             <tr>

@@ -1144,13 +1144,13 @@ class VariantList(SingleTableView, FormView):
             print(kwargs['chromosome'])
             print("inner")
             VariantList.chromosome_number = kwargs['chromosome']
-        print('kwargs/output %s' % kwargs['output'])
-        if 'output' in kwargs:
-            if kwargs['output'] == 'output':
-                self.download = True
-            else:
-                self.download = False
-        print("Output %s" % self.download)
+        # print('kwargs/output %s' % kwargs['output'])
+        # if 'output' in kwargs:
+        #     if kwargs['output'] == 'output':
+        #         self.download = True
+        #     else:
+        #         self.download = False
+        # print("Output %s" % self.download)
         return super(VariantList, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
