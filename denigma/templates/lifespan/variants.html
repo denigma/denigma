@@ -69,7 +69,6 @@
 {#                        <input type="submit" value="Term" /><input type="text" name="term" id="id_term" />#}
           <form action="" method="POST">{% csrf_token %}
                   {% for choice, chr in form.chromosome.field.choices %}
-                      {{ forloop.counter }}
                       {% if forloop.counter == 13 %}
                           <br>
                       {% endif %}
