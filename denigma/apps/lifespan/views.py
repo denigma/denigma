@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import csv
 import json
 
 from django.http import HttpResponse, HttpResponseRedirect, Http404
@@ -23,18 +24,24 @@ import reversion
 from django_tables2 import SingleTableView, RequestConfig
 
 from blog.models import Post
-from annotations.models import Species, GO
 
 from add.forms import handlePopAdd
+
 from meta.view import log
+
 from home.views import LoginRequiredMixin
+
 import data
 from data import get
 from data.views import Create, Update, Delete
 
 from datasets.models import Reference
+
+from annotations.models import Species, GO
 from annotations.models import Classification, Ortholog, HomoloGene, InParanoid, gene2ensembl
+
 from expressions.views import functional_enrichment
+
 from utils.dumper import dump
 
 from models import (Study, Experiment, Measurement, Comparison, Intervention, Factor, Regimen, Strain, Assay,
@@ -47,9 +54,6 @@ from forms import (StudyForm, EditStudyForm, DeleteStudyForm,
                    FactorForm, StrainForm, StateForm, TechnologyForm, StudyTypeForm, PopulationForm,
                    FilterForm, FactorFilterSet, VariantForm, VariantFilterSet, VariantBulkInsertForm, OntologyForm)
 from tables import ComparisonTable, InterventionTable, FactorTable, VariantTable
-
-
-
 
 
 def index(request):
@@ -1202,9 +1206,11 @@ class VariantList(SingleTableView, FormView):
         if VariantList.output:
             VariantList.output = False
             if self.request.user.is_authenticated():
-                 data = dump(self.qs, write=False)
-                 #print(data)
-                 return HttpResponse(data)
+                 response = HttpResponse(content_type='text/csv')
+                 response['Content-Disposition'] = 'attachment: filename="output.csv"'
+                 writer = csv.writer(response, delimiter="\t")
+                 dump(self.qs, write=False, writer=writer)
+                 return response
             else:
                 return redirect(settings.LOGIN_URL)
         else:
