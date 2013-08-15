@@ -1192,7 +1192,7 @@ class VariantList(SingleTableView, FormView):
         context = super(VariantList, self).get_context_data(*args, **kwargs)
         context['form'] = FilterForm(initial={'filter': VariantList.query, 'term':VariantList.term})
         context['variantsfilter'] = self.variantsfilter
-        context['entry'] = get("Aging Gene Variants")
+        context['entry'] = get("Lifespan Variants")
         # print("Get context data")
         # print self.variants
         # print("Variants in %s" % 'variants' in self.kwargs)
