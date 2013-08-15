@@ -1235,14 +1235,24 @@ class VariantList(SingleTableView, FormView):
                 query = float(VariantList.query)
                 variants = Variant.objects.filter(Q(odds_ratio=query) |
                                                 Q(pvalue=query) |
-                                                Q(pmid=query))
+                                                Q(pmid=query) |
+                                                Q(factor__entrez_gene_id=query))
             except Exception as e:
                 variants = Variant.objects.filter(Q(polymorphism__icontains=VariantList.query) |
                                              Q(location__icontains=VariantList.query) |
+                                             Q(initial_number__icontains=VariantList.query) |
+                                             Q(replication_number__icontains=VariantList.query) |
+                                             Q(age_of_cases__icontains=VariantList.query) |
                                              Q(factor__symbol=VariantList.query) |
+                                             Q(factor__name__icontains=VariantList.query) |
                                              Q(factor__ensembl_gene_id=VariantList.query) |
                                              Q(description__icontains=VariantList.query) |
-                                             Q(ethnicity__name__icontains=VariantList.query)).order_by('-id')
+                                             Q(longer_lived_allele__icontains=VariantList.query) |
+                                             Q(shorter_lived_allele__icontains=VariantList.query) |
+                                             Q(ethnicity__name__icontains=VariantList.query) |
+                                             Q(study_type__name__icontains=VariantList.query) |
+                                             Q(technology__name__icontains=VariantList.query) |
+                                             Q(reference__title__icontains=VariantList.query)).order_by('-id')
         else:
             variants = Variant.objects.all().order_by('pvalue').exclude(pvalue=None) #, 'longer_lived_allele')
         self.variantsfilter = VariantFilterSet(variants, self.request.GET)
