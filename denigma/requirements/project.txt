@@ -64,7 +64,7 @@ django_easyfilters
 -e git://github.com/timmyomahony/django-pagedown.git#egg=pagedown
 
 # PDF generation:
-reportlab==2.5
+#reportlab==2.5
 
 # Source code highlighting:
 pygments
