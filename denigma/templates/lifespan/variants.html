@@ -69,7 +69,9 @@
 {#                        <input type="submit" value="Term" /><input type="text" name="term" id="id_term" />#}
           <form action="" method="POST">{% csrf_token %}
                   {% for choice, chr in form.chromosome.field.choices %}
-                      {% if forloop.counter == 12 %}<br>
+                      {{ forloop.counter }}
+                      {% if forloop.counter == 13 %}
+                          <br>
                       {% endif %}
                       {% if choice == 'MT' %}
                          <a href="{% url 'variants' choice %}"><img src="https://s3.amazonaws.com/denigma/m{{ choice }}.gif" alt="{{ choice }}" width="54px" height="90px" ></a>
