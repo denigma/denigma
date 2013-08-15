@@ -109,5 +109,3 @@ django-less==0.7.1
 # API
 -e git+https://github.com/toastdriven/django-tastypie.git#egg=tastypie
 -e git+https://github.com/tomchristie/django-rest-framework#egg=rest-framework
-
-django-tablib
