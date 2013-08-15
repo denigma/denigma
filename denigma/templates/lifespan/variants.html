@@ -29,7 +29,7 @@
 
 {% block content %}
     <br>
-    <table width="100%">
+    <table width="100%" border="1">
         <tr>
             <td valign="top">
 {#                <img src="http://dgallery.s3.amazonaws.com/LVDB_logo.svg" alt="LVDB - Longevity Variants Datbase" height="600" width="600">#}
@@ -47,14 +47,30 @@
                      </h3>
                 </center>
                 <br>
-              <center>
-                <br>
+          <form action="" method="POST">{% csrf_token %}
+              {% for choice, chr in form.chromosome.field.choices %}
+                  {% if forloop.counter == 13 %}
+                      <br>
+                  {% endif %}
+                  {% if choice == 'MT' %}
+                     <a href="{% url 'variants' choice %}"><img src="https://s3.amazonaws.com/denigma/m{{ choice }}.gif" alt="{{ choice }}" width="54px" height="90px" ></a>
+
+                  {% else %}
+                       <a href="{% url 'variants' choice %}"><img src="https://s3.amazonaws.com/denigma/m{{ choice }}.png" alt="{{ choice }}" width="50px" height="100px" ></a>
+                  {% endif %}
+                 <label for="id_chromosome_{{ choice }}"><input type="checkbox" name="chromosome" value="{{ choice }}" id="id_chromosome_{{ choice }}" /> </label>
+             {% endfor %}<br>
+            <input type="submit" value="Filter" />{{ form.filter }}{{ form.output }}Export results<br>
+            <input type="submit" value="Term" />{{ form.term }}
+            {{ filter.form.as_p }}
+            {{ variantsfilter }}
+          </form>
 
 
-               </center>
             </td>
 
-             <td valign="top" align="right" style="width: 400px">
+
+             <td valign="top" align="right" >
                {% for image in entry.images.all reversed %}<br>
                    <img src="{{ image.url }}" alt="{{ image.name }}" width="125" height="125">
 {#                   {% if not forloop.last %} ... ... ...{% endif %}#}
@@ -67,25 +83,7 @@
 {#                    <form action="" method="POST">{% csrf_token %}#}
 {#                        <div style='display:none'><input type='hidden' name='term' value='' /></div>#}
 {#                        <input type="submit" value="Term" /><input type="text" name="term" id="id_term" />#}
-          <form action="" method="POST">{% csrf_token %}
-                  {% for choice, chr in form.chromosome.field.choices %}
-                      {% if forloop.counter == 13 %}
-                          <br>
-                      {% endif %}
-                      {% if choice == 'MT' %}
-                         <a href="{% url 'variants' choice %}"><img src="https://s3.amazonaws.com/denigma/m{{ choice }}.gif" alt="{{ choice }}" width="54px" height="90px" ></a>
 
-                      {% else %}
-                           <a href="{% url 'variants' choice %}"><img src="https://s3.amazonaws.com/denigma/m{{ choice }}.png" alt="{{ choice }}" width="50px" height="100px" ></a>
-                      {% endif %}
-                     <label for="id_chromosome_{{ choice }}"><input type="checkbox" name="chromosome" value="{{ choice }}" id="id_chromosome_{{ choice }}" /> </label>
-                 {% endfor %}<br>
-                        <input type="submit" value="Filter" />{{ form.filter }}{{ form.output }}Export results<br>
-                        <input type="submit" value="Term" />{{ form.term }}
-
-                        {{ filter.form.as_p }}
-                        {{ variantsfilter }}
-          </form>
 
 {#        <a href="{% url 'variants' output='output' %}">Download</a>#}
 
