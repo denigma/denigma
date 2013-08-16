@@ -10,12 +10,12 @@
 {% block head_title %}Variants{% endblock %}
 
 {% block hierarchy %}
-    » <a href="/lifespan/variants/">Variants</a>
+    » <a href="{% url 'variants' %}">Variants</a>
 {% endblock %}
 
 {% block options %}
-    <a href="/lifespan/variant/add">Add</a> /
-    <a href="/lifespan/variant/create">Create</a> |
+    <a href="{% url 'add_variant' %}">Add</a> /
+    <a href="{% url 'create-variant' %}">Create</a> |
     <a href="{% url 'variant-bulk-insert' %}">Bulk Insert</a> |
     <a href="{% url 'variant-index' %}">Index</a> |
     </b>(<a href="/admin/lifespan/variant/">Admin</a>)<b>
@@ -25,7 +25,6 @@
     <div id=title-header><span style="font-family: 'Copperplate Gothic Light'; color: #669966; font-size: 30px" >
     Longevity Variant Database</span>
 {% endblock %}
-
 
 {% block content %}
     <table width="100%">
@@ -44,8 +43,7 @@
                         <a href="{% url 'states' %}">States (Choices)</a> |
                         <a href="{% url 'variant-issues' %}">Issues</a>
                      </h3>
-
-                <hr>
+              <hr>
               <form action="" method="POST">{% csrf_token %}
                   {% for choice, chr in form.chromosome.field.choices %}
                       {% if forloop.counter == 13 %}
@@ -53,17 +51,17 @@
                       {% endif %}
                       {% if choice == 'MT' %}
                          <a href="{% url 'variants' choice %}"><img src="https://s3.amazonaws.com/denigma/m{{ choice }}.gif" alt="{{ choice }}" width="54px" height="90px" ></a>
-
                       {% else %}
                            <a href="{% url 'variants' choice %}"><img src="https://s3.amazonaws.com/denigma/m{{ choice }}.png" alt="{{ choice }}" width="50px" height="100px" ></a>
                       {% endif %}
                      <label for="id_chromosome_{{ choice }}"><input type="checkbox" name="chromosome" value="{{ choice }}" id="id_chromosome_{{ choice }}" /> </label>
                  {% endfor %}<br>
 
-                <input type="submit" value="Filter" />{{ form.filter }}{{ form.output }}Export results<br>
-                <input type="submit" value="Term" />{{ form.term }}
+                <input type="submit" value="Search " />{{ form.filter }} Narrow results by variant, study, or associated fields.<br>
+                <input type="submit" value="Term    " />{{ form.term }} Use ontology terms to further narrow results.<br>
                 {{ filter.form.as_p }}
                 {{ variantsfilter }}
+                {{ form.output }}Export results
               </form>
             </td>
              <td valign="top" align="right" style="width: 125px">
@@ -81,15 +79,10 @@
                </tr>
         </table>
     <hr>
-
-{#     <div class="btn-group">#}
         <center>
             <a href="{% url 'add_variant' %}" class="btn btn-success btn-large">Suggest a new study</a>
             <a href="{% url 'contact'  %}" class="btn btn-danger btn-large">Report a database issue</a>
         </center>
-{#      </div>#}
-
-
     {% if entry.text %}
         {% with entry as object %}
             {% include "comments/wrapper.html" %}
