@@ -107,5 +107,11 @@ django-less==0.7.1
 -e git+https://github.com/denigma/django-coffeescript.git#egg=coffescript
 
 # API
+mimeparse
+constants
 -e git+https://github.com/toastdriven/django-tastypie.git#egg=tastypie
 -e git+https://github.com/tomchristie/django-rest-framework#egg=rest-framework
+django-tablib
+
+
+hgtools # do not know why it is needed now?

@@ -100,7 +100,7 @@ USE_I18N = False
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(PROJECT_ROOT,  'site_media/media') #'',
+MEDIA_ROOT = os.path.join(PROJECT_ROOT,  'site_media/media') #'/site_media/',
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -284,6 +284,7 @@ INSTALLED_APPS = [
     'reversion',# Revision-control for models.
     'haystack', # Searching
     'django_tables2',
+    'django_tablib',
 
     'django_filters',
     #'ajax_filtered_fields',
