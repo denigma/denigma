@@ -610,8 +610,8 @@ class OntologyForm(Form):
 CHROMOSOMES = [(x,x) for x in range(1,22)]+[('X', 'X'), ('Y', 'Y'), ('MT', 'MT')]
 
 class FilterForm(Form):
-    filter = CharField(required=False)
-    term = CharField(required=False)
+    filter = CharField(required=False, help_text='Narrow results by variant, study, or associated fields:')
+    term = CharField(required=False, help_text='Use ontology terms to further narrow results:')
     output = BooleanField(required=False)
     chromosome = MultipleChoiceField(widget=CheckboxSelectMultiple(),
                                      choices=CHROMOSOMES, required=False)

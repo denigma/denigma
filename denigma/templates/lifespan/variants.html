@@ -57,8 +57,10 @@
                      <label for="id_chromosome_{{ choice }}"><input type="checkbox" name="chromosome" value="{{ choice }}" id="id_chromosome_{{ choice }}" /> </label>
                  {% endfor %}<br>
 
-                <input type="submit" value="Search " />{{ form.filter }} Narrow results by variant, study, or associated fields.<br>
-                <input type="submit" value="Term    " />{{ form.term }} Use ontology terms to further narrow results.<br>
+                <i>{{ form.filter.help_text }}</i><br>
+                <input type="submit" value="Search " />{{ form.filter }} <br>
+                 <i>{{ form.term.help_text }}</i><br>
+                <input type="submit" value="Term    " />{{ form.term }}  <br>
                 {{ filter.form.as_p }}
                 {{ variantsfilter }}
                 {{ form.output }}Export results
