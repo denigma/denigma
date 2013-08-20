@@ -45,7 +45,15 @@
                      </h3>
               <hr>
               <form action="" method="POST">{% csrf_token %}
-                  {% for choice, chr in form.chromosome.field.choices %}
+
+
+                <i>{{ form.filter.help_text }}</i><br>
+                <input type="submit" value="Search " />{{ form.filter }} <br>
+                 <i>{{ form.term.help_text }}</i><br>
+                <input type="submit" value="Term    " />{{ form.term }}  <br>
+                {{ filter.form.as_p }}
+                {{ variantsfilter }}
+                      {% for choice, chr in form.chromosome.field.choices %}
                       {% if forloop.counter == 13 %}
                           <br>
                       {% endif %}
@@ -56,13 +64,6 @@
                       {% endif %}
                      <label for="id_chromosome_{{ choice }}"><input type="checkbox" name="chromosome" value="{{ choice }}" id="id_chromosome_{{ choice }}" /> </label>
                  {% endfor %}<br>
-
-                <i>{{ form.filter.help_text }}</i><br>
-                <input type="submit" value="Search " />{{ form.filter }} <br>
-                 <i>{{ form.term.help_text }}</i><br>
-                <input type="submit" value="Term    " />{{ form.term }}  <br>
-                {{ filter.form.as_p }}
-                {{ variantsfilter }}
                 {{ form.output }}Export results
               </form>
             </td>
