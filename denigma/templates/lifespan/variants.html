@@ -69,7 +69,7 @@
             </td>
              <td valign="top" align="right" style="width: 125px">
                {% for image in entry.images.all reversed %}<br>
-                   <img src="{{ image.url }}" alt="{{ image.name }}" width="125" height="125">
+                   <a href="{{ image.get_absolute_url }}"><img src="{{ image.url }}" alt="{{ image.name }}" width="125" height="125"></a>
 {#                   {% if not forloop.last %} ... ... ...{% endif %}#}
                {% endfor %}
             </td>
