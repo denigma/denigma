@@ -1166,8 +1166,8 @@ class VariantList(SingleTableView, FormView):
         #print(output)
         # print(VariantList.term)
         if VariantList.term:
+            term = VariantList.term.replace('"', '')
             if 'GO:' in VariantList.term:
-                term = VariantList.term.replace('"', '')
                 terms = GO.objects.filter(go_id=term)
             else:
                 terms = GO.objects.filter(go_term__icontains=term)
