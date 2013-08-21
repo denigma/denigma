@@ -1166,7 +1166,11 @@ class VariantList(SingleTableView, FormView):
         #print(output)
         # print(VariantList.term)
         if VariantList.term:
-            terms = GO.objects.filter(go_term__icontains=self.term)
+            if 'GO:' in VariantList.term:
+                term = VariantList.term.replace('"', '')
+                terms = GO.objects.filter(go_id=term)
+            else:
+                terms = GO.objects.filter(go_term__icontains=term)
             ids  = ["Q(factor__entrez_gene_id=%s)" % go.entrez_gene_id for go in terms]
             #print(ids)
             VariantList.sql = " | ".join(ids)
