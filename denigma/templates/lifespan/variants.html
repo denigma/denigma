@@ -49,7 +49,7 @@
 
                 <i>{{ form.filter.help_text }}</i><br>
                 <input type="submit" value="Search " />{{ form.filter }} <br>
-                 <i>{{ form.term.help_text }}</i><br>
+                 <i>{{ form.term.help_text|safe }}</i><br>
                 <input type="submit" value="Term    " />{{ form.term }}  <br>
                 {{ filter.form.as_p }}
                 {{ variantsfilter }}
