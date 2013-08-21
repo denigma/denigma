@@ -1138,11 +1138,12 @@ class VariantList(SingleTableView, FormView):
     #     return super(VariantList, self).get(request, *args, **kwargs)
 
     def dispatch(self, request, *args, **kwargs):
-        print("outer")
-        print(args, kwargs)
+        #print("outer")
+        #print(args, kwargs)
+        #VariantList.term = None
         if 'chromosome' in kwargs:
-            print(kwargs['chromosome'])
-            print("inner")
+            #print(kwargs['chromosome'])
+            #print("inner")
             VariantList.chromosome_number = kwargs['chromosome']
         # print('kwargs/output %s' % kwargs['output'])
         # if 'output' in kwargs:
@@ -1166,6 +1167,7 @@ class VariantList(SingleTableView, FormView):
         #print(output)
         # print(VariantList.term)
         if VariantList.term:
+            print("Variant list term is true")
             term = VariantList.term.replace('"', '')
             if 'GO:' in VariantList.term:
                 terms = GO.objects.filter(go_id=term)
@@ -1186,6 +1188,7 @@ class VariantList(SingleTableView, FormView):
         # print(VariantList.variants)
 
         VariantList.query = None
+        VariantList.term = None
         #print self.variants
         return super(VariantList, self).form_valid(form)
 
@@ -1210,8 +1213,6 @@ class VariantList(SingleTableView, FormView):
         #     else:
         #         self.queryset.filter(Q(location__startswith=self.chromosome+'q')|Q(location__startswith=self.chromosome+'p'))
         # print self.queryset
-
-
         return context
 
     def render_to_response(self, context, **response_kwargs):
@@ -1219,10 +1220,14 @@ class VariantList(SingleTableView, FormView):
         if VariantList.output: # or self.download:
             VariantList.output = False
             if self.request.user.is_authenticated():
+                 #print(len(self.qs))
+                 #print(self.queryset)
+                 #print(len(self.object_list))
+                 #print(len(self.variantsfilter.qs))
                  response = HttpResponse(content_type='text/csv')
                  response['Content-Disposition'] = 'attachment: filename="output.csv"'
                  writer = csv.writer(response, delimiter="\t")
-                 dump(self.qs, write=False, writer=writer)
+                 dump(self.object_list, write=False, writer=writer)
                  return response
             else:
                 return redirect(settings.LOGIN_URL)
@@ -1264,13 +1269,10 @@ class VariantList(SingleTableView, FormView):
         #    return self.variants
         #else:
         self.qs = self.variantsfilter.qs.exclude(choice__name__contains='Review').distinct()
+        print(len(self.qs))
 
 
-        if VariantList.variants:
-            #print(VariantList.sql)
-            variants =  eval("self.qs.filter("+VariantList.sql+")")
-            #VariantList.variants = None
-            return variants
+
 
         #     print("VariantList.variants: %s" % VariantList.variants)
         #     variants = VariantList.variants
@@ -1305,6 +1307,15 @@ class VariantList(SingleTableView, FormView):
             print(chromosomes)
             self.qs = eval("self.qs.filter("+'|'.join(chromosomes)+")")
             #VariantList.chromosome = False
+        print("Filtering")
+        if VariantList.variants:
+            #print(VariantList.sql)
+            variants = eval("self.qs.filter("+VariantList.sql+")")
+            self.qs = variants
+            print(len(variants))
+            #VariantList.variants = None
+            return variants
+
         return self.qs
 
 
