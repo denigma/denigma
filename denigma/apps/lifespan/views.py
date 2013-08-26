@@ -1918,7 +1918,7 @@ def dumper(request):
     print "done"
     return HttpResponse("GenDR was successfully saved.")
 
-def annotate_locations(request):
+def annotate_chromosomal_locations(verbose=True):
     variants = Variant.objects.all()
     for variant in variants:
         if not variant.location:
@@ -1927,18 +1927,22 @@ def annotate_locations(request):
             if factors:
                 for factor in factors:
                     if factor.entrez_gene_id:
-                        #print(factor.entrez_gene_id)
                         handle = Entrez.efetch(db='gene', id=factor.entrez_gene_id, format='xml')
                         record = Entrez.read(handle)
                         #print(record.keys())
                         #print(handle.read())
                         location = record[0]['Entrezgene_location'][0]['Maps_display-str']
-                        #print(location) #19p13.3-p13.2
+                        if verbose:
+                            print("Gene: %s %s" % (factor.entrez_gene_id, location)) #19p13.3-p13.2
                         if location not in locations:
                             locations.append(location)
             variant.location = "; ".join(locations)
             variant.save()
-            #print variant, variant.location
+            if verbose:
+                print("Variant: %s %s\n" % (variant, variant.location))
+
+def annotate_locations(request):
+    annotate_chromosomal_locations(verbose=False)
     return redirect('variants')
 
 ##      elif  "DE" in classes:
