@@ -1919,6 +1919,7 @@ def dumper(request):
     return HttpResponse("GenDR was successfully saved.")
 
 def annotate_chromosomal_locations(verbose=True):
+    errors = []
     variants = Variant.objects.all()
     for variant in variants:
         if not variant.location:
@@ -1927,19 +1928,26 @@ def annotate_chromosomal_locations(verbose=True):
             if factors:
                 for factor in factors:
                     if factor.entrez_gene_id:
-                        handle = Entrez.efetch(db='gene', id=factor.entrez_gene_id, format='xml')
-                        record = Entrez.read(handle)
-                        #print(record.keys())
-                        #print(handle.read())
-                        location = record[0]['Entrezgene_location'][0]['Maps_display-str']
-                        if verbose:
-                            print("Gene: %s %s" % (factor.entrez_gene_id, location)) #19p13.3-p13.2
-                        if location not in locations:
-                            locations.append(location)
+                        try:
+                            handle = Entrez.efetch(db='gene', id=factor.entrez_gene_id, format='xml')
+                            record = Entrez.read(handle)
+                            #print(record.keys())
+                            #print(handle.read())
+                            location = record[0]['Entrezgene_location'][0]['Maps_display-str']
+                            if verbose:
+                                print("Gene: %s %s" % (factor.entrez_gene_id, location)) #19p13.3-p13.2
+                            if location not in locations:
+                                locations.append(location)
+                        except Exception as e:
+                            errors.append(e)
             variant.location = "; ".join(locations)
             variant.save()
             if verbose:
                 print("Variant: %s %s\n" % (variant, variant.location))
+    if errors:
+        print("Errors: %s" % len(errors))
+    for index, error in enumerate(errors):
+        print("%: %s" % (index, error))
 
 def annotate_locations(request):
     annotate_chromosomal_locations(verbose=False)
