@@ -88,8 +88,11 @@ urlpatterns = patterns('lifespan.views',
 
     # Variants:
     url(r'^variants/bulk_insert/$', VariantBulkInsert.as_view(), name='variant-bulk-insert'),
+    url(r'^variants/(?P<chromosome>.+)?/?(?P<output>output)?', VariantList.as_view(), name='variants'),
 
-    url(r'^variants/(?P<chromosome>.+)?', VariantList.as_view(), name='variants'),
+    url(r'^variants/(?P<chromosome>.+)?/?(?P<output>output)?', VariantList.as_view(), name='variants'),
+
+   # url(r'^variants/(?P<chromosome>.+)?', VariantList.as_view(), name='variants'),
     url(r'^variant/issues/$', VariantIssues.as_view(), name='variant-issues'),
     url(r'^variant/(?P<pk>\d+)/$', VariantDetail.as_view(), name='variant'),
     url(r'^variant/add/$', 'add_variant', name='add_variant'),
@@ -158,7 +161,7 @@ urlpatterns = patterns('lifespan.views',
     url(r'^gendr/dump', 'dump'),
     url(r'^map/species/(?P<model>.+)', 'map_species', name='map_species'),
     url(r'^correct/$', 'correct_classes', name='correct_classes'),
-
+    url(r'^annotate_locations/$', 'annotate_locations', name='annotate_locations'),
     url(r'^bars$',  TemplateView.as_view(template_name='lifespan/bars.html'), name='bars'),
 )
 ##234567891123456789212345678931234567894123456789512345678961234567897123456789

@@ -783,7 +783,7 @@ class Variant(models.Model):
     #polymorphism = models.CharField(max_length=20)# genetic variant
     created = models.DateTimeField(_('created'), auto_now_add=True, db_index=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
-    location  = models.CharField(max_length=10, null=True, blank=True)# genomic location
+    location  = models.CharField(max_length=100, null=True, blank=True)# genomic location
     factor = models.ForeignKey(Factor, null=True, blank=True)
     shorter_lived_allele = models.CharField(max_length=255, blank=True, null=True)
     longer_lived_allele = models.CharField(max_length=255, blank=True, null=True)

@@ -2,6 +2,9 @@
 import csv
 import json
 
+from Bio import Entrez
+Entrez.email = "age@liv.ac.uk"
+
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response,redirect, render
 from django.template import RequestContext
@@ -1128,6 +1131,7 @@ class VariantList(SingleTableView, FormView):
     chromosome = None
     chromosome_number = None
     term = None
+    sql = None
     #
     # def get(self, request, *args, **kwargs):
     #     VariantList.query = None
@@ -1140,7 +1144,7 @@ class VariantList(SingleTableView, FormView):
     def dispatch(self, request, *args, **kwargs):
         #print("outer")
         #print(args, kwargs)
-        #VariantList.term = None
+
         if 'chromosome' in kwargs:
             #print(kwargs['chromosome'])
             #print("inner")
@@ -1217,6 +1221,7 @@ class VariantList(SingleTableView, FormView):
 
     def render_to_response(self, context, **response_kwargs):
         print("Render to response")
+        VariantList.sql = None
         if VariantList.output: # or self.download:
             VariantList.output = False
             if self.request.user.is_authenticated():
@@ -1308,11 +1313,12 @@ class VariantList(SingleTableView, FormView):
             self.qs = eval("self.qs.filter("+'|'.join(chromosomes)+")")
             #VariantList.chromosome = False
         print("Filtering")
-        if VariantList.variants:
+        if VariantList.variants and VariantList.sql:
             #print(VariantList.sql)
             variants = eval("self.qs.filter("+VariantList.sql+")")
             self.qs = variants
-            print(len(variants))
+            #VariantList.sql = None
+            #print(len(variants))
             #VariantList.variants = None
             return variants
 
@@ -1911,6 +1917,29 @@ def dumper(request):
                 print
     print "done"
     return HttpResponse("GenDR was successfully saved.")
+
+def annotate_locations(request):
+    variants = Variant.objects.all()
+    for variant in variants:
+        if not variant.location:
+            locations = []
+            factors = variant.factors.all()
+            if factors:
+                for factor in factors:
+                    if factor.entrez_gene_id:
+                        #print(factor.entrez_gene_id)
+                        handle = Entrez.efetch(db='gene', id=factor.entrez_gene_id, format='xml')
+                        record = Entrez.read(handle)
+                        #print(record.keys())
+                        #print(handle.read())
+                        location = record[0]['Entrezgene_location'][0]['Maps_display-str']
+                        #print(location) #19p13.3-p13.2
+                        if location not in locations:
+                            locations.append(location)
+            variant.location = "; ".join(locations)
+            variant.save()
+            #print variant, variant.location
+    return redirect('variants')
 
 ##      elif  "DE" in classes:
 ##         print gene.symbol, gene.reference
