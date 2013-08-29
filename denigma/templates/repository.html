@@ -24,7 +24,7 @@
 {% block title %}{{ entry.title }}{% endblock %}
 
 {% block content %}
-    <table xmlns="http://www.w3.org/1999/html">
+    <table>
         <tr>
             <td valign="top">
                 {{ entry.content|markdown|hyper|recross|safe }}
@@ -36,6 +36,8 @@
                     <a href='/about/what_next/' class="btn btn-warning btn-large">What's next</a>
                 </div>
                 <h4>Data Entry | Database | Layout | About Denigma</h4>
+    <a href="http://genomics.senescence.info/"><img src="http://dgallery.s3.amazonaws.com/hagr_logo.png" alt="HAGR" width="800" height="400"></a>
+
             </td>
             <td style="width: 400px">
                 {% for image in entry.images.all %}
@@ -44,6 +46,7 @@
             </td>
         </tr>
     </table>
+
     {% with entry as object %}
         {% include "comments/wrapper.html" %}
     {% endwith %}
