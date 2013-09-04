@@ -173,7 +173,7 @@ urlpatterns += patterns("",
     url(r'^about/', include("about.urls")),
     url(r'^contact/$', 'contact.views.contact', name='contact'),
     url(r'^sitemap\.xml', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
-    url(r'^favicon\.ico$', 'django.views.generic.simple.redirect_to',
+    url(r'^favicon\.ico$', 'django.views.generic.base.RedirectView',
        {'url': '/media/img/favicon.ico'}), # Site icon
 
     # In Progress

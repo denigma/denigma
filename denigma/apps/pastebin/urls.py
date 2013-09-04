@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import patterns, url
-from django.views.generic.simple import direct_to_template
-
+#from django.views.generic.simple import direct_to_template
+from django.views.generic import TemplateView
 from models import PastedItem
 
 
@@ -11,8 +11,7 @@ info_dict = { # Obsolete?
 
 urlpatterns = patterns('',
     url(r'^pre/$', # Previous version (depricated).
-        direct_to_template,
-        {"template": "pastebin/pre.html"},
+        TemplateView.as_view(template_name="pastebin/pre.html"),
         name="pastebin_pre"),
                        
    url(r'^$', 'pastebin.views.new', name='pastebin'),
@@ -22,7 +21,7 @@ urlpatterns = patterns('',
        name='pastebin_detail'),
 
    url(r'^(?P<slug>[-0-9a-f]{36})/$', # Obsolete?
-       'django.views.generic.list_detail.object_detail',
+       'django.views.generic.detail.DetailView',
        info_dict,
        'pastebin_detail'),
 )

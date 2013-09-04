@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
-from django.views.generic import list_detail
+#from django.views.generic import list_detail
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
 from django.template import RequestContext

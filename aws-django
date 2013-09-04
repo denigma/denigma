@@ -216,6 +216,12 @@ configure_apache() {
         Allow from all
     </Directory>
 
+    Alias /static/ $PROJECT_ROOT/static/
+    <Directory "$PROJECT_ROOT/static">
+       Order deny,allow
+       Allow from all
+    </Directory>
+
     Alias /media/ $PROJECT_ROOT/media/
     <Directory "$PROJECT_ROOT/media">
        Order deny,allow
@@ -296,9 +302,9 @@ install_mysql() {
 
 setup_statics() {
 
-    cp -rf /home/$LOCAL_USER/env/lib/python2.7/site-packages/pinax_theme_bootstrap/static/pinax $PROJECT_ROOT/media/pinax
-    cp -rf /home/$LOCAL_USER/env/lib/python2.7/site-packages/django/contrib/admin/static/admin $PROJECT_ROOT/media/admin
-    cp -rf /home/$LOCAL_USER/env/src/django-fluent-comments/fluent_comments/static/ $PROJECT_ROOT/media/fluent_comments/
+    cp -rf /home/$LOCAL_USER/env/lib/python2.7/site-packages/pinax_theme_bootstrap/static/pinax $PROJECT_ROOT/static/pinax
+    cp -rf /home/$LOCAL_USER/env/lib/python2.7/site-packages/django/contrib/admin/static/admin $PROJECT_ROOT/static/admin
+    cp -rf /home/$LOCAL_USER/env/src/django-fluent-comments/fluent_comments/static/ $PROJECT_ROOT/static/fluent_comments/
 }
 
 configure_local_settings() {

@@ -1,7 +1,7 @@
 import json
 
 from django.http import HttpResponseRedirect
-from django.views.generic import list_detail
+#from django.views.generic import list_detail
 
 
 from django.core.urlresolvers import reverse
@@ -28,16 +28,23 @@ try:
 except NameError:
     from sets import Set as set # Python 2.3 fallback
 
+from django.views.generic import ListView
 
-def announcement_list(request):
-    """A basic view that wraps ``django.views.list_detail_object``
-    and uses ``current_announcements_for_request`` to get the current
-    announcements."""
-    queryset = current_announcements_for_request(request)
-    return list_detail.object_list(request, **{
-        "queryset": queryset,
-        "allow_empty": True
-    })
+class AnnouncementList(ListView):
+    allow_empty = True
+    def dispatch(self, request, *args, **kwargs):
+        self.queryset = current_announcements_for_request(request)
+        return super(AnnouncementList, self).dispatch(request, *args, **kwargs)
+
+# def announcement_list(request):
+#     """A basic view that wraps ``django.views.list_detail_object``
+#     and uses ``current_announcements_for_request`` to get the current
+#     announcements."""
+#     queryset = current_announcements_for_request(request)
+#     request, list_detail.object_list(**{
+#         "queryset": queryset,
+#         "allow_empty": True
+#     })
 
 
 def announcement_hide(request, object_id):

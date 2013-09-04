@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, url, include
-from django.views.generic import list_detail
+#from django.views.generic import list_detail
 
 
 from models import Publisher, Book

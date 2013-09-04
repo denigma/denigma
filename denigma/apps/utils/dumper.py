@@ -28,6 +28,8 @@ def dump(qs, outfile_path=settings.MEDIA_ROOT+'/dump.csv', write=False, separato
                 val = val()
             if type(val) == unicode:
                 val = val.encode("utf-8")
+            if isinstance(val, basestring):
+                val = val.replace('\t', '')
             row.append(val)
         if write:
             file_writer.writerow(row)

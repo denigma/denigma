@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.views.generic.create_update import update_object, delete_object
+#from django.views.generic.create_update import update_object, delete_object
 from django.template import RequestContext
 from django.views.generic import DetailView
 from django.views.generic.edit import CreateView

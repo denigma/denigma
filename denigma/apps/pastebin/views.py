@@ -1,6 +1,6 @@
 """View function that is in charge of the form for submitting new items."""
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, get_host
+from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext, ugettext_lazy as _

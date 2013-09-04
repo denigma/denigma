@@ -167,12 +167,11 @@ Restoring a snapshotted database
 $ cd ..
 $ sudo su
 $ aptitude install git
-$ git clone https://github.com/hevok/denigma
+$ git clone https://github.com/denigma/denigma
 $ bash denigma/reconnect-ebs.sh
 $ bash denigma/open-port.sh
 $ sudo bash ./denigma/aws-django -n denigma -d nothing -s "/s" -H <DNS> -D denigma -U denigma -P <PASSWORD>
 
-ec2-54-246-29-195.eu-west-1.compute.amazonaws.com
 
 Transferring data onto EC2
 ==========================
