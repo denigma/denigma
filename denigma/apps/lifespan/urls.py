@@ -83,7 +83,7 @@ urlpatterns = patterns('lifespan.views',
     url(r'^factor/edit/(?P<pk>\d+)/$', 'edit_factor'),
     url(r'^factor/remove/(?P<pk>\d+)/$', 'remove_factor', name='remove_factor'),
     url(r'^factor/delete/(?P<pk>\d+)/$', FactorDelete.as_view(), name='delete-factor'),
-    url(r'^factor/create/$', CreateFactor.as_view(), name='create-factor'),
+    url(r'^factor/create/$', login_required(CreateFactor.as_view()), name='create-factor'),
     url(r'^factor/ontology/$', login_required(FactorOntology.as_view()), name='factor-ontology'),
     url(r'^factor/(?P<slug>.+)/$', FactorDetail.as_view(), name='factor'),
 

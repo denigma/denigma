@@ -548,6 +548,7 @@ def factors(request, pk):
 def factor(request, pk):
     return HttpResponse('factor')
 
+@login_required
 def add_factor(request):
     form = FactorForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
