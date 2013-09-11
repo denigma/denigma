@@ -194,6 +194,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
+    'honeypot.middleware.HoneypotMiddleware',
 #    #CMS:
 #    "cms.middleware.multilingual.MultilingualURLMiddleware',
 ]
@@ -305,6 +306,7 @@ INSTALLED_APPS = [
     'fluent_comments',
     'crispy_forms',
     'django.contrib.comments',
+    'honeypot',
 #    'cms", # Content Management System.
 #    'sekizai", # For javascipt and css management.
     
@@ -467,3 +469,5 @@ REST_FRAMEWORK = {
     ],
     'PAGINATE_BY': 10,
 }
+# Honeypot:
+HONEYPOT_FIELD_NAME = 'phonenumber'

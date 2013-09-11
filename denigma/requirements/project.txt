@@ -113,5 +113,8 @@ constants
 -e git+https://github.com/tomchristie/django-rest-framework#egg=rest-framework
 django-tablib
 
+# Anti-Spam:
+-e git+https://github.com/sunlightlabs/django-honeypot.git
+
 
 hgtools # do not know why it is needed now?
