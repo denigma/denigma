@@ -13,16 +13,18 @@
     » <a href="{% url 'variants' %}">Variants</a>
 {% endblock %}
 
-{% block options %}
-    <a href="{% url 'add_variant' %}">Add</a> /
-    <a href="{% url 'create-variant' %}">Create</a> |
-    <a href="{% url 'variant-bulk-insert' %}">Bulk Insert</a> |
-    <a href="{% url 'variant-index' %}">Index</a> |
-    </b>(<a href="/admin/lifespan/variant/">Admin</a>)<b>
-{% endblock %}
+{% if user.is_authenticated %}
+    {% block options %}
+        <a href="{% url 'add_variant' %}">Add</a> /
+        <a href="{% url 'create-variant' %}">Create</a> |
+        <a href="{% url 'variant-bulk-insert' %}">Bulk Insert</a> |
+        <a href="{% url 'variant-index' %}">Index</a> |
+        </b>(<a href="/admin/lifespan/variant/">Admin</a>)<b>
+    {% endblock %}
+{% endif %}
 
 {% block title %}
-    <div id=title-header><span style="font-family: 'Copperplate Gothic Light'; color: #669966; font-size: 30px" >
+    <div id=title-header><span style="font-family: 'Copperplate Gothic Light'; color: #669966; font-size: 40px" >
     Longevity Variant Database</span>
 {% endblock %}
 
@@ -30,23 +32,7 @@
     <table width="100%">
         <tr>
             <td valign="top">
-{#                <img src="http://dgallery.s3.amazonaws.com/LVDB_logo.svg" alt="LVDB - Longevity Variants Datbase" height="600" width="600">#}
-                {{ entry.content|markdown|hyper|recross|safe }}
-                <hr>
-                     <h3>
-{#                    <a href="{% url 'variant-list' %}">Variant List</a> |#}
-                        <a href="{% url 'populations' %}">Populations</a> |
-                        <a href="{% url 'study_types' %}">Study Types</a> |
-                        <a href="{% url 'variant_types' %}">Variant Types</a> |
-                        <a href="{% url 'or_types' %}">Odds Ratio Types</a> |
-                        <a href="{% url 'technologies' %}">Technologies</a> |
-                        <a href="{% url 'states' %}">States (Choices)</a> |
-                        <a href="{% url 'variant-issues' %}">Issues</a>
-                     </h3>
-                {% if user.is_superuser %}
-                    <a href="{% url 'annotate_locations' %}">Annotate Locations</a>
-                {% endif %}
-              <hr>
+
               <form action="" method="POST">{% csrf_token %}
 
 
@@ -84,14 +70,34 @@
                  </td>
                </tr>
         </table>
+
+    {{ entry.content|markdown|hyper|recross|safe }}
     <hr>
+    <center>
+   {#                <img src="http://dgallery.s3.amazonaws.com/LVDB_logo.svg" alt="LVDB - Longevity Variants Datbase" height="600" width="600">#}
+                     <h3>
+{#                    <a href="{% url 'variant-list' %}">Variant List</a> |#}
+                        <a href="{% url 'populations' %}">Populations</a> |
+                        <a href="{% url 'study_types' %}">Study Types</a> |
+                        <a href="{% url 'variant_types' %}">Variant Types</a> {# | #}
+{#                        <a href="{% url 'or_types' %}">Odds Ratio Types</a> |#}
+{#                        <a href="{% url 'technologies' %}">Technologies</a> |#}
+{#                        <a href="{% url 'states' %}">States (Choices)</a> |#}
+{#                        <a href="{% url 'variant-issues' %}">Issues</a>#}
+                     </h3>
+                {% if user.is_superuser %}
+                    <a href="{% url 'annotate_locations' %}">Annotate Locations</a>
+                {% endif %}
+              <hr>
+    </center>
         <center>
             <a href="{% url 'add_variant' %}" class="btn btn-success btn-large">Suggest a new study</a>
             <a href="{% url 'contact'  %}" class="btn btn-danger btn-large">Report a database issue</a>
         </center>
-    {% if entry.text %}
-        {% with entry as object %}
-            {% include "comments/wrapper.html" %}
-        {% endwith %}
-    {% endif %}
+{#    {% if entry.text %}#}
+{#        {% with entry as object %}#}
+{#            {% include "comments/wrapper.html" %}#}
+{#        {% endwith %}#}
+{#    {% endif %}#}
+    <hr>
 {% endblock %}

@@ -71,18 +71,21 @@ class VariantTable(tables.Table):
     def render_study_type(self, value, record):
         return mark_safe('''<a href="%s">%s</a>''' % (value.get_absolute_url(), value.name))
 
-    def render_technology(self, value, record):
-        return mark_safe('''<a href="%s">%s</a>''' % (value.get_absolute_url(), value.name))
+    # def render_technology(self, value, record):
+    #     return mark_safe('''<a href="%s">%s</a>''' % (value.get_absolute_url(), value.name))
 
     def render_reference(self, value, record):
         return mark_safe('''<a href="%s">%s</a>''' % (value.get_absolute_url(), value.pmid))
+
+    def render_odds_ratio(self, value, record):
+        return "%.2f" % round(value, 2)
 
     class Meta:
         model = Variant
         attrs = {"class": "paleblue"}
         fields = ('polymorphism',  'factor', 'odds_ratio', 'pvalue', #'location',
                   'initial_number', 'replication_number', 'ethnicity',
-                  'age_of_cases',  'shorter_lived_allele', 'longer_lived_allele', 'study_type', 'technology',
+                  'age_of_cases',  'shorter_lived_allele', 'longer_lived_allele', 'study_type', # 'technology',
                   'reference') # , 'choice'
 #        exclude = ('id', 'mapping', 'entrez_gene_id', 'ensembl_gene_id',
 #                   'alias', 'description', 'functional_description',
