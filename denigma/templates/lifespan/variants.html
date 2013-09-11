@@ -35,13 +35,14 @@
 
               <form action="" method="POST">{% csrf_token %}
 
-
                 <i>{{ form.filter.help_text }}</i><br>
                 <input type="submit" value="Search " />{{ form.filter }} <br>
                  <i>{{ form.term.help_text|safe }}</i><br>
                 <input type="submit" value="Term    " />{{ form.term }}  <br>
+                <hr>
                 {{ filter.form.as_p }}
                 {{ variantsfilter }}
+                <hr>
                   {% for choice, chr in form.chromosome.field.choices %}
                       {% if forloop.counter == 13 %}
                           <br>
