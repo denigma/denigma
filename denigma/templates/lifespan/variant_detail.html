@@ -13,6 +13,6 @@
 {% block content %}
     <b>{{ variant }} (<a href="https://www.23andme.com/you/explorer/snp/?snp_name={{ variant }}">23andMe</a>)</b><br>
     {% for variant in variants %}
-        <li><a href="{% url 'variant' variant.id %}">{{ variant.polymorphism }}</a> {% if variant.p_value ({{ variant.p_value }}) %} <a href="{{ variant.reference.get_absolute_url }}">{{ variant.reference.repr }}</a></li>
+        <li><a href="{% url 'variant' variant.id %}">{{ variant.polymorphism }}</a> {% if variant.p_value  %} ({{ variant.p_value }}) {% endif %}<a href="{{ variant.reference.get_absolute_url }}">{{ variant.reference.repr }}</a></li>
     {% endfor %}
 {% endblock %}
