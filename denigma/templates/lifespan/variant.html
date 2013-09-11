@@ -24,7 +24,19 @@
 
 {% block content %}
 
-            {% if variant.polymorphism %}<b>Polymorphism:</b> <a href="http://snpedia.com/index.php/{{ variant.polymorphism }}">{{ variant.polymorphism }}</a><br>{% endif %}
+            {% if variant.polymorphism %}<b>Polymorphism:</b>  {{ variant.polymorphism }} <br>
+                {% for snp in variant.as_list %}
+
+                    {% if 'rs' in snp %}
+                        <a href="{% url 'variant-detail' snp %}">{{ snp }}</a>
+                        (
+                        <a href="http://snpedia.com/index.php/{{ snp }}">SNPedia</a> |
+                        <a href="https://www.23andme.com/you/explorer/snp/?snp_name={{ snp }}">23andMe</a>
+                        )
+                    {% endif %}<br>
+                {% endfor %}
+           {% endif %}<br>
+
             {% if variant.alias %}<b>Alias:</b> {{ variant.alias }}<br>{% endif %}
             {% if variant.variant_type %}<b>Variant Type:</b> <a href="{{ variant.get_absolute_url }}">{{ variant.variant_type }}</a><br>{% endif %}
             {% if variant.location %}<b>Location:</b> <a href="http://genome.ucsc.edu/cgi-bin/hgTracks?org=human&position={{ variant.location }}">{{ variant.location }}</a><br>{% endif %}

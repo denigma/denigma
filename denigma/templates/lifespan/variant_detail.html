@@ -1,0 +1,18 @@
+{% extends 'lifespan/base.html' %}
+{% load url from future %}
+{% block head_title %}{{ variant }}{% endblock %}
+
+{% block hierarchy %}
+    » <a href="/lifespan/variants/">Variants</a>
+    »  Variance
+    = {{ variant }}
+{% endblock %}
+
+{% block title %}{{ variant }}{% endblock %}
+
+{% block content %}
+    <b>{{ variant }} (<a href="https://www.23andme.com/you/explorer/snp/?snp_name={{ variant }}">23andMe</a>)</b><br>
+    {% for variant in variants %}
+        <li><a href="{% url 'variant' variant.id %}">{{ variant.polymorphism }}</a></li>
+    {% endfor %}
+{% endblock %}

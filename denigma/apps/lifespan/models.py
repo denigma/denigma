@@ -815,6 +815,9 @@ class Variant(models.Model):
 
     objects = VariantManager()
 
+    def as_list(self):
+        return self.polymorphism.split()
+
     def __unicode__(self):
         return self.polymorphism
 

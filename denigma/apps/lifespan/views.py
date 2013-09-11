@@ -1358,13 +1358,13 @@ def remove_variant(request, pk):
     variant = Variant.objects.get(pk=pk)
     variant.delete()
     msg = 'Successfully removed %s' % variant
-    messages.add_messagme(request, messages.SUCCESS, _(msg))
+    messages.add_message(request, messages.SUCCESS, _(msg))
     return redirect('/lifespan/')
 
 
 class VariantIssues(ListView):
     model = Variant
-    template_name='lifespan/variant_issues.html'
+    template_name = 'lifespan/variant_issues.html'
     queryset=Variant.objects.filter(pvalue=None).exclude(choice__name__contains='Review')
     def get_context_data(self, **kwargs):
         context = super(VariantIssues, self).get_context_data(**kwargs)
@@ -1378,6 +1378,26 @@ class VariantIssues(ListView):
         context['pmids'] = dict
         #print context['pmids']
         return context
+
+
+class VarianceDetail(ListView):
+    model = Variant
+    template_name = 'lifespan/variant_detail.html'
+
+    def dispatch(self, request, **kwargs):
+        #print("Dispatch")
+        self.name = kwargs['name']
+        #print(self.name)
+        return super(VarianceDetail, self).dispatch(request, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        #print("Get context data")
+        context = super(VarianceDetail, self).get_context_data(**kwargs)
+        context['variant'] = self.name
+        context['variants'] = Variant.objects.filter(polymorphism__icontains=self.name)
+        #print(context['variants'])
+        return context
+
 
 class ManipulationDetail(DetailView):
     model=Manipulation
