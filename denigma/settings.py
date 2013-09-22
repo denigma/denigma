@@ -299,7 +299,7 @@ INSTALLED_APPS = [
     'less',
 
     # API Framworks:
-    'tastypie',
+    #'tastypie',
     'rest_framework',
 
     # Comments and forms:
