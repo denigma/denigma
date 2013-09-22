@@ -17,3 +17,16 @@ class TissueTable(tables.Table):
         model = Tissue
         attrs = {"class": "paleblue"}
         fields = ('name', 'description', 'synonyms')
+
+class GOTable(tables.Table):
+
+    def render_name(self, record, value):
+        return mark_safe('<a href="%s">%s</a>' % (record.get_absolute_url(), value))
+
+    #def render_description(self, record, value):
+    #    return mark_safe('<a href="%s">%s</a>' % (record.get_update_url(), value))
+
+    class Meta:
+        model = Tissue
+        attrs = {"class": "paleblue"}
+        fields = ('name', 'description', 'synonyms')
