@@ -7,6 +7,7 @@ from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, AnonymousUser
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.db.models import Q
 from django.db import connection
@@ -21,12 +22,12 @@ from meta.view import log
 from data import get
 from add.forms import handlePopAdd
 
-from models import Classification, Tissue, Species, Taxonomy
+from models import Classification, Tissue, Species, Taxonomy, GO
 from forms import (ClassificationForm, DeleteClassificationForm,
                    TissueForm, DeleteTissueForm,
                    SpeciesForm, AnimalForm)
-from tables import TissueTable
-from filters import  TissueFilterSet
+from tables import TissueTable, GOTable
+from filters import TissueFilterSet, GOFilterSet
 
 
 def index(request, template='annotations/index.html'):
@@ -375,5 +376,36 @@ def newClassification(request):
     if isinstance(request.user, AnonymousUser):
         request.user = User.objects.get(username="Anonymous")
     return handlePopAdd(request, ClassificationForm, 'classifications')
+
+"""
+    taxid = models.IntegerField()
+    entrez_gene_id = models.IntegerField()
+    go_id = models.CharField(max_length=10)
+    evidence = models.CharField(max_length=3)
+    qualifier = models.CharField(max_length=20, blank=True)
+    go_term = models.CharField(max_length=193)
+    pmid = models.CharField(max_length=17, blank=True)
+    category
+
+"""
+
+class GOView(ListView):
+    model = GO
+    queryset = GO.objects.all()
+    # def get_queryset(self):
+    #     self.queryset = GO.objects.all().filter()
+
+    def get_context_data(self, **kwargs):
+        context = super(GOView, self).get_context_data(**kwargs)
+        context['terms'] = set([go.go_term for go in self.queryset])
+        return context
+
+class GOList(TableFilter):
+    model = GO
+    table_class = GOTable
+    template_name = 'annotations/go_list.html'
+    queryset = Tissue.objects.all()
+    filterset = GOFilterSet
+    success_url = '/annotations/go/'
 
 #234567891123456789212345678931234567894123456789512345678961234567897123456789

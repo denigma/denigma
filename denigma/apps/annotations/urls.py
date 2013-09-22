@@ -2,7 +2,7 @@
 from django.conf.urls.defaults import patterns, url
 from django.contrib.auth.decorators import login_required
 
-from views import SpeciesCreate, SpeciesUpdate, TissueCreate, TissueList
+from views import SpeciesCreate, SpeciesUpdate, TissueCreate, TissueList, GOView, GOList
 
 
 urlpatterns = patterns('annotations.views',
@@ -32,6 +32,10 @@ urlpatterns = patterns('annotations.views',
     url(r'^species/edit/(?P<pk>\d+)/$',
         login_required(SpeciesUpdate.as_view()), name='update-species'),
     url(r'^species/add/$', SpeciesCreate.as_view(), name='create-species'),
+
+    url(r'^go/$', GOView.as_view()),
+    url(r'^go_list/$', GOList.as_view()),
+
 
     # Tissues:
     url(r'^tissue/table/$', 'tissue_table', name='tissue_table'),
