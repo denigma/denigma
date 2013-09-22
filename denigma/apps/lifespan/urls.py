@@ -9,9 +9,10 @@ from views import FactorList, CreateFactor, FactorDetail, FactorDelete, FactorOn
 from views import VariantList, CreateVariant, VariantDetail, VariantDelete, \
     VariantBulkInsert, VariantIssues, VarianceDetail#, FactorCreate, FactorUpdate
 
+from django.views.decorators.csrf import csrf_exempt
+
 from views import CreateStrain, UpdateStrain
 from views import ManipulationDetail
-
 
 
 from data.views import Delete
@@ -89,9 +90,9 @@ urlpatterns = patterns('lifespan.views',
 
     # Variants:
     url(r'^variants/bulk_insert/$', VariantBulkInsert.as_view(), name='variant-bulk-insert'),
-    url(r'^variants/(?P<chromosome>.+)?/?(?P<output>output)?', VariantList.as_view(), name='variants'),
+    url(r'^variants/(?P<chromosome>.+)?/?(?P<output>output)?', csrf_exempt(VariantList.as_view()), name='variants'),
 
-    url(r'^variants/(?P<chromosome>.+)?/?(?P<output>output)?', VariantList.as_view(), name='variants'),
+    url(r'^variants/(?P<chromosome>.+)?/?(?P<output>output)?', csrf_exempt(VariantList.as_view()), name='variants'),
 
    # url(r'^variants/(?P<chromosome>.+)?', VariantList.as_view(), name='variants'),
     url(r'^variant/issues/$', VariantIssues.as_view(), name='variant-issues'),
@@ -116,7 +117,6 @@ urlpatterns = patterns('lifespan.views',
     url(r'^study_type/(?P<pk>\d+)/$', DetailView.as_view(model=StudyType), name='study_type'),
     url(r'^variant_type/(?P<pk>\d+)/$', DetailView.as_view(model=VariantType), name='variant_type'),
     url(r'^or_type/(?P<pk>\d+)/$', DetailView.as_view(model=ORType), name='or_type'),
-
 
     url(r'^state/(?P<pk>\d+)/$', DetailView.as_view(model=State), name='state'),
     url(r'^variants/index/$', TemplateView.as_view(template_name='lifespan/variant_index.html'), name='variant-index'),
