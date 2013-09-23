@@ -22,6 +22,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Q
 
+
 import reversion
 
 from django_tables2 import SingleTableView, RequestConfig
@@ -1133,6 +1134,7 @@ class VariantList(SingleTableView, FormView):
     chromosome_number = None
     term = None
     sql = None
+    count = 0
     #
     # def get(self, request, *args, **kwargs):
     #     VariantList.query = None
@@ -1143,9 +1145,13 @@ class VariantList(SingleTableView, FormView):
     #     return super(VariantList, self).get(request, *args, **kwargs)
 
     def dispatch(self, request, *args, **kwargs):
+        print("Dispatch")
+        #VariantList.count += 1
+        print("Variant count is %s" % VariantList.count)
+        #VariantList.query = None
+        VariantList.term = None
         #print("outer")
         #print(args, kwargs)
-
         if 'chromosome' in kwargs:
             #print(kwargs['chromosome'])
             #print("inner")
@@ -1160,7 +1166,7 @@ class VariantList(SingleTableView, FormView):
         return super(VariantList, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        # print("Form valid is triggered")
+        print("Form valid is triggered")
         # print(VariantList.variants)
 
         VariantList.query = form.cleaned_data['filter']
@@ -1189,7 +1195,7 @@ class VariantList(SingleTableView, FormView):
         return super(VariantList, self).form_valid(form)
 
     def form_invalid(self, form):
-        # print("Form is invalid is triggered")
+        print("Form is invalid is triggered")
         # print(VariantList.variants)
 
         VariantList.query = None
@@ -1198,11 +1204,11 @@ class VariantList(SingleTableView, FormView):
         return super(VariantList, self).form_valid(form)
 
     def get_context_data(self, *args, **kwargs):
-        # print("Get context data is triggered")
+        print("Get context data is triggered")
         # print(VariantList.variants)
-
+        VariantList.count += 1
         context = super(VariantList, self).get_context_data(*args, **kwargs)
-        context['form'] = FilterForm(initial={'filter': VariantList.query, 'term':VariantList.term})
+        context['form'] = FilterForm() #initial={'filter': VariantList.query, 'term':VariantList.term}
         context['variantsfilter'] = self.variantsfilter
         context['entry'] = get("Lifespan Variants")
         # print("Get context data")
@@ -1267,14 +1273,16 @@ class VariantList(SingleTableView, FormView):
                                              Q(ethnicity__name__icontains=VariantList.query) |
                                              Q(study_type__name__icontains=VariantList.query) |
                                              Q(technology__name__icontains=VariantList.query) |
-                                             Q(reference__title__icontains=VariantList.query)).order_by('-id')
+                                             Q(reference__title__icontains=VariantList.query)).order_by('-id').order_by('pvalue')
         else:
             variants = Variant.objects.all().order_by('pvalue').exclude(pvalue=None) #, 'longer_lived_allele')
         self.variantsfilter = VariantFilterSet(variants, self.request.GET)
         #if self.variants:
         #    return self.variants
         #else:
-        self.qs = self.variantsfilter.qs.exclude(choice__name__contains='Review').distinct()
+
+
+        self.qs = self.variantsfilter.qs.exclude(choice__name__contains='Review').distinct().order_by('pvalue')
         print(len(self.qs))
 
 
@@ -1322,6 +1330,13 @@ class VariantList(SingleTableView, FormView):
             #print(len(variants))
             #VariantList.variants = None
             return variants
+
+        print("Variantlist count = %s" % VariantList.count)
+       # if VariantList.count = 2:
+        if VariantList.count == 1:
+            VariantList.count = 0
+            VariantList.query = None
+            VariantList.term = None
 
         return self.qs
 
