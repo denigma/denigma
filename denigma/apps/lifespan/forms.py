@@ -612,8 +612,8 @@ class OntologyForm(Form):
 CHROMOSOMES = [(x,x) for x in range(1,22)]+[('X', 'X'), ('Y', 'Y'), ('MT', 'MT')]
 
 class FilterForm(Form):
-    filter = CharField(required=False, help_text='Narrow results by variant, study, or associated fields (e.g. ADRB2):')
-    term = CharField(required=False, help_text='Use <a href="http://www.geneontology.org/">ontology terms</a> to further narrow results (e.g. <b>sarcoma</b>, <b>anemia</b>, etc.):')
+    filter = CharField(required=False, help_text='Narrow results by variant, study, or associated fields (e.g. gene symbol ADRB2):')
+    term = CharField(required=False, help_text='Use <a href="http://www.geneontology.org/">ontology terms</a> to further narrow results (e.g. <b>aging</b>, <b>insulin</b>, etc.):')
     output = BooleanField(required=False)
     chromosome = MultipleChoiceField(widget=CheckboxSelectMultiple(),
                                      choices=CHROMOSOMES, required=False)
