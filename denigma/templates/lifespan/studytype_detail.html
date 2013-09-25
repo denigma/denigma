@@ -12,7 +12,7 @@
 {% endblock %}
 {% block content %}
     {% for variant in object.variant_set.all %}
-        <li><a href="{{ variant.get_absolute_url }}">{{ variant }}</a> ({{ variant.pvalue }}) {% for factor in variant.factors %}{{ factor }}{% endfor %}{% if not forloop.last %},{% endif %}</li>
+        <li><a href="{{ variant.get_absolute_url }}">{{ variant }}</a> ({{ variant.pvalue }}) {% for factor in variant.factors.all %}<a href="{{ factor.get_absolute_url }}">{{ factor }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</li>
     {% endfor %}
     {% include "comments/wrapper.html" %}
 {% endblock %}
