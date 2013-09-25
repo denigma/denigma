@@ -1149,7 +1149,7 @@ class VariantList(SingleTableView, FormView):
         #VariantList.count += 1
         print("Variant count is %s" % VariantList.count)
         #VariantList.query = None
-        VariantList.term = None
+        #VariantList.term = None
         #print("outer")
         #print(args, kwargs)
         if 'chromosome' in kwargs:
