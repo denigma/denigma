@@ -154,6 +154,8 @@ urlpatterns = patterns('lifespan.views',
     url(r'^manipulation/(?P<pk>\d+)/$', ManipulationDetail.as_view(), name='manipulation'),
     url(r'^manipulation/(?P<slug>.+)/$', ManipulationDetail.as_view(), name='manipulaiton'),
     url(r'^type/$', 'type'),
+    url(r'^browse/$', TemplateView.as_view(template_name='lifespan/genome_browser.html'), name='browse'),
+
 
     # Depricated:
     url(r'^genage/describe', 'describe'),
