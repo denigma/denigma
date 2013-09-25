@@ -625,6 +625,6 @@ class InterventionFilterSet(FilterSet):
 
 class VariantFilterSet(FilterSet):
     fields = ['classifications', 'study_type',
-              'variant_type',
+              'variant_type', 'ethnicity'
               #'or_type', 'significant', 'finding', 'created', 'updated'
               ] #, 'location'] #, 'choice', 'ethnicity',  'technology']
