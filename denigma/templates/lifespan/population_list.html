@@ -17,12 +17,12 @@
 {#    {% endfor %}#}
       {% recursetree object_list %}
         <li>
-            <a href="{{ node.get_absolute_url }}">{{ node }}</a>
-{#            <a href="http://denigma.de/lifespan/variants/?ethnicity={{ node.id }}">{{ node }}</a> (<a href="{{ node.get_absolute_url }}">Browse</a>)#}
+{#            <a href="{{ node.get_absolute_url }}">{{ node }}</a>#}
+            <a href="http://denigma.de/lifespan/variants/?ethnicity={{ node.id }}">{{ node }}</a> (<a href="{{ node.get_absolute_url }}">Browse</a>)
             {% if not node.is_leaf_node %}
                 <ul class="children">
-                    <a href="{{ node.get_absolute_url }}">{{ children }}</a>
-{#                     <a href="http://denigma.de/lifespan/variants/?ethnicity={{ children.id }}">{{ children }}</a>#}
+{#                    <a href="{{ node.get_absolute_url }}">{{ children }}</a>#}
+                     <a href="http://denigma.de/lifespan/variants/?ethnicity={{ children.id }}">{{ children }}</a>
                 </ul>
             {% endif %}
         </li>

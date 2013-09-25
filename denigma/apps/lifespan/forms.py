@@ -2,6 +2,8 @@
 from django.forms import (Form, ModelForm, CharField, Textarea, IntegerField, BooleanField, MultipleChoiceField,
                           ModelChoiceField, ModelMultipleChoiceField)
 from django.forms import CheckboxSelectMultiple
+from django.utils.safestring import mark_safe
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Div, HTML, Button, Row, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
@@ -616,8 +618,10 @@ class FilterForm(Form):
     chromosome = MultipleChoiceField(widget=CheckboxSelectMultiple(),
                                      choices=CHROMOSOMES, required=False)
 
+
 class FactorFilterSet(FilterSet):
     fields = ['species', 'classifications', 'types']
+
 
 class InterventionFilterSet(FilterSet):
     fields = ['species', 'manipulation']
@@ -625,6 +629,10 @@ class InterventionFilterSet(FilterSet):
 
 class VariantFilterSet(FilterSet):
     fields = ['classifications', 'study_type',
-              'variant_type',
+              'variant_type','ethnicity',
               #'or_type', 'significant', 'finding', 'created', 'updated'
-              ] #, 'location'] #, 'choice', 'ethnicity',  'technology']
+              ] #, 'location'] #, 'choice',   'technology']
+    hidden = ('ethnicity',)
+
+    def render(self):
+        return mark_safe(u'\n'.join(self.render_filter(f) for f in self.filters if f.field not in self.hidden))
