@@ -11,6 +11,6 @@
 {% endblock %}
 {% block content %}
     {% for object in object_list %}
-        <li><a href="http://denigma.de/lifespan/variants/?variant_type={{ object.id }}">{{ object }}</a>(<a href="{{ object.get_absolute_url }}"> Browse</a>)</li>
+        <li><a href="http://denigma.de/lifespan/variants/?variant_type={{ object.id }}">{{ object }}</a> (<a href="{{ object.get_absolute_url }}">Browse</a>)</li>
     {% endfor %}
 {% endblock %}
