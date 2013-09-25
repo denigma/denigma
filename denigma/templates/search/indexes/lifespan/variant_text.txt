@@ -1,0 +1,24 @@
+{{ object.created }}
+{{ object.updated }}
+{{ object.located }}
+{{ object.shorter_lived_allele }}
+{{ object.longer_lived_allele }}
+{{ object.polymorphism }}
+{{ object.alias }}
+{{ object.description }}
+{{ object.odds_ratio }}
+{{ object.pvalue }}
+{{ object.p_value }}
+{{ object.qvalue }}
+{{ object.significant }}
+{{ object.initial_number }}
+{{ object.replication_number }}
+{{ object.age_of_cases }}
+{{ object.pmid }}
+
+
+
+
+
+
+
