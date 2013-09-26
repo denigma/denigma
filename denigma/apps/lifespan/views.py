@@ -1275,7 +1275,7 @@ class VariantList(SingleTableView, FormView):
                                              Q(technology__name__icontains=VariantList.query) |
                                              Q(reference__title__icontains=VariantList.query)).order_by('-id').order_by('pvalue')
         else:
-            variants = Variant.objects.all().order_by('pvalue')#.exclude(pvalue=None) #, 'longer_lived_allele')
+            variants = Variant.objects.all().order_by('pvalue').exclude(pvalue=None) #, 'longer_lived_allele')
         # if (not VariantList.query and not VariantList.symbol and not VariantList.variants and not VariantList.sql) and self.request.method == 'GET':
         #     print('got it')
         #     variants = Variant.objects.all().order_by('pvalue').exclude(pvalue=None)
