@@ -28,16 +28,16 @@ INTERNAL_IPS = [
 ]
 
 ADMINS = [
-     ('Hevok', 'hevok@denigma.de'),
+     ('Daniel', 'd.a.wuttke@gmail.com'), # 'Alerts', 'alerts@denigma.de'
 ]
 
 CONTACT_EMAIL = 'hevok@denigma.de'
 DEFAULT_FROM_EMAIL = 'hevok@denigma.de'
-SERVER_EMAIL = 'hevok@denigma.de'
+SERVER_EMAIL = 'd.a.wuttke@gmail.com' #'hevok@denigma.de'
 
 MANAGERS = ADMINS
 
-#SEND_BROKEN_LINK_EMAILS = True # Report 404 errors too.
+SEND_BROKEN_LINK_EMAILS = False # Report 404 errors too.
 
 if os.path.exists(os.path.join(PROJECT_ROOT, 'local_settings.py')):
     BACKEND = 'mysql'
