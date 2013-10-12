@@ -624,6 +624,10 @@ class FactorDetail(DetailView):
                 inparanoid_list = InParanoid.objects.filter(Q(ensembl_gene_id_a=protein.ensembl_protein_id)|Q(ensembl_gene_id_b=protein.ensembl_protein_id)).distinct()
                 for inparanoid in inparanoid_list:
                     inparanoids.append(inparanoid)
+        else:
+            orthologs = ''
+            homologs = ''
+            inparanoids = ''
         context['orthologs'] = orthologs
         context['homologs'] = homologs
         context['inparanoids'] = inparanoids
