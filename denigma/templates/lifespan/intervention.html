@@ -4,6 +4,7 @@
 {% load url from future %}
 {% load pubmed_linker %}
 {% load rendering %}
+{% load splitter %}
 
 {% load staticfiles %}
 {#{% load coffeescript %}#}
@@ -86,6 +87,13 @@
             <li><a href="/datasets/reference/{{ reference.pk }}">{{ reference.pmid }}: {{ reference.title }}</a></li>
         {% endfor %}<br>
     {% endif %}
+    {% for factor in intervention.factors.all %}<a href={% url 'factor' factor.pk %}> {{ factor.symbol }}</a>{% endfor %}<br>
+        {% if intervention.factor %}
+            <br><b>Aging relevance analysis/Possible source:</b><br>
+            <li><a href="http://genomics.senescence.info/genes/details.php?gene={{ factor.symbol }}&organism={{ factor.species.latin_name|split:' ' }}"> <img src="http://agefactdb.jenage.de/assets/images/general/db_gendr.gif">GenAge</a></li>
+            <li><a href="http://genomics.senescence.info/diet/details.php?id={{ factor.entrez_gene_id }}"><img src="http://genomics.senescence.info/images/gendr_logo_leftnav.png" width="25" height="25">GenDR</a></li>
+        {% endif %}
+    {% endfor %}
     {% if intervention.comparison_set.all %}
         <b>Comparisons:</b><br>
         {% for comparison in intervention.comparison_set.all %}
