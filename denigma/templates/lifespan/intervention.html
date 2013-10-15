@@ -89,7 +89,7 @@
     {% endif %}
     {% for factor in intervention.factors.all %}
         {% if intervention.species.latin_name %}
-            <br><b>Aging relevance analysis/Possible source:</b><br>
+            <br><b>Aging Relevance Analysis/Source:</b><br>
             <li><a href="http://genomics.senescence.info/genes/details.php?gene={{ factor.symbol }}&organism={{ intervention.species.latin_name|split:' ' }}"> <img src="http://agefactdb.jenage.de/assets/images/general/db_gendr.gif">GenAge</a></li>
             <li><a href="http://genomics.senescence.info/diet/details.php?id={{ factor.entrez_gene_id }}"><img src="http://genomics.senescence.info/images/gendr_logo_leftnav.png" width="25" height="25">GenDR</a></li>
         {% endif %}
