@@ -115,6 +115,7 @@
             {% endif %}
 
             <li><a href="http://genomics.senescence.info/genes/details.php?gene={{ factor.symbol }}&organism={{ factor.species.latin_name|split:' ' }}">GenAge</a></li>
+            <li><a href="http://genomics.senescence.info/diet/details.php?id={{ factor.entrez_gene_id }}">GenDR</a></li>
 
             {% if factor.human_homolog %}<b>Human homolog:</b> {{ factor.human_homolog }}{% endif %}<br>
 
