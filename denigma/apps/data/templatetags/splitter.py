@@ -9,3 +9,7 @@ def snap(text):
     if len(splitter) == 1:
         return text
     return "\n".join(splitter[:-1])
+
+@register.filter(name='split')
+def split(value, arg):
+    return value.split(' ')[1]
