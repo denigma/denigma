@@ -114,9 +114,11 @@
                 {% endfor %}<br>
             {% endif %}
 
-            <br><b>Aging Relevance Analysis/Source::</b><br>
-            <li><a href="http://genomics.senescence.info/genes/details.php?gene={{ factor.symbol }}&organism={{ factor.species.latin_name|split:' ' }}"> <img src="http://agefactdb.jenage.de/assets/images/general/db_gendr.gif">GenAge</a></li>
-            <li><a href="http://genomics.senescence.info/diet/details.php?id={{ factor.entrez_gene_id }}"><img src="http://genomics.senescence.info/images/gendr_logo_leftnav.png" width="25" height="25">GenDR</a></li>
+            {% if factor.species %}
+                <br><b>Aging Relevance Analysis/Source:</b><br>
+                <li><a href="http://genomics.senescence.info/genes/details.php?gene={{ factor.symbol }}&organism={{ factor.species.latin_name|split:' ' }}"> <img src="http://agefactdb.jenage.de/assets/images/general/db_gendr.gif">GenAge</a></li>
+                <li><a href="http://genomics.senescence.info/diet/details.php?id={{ factor.entrez_gene_id }}"><img src="http://genomics.senescence.info/images/gendr_logo_leftnav.png" width="25" height="25">GenDR</a></li>
+            {% endif %}
 
             {% if factor.human_homolog %}<b>Human homolog:</b> {{ factor.human_homolog }}{% endif %}<br>
 
