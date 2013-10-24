@@ -12,6 +12,8 @@ from pinax.apps.account.openid_consumer import PinaxConsumer
 
 from sitemaps import SiteMap, SiteSiteMap
 
+from contact.views import UnsubscribeView
+
 #from haystack.views import SearchView
 #from forms import DateRangeSearchForm
 
@@ -172,6 +174,8 @@ urlpatterns += patterns("",
     # Standards
     url(r'^about/', include("about.urls")),
     url(r'^contact/$', 'contact.views.contact', name='contact'),
+    url(r'^unsubscribe/$', UnsubscribeView.as_view(), name='unsubscribe'),
+    url(r'^thanks/$', TemplateView.as_view(template_name='contact/thanks.html'), name='thanks'),
     url(r'^sitemap\.xml', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
     url(r'^favicon\.ico$', 'django.views.generic.base.RedirectView',
        {'url': '/media/img/favicon.ico'}), # Site icon

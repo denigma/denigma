@@ -23,6 +23,15 @@ class NameContactForm(forms.Form):
         # send email using cleaned data dictionary.
         pass
 
+class UnsubscribeForm(forms.Form):
+    list_name = forms.CharField(max_length=200) #optional min_length is also available
+    email = forms.EmailField(required=False, label='E-mail')
+
+    def clean_list_name(self):
+        list_name = self.cleaned_data['list_name']
+        if not list_name:
+            raise forms.ValidationError("Please provide the name of the list you like to unsubscribe")
+        return list_name
 
 if __name__ == '__main__':
     f = ContactForm({'subject':'Hello', 'email':'adrian@example.com', 'message':'Test'})

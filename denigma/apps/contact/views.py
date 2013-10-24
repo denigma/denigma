@@ -8,24 +8,12 @@ from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
-from forms import ContactForm, NameContactForm
+from forms import ContactForm, NameContactForm, UnsubscribeForm
 
 
 def contact(request):
     errors = []
     if request.method == 'POST':
-        #if not request.POST.get('subject', ''): errors.append('Enter a subject.')
-        #if not requesst.POST.get('message', ''): errors.append('Enter a message.')
-        #if not request.POST.get('email') and '@' not in request.POST['emal']: errors.append('Enter a valid e-mail address.')
-##        if not errors:
-##            send_mail(
-##                request.POST['subject'],
-##                request.POST['message'],
-##                request.POST.get('emal', 'noreply@example.com'),
-##                ['siteowner@example.com'],
-
-##            )
-##            return HttpResponseRedirect('/contact/thanks/')
         form = ContactForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
@@ -73,3 +61,34 @@ class ContactView(FormView):
         # It should return an HttpResponse.
         form.send_email()
         return super(ContactView, self).form_valid(form)
+
+
+# Not yet implemented:
+class UnsubscribeView(FormView):
+    template_name = 'contact/unsubscribe.html'
+    form_class = UnsubscribeForm
+    success_url = '/thanks/'
+
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        cd = form.cleaned_data
+        try:
+            send_mail(
+                'Unsubscription',
+                'Unsubscripition request of %s from %s ' % (cd['email'], cd['list_name']),
+                cd.get('email', 'hevok@denigma.de'), #'noreply@example.com'),
+                ['age@liv.ac.uk'],                #['siteowner@example.com'],
+            )
+        except:
+             # Because of the verfication problem with SES.
+             send_mail(
+                'Unsubscription',
+                'Unsubscripition request of %s from %s ' % (cd['email'], cd['list_name']),
+                cd.get('mail', 'hevok@denigma.de'),
+                ['age@liv.ac.uk'],
+             )
+
+        messages.add_message(self.request, messages.SUCCESS,
+            ugettext("You have successfully been unsubscribed from %s." % cd['list_name']))
+        return super(UnsubscribeView, self).form_valid(form)

@@ -1,0 +1,48 @@
+{% extends "site_base.html" %}
+
+{% block head_title %}Unsubscription{% endblock%}
+
+{% block hierarchy %}
+    > Unsubscribe
+{% endblock %}
+
+{% block extra_style %}
+    <style type="text/css">
+        ul.errorlist{
+            margin: 0;
+            padding: 0;
+        }
+        .errorlist li {
+            background-color: red;
+            color: white;
+            display: block:
+            font-size: 10px;
+            margin: 0 0 3px;
+            padding 4px 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}Unsubscribe{% endblock %}
+
+{% block content %}
+    <p>You can directly unsubscribe from a mailing list.
+    {% if form.errors %}
+    <p style="color: red;">
+        Please correct the error{{ form.errors|pluralize }} below.
+    </p>
+    {% endif %}
+        <form action="" method="post">{% csrf_token %}
+            <div class="field">
+                {{ form.email.errors }}
+                <label for="id_email">Your e-mail address:</label>
+                {{ form.email }}
+            </div>
+            <div class="field">
+                {{ form.list_name.errors }}
+                <label for="id_message">Mailing list name:</label>
+                {{ form.list_name }}
+            </div>
+            <input type="submit" value="Submit">
+        </form>
+{% endblock %}
