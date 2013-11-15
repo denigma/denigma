@@ -1,0 +1,115 @@
+@import "lifespan";
+
+
+@test_min: @denigma_red;
+@test_mean: @denigma_blue;
+@test_median: @denigma_blue;
+@test_max: green;
+
+@control_min: #C5908E;
+@control_mean:#BCC6CC;
+@control_median:#BCC6CC;
+@control_max:#D5EBDC;
+
+@def_stroke: black;
+@test_stroke:grey;
+@control_stroke:grey;
+
+rect{
+    stroke: @def_stroke
+}
+
+/*
+Denigma colors:
+top right red fill: rgba(204,0,0,1)
+center fill: rgba(224,102,102,1)
+orange left fill: rgba(246,178,107,1)
+violet bottom right rgba(166, 77, 121 ,1)
+
+*/
+
+.decor {
+    fill:@denigma_violet_opac;
+    stroke: grey
+}
+
+.icon rect {
+  fill: @denigma_orange_opac
+}
+
+rect{
+    stroke: black;
+}
+
+
+
+
+.test {
+
+  text{
+    font-size: 12pt;
+    stroke:white;
+    fill:white
+  }
+
+  rect.min {
+    fill: @test_min;
+  }
+
+
+  rect.textmin {
+    fill:@test_min;
+  }
+
+  rect.mean {
+    fill: @test_mean;
+  }
+
+  rect.textmean {
+    fill: @test_mean;
+  }
+
+
+  rect.median {
+    fill: @test_median;
+  }
+
+  rect.textmedian {
+    fill: @test_median;
+  }
+
+
+  rect.max {
+    fill: @test_max;
+  }
+
+  rect.textmax {
+    fill: @test_max;
+  }
+
+}
+
+.control {
+  rect {
+    stroke: @control_stroke;
+  }
+
+  rect.min {
+    fill: @control_min
+
+  }
+  rect.mean {
+    fill: @control_mean;
+
+  }
+
+  rect.median {
+    fill: @control_median;
+  }
+
+  rect.max {
+    fill: @control_max
+  }
+
+}
+

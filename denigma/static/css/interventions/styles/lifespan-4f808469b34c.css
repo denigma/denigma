@@ -1,0 +1,29 @@
+/* ivory;*/
+.chart {
+  background-color: #ffffff;
+  border: 3px double black;
+  margin: 5px;
+  padding: 5px;
+  text-align: center;
+}
+#generator {
+  background-color: #cc0000;
+  border-width: 2px;
+  width: 100%;
+}
+.axis path,
+.xAxis path,
+.yAxis path,
+.axis line,
+.xAxis line,
+.yAxis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+.axis text,
+.xAxis text,
+.yAxis text {
+  font-family: sans-serif;
+  font-size: 11px;
+}

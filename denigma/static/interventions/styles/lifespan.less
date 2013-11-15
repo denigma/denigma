@@ -1,0 +1,41 @@
+@denigma_red: rgb(204,0,0);
+@denigma_orange: rgb(246,178,107);
+@denigma_violet: rgb(166, 77, 121);
+@denigma_rose: #e06666;
+@denigma_blue: #4a86e8;
+
+@chart_back: white; /* ivory;*/
+
+
+@denigma_orange_opac: rgba(246,178,107,0.6);
+@denigma_violet_opac: rgba(166, 77, 121 ,0.2);
+
+.chart {
+    background-color:@chart_back;
+    border: 3px double black;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+
+}
+
+#generator {
+    background-color: @denigma_red;
+    border-width: 2px;
+    width:100%;
+
+}
+
+.axis, .xAxis, .yAxis {
+  path, line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+  }
+
+  text {
+    font-family: sans-serif;
+    font-size: 11px;
+  }
+}
+

@@ -1,0 +1,94 @@
+/* ivory;*/
+.chart {
+  background-color: #ffffff;
+  border: 3px double black;
+  margin: 5px;
+  padding: 5px;
+  text-align: center;
+}
+#generator {
+  background-color: #cc0000;
+  border-width: 2px;
+  width: 100%;
+}
+.axis path,
+.xAxis path,
+.yAxis path,
+.axis line,
+.xAxis line,
+.yAxis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+.axis text,
+.xAxis text,
+.yAxis text {
+  font-family: sans-serif;
+  font-size: 11px;
+}
+rect {
+  stroke: #000000;
+}
+/*
+Denigma colors:
+top right red fill: rgba(204,0,0,1)
+center fill: rgba(224,102,102,1)
+orange left fill: rgba(246,178,107,1)
+violet bottom right rgba(166, 77, 121 ,1)
+
+*/
+.decor {
+  fill: rgba(166, 77, 121, 0.2);
+  stroke: #808080;
+}
+.icon rect {
+  fill: rgba(246, 178, 107, 0.6);
+}
+rect {
+  stroke: black;
+}
+.test text {
+  font-size: 12pt;
+  stroke: white;
+  fill: #ffffff;
+}
+.test rect.min {
+  fill: #cc0000;
+}
+.test rect.textmin {
+  fill: #cc0000;
+}
+.test rect.mean {
+  fill: #4a86e8;
+}
+.test rect.textmean {
+  fill: #4a86e8;
+}
+.test rect.median {
+  fill: #4a86e8;
+}
+.test rect.textmedian {
+  fill: #4a86e8;
+}
+.test rect.max {
+  fill: #008000;
+}
+.test rect.textmax {
+  fill: #008000;
+}
+.control rect {
+  stroke: #808080;
+}
+.control rect.min {
+  fill: #c5908e;
+}
+.control rect.mean {
+  fill: #bcc6cc;
+}
+.control rect.median {
+  fill: #bcc6cc;
+}
+.control rect.max {
+  fill: #d5ebdc;
+}
