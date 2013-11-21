@@ -32,6 +32,7 @@
             <h2>{{ form.name }}</h2>
             {{ form.description|markdown|urlize }}
 
+
             {% if not "Stages" in form.name %}
                 {% for fld in form %}
                     <div class="form-row">
@@ -40,10 +41,10 @@
                          {% if form.start %}
                             {{ fld.label|number_letter:form.start }}.
                         {% else %}
-                           {{ fld.label }}.
+                           {{ fld.label}}.
                         {% endif %}
                         </b>
-                            {{ fld.help_text|markweg }}<br>
+                            {{ fld.help_text|markweg|safe }}<br> 
                         </label>
                         {{ fld }} {{ fld.errors }}
                     </div>
@@ -54,7 +55,7 @@
                     {% if not forloop.counter|divisibleby:2 %}
                         <div class="form-row">
                             <label class="{% if fld.field.required %} required {% endif %}">
-                                <b> {{ fld.label|number_letter:form.start }} .</b> {{ fld.help_text|markweg }}<br>
+                                <b> {{ fld.label|number_letter:form.start }} .</b> {{ fld.help_text|markweg|safe }}<br>
                             </label>
                             {#  {{ fld }} {{ fld.errors } }#}
                         </div>
