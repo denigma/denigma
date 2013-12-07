@@ -174,7 +174,7 @@ urlpatterns += patterns("",
     # Standards
     url(r'^about/', include("about.urls")),
     url(r'^contact/$', 'contact.views.contact', name='contact'),
-    url(r'^unsubscribe/$', UnsubscribeView.as_view(), name='unsubscribe'),
+    url(r'^unsubscribe/(?P<list>\w+)', UnsubscribeView.as_view(), name='unsubscribe'),
     url(r'^thanks/$', TemplateView.as_view(template_name='contact/thanks.html'), name='thanks'),
     url(r'^sitemap\.xml', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
     url(r'^favicon\.ico$', 'django.views.generic.base.RedirectView',
@@ -192,6 +192,7 @@ urlpatterns += patterns("",
     # Sites
     url(r'^alliance/', include('alliance.urls')),
     url(r'^immuno/', include('immuno.urls')),
+    url(r'^longevitydb/', TemplateView.as_view(template_name='longevitydb.html'), name='longevitydb'),
 )
 if settings.SERVE_MEDIA:
     urlpatterns += patterns("",
