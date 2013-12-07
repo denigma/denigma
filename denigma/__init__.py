@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import rst_directive
+import youtube
 
 
 VERSION = (1, 4, 1, "f") # Following PEP 386.
