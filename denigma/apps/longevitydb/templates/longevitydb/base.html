@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load url from future %}
+
+<html lang="en">
+    <head>
+        {% block head %}
+            {% block meta %}<meta charset="utf-8">{% endblock meta %}
+            <title>{% block title %}LongevityDB{% endblock title %}</title>
+            {% block links %}
+                <link rel="stylesheet" href="{{ STATIC_URL }}css/layout.css" />
+                <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+            {% endblock links %}
+            <ul class="longevitydb-nav">
+                {% block navigation %}
+                    <li><a href="{% url 'longevitydb-browse' %}">Browse</a></li>
+                    <li><a href="{% url 'longevitydb-search' %}">Search</a></li>
+                    <li><a href="{% url 'longevitydb-about' %}">About</a></li>
+                    <li><a href="{% url 'longevitydb-home' %}">Home</a></li>
+                {% endblock navigation %}
+            </ul>
+        {% endblock head %}
+    </head>
+    <body>
+        {% block body %}
+            <div class="longevitydb-header">
+                {% block header %}
+                    <div class="longevitydb-logo">
+                        <h1>Longevity DB</h1>
+                        <h3>Genetic variants implicated in human longevity.</h3>
+                    </div>
+                {% endblock header %}
+            </div>
+            <div class="longevitydb-main" style="min-height:600px">
+                {% block main %}{% endblock main %}
+            </div>
+            <div class="longevitydb-footer">
+                {% block footer %}
+                    <a class="longevitydb-brand" href="#"> {# longevitydb-brand-black #}
+                        <img alt="Denigma" width="120" height="60" src="http://dgallery.s3.amazonaws.com/denigma_pos.svg">
+                    </a>
+                    <a class="longevitydb-brand" href="#">
+                        <img alt="Buck Institute" width="120" height="60" src="http://upload.wikimedia.org/wikipedia/commons/7/73/Logo_of_the_Buck_Institute_for_Research_on_Aging.png">
+                    </a>
+                    <a class="longevitydb-brand" href="#">
+                        <img alt="Health Extension" width="60" height="60" src="http://dgallery.s3.amazonaws.com/logo.png">
+                    </a>
+                {% endblock footer %}
+            </div>
+         {% endblock body %}
+    </body>
+</html>
+
+

@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PINAX_ROOT = os.path.abspath(os.path.dirname(pinax.__file__))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-BASE_URL='http://localhost:8000'
+BASE_URL= 'http://denigma.de' #'http://localhost:8000'
 
 # tells Pinax to use the default theme
 PINAX_THEME = 'basic'# "default"
@@ -28,7 +28,7 @@ INTERNAL_IPS = [
 ]
 
 ADMINS = [
-     ('Daniel', 'd.a.wuttke@gmail.com'), # 'Alerts', 'alerts@denigma.de'
+     ('Hevok', 'd.a.wuttke@gmail.com'), # 'Alerts', 'alerts@denigma.de'
 ]
 
 CONTACT_EMAIL = 'hevok@denigma.de'
@@ -374,6 +374,8 @@ INSTALLED_APPS = [
     'stats',
     'utils',
     'add',
+    #'triple',
+    'longevitydb',
 ]
 
 FIXTURE_DIRS = [

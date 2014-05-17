@@ -1,0 +1,23 @@
+{% extends 'longevitydb/base.html' %}
+{% load render_table from django_tables2 %}
+
+{% block main %}
+    <h3 class="title">Search</h3>
+    <div class="search-wrapper">
+    <div class="promption">Search by variant, gene, study or associated filed (example: ADRB2)</div>
+{#    {{ form.as_p }}#}
+    <form action="search" method="POST">{% csrf_token %}
+        <input type="submit" value="Basic Search" />
+        <input type="text" name="keyword" class="search" />
+    </form>
+    </div>
+    <div class="search-wrapper">
+        <div class="promption">Search by Gene Ontology term (example: insulin)</div>
+    <form action="search" method="POST">{% csrf_token %}
+            <input type="submit" value="Ontology search" />
+            <input type="text" name="term" class="search" />
+        </form>
+    </div>
+    <hr>
+    {% render_table table %}
+{% endblock main %}

@@ -192,7 +192,7 @@ urlpatterns += patterns("",
     # Sites
     url(r'^alliance/', include('alliance.urls')),
     url(r'^immuno/', include('immuno.urls')),
-    url(r'^longevitydb/', TemplateView.as_view(template_name='longevitydb.html'), name='longevitydb'),
+    url(r'^longevitydb/', include('longevitydb.urls')),
 )
 if settings.SERVE_MEDIA:
     urlpatterns += patterns("",

@@ -1,0 +1,193 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:'';content:none}table{border-collapse:collapse;border-spacing:0}
+
+
+/* Longevity DB */
+
+body { 
+    background: -webkit-gradient
+           (linear, left top, left bottom, from(#ccc), to(#fff));
+    font-style: helvetica;
+}
+
+ul.longevitydb-nav {
+    list-style: none;
+    display: block;
+    width: 120px;
+    position: relative;
+    top: 100px;
+    left: 0px;
+    margin: 0px;
+    padding: 0px;
+    float: left;
+}
+
+ul.longevitydb-nav li a {
+    position: relative;
+    left: -45px;
+    transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+    background: #573c78;
+    color: #ffffff;
+    padding: 15px 10px 15px 10px;
+    margin: 0px 0px 90px 0px;
+    width: 100px;
+    display: block;
+    font: 20px/20px Helvetica,sans-serif;
+    text-decoration: none;
+    text-align: center;
+    -webkit-box-shadow: 2px 2px 4px #888;
+    -webkit-transform: rotate(-90deg) translateY(10px) translateX(-20px); 
+    -moz-transform:    rotate(-90deg) translateY(10px) translateX(-20px); 
+    -ms-transform:     rotate(-90deg) translateY(10px) translateX(-20px); 
+    -o-transform:      rotate(-90deg) translateY(10px) translateX(-20px); 
+    transform:         rotate(-90deg) translateY(10px) translateX(-20px);
+}
+
+ul.longevitydb-nav li a:hover {
+    background: #ebebeb;
+    color: #67a5cd;
+    padding: 15px 10px 15px 15px;
+}
+
+div.longevitydb-header {
+    margin: 0px 0px 50px 0px;
+}
+
+div.longevitydb-logo h1 {
+    font: 50px/75px Helvetica,sans-serif;
+    font-weight: 600;
+    color: #573c78;
+}
+
+div.longevitydb-logo h3 {
+    font: 24px/36px Helvetica,sans-serif;
+    font-weight: 200;
+    color: #8782a8;
+}
+
+div.longevitydb-main {
+    min-height: 440px;
+}
+
+div.longevitydb-main h3.title {
+    font: 30px/48px Helvetica,sans-serif;
+    font-weight: 400;
+    color: #573c78;
+    text-decoration: underline;
+    margin: 0px 0px 20px 0px;
+}
+
+/* Longevity DB - Home */
+
+div.homepage-title h1 {
+    padding: 100px 0px 0px 0px;
+    font: 150px/225px Helvetica,sans-serif;
+    font-weight: 400;
+    color: #573c78;
+    text-indent: 100px;
+}
+
+div.homepage-title h3 {
+    font: 42px/63px Helvetica,sans-serif;
+    font-weight: 400;
+    color: #8782a8;
+    text-indent: 110px;
+}
+
+/* Longevity DB - About */
+
+div.longevitydb-main p.about {
+    font: 22px/30px Helvetica,sans-serif;
+    font-weight: 400;
+    color: #573c78;
+    margin: 0px 0px 20px 0px;
+}
+
+div.longevitydb-main p.about a {
+    color: #573c78;
+}
+
+/* Longevity DB - Browse */
+
+div.longevitydb-main ul.menu li {
+    margin: 0px 0px 15px 0px;
+}
+
+div.longevitydb-main ul.menu li span {
+    font: 22px/30px Helvetica,sans-serif;
+    font-weight: 400;
+    color: #8782a8;
+}
+
+div.longevitydb-main ul.menu li div.collapsing {
+    display: none;
+}
+
+div.longevitydb-main ul.menu li a.hide {
+    display: none;
+}
+
+div.longevitydb-main ul.menu li a.show:target {
+    display: none;
+}
+
+div.longevitydb-main ul.menu li a.show:target + a.hide {
+    display: inline;
+}
+
+div.longevitydb-main ul.menu li a.show:target ~ div.collapsing {
+    display: block;
+}
+
+div.longevitydb-main ul.menu li a.show, div.longevitydb-main ul.menu li a.hide {
+    font: 30px/30px Helvetica,sans-serif;
+    color: #8782a8;
+    text-align: center;
+    text-decoration: none;
+    opacity: .95;
+}
+
+/* Longevity DB - Search */
+
+div.longevitydb-main div.search-wrapper {
+    margin: 0px 0px 20px 0px;
+}
+
+div.longevitydb-main div.search-wrapper div.promption {
+    font: 15px/18px Verdana,Arial,Helvetica,sans-serif;
+    color: #909090;
+}
+
+div.longevitydb-main div.search-wrapper input[type=submit] {
+    border-top: 1px solid #d3d3d3;
+    margin: 0px;
+    padding: 0px;
+    width: 120px;
+    background: #e6e6e6;
+    color: #606060;
+    font-size: 14px;
+    font-family: Helvetica, Arial, Sans-Serif;
+    text-decoration: none;
+    text-align: left;
+}
+
+div.longevitydb-main div.search-wrapper input.search {
+    width: 450px;
+}
+
+/* Longevity DB - Footer */
+
+a.longevitydb-brand {
+    display: block;
+    float: right;
+    margin: 0px 10px 0px 10px;
+}
+
+a.longevitydb-brand-black {
+    background: #000000;
+}
