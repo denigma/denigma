@@ -1,8 +1,9 @@
-from django.views.generic import FormView, ListView, TemplateView
+from django.views.generic import FormView, TemplateView
 from django.db.models import Q
 from django_tables2 import SingleTableView, RequestConfig
 from django.shortcuts import render
-from django.template import RequestContext
+from django.views.decorators.csrf import csrf_exempt
+
 
 from lifespan.models import Population, StudyType, VariantType, Variant
 from lifespan.tables import VariantTable
@@ -12,7 +13,7 @@ from annotations.models import Classification, GO
 #from forms import SearchForm, BrowseForm
 from filters import VariantFilterSet
 
-
+@csrf_exempt
 def search(request, template_name='longevitydb/search.html'):
     print("Searching")
     variants = Variant.objects.all()
