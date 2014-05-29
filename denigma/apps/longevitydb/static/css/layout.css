@@ -72,6 +72,7 @@ div.longevitydb-logo h3 {
 
 div.longevitydb-main {
     min-height: 440px;
+    padding-left: 120px;
 }
 
 div.longevitydb-main h3.title {
@@ -152,6 +153,16 @@ div.longevitydb-main ul.menu li a.show, div.longevitydb-main ul.menu li a.hide {
     opacity: .95;
 }
 
+div.filterline span.filterlabel {
+    font: 22px/30px Helvetica,sans-serif;
+    color: #8782a8;
+}
+
+div.longevitydb-main ul.menu li div a, div.filterline span a {
+    color: #5B80B2;
+    text-decoration: none;
+}
+
 /* Longevity DB - Search */
 
 div.longevitydb-main div.search-wrapper {
@@ -191,5 +202,3 @@ a.longevitydb-brand {
 a.longevitydb-brand-black {
     background: #000000;
 }
-
-/* Longevity DB - Search */
