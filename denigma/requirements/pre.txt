@@ -1,1 +1,3 @@
 numpy # Required for BioPython.
+hgtools # do not know why it is needed now?
+setuptools --upgrade

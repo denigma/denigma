@@ -9,7 +9,8 @@
 markdown	# Markup for Wiki.
 south 		# Necessary for database evolution.
 #MySQL-python 	# Required for interfacing with db via manage.py on server.
-PIL		# Used by gallery.
+#PIL		# Used by gallery.
+Pillow
 
 -e git+https://github.com/boto/boto.git#egg=boto # AWS API. 
 django-SES      # Simple Email Service.
@@ -47,7 +48,7 @@ mechanize
 -e git://github.com/bradleyayers/django-tables2.git#egg=django-tables2
 
 # Forms:
-django-crispy-forms #==dev # Dev does not work.
+django-crispy-forms==1.4.0 #dev # Dev does not work.
 
 # Filters:
 -e git://github.com/alex/django-filter.git#egg=django-filters # Not django-1.3 compatibile
@@ -73,7 +74,8 @@ pygments
 -e git://github.com/guzru/django-avatar#egg=django-avatar
 
 # Comments:
--e git://github.com/edoburu/django-fluent-comments.git#egg=django-fluent-comments
+django-fluent-comments==0.8.0
+#-e git://github.com/edoburu/django-fluent-comments.git#egg=django-fluent-comments
 
 # Chat
 gevent-socketio==0.3.5-beta
@@ -90,7 +92,7 @@ sphinx-me
 -e git://github.com/denigma/donation.git#egg=donation
 
 # Memcache
--e git://github.com/jbalogh/django-pylibmc.git#egg=django-pylibmc
+#-e git://github.com/jbalogh/django-pylibmc.git#egg=django-pylibmc
 
 # Video
 redis
@@ -114,7 +116,7 @@ constants
 django-tablib
 
 # Anti-Spam:
--e git+https://github.com/sunlightlabs/django-honeypot.git
+-e git+https://github.com/sunlightlabs/django-honeypot.git#egg=honeypot
 
 
-hgtools # do not know why it is needed now?
+MySQL-python
