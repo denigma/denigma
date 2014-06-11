@@ -69,6 +69,26 @@ class UnsubscribeView(FormView):
     form_class = UnsubscribeForm
     success_url = '/thanks/'
 
+    def dispatch(self, request, **kwargs):
+        if 'list' in kwargs:
+            self.list = kwargs['list']
+        return super(UnsubscribeView, self).dispatch(request, **kwargs)
+
+#    def get_form_kwargs(self, *args, **kwargs):
+#        return dict(
+#            super(UnsubscribeView, self).get_form_kwargs(*args, **kwargs),
+#            **{'list_name':self.list}
+#            )
+#    def get_initial(self):
+#        return { 'list_view': self.list}
+
+    def get_initial(self):
+        initial = super(UnsubscribeView, self).get_initial()
+        initial = initial.copy()
+        if hasattr(self, 'list'):
+            self.form = self.list
+        return initial
+
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
