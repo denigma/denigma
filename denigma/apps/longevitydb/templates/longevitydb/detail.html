@@ -1,0 +1,141 @@
+{% extends "longevitydb/base.html" %}
+
+{% load url from future %}
+{% load staticfiles %}
+{% load pubmed_linker %}
+{% load rendering %}
+{% load hyperlink %}
+
+{% block head_title %}Variant{% endblock %}
+
+{% block hierarchy %}
+    » <a href="/lifespan/variants/">Variants</a>
+    » Variant
+    = {{ variant.polymorphism }}
+{% endblock %}
+
+{% block title %}
+   {{ variant.polymorphism  }}
+{% endblock %}
+
+{% block options %}
+    | <a href="/admin/lifespan/variant/{{ variant.pk }}">Admin</a>
+{% endblock %}
+
+{% block main %}
+
+            {% if variant.polymorphism %}<b>Polymorphism:</b>  {{ variant.polymorphism }} <br>
+                {% for snp in variant.as_list %}
+
+                    {% if 'rs' in snp %}
+                        <a href="{% url 'variant-detail' snp %}">{{ snp }}</a>
+                        (
+                        <a href="http://snpedia.com/index.php/{{ snp }}">SNPedia</a> |
+                        <a href="https://www.23andme.com/you/explorer/snp/?snp_name={{ snp }}">23andMe</a>
+                        )
+                    {% endif %}<br>
+                {% endfor %}
+           {% endif %}<br>
+
+            {% if variant.alias %}<b>Alias:</b> {{ variant.alias }}<br>{% endif %}
+            {% if variant.variant_type %}<b>Variant Type:</b> <a href="{{ variant.get_absolute_url }}">{{ variant.variant_type }}</a><br>{% endif %}
+            {% if variant.location %}<b>Location:</b> <a href="http://genome.ucsc.edu/cgi-bin/hgTracks?org=human&position={{ variant.location }}">{{ variant.location }}</a><br>{% endif %}
+            <br>
+
+            {% if variant.factor %}
+                <b>Factor:</b><br>
+
+                <b>- Symbol:</b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.symbol }}</a><br>
+               {% if variant.factor.name %} <b>- Name:</b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.name }}</a><br>{% endif %}
+               {% if variant.factor.entrez_gene_id %}
+                    <b>- Entrez ID:</b> <a href="http://www.ncbi.nlm.nih.gov/gene/{{ variant.factor.entrez_gene_id }}">{{ variant.factor.entrez_gene_id }}</a><br>
+                {% endif %}
+                {% if variant.factor.ensembl_gene_id %}
+                    <b>- Ensembl ID:</b> <a href="http://www.ensembl.org/Multi/Search/Results?species=all;idx=;q={{ variant.factor.ensembl_gene_id }}">{{ variant.factor.ensembl_gene_id }}</a><br>
+                {% endif %}
+           {% endif %}
+           {% with variant.factors as factors %}
+               {% if factors.all %}
+                    <br>
+                    <b>Factors:</b><br>
+                    {% for factor in factors.all %}
+                        <li><a href="{% url 'factor' factor.id %}">{{ factor.symbol }}</a>
+                        </b> <a href="{% url 'factor' factor.id %}">{{ factor.name }}</a>
+                       {% if factor.entrez_gene_id or factor.ensembl_gene_id %}(
+                           {% if factor.entrez_gene_id %}
+                               </b> <a href="http://www.ncbi.nlm.nih.gov/gene/{{ factor.entrez_gene_id }}">{{ factor.entrez_gene_id }}</a>
+                           {% endif %}/
+                           {% if factor.ensembl_gene_id %}
+                                <a href="http://www.ensembl.org/Multi/Search/Results?species=all;idx=;q={{ factor.ensembl_gene_id }}">{{ factor.ensembl_gene_id }}</a>
+
+                           {% endif %}
+                                )
+                        {% endif %}
+                        </li>
+                    {% endfor %}
+               {% endif %}<br>
+           {% endwith %}
+
+
+            {% if variant.description %}
+                <br><b>Description:</b>
+                {{ variant.description|markdown|hyper|pubmed_links|safe }}
+            {% endif %}
+
+{#            <br><b>Ethnicity:</b>#}
+{#            {% for ethnicity in variant.population.all %}#}
+{#                <a href="/lifespan/ethnicity/{{ ethnicity.pk }}">{{ ethnicity.name }}</a>#}
+{#            {% endfor %}<br>#}
+
+            {% if variant.ethnicity.all %}
+                <b>Ethnicity:</b>
+                {% for population in variant.ethnicity.all %}
+                    <a href="{{ population.get_absolute_url }}">{{ population }}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}<br>
+            {% endif %}
+            {% if variant.age_of_cases %}<b>Age of cases:</b> {{ variant.age_of_cases }}<br>{% endif %}
+            {% if variant.shorter_lived_allele %}<b>Shorter lived allele: </b> {{ variant.shorter_lived_allele }}<br>{% endif %}
+            {% if variant.longer_lived_allele %}<b>Longer lived allele: </b> {{ variant.longer_lived_allele }}<br>{% endif %}
+            {% if variant.finding %}<b>Finding: </b> {{ variant.get_finding_display }}<br>{% endif %}<br>
+
+            <b>Statistics</b><br>
+            {% if variant.initial_number %}<b>- Number of cases/controls: </b> {{ variant.initial_number }} (initial){% endif %}
+            {% if variant.replication_number %}<b></b>  <b>|</b> {{ variant.replication_number }} (replication){% endif %}<br>
+            {% if variant.odds_ratio %}<b>- Odds ratio:</b> {{ variant.odds_ratio }}<br>{% endif %}
+            {% if variant.or_type %}<b>- Odds ratio type:</b> {{ variant.or_type }}<br>{% endif %}
+
+            {% if variant.pvalue or variant.p_value %}<b>- p-value: </b>
+                {% if variant.pvalue %}{{ variant.pvalue }}{% endif %}
+                {% if variant.p_value %} [{{ variant.p_value }}]{% endif %}
+            <br>{% endif %}
+            {% if variant.qvalue %}<b>- q-value: </b> {{ variant.qvalue }}<br>{% endif %}
+            {% if variant.significant %}<b>- Significant: </b> {{ variant.significant }}<br>{% endif %}
+            <br>
+
+            <b>Study Design</b><br>
+            {% with variant.classifications.all as classifications %}
+               {% if classifications %}
+                <b>- Classifications:</b>
+                {% for classification in classifications %}
+                    <a href="{{ classification.get_absolute_url }}">{{ classification.title }}</a>{% if not forloop.last %},{% endif %}
+            {% endfor %}<br>
+            {% endif %}
+            {% endwith %}
+            {% if variant.study_type %}<b>- Study type: </b> <a href="{{ variant.study_type.get_absolute_url }}">{{ variant.study_type }}</a><br>{% endif %}
+            {% if variant.technology %}<b>- Technology: </b> <a href="{{ variant.technology.get_absolute_url }}">{{ variant.technology }}</a><br>{% endif %}
+
+            {% if variant.reference %}
+                <br><b>Reference:</b><br>
+                    <a href="/datasets/reference/{{ variant.reference.id }}">{{ variant.reference.pmid }}: {{ variant.reference.title }}</a>
+                <br>
+            {% endif %}<br>
+
+            <b>Choice: </b>{{ variant.choice }}<br>
+            <b>Created: </b>{{ variant.created }}<br>
+            <b>Updated: </b>{{ variant.updated }}<br>
+
+            <br><b><a href="/lifespan/variant/edit/{{ variant.pk }}">Edit</a></b>
+                (<a href="/admin/lifespan/variant/{{ variant.pk }}">Admin</a>) |
+            <b><a href="/lifespan/variant/delete/{{ variant.pk }}">Delete</a></b>
+
+{% endblock %}

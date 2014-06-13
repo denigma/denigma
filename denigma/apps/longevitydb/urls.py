@@ -2,6 +2,8 @@ from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt
 
+from lifespan.views import VarianceDetail, VariantDetail
+
 from views import BrowseView, HomeView, AboutView #  SearchView,
 
 
@@ -15,4 +17,6 @@ urlpatterns = patterns('longevitydb.views',
     url(r'^legacy', TemplateView.as_view(template_name='longevitydb.html'),
         name='longevitydb'),
     url(r'^longevitydb', HomeView.as_view(), name='longevitydb-longevitydb'),
+    #url(r'^detail/(?P<name>.+)/$', VarianceDetail.as_view(template_name='longevitydb/detail.html'), name='variant'),
+    url(r'^detail/(?P<pk>\d+)/$', VariantDetail.as_view(template_name='longevitydb/detail.html'), name='variant'),
 )

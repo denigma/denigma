@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
 from lifespan.models import Population, StudyType, VariantType, Variant
-from lifespan.tables import VariantTable
+from tables import VariantTable
 
 from annotations.models import Classification, GO
 from utils.dumper import dump
