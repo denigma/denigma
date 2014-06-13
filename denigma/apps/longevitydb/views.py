@@ -94,11 +94,6 @@ class BrowseView(SingleTableView, FormView):
     def get_context_data(self, **kwargs):
         print("Get context data")
         context = super(BrowseView, self).get_context_data(**kwargs)
-        print("Get populations")
-        context['populations'] = Population.objects.all()
-        context['study_types'] = StudyType.objects.all()
-        context['variant_types'] = VariantType.objects.all()
-        context['variant_associations'] = Variant.objects.all()
         context['classifications'] = [Classification.objects.get(title='Longevity-Associated'),
                                       Classification.objects.get(title='No Age Effect')]
         print("Got classifications")

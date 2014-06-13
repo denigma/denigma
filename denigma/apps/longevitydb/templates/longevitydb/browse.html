@@ -3,48 +3,9 @@
 
 {% block main %}
     <h3 class="title">Browse</h3>
-    <ul class="menu">
-        <li>
-            <span>Population</span>
-            <a href="#population-show" id="population-show" class="show">+</a>
-            <a href="#population-hide" id="population-hide" class="hide">-</a>
-            <div class="collapsing">
-                {% for population in populations %}
-                    <a href="{{ population.get_absolute_url }}">{{ population }}</a>{% if not forloop.last %},{% endif %}
-                {% endfor %}
-            </div>
-        </li>
-        <li>
-            <span>Study Type</span>
-            <a href="#study_type-show" id="study_type-show" class="show">+</a>
-            <a href="#study_type-hide" id="study_type-hide" class="hide">-</a>
-            <div class="collapsing">
-                {% for study_type in study_types %}
-                    <a href="{{ study_type.get_absolute_url }}">{{ study_type }}</a>{% if not forloop.last %},{% endif %}
-                {% endfor %}
-            </div>
-        </li>
-        <li>
-            <span>Variant Type</span>
-            <a href="#variant_type-show" id="variant_type-show" class="show">+</a>
-            <a href="#variant_type-hide" id="variant_type-hide" class="hide">-</a>
-            <div class="collapsing">
-                {% for variant_type in variant_types %}
-                    <a href="{{ variant_type.get_absolute_url }}">{{ variant_type }}</a>{% if not forloop.last %},{% endif %}
-                {% endfor %}
-            </div>
-        </li>
-        <li>
-            <span>Classification</span>
-            <a href="#classification-show" id="classification-show" class="show">+</a>
-            <a href="#classification-hide" id="classification-hide" class="hide">-</a>
-            <div class="collapsing">
-                {% for classification in classifications %}
-                    <a href="{{ classification.get_absolute_url }}">{{ classification }}</a>{% if not forloop.last %},{% endif %}
-                {% endfor %}</div>
-        </li>
-    {{ variantsfilter }}
-    <hr>
-    {% render_table table %}
-    </ul>
+    <div class="longevitydb-result">
+        <ul class="menu">{{ variantsfilter }}</ul>
+        <hr>
+        {% render_table table %}
+    </div>
 {% endblock main %}
