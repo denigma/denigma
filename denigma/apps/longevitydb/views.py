@@ -1,17 +1,22 @@
+import csv
+
 from django.views.generic import FormView, TemplateView
 from django.db.models import Q
 from django_tables2 import SingleTableView, RequestConfig
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-
+from django.http import HttpResponse
 
 from lifespan.models import Population, StudyType, VariantType, Variant
 from lifespan.tables import VariantTable
-from lifespan.forms import FilterForm
+
 from annotations.models import Classification, GO
+from utils.dumper import dump
 
 #from forms import SearchForm, BrowseForm
 from filters import VariantFilterSet
+from forms import FilterForm
+
 
 @csrf_exempt
 def search(request, template_name='longevitydb/search.html'):
@@ -75,6 +80,8 @@ class BrowseView(SingleTableView, FormView):
     context_object_name = 'variants'
     table_class = VariantTable
     model = Variant
+    output = False
+    success_url = '/longevitydb/browse/'
 
     def dispatch(self, request, *args, **kwargs):
         print("Dispatch")
@@ -91,12 +98,28 @@ class BrowseView(SingleTableView, FormView):
         self.qs = self.variantsfilter.qs.exclude(choice__name__contains='Review').distinct().order_by('pvalue')
         return self.qs
 
+    def form_valid(self, form):
+        output = form.cleaned_data['output']
+        self.output = output
+        BrowseView.output = output
+        return super(BrowseView, self).form_valid(form)
+
+    def render_to_response(self, context, **response_kwargs):
+        print("Render to response")
+        if BrowseView.output: # or self.download:
+            BrowseView.output = False
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment: filename="output.csv"'
+            writer = csv.writer(response, delimiter="\t")
+            dump(self.object_list, write=False, writer=writer)
+            return response
+        else:
+            return super(BrowseView, self).render_to_response(context, **response_kwargs)
+
     def get_context_data(self, **kwargs):
         print("Get context data")
         context = super(BrowseView, self).get_context_data(**kwargs)
-        context['classifications'] = [Classification.objects.get(title='Longevity-Associated'),
-                                      Classification.objects.get(title='No Age Effect')]
-        print("Got classifications")
+        context['form'] = FilterForm()
         print(hasattr(self, 'variantsfilter')) #, len(self.variantsfilter))
         print("self.variantsfilter: %s" % type(self.variantsfilter))
         context['variantsfilter'] = self.variantsfilter
