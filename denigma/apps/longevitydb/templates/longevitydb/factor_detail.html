@@ -1,0 +1,214 @@
+{% extends "longevitydb/base.html" %}
+
+{% load url from future %}
+{% load staticfiles %}
+{% load pubmed_linker %}
+{% load rendering %}
+{% load hyperlink %}
+{% load splitter %}
+
+{% block head_title %}Factor{% endblock %}
+
+{% block hierarchy %}
+    > <a href="/lifespan/factors/" xmlns="http://www.w3.org/1999/html">Factors</a>
+    > Factor
+    = {% if factor.symbol %}{{ factor.symbol }}{% else %}{{ factor.name }}{% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if factor.symbol %}
+        {{ factor.symbol }}
+    {% else %}
+        {{ factor.name }}
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <table>
+        <tr>
+            <td  valign="top">
+            {% if factor.symbol %}<b>Symbol:</b> {{ factor.symbol }}<br>{% endif %}
+            {% if factor.name %}<b>Name:</b> {{ factor.name }}<br>{% endif %}
+            {% if factor.alias %}<b>Alias:</b> {{ factor.alias }}<br>{% endif %}
+            {% if factor.entrez_gene_id %}
+                <b>Entrez gene ID:</b> <a href="http://www.ncbi.nlm.nih.gov/gene/{{ factor.entrez_gene_id }}">{{ factor.entrez_gene_id }}</a><br>
+            {% endif %}
+            {% if factor.ensembl_gene_id %}
+                <b>Ensembl gene ID:</b> <a href="http://www.ensembl.org/Multi/Search/Results?species=all;idx=;q={{ factor.ensembl_gene_id }}">{{ factor.ensembl_gene_id }}</a><br>
+            {% endif %}
+
+            {% if factor.species or factor.taxid %}
+                <b>Species:</b> <a href="/annotations/species/{{ factor.species.pk }}">{{ factor.species.short_name }}</a>
+                {% if factor.taxid %}
+                    (Taxid:</b> <a href={% url 'detail_species' factor.taxid %}>{{ factor.taxid }}</a>)<br>
+                {% endif %}
+            {% endif %}
+            {% if factor.functional_description %}
+                <br><b>Functional description:</b><br>
+                    {{ factor.functional_description|pubmed_links|safe }}
+            {% else %}
+                {% if factor.function %}
+                    <br><b>Function: </b><br>
+                    {{ factor.function|pubmed_links }}
+                {% endif %}
+            {% endif %}<br>
+            <br><b>Observation:</b><br>
+            {{ factor.observation|markdown|hyper|pubmed_links|safe }}<br>
+            {% if factor.intervention.all %}
+                <br><b>Interventions:</b>
+                {% for intervention in factor.intervention.all %}
+                    <li><a href="/lifespan/intervention/{{ intervention.pk }}/">{{ intervention.name }}</a>
+                        {% if intervention.mean %}{{ intervention.mean}}%{% endif %}
+                        {% if intervention.median %}{{ intervention.median }}%{% endif %}
+                        {% if intervention.maximum %}{{ intervention.maximum }}%{% endif %}
+                    </li>
+                {% endfor %}
+            {% endif %}
+
+            <br><b>Assays:</b>
+            {% for assay in factor.assay.all %}
+                <a href="/lifespan/assay/{{ assay.pk }}">{{ assay.name }}</a>
+            {% endfor %}<br>
+
+            {% if factor.mean %}<b>Mean:</b> {{ factor.mean }}<br>{% endif %}
+            {% if factor.median %}<b>Median: </b> {{ factor.median }}<br>{% endif %}
+            {% if factor.maximum %}<b>Maximum: </b> {{ factor.maximum }}<br>{% endif %}
+
+            {% with factor.variances as variants %}
+               {% if variants.all %}<br>
+                    <b>Longevity Associated Variants:</b>
+                    {% for variant in variants.all %}
+                        <li><a href="{{ variant.get_absolute_url }}">{{ variant }}</a> {{ variant.pvalue }} [<a href="{{ variant.reference.get_absolute_url }}">{{ variant.reference.pmid }}</a>]</li>
+                    {% endfor %}
+{#                {% elif factor.variant_set.all %}#}
+{#                   {% with factor.variants_set.all as vs %}#}
+{#                       {{ vs }}#}
+{#                    {% for v in vs %}#}
+{#                        {{ v }}#}
+{#                    <b>Longevity Associated Variants:</b>#}
+{##}
+{#                        <li><a href="{{ variant.get_absolute_url }}">{{ variant }}</a> {{ variant.pvalue }} [<a href="{{ variant.reference.get_absolute_url }}">{{ variant.reference.pmid }}</a>]</li>#}
+{#                   {% endfor %}#}
+{##}
+{#                     {% endwith %}#}
+{##}
+                   {% endif %}
+            {% endwith %}
+
+            <br><b>Classification:</b>
+            {% for classification in factor.classifications.all %}
+                <li><a href="/annotations/classification/{{ classification.pk }}/">{{ classification.title }}</a><br></li>
+            {% endfor %}<br>
+
+            {% if factor.types.all %}
+                <br><b>Type:</b>
+                {% for type in factor.types.all %}
+                    <li>{{ type.name }}
+                {% endfor %}<br>
+            {% endif %}
+
+            {% if factor.references.all %}
+                <br><b>References:</b><br>
+                {% for reference in factor.references.all %}
+                    <li><a href="/datasets/reference/{{ reference.id }}">{{ reference.pmid }}: {{ reference.title }}</a></li>
+                {% endfor %}<br>
+            {% endif %}
+
+            {% if factor.species %}
+                <br><b>Aging Relevance Analysis/Source:</b><br>
+                <li><a href="http://genomics.senescence.info/genes/details.php?gene={{ factor.symbol }}&organism={{ factor.species.latin_name|split:' ' }}"> <img src="http://agefactdb.jenage.de/assets/images/general/db_gendr.gif">GenAge</a></li>
+                <li><a href="http://genomics.senescence.info/diet/details.php?id={{ factor.entrez_gene_id }}"><img src="http://genomics.senescence.info/images/gendr_logo_leftnav.png" width="25" height="25">GenDR</a></li>
+            {% endif %}
+
+            {% if factor.human_homolog %}<b>Human homolog:</b> {{ factor.human_homolog }}{% endif %}<br>
+
+            {% if homologs %}
+                <b>Homologs</b>
+                {% for homolog in homologs %}
+                    <li><a href="http://www.ncbi.nlm.nih.gov/gene/{{ homolog.entrez_gene_id }}">{{ homolog.gene_symbol }}</a>
+                        (<a href="http://www.ncbi.nlm.nih.gov/taxonomy/{{ homolog.taxid }}/">{{ homolog.taxid }}</a>)</li>
+                {% endfor %}<br>
+            {% endif %}
+
+           {% if orthologs %}
+            <b>Orthologs</b>
+                {% for ortholog in orthologs %}
+                     <li>
+                    {% if factor.entrez_gene_id == ortholog.gene %}
+                        <a href="http://www.ncbi.nlm.nih.gov/gene/{{ ortholog_gene }}">{{ ortholog.ortholog_symbol }}</a>
+                        (<a href="http://www.ncbi.nlm.nih.gov/taxonomy/{{ ortholog.ortholog_taxid }}">{{ ortholog.ortholog_taxid }}</a>)
+                    {% else %}
+                        <a href="http://www.ncbi.nlm.nih.gov/gene/{{ ortholog_gene }}">{{ ortholog.gene_symbol }}</a>
+                        (<a href="http://www.ncbi.nlm.nih.gov/taxonomy/{{ ortholog.gene_taxid }}">{{ ortholog.gene_taxid }}</a>)
+                    {% endif %}
+                    </li>
+                {% endfor %}<br>
+            {% endif %}
+
+            {% if inparanoids %}
+                <b>Inparanoids</b>
+            {% for inparanoid in inparanoids %}
+                <li>
+                {% if factor.ensembl_gene_id_b == inparanoid.ensembl_gene_id_b %}
+                    {{ inparanoid.ensembl_gene_id_a }} (<a href="http://www.ncbi.nlm.nih.gov/taxonomy/{{ inparanoid.taxid_a }}">{{ inparanoid.taxid_a }}</a>)
+                {% else %}
+                      {{ inparanoid.ensembl_gene_id_b }} (<a href="http://www.ncbi.nlm.nih.gov/taxonomy/{{ inparanoid.taxid_b }}">{{ inparanoid.taxid_b }}</a>)</a>
+                {% endif %}
+                </li>
+            {% endfor %}<br>
+            {% endif %}
+
+            {% if factor.note %}<b>Note: </b>{{ factor.note }}{% endif %}<br>
+
+            <br><b><a href="/lifespan/factor/edit/{{ factor.pk }}">Edit</a></b> \
+            <b><a href="/lifespan/factor/update/{{ factor.pk }}">Update</a></b>
+                (<a href="/admin/lifespan/factor/{{ factor.pk }}">Admin</a>) |
+            <b><a href="/lifespan/factor/delete/{{ factor.pk }}">Delete</a></b>
+        </td>
+        <td valign="top">
+            {% if pdb %}
+                {#    <div id="glmol01" style="width:500px; height: 400px; background-color: black;"></div> <textarea id="glmol01_src" style="display:none;"></textarea>#}
+                <div id="view" style="width:650px; height:450px; background-color: black;"></div>
+
+                <script src="{% static 'glmol/js/jquery-1.7.min.js' %}"></script>
+                <script src="{% static 'glmol/js/Three49custom.js'  %}"></script>
+                <script src="{% static 'glmol/js/GLmol.js'  %}"></script>
+                {#    <script src="{% static 'glmol/js/protein.js'  %}"></script>#}
+                <script>
+                    pdb = {{ pdb|safe }}
+
+                    var glmol = new GLmol('view', true);
+
+                    glmol.defineRepresentation = function() {
+                    var all = this.getAllAtoms();
+                    var hetatm = this.removeSolvents(this.getHetatms(all));
+                    var asu = new THREE.Object3D();
+
+                    this.colorByAtom(all, { });
+                    this.colorByChain(all);
+                    this.drawBondsAsStick(asu, hetatm, this.cylinderRadius, this.cylinderRadius);
+                    this.drawCartoon(asu, all, this.curveWidth, this.thickness);
+                    this.modelGroup.add(asu);
+                };
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        glmol.loadMoleculeStr(false, xhr.responseText);
+                        }
+                    };
+
+                    xhr.open('GET', 'http://www.pdb.org/pdb/files/'+pdb+'.pdb');
+                    xhr.send();
+
+                </script>
+            {% endif %}
+        </td>
+    </table>
+
+
+    {% with factor as object %}
+        {% include "comments/wrapper.html" %}
+    {% endwith %}
+{% endblock %}

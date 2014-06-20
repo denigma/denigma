@@ -1,10 +1,13 @@
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import DetailView
 
-from lifespan.views import VarianceDetail, VariantDetail
+from lifespan.views import VarianceDetail, VariantDetail, FactorDetail, Population
 
 from views import BrowseView, HomeView, AboutView #  SearchView,
+
+from datasets.views import detail
 
 
 urlpatterns = patterns('longevitydb.views',
@@ -12,11 +15,21 @@ urlpatterns = patterns('longevitydb.views',
     url(r'^about',AboutView.as_view(), name='longevitydb-about'),
     #url(r'^search/(?P<term>.?)', SearchView.as_view(), name='longevitydb-search'),
     url(r'^browse/(?P<model>.+)/(?P<type>.+)', csrf_exempt(BrowseView.as_view()), name='longevitydb-browse'),
-    url(r'^search', 'search', name='longevitydb-search'), #SearchView.as_view()
+    url(r'^search/$', 'search', name='longevitydb-search'), #SearchView.as_view()
+    url(r'^search/(?P<t>.+)/(?P<k>.+)/', 'search', name='longevitydb-search'), #SearchView.as_view()
+
     url(r'^browse', csrf_exempt(BrowseView.as_view()), name='longevitydb-browse'),
     url(r'^legacy', TemplateView.as_view(template_name='longevitydb.html'),
         name='longevitydb'),
     url(r'^longevitydb', HomeView.as_view(), name='longevitydb-longevitydb'),
     #url(r'^detail/(?P<name>.+)/$', VarianceDetail.as_view(template_name='longevitydb/detail.html'), name='variant'),
     url(r'^detail/(?P<pk>\d+)/$', VariantDetail.as_view(template_name='longevitydb/detail.html'), name='variant'),
+    url(r'^factor_detail/(?P<pk>\d+)/$', FactorDetail.as_view(template_name='longevitydb/factor_detail.html'), name='variant'),
+    url(r'^population_detail/(?P<pk>\d+)/$', DetailView.as_view(model=Population, template_name='longevitydb/population_detail.html'), name='variant'),
+    url(r'^studytype_detail/(?P<pk>\d+)/$', DetailView.as_view(model=Population, template_name='longevitydb/studytype_detail.html'), name='variant'),
+    url(r'reference_detail/(?P<pk>\d+)', detail, {'template':'longevitydb/reference_detail.html'}, name='variant'),
+
+
+    # url(r'^download_json$', 'download'),
+
 )

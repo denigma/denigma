@@ -1,4 +1,5 @@
 import csv
+import json
 
 from django.views.generic import FormView, TemplateView
 from django.db.models import Q
@@ -13,18 +14,23 @@ from tables import VariantTable
 from annotations.models import Classification, GO
 from utils.dumper import dump
 
-#from forms import SearchForm, BrowseForm
+
 from filters import VariantFilterSet
 from forms import FilterForm
 
 
 @csrf_exempt
-def search(request, template_name='longevitydb/search.html'):
-    print("Searching")
+def search(request, t=None, k=None, template_name='longevitydb/search.html'):
+    print("Searching", t, k)
     variants = Variant.objects.all()
+    context_data = {}
     if request.method == 'POST':
-        if 'keyword' in request.POST:
-            keyword = request.POST['keyword']
+
+        if ('keyword' in request.POST) or (k and k != "Nothing"):
+            if k and k != "Nothing":
+                keyword = k
+            else:
+                keyword = request.POST['keyword']
             try:
                 query = float(keyword)
                 variants = variants.filter(Q(odds_ratio=query) |
@@ -47,8 +53,14 @@ def search(request, template_name='longevitydb/search.html'):
                                              Q(study_type__name__icontains=keyword) |
                                              Q(technology__name__icontains=keyword) |
                                              Q(reference__title__icontains=keyword)).order_by('-id').order_by('pvalue')
-        if 'term' in request.POST:
-            term = request.POST['term'].replace('"', '')
+        else:
+            keyword = 'Nothing'
+        if ('term' in request.POST) or (t and t != "Nothing"):
+            if t and t != "Nothing":
+                term = t
+            else:
+                term = request.POST['term'].replace('"', '')
+
             if 'GO:' in term:
                 terms = GO.objects.filter(go_id=term)
             else:
@@ -56,14 +68,30 @@ def search(request, template_name='longevitydb/search.html'):
             ids = ["Q(factor__entrez_gene_id=%s)" % go.entrez_gene_id for go in terms]
             sql = " | ".join(ids)
             variants = eval("variants.filter("+sql+")")
+        else:
+            term = 'Nothing'
         qs = variants.exclude(choice__name__contains='Review').distinct().order_by('pvalue')
+        context_data['keyword'] = keyword
+        context_data['term'] = term
+        if t or k:
+            keyword = k
+            term = t
+            response_dict = {'keyword': keyword, 'term': term}
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment: filename="output.csv"'
+            writer = csv.writer(response, delimiter="\t")
+            dump(qs, write=False, writer=writer)
+            return response
+
         table = VariantTable(qs)
         RequestConfig(request).configure(table)
-        return render(request, template_name, {'table': table})
+        context_data['table'] = table
+        return render(request, template_name, context_data)
     else:
         table = VariantTable(Variant.objects.all())
         RequestConfig(request).configure(table)
-        return render(request, template_name, {'table': table})
+        context_data = {'keyword': "Nothing", 'term': "Nothing", 'table': table}
+        return render(request, template_name, context_data)
 
 
 class HomeView(TemplateView):

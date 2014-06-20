@@ -1,0 +1,98 @@
+{% extends "longevitydb/base.html" %}
+
+{% load url from future %}
+{% load rendering %}
+{% load hyperlink %}
+{% load crosslink %}
+{% load publications %}
+
+{% block head_title %}{{ object.repr }}{% endblock %}
+
+{% block hierarchy %}
+    > Reference
+    > {{ object.repr }}
+{% endblock %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block main %}
+    <p><b>Authors</b>: {{ object.authors|authors }}</p>
+    {% if object.abstract %}<p><b>Abstract</b>: {{ object.abstract }}</p>{% endif %}
+    {% if object.keywords %}<b>Keywords</b>: {{ object.keywords }}<br>{% endif %}
+    <table width="100%">
+        <tr>
+            <td valign="top">
+                <b>Journal</b>: {{ object.journal }}<br>
+                {% if objects.year %}<b>Year</b>: {{ object.year }}<br>{% endif %}
+                {% if object.volume %}<b>Volume</b>: {{ object.volume }}<br>{% endif %}
+                {% if object.issue %}<b>Issue</b>: {{ object.issue }}<br>{% endif %}
+                {% if object.pages %}<b>Pages</b>: {{ object.pages }}<br>{% endif %}
+                <b>Date</b>: {{ object.date }}<br>
+                {% if object.pmid %}
+                    <b>PMID</b>: <a href="https://www.ncbi.nlm.nih.gov/pubmed/{{ object.pmid }}/">{{ object.pmid }}</a>
+                {% endif %}<br>
+            </td>
+            <td align="right" width="30%">
+                <div class="bar">
+                    <div class="form">
+                        <strong>{{ form.file.label }}</strong>
+                        <form method="POST" action="/datasets/reference/{{ object.pk }}/" enctype="multipart/form-data">{% csrf_token %}
+                            {{ form.file }}<br/>
+                            <input type="submit" value="Upload Article" />
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    {% if object.notes %}
+        <br>
+        <b>Notes</b>: {{ object.notes|markdown|hyper|recross|safe }}<br>
+    {% endif %}
+    {% if object.label %}
+        <b>Label</b>: {{ object.label|recross|safe }}<br>
+    {% endif %}
+    <br>
+    {% with object.categories.all as categories %}
+        {% if categories %}
+            <b>Categories</b>:
+            {% for category in object.categories.all %}
+                <a href="{{ category.get_absolute_url }}">{{ category }}</a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}<br>
+        {% endif %}
+    {% endwith %}
+    {% if object.url %}
+        {% if user.is_authenticated %}
+            <b>PDF</b>: <b><a href="{{ object.url }}">Download</a></b><br>
+        {% endif %}
+    {% endif %}
+
+    <b>Citation</b>: {{ object.ref|markdown }}<br>
+    {% if object.study_set.all %}
+        {% for study in object.study_set.all %}
+            <a href={{ study.get_absolute_url }}>Study</a>
+        {% endfor %}
+    {% endif %}
+
+     {% if object.factor_set.all %}
+        <b>Lifespan Factors:</b>
+        {% for factor in object.factor_set.all %}
+            <li><a href="{{ factor.get_absolute_url }}">{{ factor }}</a> {{ factor.name }}</li>
+        {% endfor %}<br>
+    {% endif %}
+
+    {% if object.variant_set.all %}
+        <b>Longevity Variant Associations (p-value):</b>
+        {% for variant in object.variant_set.all %}
+            <li><a href="{{ variant.get_absolute_url }}">{{ variant }}</a> {% if variant.pvalue %} ({{ variant.pvalue }}){% endif %}</li>
+        {% endfor %}
+    {% endif %}
+
+    <hr>
+    <div>
+        <b><a href={% url 'update-reference' object.pk %}>Update</a></b>
+        (<a href="/admin/datasets/reference/{{ object.pk }}/">Admin</a>)
+        | <b><a href={% url 'autoupdate_reference' object.pk %}>Auto-Update</a></b>
+    </div>
+    {% include "comments/wrapper.html" %}
+{% endblock %}

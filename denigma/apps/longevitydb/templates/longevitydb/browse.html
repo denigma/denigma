@@ -3,10 +3,14 @@
 
 {% block main %}
     <h3 class="title">Browse</h3>
+{#    <a href="./browse"><h3 class="title">Refresh</h3></a> {# javascript:location.reload(true) #}
     <div class="longevitydb-result">
         <ul class="menu">{{ variantsfilter }}</ul>
+        <form action="./browse">
+            <input type="submit" onClick="history.go(0)" value="Reset">
+        </form>
         <hr>
         {% render_table table %}
     </div>
-    <form action="./browse"" method="POST">{% csrf_token %}<input type="submit" value="Download" />{{ form.output }} Confirm you are a human.<br></form>
+    <form action="./browse"" method="POST">{% csrf_token %}<input type="submit" value="Download" />{{ form.output }}<br></form>
 {% endblock main %}

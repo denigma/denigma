@@ -5,15 +5,14 @@
     <h3 class="title">Search</h3>
     <div class="search-wrapper">
     <div class="promption">Search by variant, gene, study or associated filed (example: ADRB2)</div>
-{#    {{ form.as_p }}#}
-    <form action="./search" method="POST">{% csrf_token %}
+    <form action="/longevitydb/search/" method="POST">{% csrf_token %}
         <input type="submit" value="Basic Search" />
         <input type="text" name="keyword" class="search" />
     </form>
     </div>
     <div class="search-wrapper">
         <div class="promption">Search by Gene Ontology term (example: insulin)</div>
-    <form action="./search" method="POST">{% csrf_token %}
+    <form action="/longevitydb/search/" method="POST">{% csrf_token %}
             <input type="submit" value="Ontology search" />
             <input type="text" name="term" class="search" />
         </form>
@@ -22,4 +21,13 @@
     <div class="longevitydb-result">
         {% render_table table %}
     </div>
+    <form action="/longevitydb/search/{{ term }}/{{ keyword }}/" method="post" name="example form" >
+        {% csrf_token %}
+        <input type="submit" value="Download" />
+    </form>
 {% endblock main %}
+
+
+
+
+

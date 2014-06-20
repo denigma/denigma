@@ -23,7 +23,6 @@
 {% endblock %}
 
 {% block main %}
-
             {% if variant.polymorphism %}<b>Polymorphism:</b>  {{ variant.polymorphism }} <br>
                 {% for snp in variant.as_list %}
 
@@ -137,5 +136,4 @@
             <br><b><a href="/lifespan/variant/edit/{{ variant.pk }}">Edit</a></b>
                 (<a href="/admin/lifespan/variant/{{ variant.pk }}">Admin</a>) |
             <b><a href="/lifespan/variant/delete/{{ variant.pk }}">Delete</a></b>
-
 {% endblock %}
