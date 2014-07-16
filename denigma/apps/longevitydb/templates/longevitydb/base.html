@@ -11,6 +11,8 @@
                 <link rel="stylesheet" href="{{ STATIC_URL }}css/layout.css" />
                 <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
             {% endblock links %}
+            {% block extra_style %}
+            {% endblock %}
             <ul class="longevitydb-nav">
                 {% block navigation %}
                     <li><a href="{% url 'longevitydb-browse' %}">Browse</a></li>
