@@ -44,8 +44,8 @@
             {% if variant.factor %}
                 <b>Factor:</b><br>
 
-                <b>- Symbol:</b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.symbol }}</a><br>
-               {% if variant.factor.name %} <b>- Name:</b> <a href="{% url 'factor' variant.factor.id %}">{{ variant.factor.name }}</a><br>{% endif %}
+                <b>- Symbol:</b> <a href="{% url 'lvdb-factor_detail' variant.factor.id %}">{{ variant.factor.symbol }}</a><br>
+               {% if variant.factor.name %} <b>- Name:</b> <a href="{% url 'lvdb-factor_detail' variant.factor.id %}">{{ variant.factor.name }}</a><br>{% endif %}
                {% if variant.factor.entrez_gene_id %}
                     <b>- Entrez ID:</b> <a href="http://www.ncbi.nlm.nih.gov/gene/{{ variant.factor.entrez_gene_id }}">{{ variant.factor.entrez_gene_id }}</a><br>
                 {% endif %}
@@ -58,8 +58,8 @@
                     <br>
                     <b>Factors:</b><br>
                     {% for factor in factors.all %}
-                        <li><a href="{% url 'factor' factor.id %}">{{ factor.symbol }}</a>
-                        </b> <a href="{% url 'factor' factor.id %}">{{ factor.name }}</a>
+                        <li><a href="{% url 'lvdb-factor_detail' factor.id %}">{{ factor.symbol }}</a>
+                        </b> <a href="{% url 'lvdb-factor_detail' factor.id %}">{{ factor.name }}</a>
                        {% if factor.entrez_gene_id or factor.ensembl_gene_id %}(
                            {% if factor.entrez_gene_id %}
                                </b> <a href="http://www.ncbi.nlm.nih.gov/gene/{{ factor.entrez_gene_id }}">{{ factor.entrez_gene_id }}</a>
@@ -125,7 +125,7 @@
 
             {% if variant.reference %}
                 <br><b>Reference:</b><br>
-                    <a href="/datasets/reference/{{ variant.reference.id }}">{{ variant.reference.pmid }}: {{ variant.reference.title }}</a>
+                    <a href="{% url 'lvdb-reference_detail' variant.reference.id %}">{{ variant.reference.pmid }}: {{ variant.reference.title }}</a>
                 <br>
             {% endif %}<br>
 

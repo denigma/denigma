@@ -110,7 +110,7 @@
             {% if factor.references.all %}
                 <br><b>References:</b><br>
                 {% for reference in factor.references.all %}
-                    <li><a href="/datasets/reference/{{ reference.id }}">{{ reference.pmid }}: {{ reference.title }}</a></li>
+                    <li><a href="{% url 'lvdb-reference_detail' reference.id %}">{{ reference.pmid }}: {{ reference.title }}</a></li>
                 {% endfor %}<br>
             {% endif %}
 

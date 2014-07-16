@@ -22,14 +22,10 @@ urlpatterns = patterns('longevitydb.views',
     url(r'^legacy', TemplateView.as_view(template_name='longevitydb.html'),
         name='longevitydb'),
     url(r'^longevitydb', HomeView.as_view(), name='longevitydb-longevitydb'),
-    #url(r'^detail/(?P<name>.+)/$', VarianceDetail.as_view(template_name='longevitydb/detail.html'), name='variant'),
     url(r'^detail/(?P<pk>\d+)/$', VariantDetail.as_view(template_name='longevitydb/detail.html'), name='variant'),
-    url(r'^factor_detail/(?P<pk>\d+)/$', FactorDetail.as_view(template_name='longevitydb/factor_detail.html'), name='variant'),
-    url(r'^population_detail/(?P<pk>\d+)/$', DetailView.as_view(model=Population, template_name='longevitydb/population_detail.html'), name='variant'),
-    url(r'^studytype_detail/(?P<pk>\d+)/$', DetailView.as_view(model=Population, template_name='longevitydb/studytype_detail.html'), name='variant'),
-    url(r'reference_detail/(?P<pk>\d+)', detail, {'template':'longevitydb/reference_detail.html'}, name='variant'),
-
-
-    # url(r'^download_json$', 'download'),
+    url(r'^factor_detail/(?P<pk>\d+)/$', FactorDetail.as_view(template_name='longevitydb/factor_detail.html'), name='lvdb-factor_detail'),
+    url(r'^population_detail/(?P<pk>\d+)/$', DetailView.as_view(model=Population, template_name='longevitydb/population_detail.html'), name='lvdb-population_detail'),
+    url(r'^studytype_detail/(?P<pk>\d+)/$', DetailView.as_view(model=Population, template_name='longevitydb/studytype_detail.html'), name='lvdb-studytype_detail'),
+    url(r'reference_detail/(?P<pk>\d+)', detail, {'template':'longevitydb/reference_detail.html'}, name='lvdb-reference_detail'),
 
 )
