@@ -80,7 +80,7 @@ def search(request, t=None, k=None, template_name='longevitydb/search.html'):
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = 'attachment: filename="output.csv"'
             writer = csv.writer(response, delimiter="\t")
-            dump(qs, write=False, writer=writer)
+            dump(qs, write=False, writer=writer, exclude=('created','updated', 'choice'))
             return response
 
         table = VariantTable(qs)
@@ -153,7 +153,7 @@ class BrowseView(SingleTableView, FormView):
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = 'attachment: filename="output.csv"'
             writer = csv.writer(response, delimiter="\t")
-            dump(self.qs, write=False, writer=writer)
+            dump(self.qs, write=False, writer=writer, exclude=('created','updated', 'choice'))
             return response
         else:
             return super(BrowseView, self).render_to_response(context, **response_kwargs)

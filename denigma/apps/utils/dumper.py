@@ -4,13 +4,14 @@ from django.conf import settings
 
 
 def dump(qs, outfile_path=settings.MEDIA_ROOT+'/dump.csv', write=False, separator='\n',
-         writer=False):
+         writer=False, exclude=()):
     print("Dumping")
     model = qs.model
     if write:
         file_writer = csv.writer(open(outfile_path, 'w'))
     headers = []
     for field in model._meta.fields:
+        if field.name in exclude: continue
         headers.append(field.name)
     if write:
         file_writer.writerow(headers)
