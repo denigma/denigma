@@ -2,15 +2,37 @@
 {% load render_table from django_tables2 %}
 
 {% block main %}
-    <h3 class="title">Browse</h3>
+
 {#    <a href="./browse"><h3 class="title">Refresh</h3></a> {# javascript:location.reload(true) #}
     <div class="longevitydb-result">
-        <ul class="menu">{{ variantsfilter }}</ul>
-        <form action="./browse">
-            <input type="submit" onClick="history.go(0)" value="Reset">
+    <table border="1">
+        <tr align="top">
+            <td align="top">
+    <h3 class="title">Browse</h3>
+
+            </td>
+            <td align="top">
+               <img src="http://allthingsadmin.com/atawp/wp-content/uploads/2011/06/resetbutton.png" onClick="history.go(0)" value="Reset" width="60">
+            </td>
+            <td align="top">
+                <form action="./browse" method="POST" name="example form" >
+                    {% csrf_token %}
+                    <button type="submit" style="border: 0; background: transparent">
+                        <img src="http://dgallery.s3.amazonaws.com/download.jpg" width="60" >
+                    </button>
+                </form>
+            </td>
+            <td>
+                {{ form.output }}
+            </td>
+        </tr>
+    </table>
+                <ul class="menu">{{ variantsfilter }}</ul>
+                <form action="./browse">
+        {#            <input type="submit" onClick="history.go(0)" value="Reset">#}
         </form>
         <hr>
         {% render_table table %}
     </div>
-    <form action="./browse"" method="POST">{% csrf_token %}<input type="submit" value="Download" />{{ form.output }}<br></form>
+
 {% endblock main %}

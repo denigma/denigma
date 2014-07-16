@@ -2,7 +2,21 @@
 {% load render_table from django_tables2 %}
 
 {% block main %}
-    <h3 class="title">Search</h3>
+    <table>
+        <tr>
+            <td>
+                <h3 class="title">Search</h3>
+            </td>
+            <td>
+                <form action="/longevitydb/search/{{ term }}/{{ keyword }}/" method="post" name="example form" >
+                    {% csrf_token %}
+                    <button type="submit" style="border: 0; background: transparent">
+                        <img src="http://dgallery.s3.amazonaws.com/download.jpg" width="60">
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </table>
     <div class="search-wrapper">
     <div class="promption">Search by variant, gene, study or associated filed (example: ADRB2)</div>
     <form action="/longevitydb/search/" method="POST">{% csrf_token %}
@@ -21,10 +35,7 @@
     <div class="longevitydb-result">
         {% render_table table %}
     </div>
-    <form action="/longevitydb/search/{{ term }}/{{ keyword }}/" method="post" name="example form" >
-        {% csrf_token %}
-        <input type="submit" value="Download" />
-    </form>
+
 {% endblock main %}
 
 
