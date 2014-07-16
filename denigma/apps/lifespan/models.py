@@ -20,6 +20,7 @@ except:
 
 import handlers
 
+from triple.models import slugify
 
 WT = ['wt', 'WT' 'wild type']
 
@@ -357,7 +358,14 @@ class Measurement(models.Model):
     pvalue = None
 
     def __unicode__(self):
-         return u"{0} {1}".format(self.genotype or '', self.diet or '')
+        # Need to generate a URI for a Measurement
+        uri = []
+        for i in [self.background, self.genotype, self.diet, int(self.temperature or 0), int(self.mean or 0), int(self.median or 0), int(self.max or 0), self.num]: #, self.gender.all()
+            if i:
+                uri.append(str(i))
+        uri = slugify('_'.join(uri))
+        return uri
+        return u"{0} {1}".format(self.genotype or '', self.diet or '')
 
     def get_absolute_url(self):
         return u"/lifespan/measurement/%s" % self.pk
@@ -379,7 +387,7 @@ class Epistasis(models.Model):
 
 from annotations.mapping import mapid
 
-class Comparison(models.Model):
+class Comparison(models.Model): # Intervention instances
     """A comparision between two lifespan measurements."""
     #EPISTATIC = (
     #    (1, _('Neutral')),
@@ -527,8 +535,8 @@ class Assay(models.Model):
 
 
 class Manipulation(models.Model):
-    shortcut = models.CharField(max_length=10, null=True, blank=True)
     name = models.CharField(max_length=50, null=True, blank=True)
+    shortcut = models.CharField(max_length=10, null=True, blank=True)
     type = models.ManyToManyField('self', symmetrical=False, related_name='type_of', blank=True)
     #type = models.ManyToManyField('self', through='ManipulationType', symmetrical=False, related_name='type_of', blank=True)
 
@@ -552,23 +560,23 @@ class Manipulation(models.Model):
 
 class Intervention(models.Model):
     name = models.CharField(max_length=250)
+    effect = models.TextField(blank=True)
     taxid = models.IntegerField(blank=True, null=True)
     species = models.ForeignKey('annotations.Species', blank=True, null=True)
     sex = models.CharField(max_length=25, blank=True)
     gender = models.ManyToManyField('Gender', blank=True, null=True)
     background = models.CharField(max_length=250, blank=True)
     strain = models.ForeignKey('Strain', blank=True, null=True)
-    effect = models.TextField(blank=True)
+    manipulation = models.ManyToManyField(Manipulation, blank=True)
+    lifespans = models.CharField(max_length=25, blank=True)
     mean = models.CharField(max_length=15, null=True, blank=True)
     median = models.CharField(max_length=15, null=True, blank=True)
     maximum = models.CharField(max_length=15, null=True, blank=True)
     _25 = models.CharField(max_length=15, null=True, blank=True)
     _75 = models.CharField(max_length=15, null=True, blank=True)
-    manipulation = models.ManyToManyField(Manipulation, blank=True)
     pmid = models.CharField(max_length=250, blank=True)
     references = models.ManyToManyField('datasets.Reference', blank=True)
-    lifespans = models.CharField(max_length=25, blank=True)
-    
+
 ##    species = models.ManyToManyField(Species)
     def __unicode__(self):
         return self.name
@@ -586,14 +594,15 @@ class Intervention(models.Model):
 
 
 class Factor(models.Model):  # Rename to Entity AgeFactor
-    entrez_gene_id = models.IntegerField("Entrez gene ID", null=True, blank=True)
-    #geneid = models.ForeignKey(Gene, blank=True)   # Or Genes
-    mapping = models.IntegerField(null=True, blank=True)
-    ensembl_gene_id = models.CharField("Ensembl gene ID", max_length=18, blank=True)
     symbol = models.CharField(max_length=255, blank=True, help_text='In the case of genes providing the correct gene symbol and species name would be normally sufficient to identify a gene. ' #15
                 'Other fields such as gene name and identifiers will be automatically populated.')   # Rename to symbol.
     name = models.CharField(max_length=244, blank=True)    # Rename to name.
     alias = models.CharField(max_length=270, blank=True)
+    entrez_gene_id = models.IntegerField("Entrez gene ID", null=True, blank=True)
+    #geneid = models.ForeignKey(Gene, blank=True)   # Or Genes
+    ensembl_gene_id = models.CharField("Ensembl gene ID", max_length=18, blank=True)
+    mapping = models.IntegerField(null=True, blank=True)
+
     function = models.TextField(blank=True)    # Manually curated functional description field.
     description = models.TextField(blank=True) # Automatically populated field for functional descriptions.
     functional_description = models.TextField(blank=True)    
@@ -614,8 +623,9 @@ class Factor(models.Model):  # Rename to Entity AgeFactor
     mean = models.CharField(max_length=15, null=True, blank=True)
     median = models.CharField(max_length=15, null=True, blank=True)
     maximum = models.CharField(max_length=15, null=True, blank=True)
-    _75 = models.CharField('75%ile', max_length=15, null=True, blank=True)
     _25 = models.CharField('25%lie', max_length=15, null=True, blank=True)
+    _75 = models.CharField('75%ile', max_length=15, null=True, blank=True)
+
     manipulation = models.CharField(max_length=250, null=True, blank=True)
     intervention = models.ManyToManyField('Intervention', blank=True, related_name='factors')
     gene_intervention = models.CharField(max_length=250, null=True, blank=True)
@@ -804,7 +814,7 @@ class Variant(models.Model):
     significant = models.CharField(max_length=255, null=True, blank=True)  # (redudant)
     initial_number = models.CharField(max_length=250, null=True, blank=True) # _of_cases_controls (study)
     replication_number = models.CharField(max_length=250, null=True, blank=True) #     _of_cases_controls (study)
-    ethnicity = models.ManyToManyField(Population)# German
+    ethnicity = models.ManyToManyField(Population, verbose_name="Population")# German
     age_of_cases = models.CharField(max_length=250, null=True, blank=True)
     study_type = models.ForeignKey(StudyType, null=True, blank=True)    # GWAS, Candidate genes
     technology = models.ForeignKey(Technology, null=True, blank=True)     # PCR, array
