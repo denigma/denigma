@@ -20,7 +20,7 @@ except:
 
 import handlers
 
-from triple.models import slugify
+#from triple.models import slugify
 
 WT = ['wt', 'WT' 'wild type']
 
@@ -821,7 +821,7 @@ class Variant(models.Model):
     pmid = models.IntegerField(blank=True, null=True)
     reference = models.ForeignKey('datasets.Reference')
     choice = models.ForeignKey(State, default=1, null=True, blank=True) #[Curate/Review/Discard]
-    classifications = models.ManyToManyField('annotations.Classification', blank=True, null=True, default=None)
+    classifications = models.ManyToManyField('annotations.Classification', blank=True, null=True, default=None, verbose_name='Variant effect')
 
     objects = VariantManager()
 
