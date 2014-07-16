@@ -88,7 +88,7 @@ def search(request, t=None, k=None, template_name='longevitydb/search.html'):
         context_data['table'] = table
         return render(request, template_name, context_data)
     else:
-        table = VariantTable(Variant.objects.all())
+        table = VariantTable(Variant.objects.all().order_by('pvalue'))
         RequestConfig(request).configure(table)
         context_data = {'keyword': "Nothing", 'term': "Nothing", 'table': table}
         return render(request, template_name, context_data)
