@@ -110,6 +110,7 @@ class BrowseView(SingleTableView, FormView):
     model = Variant
     output = False
     success_url = '/longevitydb/browse/'
+    selected = None
 
     def dispatch(self, request, *args, **kwargs):
         print("Dispatch")
@@ -124,6 +125,19 @@ class BrowseView(SingleTableView, FormView):
         variants = Variant.objects.all().order_by('pvalue').exclude(pvalue=None) #, 'longer_lived_allele')
         self.variantsfilter = VariantFilterSet(variants, self.request.GET)
         self.qs = self.variantsfilter.qs.exclude(choice__name__contains='Review').distinct().order_by('pvalue')
+        print(self.request)
+        try:
+            if 'populations' in self.request.GET:
+                populations = eval(str(self.request).split("GET:<QueryDict: {u'populations': ")[1].split('}>,')[0]) #.GET['population[]']
+                print(populations)
+                self.selected = populations
+                query_string = []
+                for population in populations:
+                    print(population)
+                    query_string.append('Q(ethnicity__name="%s")' % population)
+                self.qs = eval('self.qs.filter('+" | ".join(query_string)+')')
+        except Exception as e:
+            print(e)
         return self.qs
 
     def form_valid(self, form):
@@ -139,16 +153,19 @@ class BrowseView(SingleTableView, FormView):
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = 'attachment: filename="output.csv"'
             writer = csv.writer(response, delimiter="\t")
-            dump(self.object_list, write=False, writer=writer)
+            dump(self.qs, write=False, writer=writer)
             return response
         else:
             return super(BrowseView, self).render_to_response(context, **response_kwargs)
 
     def get_context_data(self, **kwargs):
         print("Get context data")
+
         context = super(BrowseView, self).get_context_data(**kwargs)
         context['form'] = FilterForm()
         print(hasattr(self, 'variantsfilter')) #, len(self.variantsfilter))
         print("self.variantsfilter: %s" % type(self.variantsfilter))
         context['variantsfilter'] = self.variantsfilter
+        context['populations'] = Population.objects.all()
+        context['selected'] = self.selected
         return context

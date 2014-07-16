@@ -1,12 +1,30 @@
 {% extends 'longevitydb/base.html' %}
+{% load staticfiles %}
 {% load render_table from django_tables2 %}
 
+{% block extra_style %}
+    <link href="{% static 'css/jquery-ui-1.9.2.custom.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/jquery.multiselect.filter.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/jquery.multiselect.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block extra_script %}
+    <script src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui-1.10.3.custom.min.js' %}"></script>
+    <script src="{% static 'js/jquery.multiselect.min.js' %}"></script>
+    <script src="{% static 'js/jquery.multiselect.filter.js' %}"></script>
+    <script src="{% static 'js/tooltip.js' %}"></script>
+    <script src="{% static 'js/popover.js' %}"></script>
+    <script>
+        $('[name="populations"]').multiselect({
+            position: {
+            my: 'left top',
+            at: 'left bottom'
+            }
+        }).multiselectfilter();
+    </script>
+{% endblock %}
 {% block main %}
-<style>
-.checkbox {
-    display:none
-}
-</style>
+
 {#    <a href="./browse"><h3 class="title">Refresh</h3></a> {# javascript:location.reload(true) #}
     <div class="longevitydb-result">
     <table border="1">
@@ -29,7 +47,20 @@
                 </form>
             </td>
             <td>
-
+            <div class="controls">
+            <form action ="./browse">
+                <select name="populations" multiple="true" style="display: none;">
+                    {% for population in populations %}
+                       {% if population.name in selected %}
+                           <option selected="true">{{ population }}</option>
+                       {% else %}
+                           <option>{{ population }}</option>
+                       {% endif %}
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Filter">
+            </form>
+            </div>
             </td>
         </tr>
     </table>
