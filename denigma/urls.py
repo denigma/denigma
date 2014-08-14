@@ -3,6 +3,7 @@ from django.conf import settings
 from django.conf.urls import patterns, url, include
 from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
+from django.http import HttpResponse
 
 from django.contrib import admin
 
@@ -104,6 +105,8 @@ urlpatterns = patterns("denigma.views",
 urlpatterns += patterns("",
     url(r"^homepage", TemplateView.as_view(), {"template": "homepage.html",}, name="homepage"), # For fast static rendering.
     url(r'^home/', include('home.urls')),
+
+    url(r'^robots/.txt$', lambda r: HttpResponse("User-agent: *\nDisallow /", mimetype="text/plain"))
 
     # Admin
     url(r"^admin/invite_user/$", "pinax.apps.signup_codes.views.admin_invite_user", name="admin_invite_user"),
