@@ -106,7 +106,7 @@ urlpatterns += patterns("",
     url(r"^homepage", TemplateView.as_view(), {"template": "homepage.html",}, name="homepage"), # For fast static rendering.
     url(r'^home/', include('home.urls')),
 
-    url(r'^robots/.txt$', lambda r: HttpResponse("User-agent: *\nDisallow /", mimetype="text/plain")),
+    url(r'^robots\.txt$', lambda r: HttpResponse("User-agent: *\nDisallow /", mimetype="text/plain")),
 
     # Admin
     url(r"^admin/invite_user/$", "pinax.apps.signup_codes.views.admin_invite_user", name="admin_invite_user"),
