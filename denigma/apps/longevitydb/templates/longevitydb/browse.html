@@ -18,62 +18,104 @@
         $('[name="populations"]').multiselect({
             position: {
             my: 'left top',
-            at: 'left bottom'
+            at: 'left bottom',
+             nSelectedText: 'Select multiple populations',
+            nonSelectedText: 'Select multiple populations',
+                buttonText: 'Select',
+                buttonTitle: 'Select'
             }
         }).multiselectfilter();
     </script>
+    <style>
+        div.longevitydb-main ul.menu li {
+{#        margin: 0px 0px 15px 0px;#}
+{#        white-space: nowrap;#}
+{#         overflow: hidden;#}
+{#          text-overflow: ellipsis;#}
+{#          white-space: nowrap;#}
+        }
+{#    li {#}
+{#  overflow: hidden;#}
+{#  text-overflow: ellipsis;#}
+{#  white-space: nowrap;#}
+{#}#}
+
+    </style>
 {% endblock %}
 {% block main %}
 
 {#    <a href="./browse"><h3 class="title">Refresh</h3></a> {# javascript:location.reload(true) #}
     <div class="longevitydb-result">
-    <table border="1">
-        <tr align="top">
-            <td align="top">
-                <h3 class="title">Browse</h3>
-            </td>
+        <table border="1">
+            <tr align="top">
+    {#            <td align="top">#}
+    {#                <h3 class="title">Browse</h3>#}
+    {#            </td>#}
+                <td>
+                            <form action="./browse">
+                <input type="submit"  onClick="history.go(0)" value="Reset">
+            </form>
+                </td>
+                <td>
+                <div class="controls">
+                <form action ="./browse">
+                    <select name="populations" multiple="true" style="display: none;">
+                        {% for population in populations %}
+                           {% if population.name in selected %}
+                               <option selected="true">{{ population }}</option>
+                           {% else %}
+                               <option>{{ population }}</option>
+                           {% endif %}
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="Filter">
+                </form>
+                </div>
+                </td>
+            </tr>
+        </table>
+
+    <table>
+
+    </table>
+
+{#    <table border="1">#}
+{#            <tr>#}
+{#                    <td width="100%">#}
+                        <ul class="menu">{{ variantsfilter }}</ul>
+
+{#                     </td>#}
+{#                <td>#}
+
+    <hr>
+    {% render_table table %}
+    </div>
+{#     <form action="./browse" method="POST">{% csrf_token %}#}
+{#        <input type="submit" value="Download" />#}
+{#        {{ form.output }}<br>#}
+{#    </form>#}
+{#                </td>#}
+{#            </tr>#}
+{##}
+{##}
+{#    </table>#}
+<table>
+    <tr>
             <td align="top">
                 <form action="./browse">
-                    <input type="image" src="http://allthingsadmin.com/atawp/wp-content/uploads/2011/06/resetbutton.png" width="60" alt="Submit" onClick="history.go(0)" value="Reset">
+                    <input type="image" src="http://allthingsadmin.com/atawp/wp-content/uploads/2011/06/resetbutton.png" width="30" alt="Submit" onClick="history.go(0)" value="Reset">
                 </form>
             </td>
             <td align="top">
                 <form action="./browse" method="POST" name="example form" >
                     {% csrf_token %}
                     <button type="submit" style="border: 0; background: transparent">
-                        <img src="http://dgallery.s3.amazonaws.com/download.jpg" width="60" >
+                        <img src="http://dgallery.s3.amazonaws.com/download.jpg" width="30" >
                          {{ form.output }}
                     </button>
                 </form>
             </td>
-            <td>
-            <div class="controls">
-            <form action ="./browse">
-                <select name="populations" multiple="true" style="display: none;">
-                    {% for population in populations %}
-                       {% if population.name in selected %}
-                           <option selected="true">{{ population }}</option>
-                       {% else %}
-                           <option>{{ population }}</option>
-                       {% endif %}
-                    {% endfor %}
-                </select>
-                <input type="submit" value="Filter">
-            </form>
-            </div>
-            </td>
-        </tr>
-    </table>
-    <ul class="menu">{{ variantsfilter }}</ul>
-    <form action="./browse">
-        <input type="submit"  onClick="history.go(0)" value="Reset">
-    </form>
-    <hr>
-    {% render_table table %}
-    </div>
-     <form action="./browse" method="POST">{% csrf_token %}
-        <input type="submit" value="Download" />
-        {{ form.output }}<br>
-    </form>
+</tr>
+</table>
 
 {% endblock main %}
