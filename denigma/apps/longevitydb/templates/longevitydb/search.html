@@ -3,6 +3,11 @@
 
 {% block main %}
 
+    <table border="1">
+        <tr>
+            <td>
+{#                <h3 class="title">Search</h3>#}
+
 
     <div class="search-wrapper">
 {#    <div class="promption"></div>#}
@@ -12,6 +17,18 @@
         <input type="text" name="term" class="search" placeholder="Gene Ontology term (example: insulin)" />
     </form>
     </div>
+               </td>
+            <td>
+                <form action="/longevitydb/search/{{ term }}/{{ keyword }}/" method="post" name="example form" >
+                    {% csrf_token %}
+                    <button type="submit" style="border: 0; background: transparent">
+                        <img src="http://dgallery.s3.amazonaws.com/download.jpg" width="30">
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
 {#    <div class="search-wrapper">#}
 {#        <div class="promption"></div>#}
 {#    <form action="/longevitydb/search/" method="POST">{% csrf_token %}#}
@@ -23,21 +40,7 @@
     <div class="longevitydb-result">
         {% render_table table %}
     </div>
-    <table border="1">
-        <tr>
-{#            <td>#}
-{#                <h3 class="title">Search</h3>#}
-{#            </td>#}
-            <td>
-                <form action="/longevitydb/search/{{ term }}/{{ keyword }}/" method="post" name="example form" >
-                    {% csrf_token %}
-                    <button type="submit" style="border: 0; background: transparent">
-                        <img src="http://dgallery.s3.amazonaws.com/download.jpg" width="30">
-                    </button>
-                </form>
-            </td>
-        </tr>
-    </table>
+
 {% endblock main %}
 
 
