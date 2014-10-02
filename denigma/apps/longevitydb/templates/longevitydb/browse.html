@@ -89,25 +89,26 @@
     </div>
             </td>
             <td>
-                            <form action="./browse">
-                <input type="submit"  onClick="history.go(0)" value="Reset">
-            </form>
+              <form action="./browse">
+                    <input type="submit"  onClick="history.go(0)" value="Reset">
+                </form>
             </td>
-        <td align="top">
-                            <form action="./browse">
-
-                <input type="image" src="http://allthingsadmin.com/atawp/wp-content/uploads/2011/06/resetbutton.png" width="30" alt="Submit" onClick="history.go(0)" value="Reset">
-            </form>
-        </td>
+{#        <td align="top">#}
+{#                            <form action="./browse">#}
+{##}
+{#                <input type="image" src="http://allthingsadmin.com/atawp/wp-content/uploads/2011/06/resetbutton.png" width="30" alt="Submit" onClick="history.go(0)" value="Reset">#}
+{#            </form>#}
+{#        </td>#}
 
 
         <td align="top">
             <form action="./browse" method="POST" name="example form" >
                 {% csrf_token %}
-                <button type="submit" style="border: 0; background: transparent">
-                    <img src="http://dgallery.s3.amazonaws.com/download.jpg" width="30" >
+{#                <button type="submit" value="Download retretergergg">#}
+                <input type="submit" value="Download">
+{#                        style="border: 0; background: transparent">#}
+{#                    <img src="http://dgallery.s3.amazonaws.com/download.jpg" width="30" >#}
                      {{ form.output }}
-                </button>
             </form>
         </td>
     </tr>
