@@ -14,6 +14,12 @@ body {
     font-style: helvetica;
 }
 
+div.longevitydb-footer {
+    padding-top: 20px;
+    position: absolute;
+    right: 0px;
+}
+
 ul.longevitydb-nav {
     list-style: none;
     display: block;
@@ -186,7 +192,19 @@ div.longevitydb-main div.search-wrapper input[type=submit] {
     border-top: 1px solid #d3d3d3;
     margin: 0px;
     padding: 0px;
-    width: 50px;
+    width: 55px;
+    background: #e6e6e6;
+    color: #606060;
+    font-size: 14px;
+    font-family: Helvetica, Arial, Sans-Serif;
+    text-decoration: none;
+    text-align: left;
+}
+
+ input[type=submit] {
+    border-top: 1px solid #d3d3d3;
+    margin: 0px;
+    padding: 0px;
     background: #e6e6e6;
     color: #606060;
     font-size: 14px;

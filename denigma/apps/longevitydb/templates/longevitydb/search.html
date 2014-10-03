@@ -11,9 +11,10 @@
                 <div class="search-wrapper">
             {#    <div class="promption"></div>#}
                 <form action="/longevitydb/search/" method="POST">{% csrf_token %}
-                    <input type="submit" value="Submit" />
+
                     <input type="text" name="keyword" class="search" placeholder="variant, gene, study or associated filed (example: ADRB2)" />
                     <input type="text" name="term" class="search" placeholder="Gene Ontology term (example: insulin)" />
+                    <input type="submit" value="Submit" />
                 </form>
                 </div>
             </td>

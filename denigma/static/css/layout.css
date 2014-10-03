@@ -195,6 +195,18 @@ div.longevitydb-main div.search-wrapper input[type=submit] {
     text-align: left;
 }
 
+ input[type=submit] {
+    border-top: 1px solid #d3d3d3;
+    margin: 0px;
+    padding: 0px;
+    background: #e6e6e6;
+    color: #606060;
+    font-size: 14px;
+    font-family: Helvetica, Arial, Sans-Serif;
+    text-decoration: none;
+    text-align: left;
+}
+
 div.longevitydb-main div.search-wrapper input.search {
     width: 350px;
 }
