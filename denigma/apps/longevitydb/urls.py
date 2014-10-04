@@ -16,7 +16,7 @@ urlpatterns = patterns('longevitydb.views',
     #url(r'^search/(?P<term>.?)', SearchView.as_view(), name='longevitydb-search'),
     url(r'^browse/(?P<model>.+)/(?P<type>.+)', csrf_exempt(BrowseView.as_view()), name='longevitydb-browse'),
     url(r'^search/$', 'search', name='longevitydb-search'), #SearchView.as_view()
-    url(r'^search/(?P<t>.+)/(?P<k>.+)/', 'search', name='longevitydb-search'), #SearchView.as_view()
+    url(r'^search/(?P<keyword>.+)/', 'search', name='longevitydb-search'), #SearchView.as_view()
 
     url(r'^browse', csrf_exempt(BrowseView.as_view()), name='longevitydb-browse'),
     url(r'^legacy', TemplateView.as_view(template_name='longevitydb.html'),
