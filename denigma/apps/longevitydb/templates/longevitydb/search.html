@@ -10,23 +10,20 @@
 
                 <div class="search-wrapper">
             {#    <div class="promption"></div>#}
-                <form action="/longevitydb/search/" method="POST">{% csrf_token %}
+{#                <form action="/search/" method="POST">{% csrf_token %}#}
+                <form action="/search/" method="post" name="example form" >{% csrf_token %}
 
-                    <input type="text" name="keyword" class="search" placeholder="variant, gene, study or associated filed (example: ADRB2)" />
-                    <input type="text" name="term" class="search" placeholder="Gene Ontology term (example: insulin)" />
+                    <input type="text" name="keyword" class="search" value="{{ term }}" placeholder="variant, gene, study or associated field (example: ADRB2) or Gene Ontology term (example: insulin)" />
+{#                    <input type="text" name="term" class="search" placeholder="" />#}
                     <input type="submit" value="Submit" />
                 </form>
                 </div>
             </td>
             <td>
-                <form action="/longevitydb/search/{{ term }}/{{ keyword }}/" method="post" name="example form" >
-                    {% csrf_token %}
+                 <form action="/search/{{ term }}/" method="post" name="example form" >{% csrf_token %}
+                    <input type="submit" value="Download" />
 
-{#                    <button type="submit" style="border: 0; background: transparent">#}
-{#                        <img src="http://dgallery.s3.amazonaws.com/download.jpg" width="30">#}
-{#                    </button>#}
-            <input type="submit" value="Download">
-             </form>
+                 </form>
             </td>
         </tr>
     </table>

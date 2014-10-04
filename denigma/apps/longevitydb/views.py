@@ -20,25 +20,27 @@ from forms import FilterForm
 
 
 @csrf_exempt
-def search(request, t=None, k=None, template_name='longevitydb/search.html'):
-    print("Searching", t, k)
+def search(request, keyword=None, template_name='longevitydb/search.html'):
+    print("Searching", keyword)
+    print(request.POST)
     variants = Variant.objects.all()
     context_data = {}
     if request.method == 'POST':
-
-        if ('keyword' in request.POST) or (k and k != "Nothing"):
-            if k and k != "Nothing":
-                keyword = k
-            else:
+    #
+         if ('keyword' in request.POST): # or (keyword and keyword != "Nothing"):
+             print(request.POST)
+             if keyword and keyword != "Nothing":
+                 keyword = keyword
+             else:
                 keyword = request.POST['keyword']
-            try:
+             try:
                 query = float(keyword)
                 variants = variants.filter(Q(odds_ratio=query) |
                                                 Q(pvalue=query) |
                                                 Q(pmid=query) |
                                                 Q(factor__entrez_gene_id=query))
-            except Exception as e:
-                variants = variants.filter(Q(polymorphism__icontains=keyword) |
+             except Exception as e:
+                variants1 = variants.filter(Q(polymorphism__icontains=keyword) |
                                              Q(location__icontains=keyword) |
                                              Q(initial_number__icontains=keyword) |
                                              Q(replication_number__icontains=keyword) |
@@ -53,44 +55,88 @@ def search(request, t=None, k=None, template_name='longevitydb/search.html'):
                                              Q(study_type__name__icontains=keyword) |
                                              Q(technology__name__icontains=keyword) |
                                              Q(reference__title__icontains=keyword)).order_by('-id').order_by('pvalue')
-        else:
-            keyword = 'Nothing'
-        if ('term' in request.POST) or (t and t != "Nothing"):
-            if t and t != "Nothing":
-                term = t
-            else:
-                term = request.POST['term'].replace('"', '')
 
-            if 'GO:' in term:
-                terms = GO.objects.filter(go_id=term)
-            else:
-                terms = GO.objects.filter(go_term__icontains=term)
-            ids = ["Q(factor__entrez_gene_id=%s)" % go.entrez_gene_id for go in terms]
-            sql = " | ".join(ids)
-            variants = eval("variants.filter("+sql+")")
-        else:
-            term = 'Nothing'
-        qs = variants.exclude(choice__name__contains='Review').distinct().order_by('pvalue')
-        context_data['keyword'] = keyword
-        context_data['term'] = term
-        if t or k:
-            keyword = k
-            term = t
-            response_dict = {'keyword': keyword, 'term': term}
-            response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = 'attachment: filename="output.csv"'
-            writer = csv.writer(response, delimiter="\t")
-            dump(qs, write=False, writer=writer, exclude=('created','updated', 'choice'))
-            return response
+    #         keyword = 'Nothing'
+    #     if ('term' in request.POST) or (t and t != "Nothing"):
+    #         if t and t != "Nothing":
+    #             term = t
+    #         else:
+             term = request.POST['keyword'].replace('"', '')
+    #
+             if 'GO:' in term:
+                 terms = GO.objects.filter(go_id=term)
+             else:
+                 terms = GO.objects.filter(go_term__icontains=term)
+             ids = ["Q(factor__entrez_gene_id=%s)" % go.entrez_gene_id for go in terms]
+             sql = " | ".join(ids)
+             variants2 = eval("variants.filter("+sql+")")
+         else:
+             try:
+                query = float(keyword)
+                variants = variants.filter(Q(odds_ratio=query) |
+                                                Q(pvalue=query) |
+                                                Q(pmid=query) |
+                                                Q(factor__entrez_gene_id=query))
+             except Exception as e:
+                variants1 = variants.filter(Q(polymorphism__icontains=keyword) |
+                                             Q(location__icontains=keyword) |
+                                             Q(initial_number__icontains=keyword) |
+                                             Q(replication_number__icontains=keyword) |
+                                             Q(age_of_cases__icontains=keyword) |
+                                             Q(factor__symbol=keyword) |
+                                             Q(factor__name__icontains=keyword) |
+                                             Q(factor__ensembl_gene_id=keyword) |
+                                             Q(description__icontains=keyword) |
+                                             Q(longer_lived_allele__icontains=keyword) |
+                                             Q(shorter_lived_allele__icontains=keyword) |
+                                             Q(ethnicity__name__icontains=keyword) |
+                                             Q(study_type__name__icontains=keyword) |
+                                             Q(technology__name__icontains=keyword) |
+                                             Q(reference__title__icontains=keyword)).order_by('-id').order_by('pvalue')
 
-        table = VariantTable(qs)
-        RequestConfig(request).configure(table)
-        context_data['table'] = table
-        return render(request, template_name, context_data)
+             term = keyword
+             if 'GO:' in term:
+                 terms = GO.objects.filter(go_id=term)
+             else:
+                 terms = GO.objects.filter(go_term__icontains=term)
+             ids = ["Q(factor__entrez_gene_id=%s)" % go.entrez_gene_id for go in terms]
+             sql = " | ".join(ids)
+             variants2 = eval("variants.filter("+sql+")")
+             qs = variants2.exclude(choice__name__contains='Review').distinct().order_by('pvalue')
+             #response_dict = {'keyword': keyword, 'term': term}
+             response = HttpResponse(content_type='text/csv')
+             response['Content-Disposition'] = 'attachment: filename="output.csv"'
+             writer = csv.writer(response, delimiter="\t")
+             dump(qs, write=False, writer=writer, exclude=('created','updated', 'choice'))
+             return response
+    #     else:
+    #         term = 'Nothing'
+        # from itertools import chain
+         #variants = list(chain(variants1, variants2))
+         #variants = variants1 | variants2
+         qs = variants2.exclude(choice__name__contains='Review').distinct().order_by('pvalue')
+    #     context_data['keyword'] = keyword
+         context_data['term'] = term
+         # if keyword:
+         #     keyword = keyword
+         #     term = keyword
+         #     response_dict = {'keyword': keyword, 'term': term}
+         #     response = HttpResponse(content_type='text/csv')
+         #     response['Content-Disposition'] = 'attachment: filename="output.csv"'
+         #     writer = csv.writer(response, delimiter="\t")
+         #     dump(qs, write=False, writer=writer, exclude=('created','updated', 'choice'))
+         #     return response
+    #
+         table = VariantTable(qs)
+         RequestConfig(request).configure(table)
+         context_data['table'] = table
+         #context_data = {}
+
+         return render(request, template_name, context_data)
     else:
         table = VariantTable(Variant.objects.all().order_by('pvalue').exclude(pvalue=None))
         RequestConfig(request).configure(table)
-        context_data = {'keyword': "Nothing", 'term': "Nothing", 'table': table}
+        context_data = {'keyword': "Nothing", 'table': table}
         return render(request, template_name, context_data)
 
 
@@ -109,7 +155,7 @@ class BrowseView(SingleTableView, FormView):
     table_class = VariantTable
     model = Variant
     output = False
-    success_url = '/longevitydb/browse/'
+    success_url = '/browse/'
     selected = None
 
     def dispatch(self, request, *args, **kwargs):
