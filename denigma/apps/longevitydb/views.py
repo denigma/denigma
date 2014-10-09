@@ -36,7 +36,7 @@ def search(request, keyword=None, template_name='longevitydb/search.html'):
                 keyword = request.POST['keyword']
              try:
                 query = float(keyword)
-                variants = variants.filter(Q(odds_ratio=query) |
+                variants1 = variants.filter(Q(odds_ratio=query) |
                                                 Q(pvalue=query) |
                                                 Q(pmid=query) |
                                                 Q(factor__entrez_gene_id=query))
@@ -69,14 +69,17 @@ def search(request, keyword=None, template_name='longevitydb/search.html'):
              else:
                  terms = GO.objects.filter(go_term__icontains=term)
              ids = ["Q(factor__entrez_gene_id=%s)" % go.entrez_gene_id for go in terms]
-             sql = " | ".join(ids)
-             print('SQL: %s' % sql.count('factor__entrez_gene'))
-             variants2 = eval("variants.filter("+sql+")")
-             variants = variants1 | variants2
+             if ids:
+                 sql = " | ".join(ids)
+                 print('SQL: %s' % sql.count('factor__entrez_gene'))
+                 variants2 = eval("variants.filter("+sql+")")
+                 variants = variants1 | variants2
+             else:
+                 variants = variants1
          else:
              try:
                 query = float(keyword)
-                variants = variants.filter(Q(odds_ratio=query) |
+                variants1 = variants.filter(Q(odds_ratio=query) |
                                                 Q(pvalue=query) |
                                                 Q(pmid=query) |
                                                 Q(factor__entrez_gene_id=query))
@@ -104,21 +107,23 @@ def search(request, keyword=None, template_name='longevitydb/search.html'):
                  terms = GO.objects.filter(go_term__icontains=term)
              ids = ["Q(factor__entrez_gene_id=%s)" % go.entrez_gene_id for go in terms]
              sql = " | ".join(ids)
-             print("SQL = " % sql.count('factor__entrez_gene_id'))
+             #print("SQL = " % sql.count('factor__entrez_gene_id'))
              variants2 = eval("variants.filter("+sql+")")
-             qs = variants2.exclude(choice__name__contains='Review').distinct().order_by('pvalue')
+             variants = variants1 | variants2
+             qs = variants.distinct().order_by('pvalue')  #.exclude(choice__name__contains='Review')
              #response_dict = {'keyword': keyword, 'term': term}
              response = HttpResponse(content_type='text/csv')
              response['Content-Disposition'] = 'attachment: filename="output.csv"'
              writer = csv.writer(response, delimiter="\t")
              dump(qs, write=False, writer=writer, exclude=('created','updated', 'choice'))
+
              return response
     #     else:
     #         term = 'Nothing'
         # from itertools import chain
          #variants = list(chain(variants1, variants2))
-         variants = variants1 | variants2
-         qs = variants.exclude(choice__name__contains='Review').distinct().order_by('pvalue')
+
+         qs = variants.distinct().order_by('pvalue') #.exclude(choice__name__contains='Review')
     #     context_data['keyword'] = keyword
          context_data['term'] = term
          # if keyword:
