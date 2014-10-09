@@ -28,7 +28,8 @@ def search(request, keyword=None, template_name='longevitydb/search.html'):
     if request.method == 'POST':
     #
          if ('keyword' in request.POST): # or (keyword and keyword != "Nothing"):
-             print(request.POST)
+             print("Keyword is true")
+             #print(request.POST)
              if keyword and keyword != "Nothing":
                  keyword = keyword
              else:
@@ -40,7 +41,7 @@ def search(request, keyword=None, template_name='longevitydb/search.html'):
                                                 Q(pmid=query) |
                                                 Q(factor__entrez_gene_id=query))
              except Exception as e:
-                variants = variants.filter(Q(polymorphism__icontains=keyword) |
+                variants1 = variants.filter(Q(polymorphism__icontains=keyword) |
                                              Q(location__icontains=keyword) |
                                              Q(initial_number__icontains=keyword) |
                                              Q(replication_number__icontains=keyword) |
@@ -69,7 +70,9 @@ def search(request, keyword=None, template_name='longevitydb/search.html'):
                  terms = GO.objects.filter(go_term__icontains=term)
              ids = ["Q(factor__entrez_gene_id=%s)" % go.entrez_gene_id for go in terms]
              sql = " | ".join(ids)
+             print('SQL: %s' % sql.count('factor__entrez_gene'))
              variants2 = eval("variants.filter("+sql+")")
+             variants = variants1 | variants2
          else:
              try:
                 query = float(keyword)
@@ -101,7 +104,7 @@ def search(request, keyword=None, template_name='longevitydb/search.html'):
                  terms = GO.objects.filter(go_term__icontains=term)
              ids = ["Q(factor__entrez_gene_id=%s)" % go.entrez_gene_id for go in terms]
              sql = " | ".join(ids)
-             print("SQL = " % sql)
+             print("SQL = " % sql.count('factor__entrez_gene_id'))
              variants2 = eval("variants.filter("+sql+")")
              qs = variants2.exclude(choice__name__contains='Review').distinct().order_by('pvalue')
              #response_dict = {'keyword': keyword, 'term': term}
@@ -114,8 +117,8 @@ def search(request, keyword=None, template_name='longevitydb/search.html'):
     #         term = 'Nothing'
         # from itertools import chain
          #variants = list(chain(variants1, variants2))
-         #variants = variants1 | variants2
-         qs = variants2.exclude(choice__name__contains='Review').distinct().order_by('pvalue')
+         variants = variants1 | variants2
+         qs = variants.exclude(choice__name__contains='Review').distinct().order_by('pvalue')
     #     context_data['keyword'] = keyword
          context_data['term'] = term
          # if keyword:
