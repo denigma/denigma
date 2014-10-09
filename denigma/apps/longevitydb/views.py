@@ -40,7 +40,7 @@ def search(request, keyword=None, template_name='longevitydb/search.html'):
                                                 Q(pmid=query) |
                                                 Q(factor__entrez_gene_id=query))
              except Exception as e:
-                variants1 = variants.filter(Q(polymorphism__icontains=keyword) |
+                variants = variants.filter(Q(polymorphism__icontains=keyword) |
                                              Q(location__icontains=keyword) |
                                              Q(initial_number__icontains=keyword) |
                                              Q(replication_number__icontains=keyword) |
@@ -101,6 +101,7 @@ def search(request, keyword=None, template_name='longevitydb/search.html'):
                  terms = GO.objects.filter(go_term__icontains=term)
              ids = ["Q(factor__entrez_gene_id=%s)" % go.entrez_gene_id for go in terms]
              sql = " | ".join(ids)
+             print("SQL = " % sql)
              variants2 = eval("variants.filter("+sql+")")
              qs = variants2.exclude(choice__name__contains='Review').distinct().order_by('pvalue')
              #response_dict = {'keyword': keyword, 'term': term}
