@@ -307,6 +307,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django.contrib.comments',
     'honeypot',
+    'templateaddons',
 #    'cms", # Content Management System.
 #    'sekizai", # For javascipt and css management.
     
@@ -471,3 +472,5 @@ REST_FRAMEWORK = {
 }
 # Honeypot:
 HONEYPOT_FIELD_NAME = 'phonenumber'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap'

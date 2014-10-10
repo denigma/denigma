@@ -118,5 +118,6 @@ django-tablib
 # Anti-Spam:
 -e git+https://github.com/sunlightlabs/django-honeypot.git#egg=honeypot
 
-
 MySQL-python
+
+django-templateaddons

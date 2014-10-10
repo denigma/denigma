@@ -6,6 +6,7 @@
 {% load rendering %}
 {% load hyperlink %}
 {% load splitter %}
+{% load replace %}
 
 {% block head_title %}Factor{% endblock %}
 
@@ -45,7 +46,7 @@
             {% endif %}
             {% if factor.functional_description %}
                 <br><b>Functional description:</b><br>
-                    {{ factor.functional_description|pubmed_links|safe }}
+                    {{ factor.functional_description|pubmed_links|safe}}
             {% else %}
                 {% if factor.function %}
                     <br><b>Function: </b><br>
@@ -53,7 +54,7 @@
                 {% endif %}
             {% endif %}<br>
             <br><b>Observation:</b><br>
-            {{ factor.observation|markdown|hyper|pubmed_links|safe }}<br>
+            {% replace search="/datasets" replacement="http://denigma.de/datasets" %}{{ factor.observation|markdown|hyper|pubmed_links|safe}}{% endreplace %}<br>
             {% if factor.intervention.all %}
                 <br><b>Interventions:</b>
                 {% for intervention in factor.intervention.all %}

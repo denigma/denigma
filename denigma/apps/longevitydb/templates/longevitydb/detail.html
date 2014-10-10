@@ -27,7 +27,7 @@
                 {% for snp in variant.as_list %}
 
                     {% if 'rs' in snp %}
-                        <a href="{% url 'variant-detail' snp %}">{{ snp }}</a>
+                        <a href="http://denigma.de/lifespan/variance/{{ snp }}">{{ snp }}</a>
                         (
                         <a href="http://snpedia.com/index.php/{{ snp }}">SNPedia</a> |
                         <a href="https://www.23andme.com/you/explorer/snp/?snp_name={{ snp }}">23andMe</a>
@@ -37,7 +37,7 @@
            {% endif %}<br>
 
             {% if variant.alias %}<b>Alias:</b> {{ variant.alias }}<br>{% endif %}
-            {% if variant.variant_type %}<b>Variant Type:</b> <a href="{{ variant.variant_type.get_absolute_url }}">{{ variant.variant_type }}</a><br>{% endif %}
+            {% if variant.variant_type %}<b>Variant Type:</b> <a href="http://denigma.de/lifespan/variant_type/{{ variant.variant_type.id }}">{{ variant.variant_type }}</a><br>{% endif %} {# {{ variant.variant_type.get_absolute_url }} #}
             {% if variant.location %}<b>Location:</b> <a href="http://genome.ucsc.edu/cgi-bin/hgTracks?org=human&position={{ variant.location }}">{{ variant.location }}</a><br>{% endif %}
             <br>
 
@@ -116,11 +116,11 @@
                {% if classifications %}
                 <b>- Classifications:</b>
                 {% for classification in classifications %}
-                    <a href="{{ classification.get_absolute_url }}">{{ classification.title }}</a>{% if not forloop.last %},{% endif %}
+                    <a href="http://denigma.de/annotations/classification/{{ classification.id }}">{{ classification.title }}</a>{% if not forloop.last %},{% endif %} {# {{ classification.get_absolute_url }} #}
             {% endfor %}<br>
             {% endif %}
             {% endwith %}
-            {% if variant.study_type %}<b>- Study type: </b> <a href="/studytype_detail/{{ variant.study_type.id }}">{{ variant.study_type }}</a><br>{% endif %} {# {{ variant.study_type.get_absolute_url }} #}
+            {% if variant.study_type %}<b>- Study type: </b> <a href="http://denigma.de/lifespan/study_type/{{ variant.study_type.id }}">{{ variant.study_type }}</a><br>{% endif %} {# {{ variant.study_type.get_absolute_url }} #}{# /studytype_detail/{{ variant.study_type.id }} #} {# {% url 'lvdb-studytype_detail' variant.study_type.id %} #}
             {% if variant.technology %}<b>- Technology: </b> <a href="http://denigma.de/lifespan/technology/{{ variant.technology.id }}">{{ variant.technology }}</a><br>{% endif %} {# { variant.technology.get_absolute_url }} #}
 
             {% if variant.reference %}
